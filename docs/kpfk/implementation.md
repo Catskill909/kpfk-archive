@@ -246,3 +246,22 @@ Development is authorized and underway in `/Users/paulhenshaw/Desktop/kpfk-archi
 5. Desktop KPFK identity, target configuration, build/install/coexistence checks and release signing. Inherited packaging is not ready for distribution.
 
 The schedule refetches on reopening and week selection through the server cache. Failed initial UI loading offers Retry; accepted cached server responses show a saved-schedule label. No public deployment or release has occurred.
+
+## Checkpoint — end of September 15, 2026: live
+
+The app is **live** at https://kpfk-archive.supersoul.top (Coolify; persistence
+proven by an unchanged `storage.instanceId` across a redeploy). The branch is `main`
+on https://github.com/Catskill909/kpfk-archive; the `kpfk-json` branch name above
+no longer exists. Current state and open items are in [HANDOFF.md](../../HANDOFF.md).
+Changes from the plan made today:
+
+- **Episode policy changed (Paul):** only programs in the published schedule are
+  shown. Uploads (`2kpfk`) and unscheduled programs are hidden (`service.archive()`),
+  replacing "display every episode across all source groups" above.
+- **Schedule UI** uses WBAI's markup (today-first seven days, artwork cards, Live
+  from slot epochs), replacing the week selector. Slot artwork is joined from the catalog.
+- **Branding and menu:** KPFK icons and share card; side menu, donate and privacy
+  from the station profile.
+- Remaining-work items 2 (live highlighting) and 4 (branding, donate/privacy links,
+  staging persistence) above are done; 1, 3 and 5 remain, plus adapting the
+  inherited browser suites.
