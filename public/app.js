@@ -3111,80 +3111,159 @@
   // if `dateText` ever stops parsing, so a format change degrades to the
   // previous behaviour instead of to no schedule at all.
 
+  // ---- Published (Pacifica JSON) schedule ----
+  // Same dialog, same cards, same today-first strip as the derived schedule
+  // below — only the rows come from the station's published weeks instead of
+  // being reconstructed from the archive. There is no week picker: the strip is
+  // a rolling seven days from station-today, which on every day but the week's
+  // first crosses into the next published week file, so every week that
+  // overlaps the window is fetched and their days are laid end to end.
+  var PUBLISHED_SPAN = 7;
+  var publishedDays = null, publishedStale = false, publishedLoading = false, publishedRequest = 0;
+  // Also used by the archive listing's dates, not only the schedule.
   function stationDate(d){
     return new Intl.DateTimeFormat('en-US', {timeZone:STATION.timezone, month:'short', day:'numeric'}).format(d);
   }
-  var publishedWeek = null, publishedWeeks = null, publishedLoading = false, publishedRequest = 0;
-  var publishedSelect = document.getElementById('scheduleWeek');
   function stationDay(d){
     return new Intl.DateTimeFormat('en-CA', {timeZone:STATION.timezone, year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
   }
-  function paintPublishedTabs(){
-    schedPaintedToday = schedToday();
-    var today = stationDay(new Date());
-    schedTabs.innerHTML = publishedWeek ? publishedWeek.days.map(function(d){
-      var selected = d.date === schedDay;
-      var label = d.date === today ? 'Today' : new Intl.DateTimeFormat('en-US', {timeZone:STATION.timezone,weekday:'short',day:'numeric'}).format(d.startTime*1000);
-      return '<button class="sched-tab'+(selected?' selected':'')+'" role="tab" type="button" data-day="'+esc(d.date)+'" aria-selected="'+selected+'" tabindex="'+(selected?'0':'-1')+'">'+esc(label)+'</button>';
-    }).join('') : '';
+  // Minutes past station midnight for an epoch second — schedTimeLabel's input.
+  function stationMinutes(sec){
+    var h = 0, m = 0;
+    new Intl.DateTimeFormat('en-US', {timeZone:STATION.timezone, hour:'numeric', minute:'numeric', hourCycle:'h23'})
+      .formatToParts(new Date(sec * 1000)).forEach(function(p){
+        if(p.type === 'hour') h = parseInt(p.value, 10) % 24;
+        if(p.type === 'minute') m = parseInt(p.value, 10);
+      });
+    return h * 60 + m;
   }
-  async function loadPublishedSchedule(weekStart){
+  function publishedWindow(){
+    var today = stationDay(new Date());
+    return (publishedDays || []).filter(function(d){ return d.date >= today; }).slice(0, PUBLISHED_SPAN);
+  }
+  function paintPublishedTabs(){
+    var today = schedToday();
+    schedPaintedToday = today;
+    schedTabs.innerHTML = publishedWindow().map(function(d){
+      var sel = d.date === schedDay;
+      var isToday = d.date === today;
+      var name = new Intl.DateTimeFormat('en-US', {timeZone:STATION.timezone, weekday:'short'}).format(new Date(d.startTime * 1000));
+      var cls = 'sched-tab'+(sel ? ' selected' : '')+(isToday ? ' sched-tab-today' : '');
+      return '<button class="'+cls+'" type="button" role="tab" data-day="'+esc(d.date)+'"'+
+        ' aria-selected="'+sel+'"'+(sel ? '' : ' tabindex="-1"')+'>'+
+        '<span class="sched-tab-full">'+esc(isToday ? 'Today' : name)+'</span>'+
+        '<span class="sched-tab-min">'+esc(name.slice(0, 1))+'</span></button>';
+    }).join('');
+  }
+  async function loadPublishedSchedule(){
     var request = ++publishedRequest;
     publishedLoading = true;
-    schedBody.innerHTML = '<p class="sched-empty" role="status">Loading published schedule…</p>';
+    schedTabs.innerHTML = '';
+    schedBody.innerHTML = '<p class="sched-empty" role="status">Loading schedule…</p>';
     try {
-      if(!publishedWeeks){
-        var indexResponse = await fetch('/api/schedule', {cache:'no-store'});
-        if(!indexResponse.ok) throw new Error('Schedule unavailable');
-        var index = await indexResponse.json();
-        if(request !== publishedRequest) return;
-        publishedWeeks = index.weeks;
-        publishedSelect.innerHTML = publishedWeeks.map(function(w){return '<option value="'+w.weekStart+'">Week of '+esc(w.label || stationDate(new Date(w.weekStart*1000)))+'</option>';}).join('');
-      }
-      if(!publishedWeeks.length){publishedWeek=null; schedTabs.innerHTML=''; schedBody.innerHTML='<p class="sched-empty">No weeks are currently published.</p>'; return;}
-      if(!weekStart){
-        var now = Date.now()/1000;
-        var current = publishedWeeks.filter(function(w){return w.weekStart <= now;});
-        weekStart = (current[current.length-1] || publishedWeeks[0]).weekStart;
-      }
-      var response = await fetch('/api/schedule?weekStart='+encodeURIComponent(weekStart), {cache:'no-store'});
-      if(!response.ok) throw new Error('Schedule unavailable');
-      var week = await response.json();
+      var indexResponse = await fetch('/api/schedule', {cache:'no-store'});
+      if(!indexResponse.ok) throw new Error('schedule index HTTP ' + indexResponse.status);
+      var index = await indexResponse.json();
       if(request !== publishedRequest) return;
-      publishedWeek = week;
-      publishedSelect.value = String(weekStart);
-      var today = stationDay(new Date());
-      schedDay = week.days.some(function(d){return d.date === today;}) ? today : (week.days[0] || {}).date;
+      var now = Date.now() / 1000, horizon = now + (PUBLISHED_SPAN + 1) * 86400;
+      // A week ends where the next published one starts (never weekStart plus a
+      // fixed 7×24h — DST weeks are not that long); the last one is bounded
+      // generously, since fetching a week that turns out not to overlap is harmless.
+      var weeks = index.weeks.filter(function(w, i){
+        var next = index.weeks[i + 1];
+        var end = next ? next.weekStart : w.weekStart + (PUBLISHED_SPAN + 1) * 86400;
+        return end > now && w.weekStart < horizon;
+      });
+      var results = await Promise.allSettled(weeks.map(function(w){
+        return fetch('/api/schedule?weekStart=' + encodeURIComponent(w.weekStart), {cache:'no-store'})
+          .then(function(r){
+            if(!r.ok) throw new Error('schedule week ' + w.weekStart + ' HTTP ' + r.status);
+            return r.json();
+          });
+      }));
+      if(request !== publishedRequest) return;
+      var byDate = {}, stale = false, failed = [];
+      results.forEach(function(res){
+        // One unavailable week must not take the others down with it; it is
+        // logged, and its days are simply absent from the strip.
+        if(res.status !== 'fulfilled'){ failed.push(res.reason); console.warn('[schedule]', res.reason); return; }
+        stale = stale || !!res.value.stale;
+        res.value.days.forEach(function(d){ byDate[d.date] = d; });
+      });
+      if(!Object.keys(byDate).length && failed.length) throw failed[0];
+      publishedDays = Object.keys(byDate).sort().map(function(k){ return byDate[k]; });
+      publishedStale = stale;
       publishedLoading = false;
       paintPublishedSchedule();
     } catch(error){
       if(request !== publishedRequest) return;
-      publishedWeek = null; publishedWeeks = null; schedTabs.innerHTML='';
-      schedBody.innerHTML='<p class="sched-empty" role="status">Published schedule unavailable. <button type="button" id="scheduleRetry">Retry</button></p>';
-      document.getElementById('scheduleRetry').onclick=function(){loadPublishedSchedule(weekStart);};
-    } finally { if(request === publishedRequest) publishedLoading=false; }
+      console.warn('[schedule] unavailable', error);
+      publishedDays = null; schedTabs.innerHTML = '';
+      schedBody.innerHTML = '<p class="sched-empty" role="status">Schedule unavailable. <button type="button" id="scheduleRetry">Retry</button></p>';
+      document.getElementById('scheduleRetry').onclick = function(){ loadPublishedSchedule(); };
+    } finally { if(request === publishedRequest) publishedLoading = false; }
   }
   function paintPublishedSchedule(){
     if(publishedLoading) return;
-    if(!publishedWeek){loadPublishedSchedule(); return;}
-    if(!publishedWeek.days.some(function(d){return d.date===schedDay;})) schedDay=(publishedWeek.days[0] || {}).date;
+    if(!publishedDays){ loadPublishedSchedule(); return; }
+    var days = publishedWindow();
+    if(!days.length){
+      schedTabs.innerHTML = '';
+      schedBody.innerHTML = '<p class="sched-empty">No upcoming days are published yet.</p>';
+      return;
+    }
+    if(!days.some(function(d){ return d.date === schedDay; })) schedDay = days[0].date;
     paintPublishedTabs();
-    var day = publishedWeek.days.find(function(d){return d.date===schedDay;});
-    var status = publishedWeek.stale ? '<p role="status">Saved schedule · Pacifica could not be refreshed.</p>' : '';
-    schedBody.innerHTML = status + (day && day.slots.length ? day.slots.map(function(slot){
-      var recording = rows.find(function(r){return r.sho === slot.showKey;});
+    var day = days.filter(function(d){ return d.date === schedDay; })[0];
+    // The card opens the show's most recent recording, as the derived schedule does.
+    var latest = {};
+    rows.forEach(function(r){ if(!latest[r.sho] || r.dt > latest[r.sho].dt) latest[r.sho] = r; });
+    var status = publishedStale ? '<p class="sched-stale" role="status">Saved schedule · KPFK’s feed could not be refreshed.</p>' : '';
+    if(!day.slots.length){
+      schedBody.innerHTML = status + '<p class="sched-empty">No programs published for this day.</p>';
+      return;
+    }
+    schedBody.innerHTML = status + day.slots.map(function(slot){
+      var rec = latest[slot.showKey];
+      var c = CAT_BY_KEY[slot.cat] || CAT_BY_KEY.special;
+      var when = schedTimeLabel(stationMinutes(slot.startTime));
       var info = showInfo[slot.showKey] || {};
-      var description = slot.shortDescription || info.desc || info.shortdesc || '';
-      var body = '<span class="sched-show-title">'+esc(slot.name)+'</span><span class="sched-show-meta">'+esc(slot.host)+'</span>';
-      var card = recording ? '<button class="sched-show" type="button" data-id="'+esc(recording.id)+'">'+body+'</button>' : '<details class="sched-program"><summary>'+body+'</summary><p>'+esc(description)+'</p><p>No recordings currently published.</p></details>';
-      return '<div class="sched-slot"><div class="sched-time">'+esc(timeOfDay(new Date(slot.startTime*1000)))+'<span class="sched-dur">'+esc(schedDurLabel((slot.endTime-slot.startTime)/60))+'</span></div><div class="sched-shows">'+card+'</div></div>';
-    }).join('') : '<p class="sched-empty">No programs published for this day.</p>');
-    schedBody.scrollTop = 0;
+      var desc = slot.shortDescription || info.desc || info.shortdesc || '';
+      // A program with no recordings has no sheet to open, so its card expands
+      // to say what it is — never a play affordance, never a borrowed episode.
+      var target = rec
+        ? ' data-id="'+esc(rec.id)+'" aria-label="More about '+esc(slot.name)+'"'
+        : ' data-program="1" aria-expanded="false" aria-label="About '+esc(slot.name)+'"';
+      return '<div class="sched-slot" role="group" aria-label="'+esc(when)+'">'+
+        '<div class="sched-time">'+esc(when)+
+          '<span class="sched-dur">'+esc(schedDurLabel(Math.round((slot.endTime - slot.startTime) / 60)))+'</span></div>'+
+        '<div class="sched-shows">'+
+          '<div class="sched-show-wrap" data-title="'+esc(slot.name)+'" data-start="'+slot.startTime+'" data-end="'+slot.endTime+'">'+
+            '<button class="sched-show" type="button"'+target+'>'+
+              '<span class="sched-thumb">'+(slot.photo ? '<img loading="lazy" alt="" src="'+esc(slot.photo)+'">' : '')+'</span>'+
+              '<span class="sched-text">'+
+                '<span class="sched-show-title">'+esc(slot.name)+'</span>'+
+                '<span class="sched-show-meta">'+esc(c.label + (slot.host ? ' · '+slot.host : ''))+'</span>'+
+              '</span>'+
+              '<span class="sched-live-badge" aria-hidden="true">'+
+                '<span class="sched-live-dot"></span><span class="sched-live-word">Live</span>'+
+              '</span>'+
+            '</button>'+
+          '</div>'+
+          (rec ? '' : '<div class="sched-program-info" hidden>'+
+            (desc ? '<p>'+esc(desc)+'</p>' : '')+
+            '<p>No recordings currently published.</p></div>')+
+        '</div>'+
+      '</div>';
+    }).join('');
+    schedApplyLiveHighlight();
+    schedScrollToLive();
   }
-  if(publishedSelect) publishedSelect.addEventListener('change', function(){loadPublishedSchedule(Number(publishedSelect.value));});
 
   function schedToday(){
-    if(STATION.capabilities.publishedSchedule) return new Intl.DateTimeFormat('en-US', {timeZone:STATION.timezone, weekday:'long'}).format(new Date());
+    // Published tabs are keyed by station date ("2026-09-15"), not weekday: the
+    // rolling strip can hold the same weekday twice across a week boundary.
+    if(STATION.capabilities.publishedSchedule) return stationDay(new Date());
     var off = schedStationOffsetMs();
     if(off !== null){
       var stationNow = new Date(Date.now() + off);
@@ -3337,9 +3416,14 @@
   // the modal stays open, without resetting the user's scroll position (that
   // is schedScrollToLive()'s job, and it only runs on paint, not on poll).
   function schedApplyLiveHighlight(){
-    if(STATION.capabilities.publishedSchedule) return;
     if(!schedIsOpen()) return;
-    var liveName = (schedDay === schedToday() && liveCurrent && liveCurrent.name) || '';
+    // A published slot carries its real interval, so "on air" is a clock
+    // comparison against absolute epochs — a future week can never light up by
+    // weekday and time alone. The derived schedule has no intervals and matches
+    // the on-air feed's title instead.
+    var published = STATION.capabilities.publishedSchedule;
+    var nowSec = Date.now() / 1000;
+    var liveName = (!published && schedDay === schedToday() && liveCurrent && liveCurrent.name) || '';
     // Is the stream actually playing right now? `liveWanted` is the intent flag
     // the live section owns (a stopped stream has no element to read), and
     // barMode says who currently holds the docked bar — an archive track can be
@@ -3348,7 +3432,9 @@
     var wraps = schedBody.querySelectorAll('.sched-show-wrap');
     for(var i = 0; i < wraps.length; i++){
       var wrap = wraps[i];
-      var live = !!liveName && schedTitleMatches(wrap.dataset.title, liveName);
+      var live = published
+        ? (+wrap.dataset.start <= nowSec && nowSec < +wrap.dataset.end)
+        : (!!liveName && schedTitleMatches(wrap.dataset.title, liveName));
       wrap.classList.toggle('sched-show-live', live);
       // The badge says "this is broadcasting"; once you are actually listening
       // it says so instead, which is what lets a listener tell at a glance
@@ -3359,9 +3445,10 @@
       if(badge) badge.textContent = (live && onNow) ? 'On air' : 'Live';
       wrap.classList.toggle('sched-live-playing', live && onNow);
       var card = wrap.querySelector('.sched-show');
+      var program = card && card.dataset.program;
       if(card) card.setAttribute('aria-label', live
-        ? (wrap.dataset.title || '') + ' — on air now, choose live or past episodes'
-        : 'More about ' + (wrap.dataset.title || ''));
+        ? (wrap.dataset.title || '') + (program ? ' — on air now, listen live' : ' — on air now, choose live or past episodes')
+        : (program ? 'About ' : 'More about ') + (wrap.dataset.title || ''));
     }
   }
   // ---------------- On-air chooser ----------------
@@ -3385,6 +3472,8 @@
     liveChoiceId = id;
     liveChoiceReturn = trigger || document.activeElement;
     liveChoiceTitle.textContent = title || '';
+    // A program with no recordings has no past episodes to offer.
+    liveChoiceArchive.hidden = !id;
     // Already listening? Then "Listen Live" is not an offer any more, it is
     // where you already are — say so, and let the button take you to the
     // player's own controls rather than pretending to start something.
@@ -3471,7 +3560,7 @@
     if(schedIsOpen()) return;
     schedReturnFocus = document.activeElement;
     schedDay = '';                 // re-resolve today on every open
-    if(STATION.capabilities.publishedSchedule){ publishedWeek = null; publishedWeeks = null; }
+    if(STATION.capabilities.publishedSchedule) publishedDays = null;   // refetch (server-cached) on every open
     // Mark the modal open BEFORE painting: paintSchedule() ends by applying
     // the live highlight and scrolling to it, both of which check schedIsOpen()
     // and are no-ops while it's still false.
@@ -3525,7 +3614,7 @@
       e.preventDefault();
       // Walk the tabs as they are DISPLAYED (today first), not Sunday-first —
       // an arrow key that skipped across the strip would be its own bug.
-      var order = STATION.capabilities.publishedSchedule && publishedWeek ? publishedWeek.days.map(function(d){return d.date;}) : schedTabDays();
+      var order = STATION.capabilities.publishedSchedule ? publishedWindow().map(function(d){ return d.date; }) : schedTabDays();
       var i = order.indexOf(schedDay) + (e.key === 'ArrowRight' ? 1 : -1);
       schedSelectDay(order[(i + order.length) % order.length]);
       var btn = schedTabs.querySelector('.sched-tab.selected');
@@ -3555,6 +3644,14 @@
     var wrap = btn.closest('.sched-show-wrap');
     if(wrap && wrap.classList.contains('sched-show-live')){
       openLiveChoice(btn.dataset.id, wrap.dataset.title || '', btn);
+      return;
+    }
+    if(btn.dataset.program){
+      var info = wrap && wrap.nextElementSibling;
+      if(info && info.classList.contains('sched-program-info')){
+        info.hidden = !info.hidden;
+        btn.setAttribute('aria-expanded', String(!info.hidden));
+      }
       return;
     }
     openSheetById(btn.dataset.id, btn);

@@ -64,3 +64,41 @@ test('bounded fetch rejects HTML, oversized body, external redirects and malform
   await assert.rejects(fetchBounded(url, { ...opts, fetchImpl: async () => new Response(null, { status: 302, headers: { location: 'https://unapproved.example/' } }) }), /unapproved/);
   await assert.rejects(fetchBounded(url, { ...opts, fetchImpl: async () => new Response(new Uint8Array([0xff]), { headers: { 'content-type': 'application/json' } }) }), /encoded|encoding/i);
 });
+
+// Every image URL an endpoint hands the browser must be same-origin: the app is
+// served CSP `img-src 'self'`, so an absolute upstream URL is silently never
+// drawn. The schedule once shipped slots with no proxied `photo` at all and
+// rendered without artwork while the catalog's images worked. Walks every
+// `photo` field on every Pacifica-backed payload, not just the schedule.
+function foreignPhotos(value, where = '$', found = []) {
+  if (Array.isArray(value)) value.forEach((v, i) => foreignPhotos(v, `${where}[${i}]`, found));
+  else if (value && typeof value === 'object') {
+    for (const [k, v] of Object.entries(value)) {
+      if (k === 'photo' && !(typeof v === 'string' && v.startsWith('/') && !v.startsWith('//'))) found.push(`${where}.photo=${JSON.stringify(v)}`);
+      else foreignPhotos(v, `${where}.${k}`, found);
+    }
+  }
+  return found;
+}
+test('every photo the service hands the browser is same-origin, schedule slots included', async t => {
+  // The probe must still be able to see a violation, or "no violations" means nothing.
+  assert.deepEqual(foreignPhotos({ a: [{ photo: 'https://confessor.kpfk.org/pix/x.jpg' }, { photo: '/api/artwork/ok' }, { photo: undefined }] }).length, 2);
+  const dir = path.join(__dirname, '../../docs/fixtures/pacifica-kpfk-2026-09-14');
+  const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'kpfk-photo-'));
+  t.after(() => fs.rmSync(dataDir, { recursive: true, force: true }));
+  const fetchImpl = async url => json(JSON.parse(fs.readFileSync(path.join(dir, path.basename(new URL(url).pathname)), 'utf8')));
+  const service = createService({ profile, dataDir, writeJsonAtomic: write, fetchImpl, now: () => 1789435100000 });
+  const index = await service.schedule();
+  // Week first, catalog second: the week is normalized with no directory to
+  // borrow artwork from, which is the ordering a fresh boot can produce.
+  const early = await service.schedule(index.weeks[0].weekStart);
+  const catalog = await service.catalog();
+  const week = await service.schedule(index.weeks[0].weekStart);
+  const live = await service.live();
+  for (const [name, payload] of Object.entries({ catalog, early, week, live })) assert.deepEqual(foreignPhotos(payload), [], name);
+  const slots = week.days.flatMap(d => d.slots);
+  assert.ok(slots.length > 100 && slots.every(s => typeof s.photo === 'string'), 'every slot carries a photo');
+  const withArt = slots.filter(s => (catalog.directory[s.showKey] || {}).photoUrl);
+  assert.ok(withArt.length > 0 && withArt.every(s => s.photo.startsWith('/api/artwork/')),
+    'a slot whose show has catalog artwork gets the proxied image, even if the week loaded before the catalog');
+});

@@ -109,6 +109,32 @@ invalid refresh keeps last-good.
    as no song and keeps current/next program, hosts, artwork and airtime. A
    regression test covers it. Live audio itself was always working.
 
+## Schedule — matches WBAI (2026-09-15, later)
+
+Paul's rule: **the KPFK schedule looks and behaves exactly like WBAI's.** Codex had
+built a separate text-only renderer with a week `<select>` and a Sun–Sat strip.
+It now uses WBAI's markup, fed by the published slots (`paintPublishedSchedule`
+in `app.js`):
+
+- Rolling seven days from station-today, today-first tabs, **no week picker**.
+  Every published week overlapping the window is fetched, so Sun/Mon come from
+  next week's file. Tabs are keyed by station date, not weekday.
+- WBAI cards: thumbnail, title, "Category · Host", Live badge. **Live** is a
+  clock comparison against the slot's real start/end epochs (not title
+  matching), and the body scrolls to it on open.
+- A card opens the show's most recent recording. A program with no recordings
+  expands in place with its description instead. It never plays or borrows an
+  episode, and the live chooser hides "past episodes" for it.
+- Images: the server attaches a same-origin `photo` (`/api/artwork/…`) to every
+  slot, joined against the catalog at request time. The CSP is `img-src 'self'`,
+  so a raw `photoUrl` can never render, which is why the old schedule had no
+  pictures. Test: `test/pacifica/service.test.js`, "every photo … is
+  same-origin", which checks every payload. It was proven to fail with the join removed.
+
+Verified in headless Chrome against 8081: no dropdown, 7 tabs, 24/24 images
+loaded, Live row correct, no-recording expand/collapse (forced by intercepting
+`/api/archive`), zero JS errors.
+
 ## Waiting on Pacifica's engineer
 
 Paul was about to send these on 2026-09-15. Check with him whether he did and
@@ -130,9 +156,8 @@ what came back:
 3. Live/archive audio checks in a real browser: sleep/resume, Media Session, and
    an observed program transition. Adapt `test/live-stream` to KPFK and run
    normal **and** `--strict`.
-4. Program-only deep links, nested sheet/history, slot-specific details, and
-   exact-identity live highlighting in the schedule. Highlighting is currently
-   suppressed for published schedules.
+4. Program-only deep links, nested sheet/history and slot-specific details in
+   the schedule. (The schedule itself now matches WBAI's — see "Schedule" below.)
 5. Studio: source-health wording and JSON-safe refresh actions. Remove leftover
    legacy startup diagnostics.
 6. Branding and content: final artwork, confirmed donate/privacy links, the

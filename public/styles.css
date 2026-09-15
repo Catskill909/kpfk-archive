@@ -3609,8 +3609,11 @@
   }
 
 /* Published Pacifica schedule */
-.sched-week-label { display:flex; align-items:center; gap:12px; padding:12px 24px; }
-.sched-week-label select { font:inherit; max-width:75%; }
-.sched-program { padding:12px; }
-.sched-program summary { cursor:pointer; }
+/* A published program with no recordings: the card expands in place instead of
+   opening a sheet it has nothing to fill with. */
+.sched-program-info { padding:.5rem .75rem .25rem; color:var(--ink-dim); font-size:.9rem; line-height:1.45; }
+.sched-program-info p { margin:0 0 .35rem; }
+.sched-program-info[hidden] { display:none; }
+.sched-stale { margin:0 0 .75rem; color:var(--ink-dim); font-size:.85rem; }
+#liveChoiceArchive[hidden] { display:none; }
 #donateBtn[hidden] { display:none; }

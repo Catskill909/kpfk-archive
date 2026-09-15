@@ -232,7 +232,7 @@ Development is authorized and underway in `/Users/paulhenshaw/Desktop/kpfk-archi
 - JSON catalog, channels, now-playing and schedule adapters. Canonical identities include source, preserving uploads and every supplied episode. Valid empty catalogs replace membership; failed validation/fetch retains last-good data.
 - Bounded requests, validators, singleflight, persisted atomic snapshots, stale-state reporting, and restricted artwork proxy.
 - Archive/detail APIs and interface use KPFK JSON. Fixture coverage is 1,143 episodes from 184 directory entries; live feed returned 1,140 during verification. These are different source snapshots, not a count limit.
-- Published schedule UI has index-based week selection and seven dated tabs, Pacific time, published slots and expandable information for programs without recordings. No fabricated archive rows. Programs with recordings open their latest archive detail.
+- Published schedule UI uses WBAI's schedule markup (superseded the week selector on 2026-09-15): rolling seven days from station-today across published week files, today-first tabs, thumbnail cards with category · host, Live badge from slot epochs, and expandable information for programs without recordings. No fabricated archive rows. Programs with recordings open their latest archive detail.
 - Browser checks on isolated Chrome port 9331 verified three published weeks, future-week selection and no JavaScript runtime exceptions. Archive times now use America/Los_Angeles even in a New York browser.
 - Eighteen fixture/service/HTTP tests pass, covering persistence, outages, valid-empty replacement, malformed inputs, DST/overnight slots and no accidental legacy network requests.
 - Copied WBAI GitHub workflows are disabled; WBAI fallback/seed data and tracked browser profile files were removed only from the KPFK copy.
@@ -240,7 +240,7 @@ Development is authorized and underway in `/Users/paulhenshaw/Desktop/kpfk-archi
 ### Remaining acceptance work — do not treat as release-ready
 
 1. Full live/archive audio transport browser checks, sleep/resume, Media Session and observed metadata transition. API coverage alone does not establish audible playback.
-2. Program-only deep links, nested sheet/history checks, slot-specific publication details and exact-identity live schedule highlighting. The current zero-recording program information is inline in the schedule. Live highlighting is suppressed for published schedules until exact matching is implemented.
+2. Program-only deep links, nested sheet/history checks, slot-specific publication details and exact-identity live schedule highlighting. The current zero-recording program information is inline in the schedule. Live highlighting uses the published slot interval.
 3. Studio source-health terminology and refresh behavior; remove remaining misleading legacy startup diagnostics.
 4. Final KPFK branding, confirmed donation/privacy links, broader accessibility/mobile review, and staging persistence/soak checks. Placeholder artwork is temporary.
 5. Desktop KPFK identity, target configuration, build/install/coexistence checks and release signing. Inherited packaging is not ready for distribution.
