@@ -22,8 +22,8 @@ straight from Pacifica; the server fetches feeds and show artwork.
 ## Deploy on Coolify
 
 1. **New Resource → Application → Git repository** → `Catskill909/kpfk-archive`,
-   branch `main`. (If the repo is private, connect it through Coolify's GitHub
-   App or a deploy key.)
+   branch `main`. The repo is public (checked 2026-09-15), so no deploy key is
+   needed; if it is ever made private, connect it through Coolify's GitHub App.
 2. **Build Pack: Dockerfile.** The image is `node:24-alpine`, runs as the
    non-root `node` user, and already sets `STATION_PROFILE=stations/kpfk.json`,
    `NODE_ENV=production`, `PORT=8080`.
