@@ -73,7 +73,7 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const port = await freePort(), url = `http://127.0.0.1:${port}`;
   async function boot() {
     child = spawn(process.execPath, ['--require', preload, 'server.js'], { cwd: root,
-      env: { ...cleanEnv(), STATION_PROFILE: profileFile, PACIFICA_TEST_LOCAL: '1', PORT: String(port), DATA_DIR: path.join(dir, 'data') },
+      env: { ...cleanEnv(), STATION_PROFILE: profileFile, PACIFICA_TEST_LOCAL: '1', STUDIO_PASSWORD: 'test-studio', PORT: String(port), DATA_DIR: path.join(dir, 'data') },
       stdio: ['ignore', 'pipe', 'pipe'] });
     child.stdout.on('data', x => { logs += x; }); child.stderr.on('data', x => { logs += x; });
     for (let i = 0; i < 100; i++) {
@@ -122,6 +122,29 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   assert.equal((await fetch(url + '/api/schedule?weekStart=bad')).status, 400);
   const health = await (await fetch(url + '/healthz')).json(); assert.equal(health.station, 'kpfk'); assert.equal(health.ready, true);
   assert.equal(health.archiveFilter.basis, 'schedule'); assert.equal(health.archiveFilter.hiddenEpisodes, expected.allEpisodes - expected.episodes);
+  // Studio: every report that names a show must use the archive's title for its
+  // slug. WBAI's XML `feedStore` is always empty on a station build, so a report
+  // that reads it instead of episodeRecords() shows `kpfk.kpfk.<altid>` — which
+  // "Most listened shows" did. Real beacons first, so the usage report has rows.
+  const titleOf = new Map(archive.shows.map(r => [r.sho, r.title]));
+  const played = archive.shows.find(r => r.title && r.title !== r.sho);
+  const beacon = body => fetch(url + '/api/ev', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  assert.equal((await beacon({ t: 'play', u: played.mp3 })).status, 204);
+  assert.equal((await beacon({ t: 'listen', u: played.mp3, s: 60 })).status, 204);
+  const login = await fetch(url + '/api/studio/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: 'test-studio' }) });
+  assert.equal(login.status, 200);
+  const cookie = login.headers.get('set-cookie').split(';')[0];
+  const studio = async p => { const r = await fetch(url + p, { headers: { Cookie: cookie } }); assert.equal(r.status, 200, p); return r.json(); };
+  const named = [
+    ...(await studio('/api/studio/usage')).topShows.map(s => ['usage.topShows', s]),
+    ...(await studio('/api/studio/stats')).shows.map(s => ['stats.shows', s]),
+    ['showhistory', await studio('/api/studio/showhistory?slug=' + encodeURIComponent(played.sho))],
+  ];
+  // Prove the sweep can see the played show in each report, not an empty list.
+  for (const where of ['usage.topShows', 'stats.shows', 'showhistory']) {
+    assert.ok(named.some(([w, s]) => w === where && s.slug === played.sho), `${where} includes the played show`);
+  }
+  for (const [where, s] of named) assert.equal(s.title, titleOf.get(s.slug), `${where} names ${s.slug} by its title`);
   assert.equal(requested.filter(p => p.endsWith('fe_catalog_kpfk.json')).length, 1);
   assert.doesNotMatch(logs, /UNEXPECTED_UPSTREAM/);
   const identity = health.storage.instanceId;

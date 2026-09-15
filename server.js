@@ -2655,7 +2655,9 @@ function usageReport(days = 30) {
   // reading statsStore.days directly falls off the cliff at the month rollover.
   const byZone = sumBySlug(window, 'byZone');
   const zoneTotal = ZONE_BUCKETS.reduce((n, b) => n + (byZone.get(b) || 0), 0);
-  const titles = feedStore;
+  // episodeRecords(), not feedStore: on a station build feedStore is always
+  // empty, and every title fell back to the slug.
+  const titles = episodeRecords();
   const firstWithData = window.find((w) => w.rec);
   return {
     since: (firstWithData && firstWithData.day) || today(),
