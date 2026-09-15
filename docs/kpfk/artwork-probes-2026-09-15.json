@@ -1,0 +1,1547 @@
+[
+  {
+    "name": "Afro-Dicia",
+    "url": "https://confessor.kpfk.org/pix/afrodicia_med_144.jpg",
+    "proxy": "/api/artwork/2daefe10a14dd4839e5c057ee1d5e263ecc717a5af63984e102030aae6d871d2",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 22157
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 22157
+    }
+  },
+  {
+    "name": "All Of The  Above",
+    "url": "https://confessor.kpfk.org/pix/allabove_med_112.jpg",
+    "proxy": "/api/artwork/a92c52cec674e048cd409afe6f20fa1678f47f47693a90850c4eb50dc926321e",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 32143
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 32143
+    }
+  },
+  {
+    "name": "Alan Watts",
+    "url": "https://confessor.kpfk.org/pix/alanwatts_med_108.jpg",
+    "proxy": "/api/artwork/b4ce2d6544f8eee6d2939dd8370ab36f163eeaddf3df4cda41b239e260b6ef7d",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 29806
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 29806
+    }
+  },
+  {
+    "name": "Alternative Radio",
+    "url": "https://confessor.kpfk.org/pix/alterradioar_med_333.jpg",
+    "proxy": "/api/artwork/a7c23c9e3602b5b94f0de6a97869225f6f222876c54b1c8128bf6e25d099076a",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 10710
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 10710
+    }
+  },
+  {
+    "name": "Antiwar Radio",
+    "url": "https://confessor.kpfk.org/pix/anti-warradio_223.jpg",
+    "proxy": "/api/artwork/e7ea585eb11230ed8e54d917098b1db08afce8b42389b470092ba4e9b467192d",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2413
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2413
+    }
+  },
+  {
+    "name": "Alternative Radio Special",
+    "url": "https://confessor.kpfk.org/pix/alternatiradioalterradioas_med_388.jpg",
+    "proxy": "/api/artwork/1ee9ddef3418910cc02b2056f12ada2960ee53affed9b38404bf771853b201c3",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 10710
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 10710
+    }
+  },
+  {
+    "name": "Aware Show, The",
+    "url": "https://confessor.kpfk.org/pix/aware_med_141.jpg",
+    "proxy": "/api/artwork/7f6de473fa382ed6d4cfc1036cacda564284dffab7ee87701db4e194a7840216",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 32802
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 32802
+    }
+  },
+  {
+    "name": "Awakenings",
+    "url": "https://confessor.kpfk.org/pix/awakenings_med_377.jpg",
+    "proxy": "/api/artwork/c6c3864d410f52be529c2e1a94f613aea72a671be5ff0cea254a31bbaac056b3",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 29511
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 29511
+    }
+  },
+  {
+    "name": "Arts In Review",
+    "url": "https://confessor.kpfk.org/pix/artsinreview_med_150.jpg",
+    "proxy": "/api/artwork/e412881e2fa4bf1914f29af198f54e6811f9f1b11347193b2837dfc9dd698b7d",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 32465
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 32465
+    }
+  },
+  {
+    "name": "Be a Better Relative",
+    "url": "https://confessor.kpfk.org/pix/nativenationsreport_med_329.jpg",
+    "proxy": "/api/artwork/26d3c556089dd23e08a777c2365bb0a33c00a99a098380bd818ec1a39f17a51e",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 29911
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 29911
+    }
+  },
+  {
+    "name": "Background Briefing",
+    "url": "https://confessor.kpfk.org/pix/backgroundbriefing_med_370.jpg",
+    "proxy": "/api/artwork/ca36d727ce372c4e8c794f3947f68b51a5e02ac2f5adf9127fb50c6df23efc64",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28717
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28717
+    }
+  },
+  {
+    "name": "Beneath The Surface",
+    "url": "https://confessor.kpfk.org/pix/bts_friday_med_162.jpg",
+    "proxy": "/api/artwork/59c169f6aef37fa7325d1e7a15ceb4a511e52e922e3a6c208fdebe5b7f0eba13",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 21373
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 21373
+    }
+  },
+  {
+    "name": "Bibliocracy",
+    "url": "https://confessor.kpfk.org/pix/bibliocracy_med_153.jpg",
+    "proxy": "/api/artwork/813e26f0201c35b2fd08efd44d8cb4582a5f6b35b5ce432ecfc45d7845db3298",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 12511
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 12511
+    }
+  },
+  {
+    "name": "Bike Talk",
+    "url": "https://confessor.kpfk.org/pix/biketalka_med_263.jpg",
+    "proxy": "/api/artwork/ba2f81ff2612a65da8c496566b95bcd52bf35c35c5f9509f6ae971561809a484",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 19046
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 19046
+    }
+  },
+  {
+    "name": "Brad Friedman's BradCast",
+    "url": "https://confessor.kpfk.org/pix/friedman_med_210.jpg",
+    "proxy": "/api/artwork/679c1919b66944e420a7fdfbbbb93a0d99b82f68a5a86d77b0bb5e116b046ffd",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 27206
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 27206
+    }
+  },
+  {
+    "name": "CalState LA Community News Hour",
+    "url": "https://confessor.kpfk.org/pix/calstatelacommunitynewshour_med_314.jpg",
+    "proxy": "/api/artwork/08484c0034bec8e8b35f94e314c5cc0a3733c4cf2d00ce1190d501d8f8561290",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3392
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3392
+    }
+  },
+  {
+    "name": "Breakbeats And Rhymes",
+    "url": "https://confessor.kpfk.org/pix/breakbeats_med_119.jpg",
+    "proxy": "/api/artwork/7dd871e4b36df354d68427c7fc606793feb18ac4f774c8cbd76eb83850bba032",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 36610
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 36610
+    }
+  },
+  {
+    "name": "Canto Sin Fronteras",
+    "url": "https://confessor.kpfk.org/pix/cantossin_med_172.jpg",
+    "proxy": "/api/artwork/6aba155814bf00f1be8526eae6a513e1488a4c28c4593934d87b94ef1da70463",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 25651
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 25651
+    }
+  },
+  {
+    "name": "Capitalism, Race and Democracy",
+    "url": "https://confessor.kpfk.org/pix/covidraceanddemocr_med_288.jpg",
+    "proxy": "/api/artwork/65d82e2fa46e79e665b29358eafb1e84f9c8f81a35549af85824f9aa7b7f5f19",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 30304
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 30304
+    }
+  },
+  {
+    "name": "Canto Tropical",
+    "url": "https://confessor.kpfk.org/pix/cantotropical_med_173.jpg",
+    "proxy": "/api/artwork/b1fe24105e34da1c1aecf191ccff10cbeaf78cb5e8491e89cc6eef90cb574006",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 47074
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 47074
+    }
+  },
+  {
+    "name": "Cary Harrison Files",
+    "url": "https://confessor.kpfk.org/pix/caryharrisfiles_med_374.jpg",
+    "proxy": "/api/artwork/f17ee219ca395f913c5ba79c56d24cd4ad2d44b5df59a960f36099b1a24fd193",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 17031
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 17031
+    }
+  },
+  {
+    "name": "Centroamerica Sin Censura",
+    "url": "https://confessor.kpfk.org/pix/centroamerica_sin_censura_194.jpg",
+    "proxy": "/api/artwork/7d37e13325e89b3afd98fb459e6f65891d06c639b4c160fd9bbfdafea950d760",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2413
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2413
+    }
+  },
+  {
+    "name": "Contragolpe",
+    "url": "https://confessor.kpfk.org/pix/golpe_med_205.jpg",
+    "proxy": "/api/artwork/c36a1cadfeee64ee150fd8f1b25a95f8fff6a83aca5dd388d973412398353462",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 15187
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 15187
+    }
+  },
+  {
+    "name": "CodePINK Radio",
+    "url": "https://confessor.kpfk.org/pix/codepinradio_med_311.jpg",
+    "proxy": "/api/artwork/bdea33b328d7b521aaaa18b0dc936ad83bf3ac19bd00fa4e0865a99a25a41377",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 63969
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 63969
+    }
+  },
+  {
+    "name": "Conversation Piece",
+    "url": "https://confessor.kpfk.org/pix/conversatpiece_med_340.jpg",
+    "proxy": "/api/artwork/78fda4437c2b24fd72ab74c03cf58ddb8f8068b24e08512e8d511428266e766c",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 30107
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 30107
+    }
+  },
+  {
+    "name": "Cut to the Chase",
+    "url": "https://confessor.kpfk.org/pix/mornimixcutchasewsylveriver_med_323.jpg",
+    "proxy": "/api/artwork/0cd8f417bdbf7bbee459fb46a0822c26c6e2ef9166e7af5ed16598249af4de8e",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 14871
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 14871
+    }
+  },
+  {
+    "name": "Dark Star, Dead & Music",
+    "url": "https://confessor.kpfk.org/pix/darkstardeadmusic_med_373.jpg",
+    "proxy": "/api/artwork/61cc21810034e6693d30c937e147759fab6374bc5ef2d0e401dccfe24fd8195c",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 35832
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 35832
+    }
+  },
+  {
+    "name": "Democracy Now!",
+    "url": "https://confessor.kpfk.org/pix/dn_med_97.jpg",
+    "proxy": "/api/artwork/75f12a27eb182af26fb26a82a7013bee371d846cfb06701872589018c95190b4",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 14064
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 14064
+    }
+  },
+  {
+    "name": "Dialogos de Media Noche",
+    "url": "https://confessor.kpfk.org/pix/medianoche_med_253.jpg",
+    "proxy": "/api/artwork/e735fa8d7a5fa60067f924e74b7aceb8e73eca26e1940b5db5cd29ef3422b0ed",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 36539
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 36539
+    }
+  },
+  {
+    "name": "Digital Village",
+    "url": "https://confessor.kpfk.org/pix/digitalvillage_med_133.jpg",
+    "proxy": "/api/artwork/df06c6982dd9ea79ccb34bd7eee1494666d6894f5ab382c0b71d0fec6bd4caab",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2590
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2590
+    }
+  },
+  {
+    "name": "Earl Ofari Hutchinson Show",
+    "url": "https://confessor.kpfk.org/pix/earlofarihutchinsonshow_med_136.jpg",
+    "proxy": "/api/artwork/0948b57c205874f73f41887ca692202ac5637d57ce3da42ea4924d81c7ff84ae",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3671
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3671
+    }
+  },
+  {
+    "name": "Eco-Justice Radio",
+    "url": "https://confessor.kpfk.org/pix/ecojustiradio_med_268.jpg",
+    "proxy": "/api/artwork/a5a67602cff83508633f96b80dce4119dd7b83a71293ae0bdebfe7bd2a50c38a",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 24362
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 24362
+    }
+  },
+  {
+    "name": "Edna Tatum's Gospel Classics",
+    "url": "https://confessor.kpfk.org/pix/gospelclassics_med_106.jpg",
+    "proxy": "/api/artwork/e1863597dc7808d6f93a11f4178b13a7a6f696be74cf9cc1b4795dad6bb33a3b",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 15724
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 15724
+    }
+  },
+  {
+    "name": "Encuentros con Gregorio Luke",
+    "url": "https://confessor.kpfk.org/pix/luke_med_206.jpg",
+    "proxy": "/api/artwork/a7082c72f987b0ffdcf52ed3c38c09960342cdbe64ed1e0accbeb5296853a0b3",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 19819
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 19819
+    }
+  },
+  {
+    "name": "Expansion Zone",
+    "url": "https://confessor.kpfk.org/pix/ivmon_med_267.jpg",
+    "proxy": "/api/artwork/5238c39d5109f119288ac4e05c76e52c3c58e9d9537f29608620ad0d1a87adaf",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 17023
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 17023
+    }
+  },
+  {
+    "name": "Enfoque Latino",
+    "url": "https://confessor.kpfk.org/pix/enfoque_med_171.jpg",
+    "proxy": "/api/artwork/8606b918af0fd5bb4fa3e592b0ad90f120bb82ec9010ca9ad242a20e5258e130",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 22855
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 22855
+    }
+  },
+  {
+    "name": "Expansion Zone, The",
+    "url": "https://confessor.kpfk.org/pix/expansizone_med_364.jpg",
+    "proxy": "/api/artwork/7f40ef08c7a82db0ba6e49a3fd165506ac76f34f2b187599fb70cab44cf55183",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 16963
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 16963
+    }
+  },
+  {
+    "name": "Flashpoints",
+    "url": "https://confessor.kpfk.org/pix/flashpoints_med_307.jpg",
+    "proxy": "/api/artwork/817b20b066991e6308ce75a9080730ec5efbeb9ad03bb6161828c3b092a62d67",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2877
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2877
+    }
+  },
+  {
+    "name": "Feminist Magazine",
+    "url": "https://confessor.kpfk.org/pix/femmag_med_186.jpg",
+    "proxy": "/api/artwork/d4a42b46a0b121e20c7d7ff346a6875e84e139066ff304068264b44d888270d9",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 16166
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 16166
+    }
+  },
+  {
+    "name": "FolkScene",
+    "url": "https://confessor.kpfk.org/pix/folkscene_med_175.jpg",
+    "proxy": "/api/artwork/bea85003d9e68a421bc763dd9fad9d6e15d6388ad0267b299d679c9451e06459",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 26993
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 26993
+    }
+  },
+  {
+    "name": "Freedom Now",
+    "url": "https://confessor.kpfk.org/pix/freedomnow_med_183.jpg",
+    "proxy": "/api/artwork/8d32fb2899e3e79208e77fd3a60f431484127ab81c8547bfb2fd888d886d0496",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 25784
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 25784
+    }
+  },
+  {
+    "name": "Global Village - Fri",
+    "url": "https://confessor.kpfk.org/pix/gv_sergio_med_132.jpg",
+    "proxy": "/api/artwork/61ead0180cc168e302df562b27d211be7d53faa96e1d4e45d75893cc1311b221",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28549
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28549
+    }
+  },
+  {
+    "name": "Global Village - Mon",
+    "url": "https://confessor.kpfk.org/pix/gv_derek_med_104.jpg",
+    "proxy": "/api/artwork/cb199afac02590381c23ec3a1c3758c5d29e2ae0adec382c1d2f45f566a059d5",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28549
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28549
+    }
+  },
+  {
+    "name": "Global Village - Thurs",
+    "url": "https://confessor.kpfk.org/pix/gv_john_med_131.jpg",
+    "proxy": "/api/artwork/dd563209ac1c9a366b41b94b49e21a3683edd084c22169387fbaf9563ca8927f",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28549
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28549
+    }
+  },
+  {
+    "name": "Global Village - Tuesday",
+    "url": "https://confessor.kpfk.org/pix/gv_tue_med_129.jpg",
+    "proxy": "/api/artwork/82ce7b88463235752a2d7a1b6f94573debda059d0df368dadb604a2f75f4db0d",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28549
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28549
+    }
+  },
+  {
+    "name": "Global Village - Weds",
+    "url": "https://confessor.kpfk.org/pix/gv_yatrika_med_130.jpg",
+    "proxy": "/api/artwork/bb9c7480544230858b1e98bd549d2e0f6a606d84e0d65ec890509c854ac728a2",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28549
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28549
+    }
+  },
+  {
+    "name": "Health Care for US",
+    "url": "https://confessor.kpfk.org/pix/healcareus_med_359.jpg",
+    "proxy": "/api/artwork/b1dce758e955f0c3e742b824cf1d790358c2f7e444843a9c9442ad6245c5a7ba",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 4281
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 4281
+    }
+  },
+  {
+    "name": "IMRU - LGBT Issues",
+    "url": "https://confessor.kpfk.org/pix/imru_med_177.jpg",
+    "proxy": "/api/artwork/fa15961fdfaf61c9a53cd622585e0c1ac84e29e91b382f2cbbffb03c329a078e",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 30778
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 30778
+    }
+  },
+  {
+    "name": "Informativo Pacifica",
+    "url": "https://confessor.kpfk.org/pix/infopac_med_181.jpg",
+    "proxy": "/api/artwork/83379ad7bc6bb18391e06ba55d59f52ffd2e365acc0cd604ad1534842033f44d",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 20127
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 20127
+    }
+  },
+  {
+    "name": "Inner Vision",
+    "url": "https://confessor.kpfk.org/pix/innervision_med_140.jpg",
+    "proxy": "/api/artwork/b9fe6fd1c0985d8d04b91b21de24b41788a5a1432ba2c6a919e4505a7f704f57",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2822
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2822
+    }
+  },
+  {
+    "name": "Jazz Sessions",
+    "url": "https://confessor.kpfk.org/pix/jazzsessionslistenhere_med_113.jpg",
+    "proxy": "/api/artwork/5870075e38e3ae3149e323c5c234589d8497983178df11e27bc81c63553c46bc",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 4581
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 4581
+    }
+  },
+  {
+    "name": "Insurgencia Feminina",
+    "url": "https://confessor.kpfk.org/pix/radioinsurgencia_med_184.jpg",
+    "proxy": "/api/artwork/59c0996ea6701beba04a821c4e5bad0d651d1e5da2bb736b485a80b74285b8f0",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 40062
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 40062
+    }
+  },
+  {
+    "name": "LA Theater Works",
+    "url": "https://confessor.kpfk.org/pix/latw_med_227.jpg",
+    "proxy": "/api/artwork/d7a82ccc678ba02152ec84ede053c1d18d1ce69f9a90336d9090aa1e7bf0b9b9",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 9189
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 9189
+    }
+  },
+  {
+    "name": "LARB Radio Hour",
+    "url": "https://confessor.kpfk.org/pix/larb_med_229.jpg",
+    "proxy": "/api/artwork/ddbf5302be1beaaa8d3e639c62125db2643c7f9489677df700416184c04534a0",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 10293
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 10293
+    }
+  },
+  {
+    "name": "La Raza Radio",
+    "url": "https://confessor.kpfk.org/pix/morningmradiojaguar_med_320.jpg",
+    "proxy": "/api/artwork/92cecc00160567a7998ceaadba97a41d85dd033c794f2f894e480dda3bbada5b",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 26118
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 26118
+    }
+  },
+  {
+    "name": "Law and Disorder",
+    "url": "https://confessor.kpfk.org/pix/lawsnddisor_med_380.jpg",
+    "proxy": "/api/artwork/e42b4c2c868c0bfff69ee509cb1abcad4e1e41857618fbec6ca3d0045584ec41",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 32732
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 32732
+    }
+  },
+  {
+    "name": "Lawyers Guild, The",
+    "url": "https://confessor.kpfk.org/pix/lawyersguild_med_190.jpg",
+    "proxy": "/api/artwork/a68ad690184631ca1d6d55724258b38f0f074cbfc898a1fe6e3525f361201915",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 23895
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 23895
+    }
+  },
+  {
+    "name": "Letters and Politics",
+    "url": "https://confessor.kpfk.org/pix/lettersandpolitics_med_102.jpg",
+    "proxy": "/api/artwork/228fef61c2fa4d76f40602637364ae708ba687d7341dbba675054a287f5a31cf",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3654
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3654
+    }
+  },
+  {
+    "name": "Listen Here",
+    "url": "https://confessor.kpfk.org/pix/listenhere_med_315.jpg",
+    "proxy": "/api/artwork/bb45e4e64bdb1895d39b9b89b4650b0ca15e267446891bf1493329da439afbe6",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3436
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3436
+    }
+  },
+  {
+    "name": "Malcom X Centennial Programming",
+    "url": "https://confessor.kpfk.org/pix/blacprinmalcxat_med_378.jpg",
+    "proxy": "/api/artwork/ccf1b86a6e6f6a2ddc528aed756db40a03bf4d97e9481e5f8348ed163d4b02c6",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3434
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3434
+    }
+  },
+  {
+    "name": "Living In The USA",
+    "url": "https://confessor.kpfk.org/pix/johnwiener_med_166.jpg",
+    "proxy": "/api/artwork/77d7032c7cd61ddfcbe3c1b3f9d1474304dd07bd1594b664b6c443396bf72b10",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 15033
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 15033
+    }
+  },
+  {
+    "name": "Middle East In Focus",
+    "url": "https://confessor.kpfk.org/pix/meif_med_187.jpg",
+    "proxy": "/api/artwork/aea5756fa6f8ef8582879ac9167cb067e34c3050a8fc8b3747a68e19ad9b5b7d",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 45026
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 45026
+    }
+  },
+  {
+    "name": "Midnight Snack",
+    "url": "https://confessor.kpfk.org/pix/deepend_med_296.jpg",
+    "proxy": "/api/artwork/f4d63b2385e46e63a9daa7a9946b2f6436d352d7afd0d88ee93a04715323b313",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 22131
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 22131
+    }
+  },
+  {
+    "name": "Move The Crowd",
+    "url": "https://confessor.kpfk.org/pix/movethecrowd_med_293.jpg",
+    "proxy": "/api/artwork/ab6461a525bba902dc0350b879f4b2e5e5972f664e4afef53c407ef5d7c5cdc9",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2869
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2869
+    }
+  },
+  {
+    "name": "Nightscapes",
+    "url": "https://confessor.kpfk.org/pix/lstation_med_120.jpg",
+    "proxy": "/api/artwork/effbc76d90472f925d15c9df2cada90dcec386efd0c35937b2a388f97e9dc16d",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 19808
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 19808
+    }
+  },
+  {
+    "name": "On Contact",
+    "url": "https://confessor.kpfk.org/pix/onconta_med_274.jpg",
+    "proxy": "/api/artwork/40ca50cea452c930f17ed79a2bed4081bf6f5130a5443a932c042fe332c78791",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 12019
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 12019
+    }
+  },
+  {
+    "name": "Nuestra Voz",
+    "url": "https://confessor.kpfk.org/pix/nuestravoz_med_192.jpg",
+    "proxy": "/api/artwork/69dc9e54edecf4c31da3c6c272e956eac3dc3c334fd7bfec73c41f314b744369",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 22123
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 22123
+    }
+  },
+  {
+    "name": "Pacifica Evening News",
+    "url": "https://confessor.kpfk.org/pix/kpfknews_med_163.jpg",
+    "proxy": "/api/artwork/a250e43437603d0e278049bb83db01ca82c682613756ef920c9a1f84a1637f99",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 16413
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 16413
+    }
+  },
+  {
+    "name": "Pacifica Performance Showcase",
+    "url": "https://confessor.kpfk.org/pix/pperf_med_155.jpg",
+    "proxy": "/api/artwork/24b756bddf6a79fdd50102796a62e7ad5901ee5e42d57294a1c820145954780e",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 19808
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 19808
+    }
+  },
+  {
+    "name": "Phil & Ted's Sexy Boomer Show",
+    "url": "https://confessor.kpfk.org/pix/philandtedrsqsexyboomershow_med_316.jpg",
+    "proxy": "/api/artwork/f29fed2e07480455c7ab62733583ce1e47602ddda677b8dc17bb7423a9bd9fe4",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 24850
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 24850
+    }
+  },
+  {
+    "name": "Planting Medicine",
+    "url": "https://confessor.kpfk.org/pix/plantingmedecine_med_376.jpg",
+    "proxy": "/api/artwork/a1bbbc456181734559ec034c65b540f13bdd0a8f5e6bba1e5bf7ef1c9c8d0487",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 12381
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 12381
+    }
+  },
+  {
+    "name": "Poet's Cafe",
+    "url": "https://confessor.kpfk.org/pix/poetscafewhypoetry_250.jpg",
+    "proxy": "/api/artwork/1491c39b305dd4b79c5eecb495724d279e108507b16749fecd8e7d4bd2c81ed6",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2568
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2568
+    }
+  },
+  {
+    "name": "Pocho Hour Of Power",
+    "url": "https://confessor.kpfk.org/pix/pocho_med_168.jpg",
+    "proxy": "/api/artwork/27945fd07d825c418691ffb710ab610a85d3a4c593765fe8d1b2237628f699f3",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 36243
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 36243
+    }
+  },
+  {
+    "name": "Politics Or Pedagogy?",
+    "url": "https://confessor.kpfk.org/pix/politicorpedagoga_med_272.jpg",
+    "proxy": "/api/artwork/05e00ad2ba69e6ffb537e654d70e01cb3ef14a024b7b3c973ea541a7997b191c",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 19681
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 19681
+    }
+  },
+  {
+    "name": "Profiles w/ Maggie LePique",
+    "url": "https://confessor.kpfk.org/pix/profileswmaggielepique_med_271.jpg",
+    "proxy": "/api/artwork/7c34f290c2588b533d26534c8383218efd55d37185cab8809ff6728f7769b6bb",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3826
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3826
+    }
+  },
+  {
+    "name": "QR Code",
+    "url": "https://confessor.kpfk.org/pix/qrcode_med_379.jpg",
+    "proxy": "/api/artwork/729fc9de0f9cc0c290a7f1439006ae5d6198a17080da0d33ebd19473819a94a8",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 30344
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 30344
+    }
+  },
+  {
+    "name": "Que Pasa En Los Angeles?",
+    "url": "https://confessor.kpfk.org/pix/iquestpasaenlosangele_med_355.jpg",
+    "proxy": "/api/artwork/b9db59d06740ab232d242b0abd82c29c5358f86305df2f8a9e5518458d6ad449",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 21492
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 21492
+    }
+  },
+  {
+    "name": "Radio Bilingue",
+    "url": "https://confessor.kpfk.org/pix/radiobilingu_med_281.jpg",
+    "proxy": "/api/artwork/891653de5f7863f896d067d54257e5c2e198afbdbe82ff63bece4db548ef38ef",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 21201
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 21201
+    }
+  },
+  {
+    "name": "Ralph Nader Radio Hour",
+    "url": "https://confessor.kpfk.org/pix/nader_med_207.jpg",
+    "proxy": "/api/artwork/5af998bc4a569dfe1a8ba53b93efb310a9e81304a3461ecc08f116b9dd07f617",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 27250
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 27250
+    }
+  },
+  {
+    "name": "Rethinking Heroes with Cary Harrison: Life After the Military",
+    "url": "https://confessor.kpfk.org/pix/rethinkheroeslifeaftermilitar_med_330.jpg",
+    "proxy": "/api/artwork/2cf6b0ee9ba8d9de7a2dba45e21272dec020390a570729c4eeda16ccd78d1b2e",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3740
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 3740
+    }
+  },
+  {
+    "name": "Reggae Central",
+    "url": "https://confessor.kpfk.org/pix/reggaecent_med_145.jpg",
+    "proxy": "/api/artwork/65f52d77a4bd9d3b402e4e24f2c606d63e88b426e5e40912e396e6248fc1dee4",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 47778
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 47778
+    }
+  },
+  {
+    "name": "Revolucion Arcoiris",
+    "url": "https://confessor.kpfk.org/pix/ladiverylainclu_med_352.jpg",
+    "proxy": "/api/artwork/97a3c99a932f1f365b6b0fc7b05f6e6ea33bbcabaa73aa9eeace2b5abf9d5430",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 42624
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 42624
+    }
+  },
+  {
+    "name": "Rhapsody In Black",
+    "url": "https://confessor.kpfk.org/pix/rhapsody_med_189.jpg",
+    "proxy": "/api/artwork/6cea4fc72659a057fd8b70870e043056bd8d8ba13607c79092752461731f5fae",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 23026
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 23026
+    }
+  },
+  {
+    "name": "Rising Up",
+    "url": "https://confessor.kpfk.org/pix/risingup_med_233.jpg",
+    "proxy": "/api/artwork/a50ec5d38437bb33080c5b90198cae29755c256271924103883db44863ee027b",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 18437
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 18437
+    }
+  },
+  {
+    "name": "Roots Music and Beyond",
+    "url": "https://confessor.kpfk.org/pix/aliveandpicking_med_212.jpg",
+    "proxy": "/api/artwork/360367ae1c719c96aac6d98ba94e332ec48638f211abc9c13bc66616d4b60bd2",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 33435
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 33435
+    }
+  },
+  {
+    "name": "Scholars Circle",
+    "url": "https://confessor.kpfk.org/pix/marmoudian_med_167.jpg",
+    "proxy": "/api/artwork/25c1442999bd1318a78f7d3337ab332e5f4e6435bf264150a09f846ed0488313",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 32258
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 32258
+    }
+  },
+  {
+    "name": "Sojourner Truth Radio",
+    "url": "https://confessor.kpfk.org/pix/sojourner_med_99.jpg",
+    "proxy": "/api/artwork/006ddd851fc94429e536249dca18ccc2cd26247eae34c93674f2f419c50c5fa9",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 29156
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 29156
+    }
+  },
+  {
+    "name": "Soul Rebel Radio",
+    "url": "https://confessor.kpfk.org/pix/soulrebel_med_188.jpg",
+    "proxy": "/api/artwork/b767e1f0efcb84f951c8534e28eb18dcf8ade07db1cd3c2bcae44aa09da82b23",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 27764
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 27764
+    }
+  },
+  {
+    "name": "Soundwaves",
+    "url": "https://confessor.kpfk.org/pix/soundwaves_med_114.jpg",
+    "proxy": "/api/artwork/7e644a4ca78b747210d22e4507c78bb93a50b18ee8fcb55f942a8055910c9c3d",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 24679
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 24679
+    }
+  },
+  {
+    "name": "Stairway To Heaven",
+    "url": "https://confessor.kpfk.org/pix/musicmix_med_117.jpg",
+    "proxy": "/api/artwork/f8364c018b8f60e06c67f71abda8527acec5d2ce7b2813ae6f83717b2c3f05d8",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 35647
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 35647
+    }
+  },
+  {
+    "name": "Suplemento Comunitario",
+    "url": "https://confessor.kpfk.org/pix/suplemento_med_203.jpg",
+    "proxy": "/api/artwork/e079970704f74cc50094cbcab8b7af6c84fabf575a1a88c874a256d25ce68d0b",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 29333
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 29333
+    }
+  },
+  {
+    "name": "The Car Show",
+    "url": "https://confessor.kpfk.org/pix/carshow_med_110.jpg",
+    "proxy": "/api/artwork/81c055a0e6fcb487ddcfd6583e90bb9ca42a488eca08be353b613ec72291dad3",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 15254
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 15254
+    }
+  },
+  {
+    "name": "The Signal",
+    "url": "https://confessor.kpfk.org/pix/signal_med_385.jpg",
+    "proxy": "/api/artwork/0a9a7e17036ae3a71141428ad5b5e4a60113a4244002b946488d430e86a0d4c9",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 29842
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 29842
+    }
+  },
+  {
+    "name": "The Visionary Activist Show",
+    "url": "https://confessor.kpfk.org/pix/visionalryactivist_med_371.jpg",
+    "proxy": "/api/artwork/0483b5fb81d4720f5045f1a87de076aca83f83f1f61e2b24a7362b558e2d5f37",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28963
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28963
+    }
+  },
+  {
+    "name": "Think Outside The Cage",
+    "url": "https://confessor.kpfk.org/pix/prisonrights_med_200.jpg",
+    "proxy": "/api/artwork/214e408782eadbe818b3c250b682ff676c18f4d61a3d157dfb7f8a3de8358874",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28614
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 28614
+    }
+  },
+  {
+    "name": "This Way Out",
+    "url": "https://confessor.kpfk.org/pix/thiswayout_med_383.jpg",
+    "proxy": "/api/artwork/574cc6f549101865deb67f0e5ad5eb354d7e7ff76b1e2337abc5577a9141c7b9",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 16507
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 16507
+    }
+  },
+  {
+    "name": "Thom Hartmann Program",
+    "url": "https://confessor.kpfk.org/pix/hartmann_med_222.jpg",
+    "proxy": "/api/artwork/189933204844f9d77117031f34ba7156799a4a8f42906e8379c7e418f049907d",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 26753
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 26753
+    }
+  },
+  {
+    "name": "Travel Tips For Aztlan",
+    "url": "https://confessor.kpfk.org/pix/traveltips_med_127.jpg",
+    "proxy": "/api/artwork/c2ae20fbe73d5ff8deea87caf90988a05d23bcaadaa99024ae2d523507bf88b9",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 20673
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 20673
+    }
+  },
+  {
+    "name": "Voices from the Frontlines",
+    "url": "https://confessor.kpfk.org/pix/voices_from_the_frontline_165.jpg",
+    "proxy": "/api/artwork/6436573904f3475eea25171ab904c02146450e389e155328d26aeb3360fcf458",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2882
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 2882
+    }
+  },
+  {
+    "name": "Voces de Libertad",
+    "url": "https://confessor.kpfk.org/pix/vocesdelibertad_med_185.jpg",
+    "proxy": "/api/artwork/ae5565306da711e314b9261ff7834702de00b05457e90280dfeb198bdfe45731",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 16364
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 16364
+    }
+  },
+  {
+    "name": "Way Out West",
+    "url": "https://confessor.kpfk.org/pix/wayoutwest_med_384.jpg",
+    "proxy": "/api/artwork/80423d4617e261f3086794a8aef2f7fabf0cb7ea3361e7055e7a225b581176f4",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 34961
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 34961
+    }
+  },
+  {
+    "name": "Working Voices",
+    "url": "https://confessor.kpfk.org/pix/workingvoices_med_332.jpg",
+    "proxy": "/api/artwork/c70304f190b75650eb78850aa162950fbd6d124f6d83f3c1c457255ee6ff30fb",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 19147
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 19147
+    }
+  },
+  {
+    "name": "World Massive",
+    "url": "https://confessor.kpfk.org/pix/potira_med_115.jpg",
+    "proxy": "/api/artwork/95d4e288e5be055a9a9b1b6d421b0cfb95bf71ef16a3fac4ed598ee35c3ee204",
+    "upstream": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 21219
+    },
+    "app": {
+      "status": 200,
+      "type": "image/jpeg",
+      "bytes": 21219
+    }
+  }
+]

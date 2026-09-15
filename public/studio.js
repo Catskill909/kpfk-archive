@@ -14,11 +14,11 @@
 
   /* ---------------- theme ----------------
      Identical behaviour to the listener app's toggle, driven by the same
-     window.WBAITheme from theme-boot.js. The icon itself is pure CSS (--sun),
+     window.StationTheme from theme-boot.js. The icon itself is pure CSS (--sun),
      so it is already right before this runs; all this owns is the choice. */
   (function () {
     var btn = document.getElementById('themeBtn');
-    var T = window.WBAITheme;
+    var T = window.StationTheme;
     if (!btn || !T) return;   // boot script blocked — leave the system theme alone
 
     function label() {
@@ -457,7 +457,7 @@
           b.addEventListener('click', function () {
             // These are cheap and idempotent, but "re-check every feed" reaches
             // out to WBAI 122 times — worth one deliberate keystroke.
-            if (!window.confirm(a.label + '?\n\nThis refreshes our cache from WBAI.')) return;
+            if (!window.confirm(a.label + '?\n\nThis refreshes our cache from Pacifica.')) return;
             var result = document.getElementById('actionResult');
             b.disabled = true;
             var was = b.textContent;

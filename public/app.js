@@ -1,4 +1,7 @@
 (function(){
+  var STATION = window.StationConfig;
+  if(!STATION) throw new Error('Station configuration unavailable; reload to retry.');
+
   var CATS = [
     {key:'news', label:'News', color:'#e14a2e'},
     {key:'public-affairs', label:'Public Affairs', color:'#e0a63a'},
@@ -10,10 +13,10 @@
   ];
   var CAT_BY_KEY = {}; CATS.forEach(function(c){ CAT_BY_KEY[c.key]=c; });
 
-  var MP3_BASE = 'https://archive2.wbai.org/mp3/';
-  var RSS_BASE = 'https://archive2.wbai.org/getrss.php?id=';
-  var LIVE_URL = 'https://streaming.wbai.org/wbai_verizon';
-  var ARCHIVE_PAGE = 'https://wbai.org/archive/';
+  var MP3_BASE = ''; // Catalog entries already carry absolute media URLs.
+  var RSS_BASE = '';
+  var LIVE_URL = STATION.liveStream;
+  var ARCHIVE_PAGE = STATION.links.archive;
 
   // Dev switch for the live-failure alert, so it can be seen without waiting for
   // the station to actually fall over. `?livefail=1` aims the player at a URL
@@ -47,7 +50,7 @@
   // list keeps it — only an unset/garbage value falls back to 'grid'.
   var savedView = 'grid';
   try {
-    var storedView = localStorage.getItem('wbai-view');
+    var storedView = localStorage.getItem((STATION.storagePrefix + 'view'));
     if(storedView==='list' || storedView==='grid') savedView = storedView;
   } catch(e){}
   // sortKey 'archive' = the order archive2 publishes them in (see the sort
@@ -119,8 +122,9 @@
   // gets a provenance note instead of a countdown that would either read as a
   // fabricated "Last day" warning or a fabricated "plenty of time left".
   function retentionBadge(r){
+    if(r.source === 'json') return ''; // Pacifica controls catalog membership; no local expiry countdown/filter.
     if(r.source==='feed-only'){
-      return '<span class="retention off" title="Still has a live feed, but WBAI’s current listing no longer includes this show.">Off current listing</span>';
+      return ('<span class="retention off" title="Still has a live feed, but ' + STATION.name + '’s current listing no longer includes this show.">Off current listing</span>');
     }
     return '<span class="retention '+retentionClass(r.daysLeft)+'">'+retentionLabel(r.daysLeft)+'</span>';
   }
@@ -325,7 +329,7 @@
     var btn = e.target.closest('.view-btn');
     if(!btn || btn.dataset.view===state.view) return;
     state.view = btn.dataset.view;
-    try { localStorage.setItem('wbai-view', state.view); } catch(err){}
+    try { localStorage.setItem((STATION.storagePrefix + 'view'), state.view); } catch(err){}
     applyView();
     render();
     resetListScroll();
@@ -526,7 +530,7 @@
     return list.map(function(r){
       var c = CAT_BY_KEY[r.cat];
       var d = new Date(r.dt*1000);
-      var compactDate = MONTHS[d.getMonth()] + ' ' + d.getDate();
+      var compactDate = stationDate(d);
       var isLoading = (loadingMp3===r.mp3);
       var isPlaying = (nowPlaying.mp3===r.mp3 && !audio.paused && !audio.ended && !isLoading);
       var subLine = c.label + (r.host ? ' · with '+r.host : '');
@@ -593,7 +597,7 @@
   // single most valuable thing the player can remember. Positions are keyed by
   // mp3 URL: the archive hands out no stable episode id, and the URL is both
   // unique per episode and gone from the listing the moment it rotates out.
-  var RESUME_KEY = 'wbai-resume';
+  var RESUME_KEY = (STATION.storagePrefix + 'resume');
   var RESUME_MIN = 30;    // the first half minute isn't yet "a place" worth keeping
   var RESUME_TAIL = 60;   // inside the last minute counts as finished, not paused
   var RESUME_MAX = 120;   // entries retained; least recently touched dropped first
@@ -939,7 +943,7 @@
     // Points at WBAI's archive page, not the mp3 itself. The old link handed out
     // the file URL directly — a download by another name, and mislabelled, since
     // it opened archive2.wbai.org's raw audio rather than a wbai.org page.
-    setStatus('Playback blocked here — <a href="'+ARCHIVE_PAGE+'" target="_blank" rel="noopener noreferrer">open on wbai.org →</a>');
+    setStatus('Playback blocked here — <a href="'+ARCHIVE_PAGE+('" target="_blank" rel="noopener noreferrer">open on ' + 'the station website' + ' →</a>'));
     updatePlayButtons();
   });
 
@@ -1245,7 +1249,7 @@
     if(barMode === 'live'){
       var stateWord = liveStateWord();
       setStatus(stateWord);
-      var title = (liveCurrent && liveCurrent.name) || 'WBAI 99.5 FM';
+      var title = (liveCurrent && liveCurrent.name) || (STATION.label);
       var infoBtn = document.getElementById('playerInfoBtn');
       if(infoBtn) infoBtn.setAttribute('aria-label', 'Open Live Player for '+title+' — live stream '+stateWord.toLowerCase());
     }
@@ -1265,7 +1269,7 @@
     onAirBtn.classList.toggle('playing', playing);
     onAirBtn.setAttribute('aria-label', playing
       ? 'Live stream playing — open the player'
-      : 'Open the live player — WBAI is on air now');
+      : ('Open the live player — ' + STATION.name + ' is on air now'));
     // Resting label is a call-to-action ("Listen Live"); once the stream is
     // playing it reads "On Air", matching the animated equaliser.
     var onAirLabel = onAirBtn.querySelector('.on-air-label');
@@ -1421,7 +1425,7 @@
     var info = (altid && showInfo && showInfo[altid]) || {};
     var prog = (typeof programFor === 'function' && programFor(liveCurrent.name)) || {};
     return {
-      title: liveCurrent.name || 'WBAI 99.5 FM',
+      title: liveCurrent.name || (STATION.label),
       host: liveCurrent.dj || info.dj || prog.host || '',
       desc: info.desc || prog.desc || info.shortdesc || '',
       site: safeUrl(info.url || prog.url),
@@ -1617,7 +1621,7 @@
 
     if(reason === 'blocked'){
       showLiveAlert('blocked', 'Your browser blocked playback',
-        'Something on this device stopped the stream from starting — often an autoplay rule, an extension, or a content blocker. Tap Try again, or open the stream on wbai.org.');
+        ('Something on this device stopped the stream from starting — often an autoplay rule, an extension, or a content blocker. Tap Try again, or open the stream on ' + 'the station website' + '.'));
       return;
     }
     if(navigator.onLine === false){
@@ -1627,7 +1631,7 @@
     }
     showLiveAlert('checking',
       wasPlaying ? 'The live stream dropped' : 'Can’t reach the live stream',
-      'Checking WBAI’s streaming server…');
+      ('Checking ' + STATION.name + '’s streaming server…'));
     probeLiveServer();
   }
 
@@ -1650,13 +1654,13 @@
     if(liveAlertKind !== 'checking') return;      // dismissed or retried meanwhile
     if(s && s.ok){
       showLiveAlert('local', 'The stream won’t play here',
-        'WBAI’s streaming server is up and answering, so the problem is between it and this device — a VPN, firewall, or content blocker can cut off audio streams. Try again, or open the stream on wbai.org.');
+        (STATION.name + '’s streaming server is up and answering, so the problem is between it and this device — a VPN, firewall, or content blocker can cut off audio streams. Try again, or open the stream on ' + 'the station website' + '.'));
       return;
     }
     var detail = (s && s.status) ? ' (it replied ' + s.status + ')'
                : (s && s.reason === 'timeout') ? ' (it timed out)' : '';
-    showLiveAlert('down', 'WBAI’s live stream is down',
-      'The station’s streaming server isn’t serving audio right now' + detail + '. That’s on WBAI’s end, not yours — try again in a few minutes. Archive shows still play normally.');
+    showLiveAlert('down', (STATION.name + '’s live stream is down'),
+      'The station’s streaming server isn’t serving audio right now' + detail + ('. That’s on ' + STATION.name + '’s end, not yours — try again in a few minutes. Archive shows still play normally.'));
   }
   function probeLiveServer(){
     if(LIVE_FAIL === 'down'){ renderProbeResult({ ok:false, reason:'unreachable' }); return; }
@@ -1666,7 +1670,7 @@
       .catch(function(){
         if(liveAlertKind !== 'checking') return;
         showLiveAlert('unknown', 'Can’t reach the live stream',
-          'The stream didn’t start and we couldn’t check why. Check your connection and try again, or open the stream on wbai.org.');
+          ('The stream didn’t start and we couldn’t check why. Check your connection and try again, or open the stream on ' + 'the station website' + '.'));
       });
   }
 
@@ -1947,7 +1951,7 @@
   // LIVE badge in place of the scrubber and ±15s.
   function paintLiveBar(){
     if(!liveCurrent) return;
-    playerTitle.textContent = liveCurrent.name || 'WBAI 99.5 FM';
+    playerTitle.textContent = liveCurrent.name || (STATION.label);
     // when a track is on air, showcase it in the sub-line (the LIVE badge already
     // carries the live state); otherwise fall back to the host + station
     var song = (liveCurrent.song || '').trim();
@@ -1955,7 +1959,7 @@
     if(song || artist){
       playerSub.textContent = '♪ ' + (song && artist ? (song + ' · ' + artist) : (song || artist));
     } else {
-      playerSub.textContent = (liveCurrent.dj ? 'with ' + liveCurrent.dj + ' · ' : '') + 'WBAI 99.5 FM · Live';
+      playerSub.textContent = (liveCurrent.dj ? 'with ' + liveCurrent.dj + ' · ' : '') + (STATION.label + ' · Live');
     }
     setPlayerPhoto(liveCurrent.photo || '');
     syncLiveIdentity();
@@ -1972,7 +1976,7 @@
 
   // ---- Volume. New to the modal; the strip had none. Setting .volume is a no-op
   // on iOS (the OS owns it), so the slider is dropped there rather than shown dead.
-  var LIVE_VOL_KEY = 'wbai:livevol';
+  var LIVE_VOL_KEY = (STATION.storagePrefix + 'livevol');
   var canVolume = !(/iP(hone|od|ad)/.test(navigator.platform) ||
                     (/Mac/.test(navigator.platform) && navigator.maxTouchPoints > 1));
   function paintVol(){ lpVolume.style.setProperty('--pct', (parseFloat(lpVolume.value) || 0) * 100); }
@@ -1997,7 +2001,7 @@
   function paintLivePlayer(){
     if(!liveCurrent) return;
     setLivePhoto(liveCurrent.photo || null);
-    lpTitle.textContent = liveCurrent.name || 'WBAI 99.5 FM';
+    lpTitle.textContent = liveCurrent.name || (STATION.label);
     if(liveCurrent.dj){ lpHost.textContent = 'with ' + liveCurrent.dj; lpHost.hidden = false; }
     else { lpHost.hidden = true; }
     if(liveCurrent.start && liveCurrent.end){
@@ -2343,8 +2347,8 @@
     mediaMode = 'archive';
     navigator.mediaSession.metadata = new MediaMetadata({
       title: nowPlaying.title,
-      artist: nowPlaying.sub || 'WBAI 99.5 FM',
-      album: 'WBAI Archive',
+      artist: nowPlaying.sub || (STATION.label),
+      album: (STATION.name + ' Archive'),
       artwork: artworkFor(nowPlaying.photo)
     });
     setHandler('play', function(){ audio.play().catch(function(){}); });
@@ -2386,13 +2390,13 @@
 
   // Called again every time the now-playing poll reports a new show, so the lock
   // screen re-titles itself mid-listen as the schedule rolls over.
-  var liveMeta = { title:'WBAI 99.5 FM', artist:'Free Speech Radio · Live', photo:'' };
+  var liveMeta = { title:(STATION.label), artist:'Free Speech Radio · Live', photo:'' };
   function refreshLiveMetadata(){
     if(!hasMediaSession || mediaMode !== 'live') return;
     navigator.mediaSession.metadata = new MediaMetadata({
       title: liveMeta.title,
       artist: liveMeta.artist,
-      album: 'WBAI 99.5 FM · Live',
+      album: (STATION.label + ' · Live'),
       artwork: artworkFor(liveMeta.photo)
     });
   }
@@ -2400,10 +2404,8 @@
   // Real on-air/up-next metadata, from confessor2.wbai.org's now-playing endpoint.
   // That endpoint doesn't send CORS headers, so a live browser fetch will usually
   // be blocked; this snapshot (captured 2026-07-23) is the fallback either way.
-  var NOWPLAYING_SNAPSHOT = {
-    current:{name:'Joy of Resistance', dj:'Fran Luck and Maretta Short', start:'11:00 AM', end:'12:00 PM', photo:'/pix/joyrapeforum_med_191.jpg'},
-    next:{name:'Frontline Voices', start:'12:00 PM', end:'1:00 PM'}
-  };
+  var NOWPLAYING_SNAPSHOT = { current:{name:STATION.label, dj:'', start:'', end:'', photo:STATION.assets.icon}, next:{name:'',start:''} };
+
   function renderNowPlaying(cur, nxt, isLive){
     liveCurrent = cur;
     liveNext = nxt;
@@ -2420,7 +2422,7 @@
 
     // keep the OS lock screen in step with the schedule
     liveMeta.title = cur.name;
-    liveMeta.artist = (cur.dj ? cur.dj + ' · ' : '') + 'WBAI 99.5 FM · On Air';
+    liveMeta.artist = (cur.dj ? cur.dj + ' · ' : '') + (STATION.label + ' · On Air');
     liveMeta.photo = cur.photo || '';
     refreshLiveMetadata();
   }
@@ -2434,10 +2436,10 @@
       .then(function(r){ return r.json(); })
       .then(function(data){
         if(data && data.current && data.current.name){
-          renderNowPlaying(data.current, data.next || {name:'',start:''}, true);
-        }
+          renderNowPlaying(data.current, data.next || {name:'',start:''}, !data.stale);
+        } else { applyNowPlayingSnapshot(); }
       })
-      .catch(function(){ /* keep whatever is currently shown */ });
+      .catch(function(){ applyNowPlayingSnapshot(); });
   }
 
   applyNowPlayingSnapshot();
@@ -2465,14 +2467,11 @@
     var days = Math.round(hrs/24);
     if(days < 7)       return days === 1 ? 'yesterday' : days + 'd ago';
     var d = new Date(ts*1000);
-    return MONTHS[d.getMonth()] + ' ' + d.getDate();
+    return stationDate(d);
   }
 
   function timeOfDay(d){
-    var h = d.getHours(), m = d.getMinutes();
-    var ampm = h < 12 ? 'AM' : 'PM';
-    h = h % 12; if(h === 0) h = 12;
-    return h + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+    return new Intl.DateTimeFormat('en-US', {timeZone:STATION.timezone, hour:'numeric', minute:'2-digit'}).format(d);
   }
 
   // When the SERVER last read upstream. Set from /api/archive on load and from
@@ -2501,7 +2500,7 @@
     }
 
     var d = new Date(latestDt * 1000);
-    var stamp = MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + timeOfDay(d);
+    var stamp = stationDate(d) + ', ' + timeOfDay(d);
 
     // Nothing to swap to if the server never told us when it last looked (the
     // shipped fallback snapshot carries no timestamp), so don't offer a toggle
@@ -2554,11 +2553,12 @@
   // /api/archive/head. Optional — the shipped fallback snapshot has no such
   // thing, and a missing value must leave the last known one alone rather than
   // zeroing it.
-  function ingest(list, updated){
+  function ingest(list, updated, revision, directory){
+    if(directory) { showInfo = directory; detailAsked = {}; }
     rows = list;
     if(updated) archiveUpdated = updated;
     latestDt = rows.reduce(function(max,r){ return Math.max(max, r.dt); }, 0);
-    archiveSig = rows.length + ':' + latestDt;
+    archiveSig = revision || (rows.length + ':' + latestDt);
     render();
     setClock();
     schedInvalidate();   // the schedule is derived from these rows; keep it in step
@@ -2599,13 +2599,9 @@
     setCount('Loading shows…', false);
     fetch('/api/archive', {cache:'no-store'})
       .then(function(r){ if(!r.ok) throw new Error('archive '+r.status); return r.json(); })
-      .then(function(data){ ingest(data.shows || [], data.updated); })
+      .then(function(data){ ingest(data.shows || [], data.updated, data.revision, data.directory); })
       .catch(function(){
-        // fall back to the shipped snapshot if the live scrape is unavailable
-        fetch('/data/shows-fallback.json', {cache:'no-store'})
-          .then(function(r){ return r.json(); })
-          .then(function(data){ ingest(data.shows || [], data.updated); })
-          .catch(function(){ loadingEl.hidden = true; setCount('Could not load the archive.', false); emptyEl.hidden = false; });
+        loadingEl.hidden = true; setCount('Could not load the archive. Reload to retry.', false); emptyEl.hidden = false;
       });
   }
 
@@ -2651,14 +2647,14 @@
     fetch('/api/archive/head', {cache:'no-store'})
       .then(function(r){ if(!r.ok) throw new Error('head '+r.status); return r.json(); })
       .then(function(d){
-        if(!d || !d.count) return;
+        if(!d || typeof d.count !== 'number') return;
         // Record how fresh the SERVER's copy is even when nothing changed — that
         // is the poll's other, quieter answer, and it costs nothing to keep.
         // NB d.latest is UPSTREAM's newest show, not ours: it must never feed
         // the "Latest show" label, which has to describe the list actually on
         // screen. The pill is what offers the newer one.
         if(d.updated){ archiveUpdated = d.updated; setClock(); }
-        var sig = d.count + ':' + d.latest;
+        var sig = d.revision || (d.count + ':' + d.latest);
         if(sig !== archiveSig) showRefreshPill(sig, d.count);
       })
       .catch(function(){ /* transient; the next poll tries again */ });
@@ -2677,7 +2673,7 @@
     fetch('/api/archive', {cache:'no-store'})
       .then(function(r){ if(!r.ok) throw new Error('archive '+r.status); return r.json(); })
       .then(function(data){
-        ingest(data.shows || [], data.updated);
+        ingest(data.shows || [], data.updated, data.revision, data.directory);
         while(shown < keepShown && shown < filtered.length) showMore();
         window.scrollTo(0, Math.min(keepScroll, Math.max(0, document.body.scrollHeight - window.innerHeight)));
         hideRefreshPill();
@@ -2766,9 +2762,10 @@
   // the site. Same scrim/dialog/focus-trap/inert lifecycle as the live player.
   // The iframe src is only (re)set when it actually changes, so switching
   // between the two doesn't refetch on every open.
-  var DONATE_URL = 'https://docs.pacifica.org/wbai/donate/';
-  var PRIVACY_URL = 'https://docs.pacifica.org/wbai/wbai-archive-privacy.php';
+  var DONATE_URL = STATION.links.donate || '';
+  var PRIVACY_URL = STATION.links.privacy || '';
   var donateBtn = document.getElementById('donateBtn');
+  if(donateBtn && !STATION.links.donate) donateBtn.hidden = true;
   var donateModal = document.getElementById('donateModal');
   var donateScrim = document.getElementById('donateScrim');
   var donateClose = document.getElementById('donateClose');
@@ -2790,8 +2787,8 @@
     donateClose.focus();
     document.addEventListener('keydown', onDonateKey);
   }
-  function openDonate(){ openFrameModal(DONATE_URL, 'Donate to WBAI', 'Close donate window'); }
-  function openPrivacy(){ openFrameModal(PRIVACY_URL, 'Privacy Policy', 'Close privacy policy window'); }
+  function openDonate(){ if(!DONATE_URL) return; openFrameModal(DONATE_URL, ('Donate to ' + STATION.name), 'Close donate window'); }
+  function openPrivacy(){ if(!PRIVACY_URL) return; openFrameModal(PRIVACY_URL, 'Privacy Policy', 'Close privacy policy window'); }
   function closeDonate(){
     if(!donateOpen()) return;
     donateScrim.classList.remove('show');
@@ -3113,7 +3110,81 @@
   // off that, which is correct at every hour. Falls back to the old heuristic
   // if `dateText` ever stops parsing, so a format change degrades to the
   // previous behaviour instead of to no schedule at all.
+
+  function stationDate(d){
+    return new Intl.DateTimeFormat('en-US', {timeZone:STATION.timezone, month:'short', day:'numeric'}).format(d);
+  }
+  var publishedWeek = null, publishedWeeks = null, publishedLoading = false, publishedRequest = 0;
+  var publishedSelect = document.getElementById('scheduleWeek');
+  function stationDay(d){
+    return new Intl.DateTimeFormat('en-CA', {timeZone:STATION.timezone, year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
+  }
+  function paintPublishedTabs(){
+    schedPaintedToday = schedToday();
+    var today = stationDay(new Date());
+    schedTabs.innerHTML = publishedWeek ? publishedWeek.days.map(function(d){
+      var selected = d.date === schedDay;
+      var label = d.date === today ? 'Today' : new Intl.DateTimeFormat('en-US', {timeZone:STATION.timezone,weekday:'short',day:'numeric'}).format(d.startTime*1000);
+      return '<button class="sched-tab'+(selected?' selected':'')+'" role="tab" type="button" data-day="'+esc(d.date)+'" aria-selected="'+selected+'" tabindex="'+(selected?'0':'-1')+'">'+esc(label)+'</button>';
+    }).join('') : '';
+  }
+  async function loadPublishedSchedule(weekStart){
+    var request = ++publishedRequest;
+    publishedLoading = true;
+    schedBody.innerHTML = '<p class="sched-empty" role="status">Loading published schedule…</p>';
+    try {
+      if(!publishedWeeks){
+        var indexResponse = await fetch('/api/schedule', {cache:'no-store'});
+        if(!indexResponse.ok) throw new Error('Schedule unavailable');
+        var index = await indexResponse.json();
+        if(request !== publishedRequest) return;
+        publishedWeeks = index.weeks;
+        publishedSelect.innerHTML = publishedWeeks.map(function(w){return '<option value="'+w.weekStart+'">Week of '+esc(w.label || stationDate(new Date(w.weekStart*1000)))+'</option>';}).join('');
+      }
+      if(!publishedWeeks.length){publishedWeek=null; schedTabs.innerHTML=''; schedBody.innerHTML='<p class="sched-empty">No weeks are currently published.</p>'; return;}
+      if(!weekStart){
+        var now = Date.now()/1000;
+        var current = publishedWeeks.filter(function(w){return w.weekStart <= now;});
+        weekStart = (current[current.length-1] || publishedWeeks[0]).weekStart;
+      }
+      var response = await fetch('/api/schedule?weekStart='+encodeURIComponent(weekStart), {cache:'no-store'});
+      if(!response.ok) throw new Error('Schedule unavailable');
+      var week = await response.json();
+      if(request !== publishedRequest) return;
+      publishedWeek = week;
+      publishedSelect.value = String(weekStart);
+      var today = stationDay(new Date());
+      schedDay = week.days.some(function(d){return d.date === today;}) ? today : (week.days[0] || {}).date;
+      publishedLoading = false;
+      paintPublishedSchedule();
+    } catch(error){
+      if(request !== publishedRequest) return;
+      publishedWeek = null; publishedWeeks = null; schedTabs.innerHTML='';
+      schedBody.innerHTML='<p class="sched-empty" role="status">Published schedule unavailable. <button type="button" id="scheduleRetry">Retry</button></p>';
+      document.getElementById('scheduleRetry').onclick=function(){loadPublishedSchedule(weekStart);};
+    } finally { if(request === publishedRequest) publishedLoading=false; }
+  }
+  function paintPublishedSchedule(){
+    if(publishedLoading) return;
+    if(!publishedWeek){loadPublishedSchedule(); return;}
+    if(!publishedWeek.days.some(function(d){return d.date===schedDay;})) schedDay=(publishedWeek.days[0] || {}).date;
+    paintPublishedTabs();
+    var day = publishedWeek.days.find(function(d){return d.date===schedDay;});
+    var status = publishedWeek.stale ? '<p role="status">Saved schedule · Pacifica could not be refreshed.</p>' : '';
+    schedBody.innerHTML = status + (day && day.slots.length ? day.slots.map(function(slot){
+      var recording = rows.find(function(r){return r.sho === slot.showKey;});
+      var info = showInfo[slot.showKey] || {};
+      var description = slot.shortDescription || info.desc || info.shortdesc || '';
+      var body = '<span class="sched-show-title">'+esc(slot.name)+'</span><span class="sched-show-meta">'+esc(slot.host)+'</span>';
+      var card = recording ? '<button class="sched-show" type="button" data-id="'+esc(recording.id)+'">'+body+'</button>' : '<details class="sched-program"><summary>'+body+'</summary><p>'+esc(description)+'</p><p>No recordings currently published.</p></details>';
+      return '<div class="sched-slot"><div class="sched-time">'+esc(timeOfDay(new Date(slot.startTime*1000)))+'<span class="sched-dur">'+esc(schedDurLabel((slot.endTime-slot.startTime)/60))+'</span></div><div class="sched-shows">'+card+'</div></div>';
+    }).join('') : '<p class="sched-empty">No programs published for this day.</p>');
+    schedBody.scrollTop = 0;
+  }
+  if(publishedSelect) publishedSelect.addEventListener('change', function(){loadPublishedSchedule(Number(publishedSelect.value));});
+
   function schedToday(){
+    if(STATION.capabilities.publishedSchedule) return new Intl.DateTimeFormat('en-US', {timeZone:STATION.timezone, weekday:'long'}).format(new Date());
     var off = schedStationOffsetMs();
     if(off !== null){
       var stationNow = new Date(Date.now() + off);
@@ -3146,6 +3217,7 @@
   // can move the "Today" label without redrawing the list underneath it, which
   // would reset the reader's scroll (schedScrollToLive starts at scrollTop 0).
   function schedPaintTabs(){
+    if(STATION.capabilities.publishedSchedule){ paintPublishedTabs(); return; }
     var today = schedToday();
     schedPaintedToday = today;
     schedTabs.innerHTML = schedTabDays().map(function(d){
@@ -3194,6 +3266,7 @@
   }
 
   function paintSchedule(){
+    if(STATION.capabilities.publishedSchedule){ paintPublishedSchedule(); return; }
     if(!schedWeek) schedWeek = deriveSchedule(rows);
     if(!schedDay) schedDay = schedToday();
     schedPaintTabs();
@@ -3264,6 +3337,7 @@
   // the modal stays open, without resetting the user's scroll position (that
   // is schedScrollToLive()'s job, and it only runs on paint, not on poll).
   function schedApplyLiveHighlight(){
+    if(STATION.capabilities.publishedSchedule) return;
     if(!schedIsOpen()) return;
     var liveName = (schedDay === schedToday() && liveCurrent && liveCurrent.name) || '';
     // Is the stream actually playing right now? `liveWanted` is the intent flag
@@ -3383,7 +3457,7 @@
   }
 
   function schedSelectDay(day){
-    if(!week0(day) || day === schedDay) return;
+    if((!STATION.capabilities.publishedSchedule && !week0(day)) || day === schedDay) return;
     schedDay = day;
     paintSchedule();
   }
@@ -3396,7 +3470,8 @@
   function openSchedule(fromHistory){
     if(schedIsOpen()) return;
     schedReturnFocus = document.activeElement;
-    schedDay = '';                 // re-resolve "today" on every open
+    schedDay = '';                 // re-resolve today on every open
+    if(STATION.capabilities.publishedSchedule){ publishedWeek = null; publishedWeeks = null; }
     // Mark the modal open BEFORE painting: paintSchedule() ends by applying
     // the live highlight and scrolling to it, both of which check schedIsOpen()
     // and are no-ops while it's still false.
@@ -3438,7 +3513,7 @@
     if(liveChoiceOpen()) return;                   // and so does the chooser, which is above both
     if(e.key === 'Escape'){ e.preventDefault(); closeSchedule(); return; }
     if(e.key === 'Tab'){
-      var f = schedModal.querySelectorAll('button:not([tabindex="-1"]), [tabindex="0"]');
+      var f = schedModal.querySelectorAll('button:not([tabindex="-1"]), select, summary, [tabindex="0"]');
       if(!f.length) return;
       var first = f[0], last = f[f.length - 1];
       if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
@@ -3450,9 +3525,9 @@
       e.preventDefault();
       // Walk the tabs as they are DISPLAYED (today first), not Sunday-first —
       // an arrow key that skipped across the strip would be its own bug.
-      var order = schedTabDays();
+      var order = STATION.capabilities.publishedSchedule && publishedWeek ? publishedWeek.days.map(function(d){return d.date;}) : schedTabDays();
       var i = order.indexOf(schedDay) + (e.key === 'ArrowRight' ? 1 : -1);
-      schedSelectDay(order[(i + 7) % 7]);
+      schedSelectDay(order[(i + order.length) % order.length]);
       var btn = schedTabs.querySelector('.sched-tab.selected');
       if(btn) btn.focus();
     }
@@ -3500,6 +3575,7 @@
   // The program directory is a few hundred KB of prose, so it is fetched the
   // first time someone opens a sheet rather than on page load.
   function ensurePrograms(){
+    if(STATION.provider === 'pacifica-json') { programs = {}; return Promise.resolve(); }
     if(programsPromise) return programsPromise;
     programsPromise = fetch('/api/programs')
       .then(function(r){ return r.json(); })
@@ -3641,7 +3717,7 @@
   // list. Lowercased because "Talk Out of School" ships under two slugs that
   // differ only in capitalisation.
   //
-  function showKey(r){ return String(r.sho || '').toLowerCase() || normTitle(r.title); }
+  function showKey(r){ return String(r.sho || '') || normTitle(r.title); }
   function episodesFor(r){
     var k = showKey(r), out = [];
     for(var i=0; i<rows.length; i++){
@@ -3831,7 +3907,7 @@
       '<span class="link-wide">Show website</span><span class="link-narrow">Website</span>');
     var fb = safeUrl(info.facebook || prog.facebook);
     if(fb) links += sheetLink(fb, svgFacebook(), 'Facebook');
-    var tw = safeUrl(prog.twitter);
+    var tw = safeUrl(info.twitter || prog.twitter);
     if(tw) links += sheetLink(tw, svgLink(), 'Twitter');
     // Rendered only where the OS can actually take it, in keeping with the
     // sheet's rule that nothing is shown as an inert placeholder.
@@ -4009,14 +4085,14 @@
     if(live){
       var livePlaying = livePlayingNow();
       var liveWord = liveStateWord();
-      var liveTitle = (liveCurrent && liveCurrent.name) || 'WBAI 99.5 FM';
+      var liveTitle = (liveCurrent && liveCurrent.name) || (STATION.label);
       var liveArt = (liveCurrent && liveCurrent.photo) || '';
       sheetPlayerDock.classList.add('live');
       sheetPlayerDock.classList.toggle('is-playing', livePlaying);
       if(sheetPlayerLive) sheetPlayerLive.hidden = false;
       document.getElementById('sheetPlayerState').textContent = liveWord;
       document.getElementById('sheetPlayerTitle').textContent = liveTitle;
-      document.getElementById('sheetPlayerEpisode').textContent = 'WBAI 99.5 FM';
+      document.getElementById('sheetPlayerEpisode').textContent = (STATION.label);
       if(sheetPlayerArt){
         if(liveArt && sheetPlayerArt.getAttribute('src') !== liveArt){
           sheetPlayerArt.classList.remove('failed');
@@ -4129,7 +4205,7 @@
   // Live feed IDs and archive `sho` values are the same upstream slug. Case and
   // accidental surrounding whitespace are harmless; titles are never a fallback
   // because a plausible route to the wrong show is worse than no route.
-  function archiveShowId(value){ return String(value || '').trim().toLowerCase(); }
+  function archiveShowId(value){ return String(value || '').trim(); }
   function latestArchiveRowForShow(altid){
     var key = archiveShowId(altid);
     if(!key) return null;
@@ -4395,7 +4471,7 @@
     if(!r || !navigator.share) return;
     navigator.share({
       title: r.title,
-      text: r.title + ' — WBAI 99.5 FM Archive',
+      text: r.title + (' — ' + STATION.label + ' Archive'),
       url: location.origin + location.pathname + '?show=' + encodeURIComponent(r.id)
     }).catch(function(){ /* dismissed by the user, or no target chosen */ });
   }
@@ -4514,7 +4590,7 @@
   // button.
   (function(){
     var btn = document.getElementById('themeBtn');
-    var T = window.WBAITheme;
+    var T = window.StationTheme;
     if(!btn || !T) return;   // boot script blocked (CSP/adblock) — leave the system theme alone
 
     var mq = window.matchMedia ? matchMedia('(prefers-color-scheme: light)') : null;

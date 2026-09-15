@@ -1,23 +1,19 @@
 {
-  "name": "wbai-archive",
+  "name": "kpfk-archive",
   "version": "1.0.0",
-  "description": "A modern, dark-mode redesign of the WBAI 99.5 FM on-demand broadcast archive, with a light zero-dependency Node proxy for live listings, on-air data, artwork, and audio.",
+  "description": "KPFK archive using Pacifica JSON feeds",
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "node test/feed-scan/selftest.js && node test/feed-merge/merge-tests.js && node test/feed-retirement/retirement-tests.js && node test/photomap/selftest.js && node test/storage/mount-tests.js && node test/studio/studio-tests.js && node test/usage/durability-tests.js && node test/schedule-audit/selftest.js && node test/storage-guard/selftest.js && node test/feeds-quarantine/quarantine-tests.js",
-    "seed": "node -e \"const fs=require('fs'),d=JSON.parse(fs.readFileSync('data/showinfo.json','utf8')),o={};Object.keys(d).sort().forEach(k=>o[k]=d[k]);fs.mkdirSync('seed',{recursive:true});fs.writeFileSync('seed/showinfo.json',JSON.stringify(o));console.log('seed/showinfo.json <- '+Object.keys(o).length+' records')\"",
+    "start": "node tools/start.js",
+    "test": "node tools/run-tests.js",
     "audit:schedule": "node tools/schedule-audit.js",
     "check:storage": "node tools/check-storage-safety.js",
-    "hooks:install": "git config core.hooksPath .githooks && echo \"hooks installed (core.hooksPath=.githooks)\""
+    "hooks:install": "git config core.hooksPath .githooks && echo \"hooks installed (core.hooksPath=.githooks)\"",
+    "test:pacifica": "node --test test/pacifica/*.test.js"
   },
   "engines": {
     "node": ">=18"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Catskill909/wbai-archive.git"
   },
   "license": "MIT",
   "private": true

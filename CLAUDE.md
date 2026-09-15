@@ -1,5 +1,10 @@
 # CLAUDE.md — working rules for this repo
 
+> **KPFK copy — read [HANDOFF.md](HANDOFF.md) first.** This file is still WBAI's
+> text. This app runs on **port 8081** (`npm start`) with the Pacifica JSON
+> provider; wherever below says 8080, kill/restart only the 8081 process. Never
+> touch the WBAI server on 8080 from this folder.
+
 Guardrails that exist because we lost hours (and tokens) to them. Follow them.
 
 ## 1. NEVER-STALE RULE — you may have been testing code that wasn't loaded

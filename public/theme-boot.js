@@ -20,11 +20,12 @@
  * present. No attribute => the media query decides => "follow the system",
  * which is the state everyone starts in.
  *
- * app.js's toggle drives everything through window.WBAITheme below, so the
+ * app.js's toggle drives everything through window.StationTheme below, so the
  * read/apply logic exists exactly once.
  */
 (function () {
-  var KEY = 'wbai-theme';
+  if(!window.StationConfig) return;
+  var KEY = window.StationConfig.storagePrefix + 'theme';
 
   /* Scroll restoration OFF — a reload must land at the top of the list.
    *
@@ -91,7 +92,7 @@
     } catch (e) {}
   }
 
-  window.WBAITheme = {
+  window.StationTheme = {
     stored: stored,
     system: system,
     apply: apply,

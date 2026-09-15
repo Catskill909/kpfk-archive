@@ -568,7 +568,7 @@
   .lp-art{
     position:relative;
     width:min(300px, 64vw); aspect-ratio:1; border-radius:14px; overflow:hidden; flex:none;
-    background:url("/assets/icon-256.png") center/cover no-repeat;
+    background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat;
     box-shadow:0 18px 44px -16px color-mix(in srgb, var(--accent) 40%, rgba(0,0,0,.7));
   }
   .lp-art img{width:100%;height:100%;object-fit:cover; display:none;}
@@ -1408,7 +1408,7 @@
     position:relative; width:60px; height:60px; border-radius:11px; flex:none; overflow:hidden;
     border:0; padding:0; cursor:pointer;
     /* station icon shows when a show has no photo (or its photo fails to load) */
-    background:url("/assets/icon-256.png") center/cover no-repeat, var(--surface-2);
+    background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-2);
     box-shadow:inset 0 0 0 1px var(--outline);
   }
   .show-thumb img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
@@ -1852,7 +1852,7 @@
   .sheet-player-row{ display:flex; align-items:center; gap:.65rem; min-width:0; }
   .sheet-player-art{
     position:relative; flex:none; width:44px; height:44px; overflow:hidden; border-radius:9px;
-    background:url("/assets/icon-256.png") center/cover no-repeat, var(--surface-3);
+    background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-3);
     box-shadow:inset 0 0 0 1px var(--outline);
   }
   .sheet-player-art img{ width:100%; height:100%; object-fit:cover; display:block; }
@@ -1922,7 +1922,7 @@
   .sheet-head{ display:flex; gap:1.3rem; align-items:center; padding-right:2.6rem; }
   .sheet-art{
     position:relative; flex:none; width:148px; height:148px; border-radius:14px; overflow:hidden;
-    background:url("/assets/icon-256.png") center/cover no-repeat, var(--surface-2);
+    background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-2);
     box-shadow:var(--elev-1);
   }
   .sheet-art img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
@@ -2303,7 +2303,7 @@
     flex:none; width:42px; height:42px; border-radius:9px; overflow:hidden;
     /* station icon shows when a show has no photo (or its photo fails to
        load) — same fallback layering as .show-thumb / .card-art */
-    background:url("/assets/icon-256.png") center/cover no-repeat, var(--surface-2);
+    background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-2);
     box-shadow:inset 0 0 0 1px var(--outline);
   }
   .sched-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
@@ -2451,7 +2451,7 @@
   }
   .sheet-archive-art{
     flex:none; width:48px; height:48px; border-radius:10px; overflow:hidden;
-    background:url("/assets/icon-256.png") center/cover no-repeat, var(--surface-2);
+    background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-2);
   }
   .sheet-archive-art img{ width:100%; height:100%; object-fit:cover; display:block; }
   .sheet-archive-identity{ min-width:0; display:flex; flex-direction:column; gap:.2rem; }
@@ -2939,7 +2939,7 @@
   .player-art{
     width:44px; height:44px; border-radius:9px; flex:none; overflow:hidden;
     /* station icon shows if the playing show has no artwork */
-    background:url("/assets/icon-256.png") center/cover no-repeat, var(--surface-3);
+    background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-3);
     box-shadow:inset 0 0 0 1px var(--outline);
   }
   .player-art img{width:100%; height:100%; object-fit:cover; display:block;}
@@ -2968,7 +2968,7 @@
   .player-main{display:flex; flex-direction:column; justify-content:center; gap:.35rem; min-width:0; flex:1 1 auto;}
   /* art + title double as the trigger for the info modal */
   .player-open{border:0; background:none; padding:0; margin:0; font:inherit; color:inherit; text-align:left; cursor:pointer;}
-  .player-art.player-open{ background:url("/assets/icon-256.png") center/cover no-repeat, var(--surface-3); transition:box-shadow .15s ease; }
+  .player-art.player-open{ background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-3); transition:box-shadow .15s ease; }
   @media (hover:hover) and (pointer:fine){
     .player-art.player-open:hover{box-shadow:inset 0 0 0 1px var(--accent-2);}
   }
@@ -3368,14 +3368,14 @@
     position:relative; display:block; width:100%; height:auto; aspect-ratio:1/1;
     padding:0; border-radius:14px; overflow:hidden; cursor:pointer; text-align:left;
     border:1px solid var(--outline);
-    background:url("/assets/icon-256.png") center/cover no-repeat, var(--surface-2);
+    background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-2);
     box-shadow:inset 0 0 0 1px var(--outline);
     transition:transform .18s ease, box-shadow .18s ease;
   }
   /* hover is tracked on the wrapper, so the card still lifts when the pointer is
      over the title block sitting on top of it */
   @media (hover:hover) and (pointer:fine){
-    .card.card-art.play-btn:hover,.card-wrap:hover .card.card-art.play-btn{background:url("/assets/icon-256.png") center/cover no-repeat, var(--surface-2);
+    .card.card-art.play-btn:hover,.card-wrap:hover .card.card-art.play-btn{background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-2);
     border-color:var(--outline); color:var(--ink);
     transform:translateY(-2px);
     box-shadow:inset 0 0 0 1px var(--outline-strong), 0 8px 22px rgba(0,0,0,.35);}
@@ -3607,3 +3607,10 @@
     .lp-volume-range::-webkit-slider-thumb{ width: 18px; height: 18px; margin-top: -7px; }
     .lp-volume-range::-moz-range-thumb{ width: 18px; height: 18px; }
   }
+
+/* Published Pacifica schedule */
+.sched-week-label { display:flex; align-items:center; gap:12px; padding:12px 24px; }
+.sched-week-label select { font:inherit; max-width:75%; }
+.sched-program { padding:12px; }
+.sched-program summary { cursor:pointer; }
+#donateBtn[hidden] { display:none; }

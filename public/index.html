@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <script src="/station.js"></script>
   <meta charset="utf-8">
   <!-- viewport-fit=cover is load-bearing: without it iOS resolves every
      env(safe-area-inset-*) to 0, which silently no-ops the insets the player
@@ -13,9 +14,9 @@
      columns are full of them, and each autolink becomes a stray tap target
      sitting inside a button. -->
   <meta name="format-detection" content="telephone=no">
-  <title>WBAI 99.5 FM Archive</title>
+  <title>{{station.label}} Archive</title>
   <meta name="description"
-    content="Search, stream, and browse WBAI 99.5 FM's on-demand broadcast archive — Free Speech Radio, Pacifica Radio in New York City.">
+    content="Search, stream, and browse {{station.label}}'s on-demand broadcast archive — Free Speech Radio, Pacifica Radio in {{station.city}}.">
   <!-- og:start -->
   <!-- Rewritten on every HTML response by ogTags() in server.js, which fills in
      the absolute origin and — for a shared `?show=<id>` link — that episode's
@@ -23,11 +24,11 @@
      is opened straight off disk. Do not drop the og:start/og:end markers: the
      server replaces the whole block between them. -->
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="WBAI 99.5 FM Archive">
-  <meta property="og:title" content="WBAI 99.5 FM Archive">
+  <meta property="og:site_name" content="{{station.label}} Archive">
+  <meta property="og:title" content="{{station.label}} Archive">
   <meta property="og:description"
-    content="Search, stream, and browse WBAI 99.5 FM's on-demand broadcast archive — Free Speech Radio, Pacifica Radio in New York City.">
-  <meta property="og:image" content="/assets/icon-512.png">
+    content="Search, stream, and browse {{station.label}}'s on-demand broadcast archive — Free Speech Radio, Pacifica Radio in {{station.city}}.">
+  <meta property="og:image" content="{{station.icon}}">
   <meta name="twitter:card" content="summary">
   <!-- og:end -->
   <meta name="color-scheme" content="dark light">
@@ -38,10 +39,10 @@
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="WBAI Archive">
+  <meta name="apple-mobile-web-app-title" content="{{station.name}} Archive">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="icon" type="image/png" href="/assets/icon-256.png">
-  <link rel="apple-touch-icon" href="/assets/icon-256.png">
+  <link rel="icon" type="image/svg+xml" href="{{station.icon}}">
+  <link rel="apple-touch-icon" href="{{station.icon}}">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/styles.css">
   <!-- Blocking on purpose, and last in <head> so the theme-color metas above are
@@ -55,10 +56,10 @@
 
   <header class="appbar">
     <div class="appbar-inner">
-      <a class="brand" href="#top" aria-label="WBAI 99.5 archive home">
+      <a class="brand" href="#top" aria-label="{{station.name}} 99.5 archive home">
         <span class="brand-text">
-          <img class="brand-logo" src="/assets/header.png" width="1024" height="248" alt="WBAI">
-          <span class="brand-name">99.5 FM · Archive</span>
+          <img class="brand-logo" src="{{station.logo}}" width="800" height="180" alt="{{station.name}}">
+          <span class="brand-name">{{station.frequency}} · Archive</span>
         </span>
       </a>
       <div class="appbar-actions">
@@ -67,7 +68,7 @@
            utility chips (theme, menu) sit together at the far end, where they
            balance each other instead of splitting the two CTAs apart. -->
         <button class="on-air-btn" id="onAirBtn" type="button" aria-haspopup="dialog" aria-controls="livePlayer"
-          aria-expanded="false" aria-label="Open the live player — WBAI is on air now">
+          aria-expanded="false" aria-label="Open the live player — {{station.name}} is on air now">
           <span class="on-air-dot" aria-hidden="true"></span>
           <span class="on-air-label">Listen Live</span>
           <span class="on-air-eq" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -129,8 +130,8 @@
   <main id="top" tabindex="-1">
     <section class="hero">
       <div class="hero-lockup">
-        <img class="hero-logo" src="/assets/header.png" width="1024" height="248" alt="WBAI 99.5 FM">
-        <div class="hero-sub">Free Speech Radio · 99.5 FM</div>
+        <img class="hero-logo" src="{{station.logo}}" width="800" height="180" alt="{{station.label}}">
+        <div class="hero-sub">Free Speech Radio · {{station.frequency}}</div>
       </div>
       <div class="hero-copy">
         <!-- heading kept for the document outline / screen readers, not shown -->
@@ -145,9 +146,7 @@
            button is visible; app.js only handles the click. -->
         <div class="hero-desc-wrap" id="heroDescWrap">
           <p class="hero-desc" id="heroDesc">Progressive &amp; independent news, arts &amp; music — Pacifica Radio in
-            New York City. Every broadcast stays here for a limited window before it rotates out: spoken-word and
-            public-affairs shows longer, music programs briefer under licensing terms. Search, filter by category, or
-            sort the columns to find something to hear.</p>
+            {{station.city}}. Browse every recording currently published in the station’s archive.</p>
           <button class="hero-more" id="heroMore" type="button" aria-expanded="false"
             aria-controls="heroDesc">more</button>
         </div>
@@ -242,7 +241,7 @@
        window has already closed. The archive is a rotating view, so every deep
        link is perishable and this is the honest way to say so. -->
     <div class="link-notice" id="linkNotice" role="status" hidden>
-      <span>That broadcast has rotated out of the archive — WBAI keeps each show for a limited window. Everything still
+      <span>That broadcast has rotated out of the archive — {{station.name}} keeps each show for a limited window. Everything still
         available is listed below.</span>
       <button class="link-notice-close" id="linkNoticeClose" type="button" aria-label="Dismiss">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
@@ -283,8 +282,8 @@
   <aside class="menu-panel" id="menuPanel" aria-label="Site menu" aria-hidden="true">
     <div class="menu-head">
       <span class="brand-text">
-        <img class="brand-logo menu-logo" src="/assets/header.png" width="1024" height="248" alt="WBAI">
-        <span class="brand-name">99.5 FM · New York City</span>
+        <img class="brand-logo menu-logo" src="{{station.logo}}" width="800" height="180" alt="{{station.name}}">
+        <span class="brand-name">{{station.frequency}} · {{station.city}}</span>
       </span>
       <button class="menu-close" id="menuClose" type="button" aria-label="Close menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
@@ -297,41 +296,11 @@
         <p>Free Speech Radio. Progressive &amp; independent news, arts &amp; music, listener-supported and broadcasting
           as part of the Pacifica Foundation.</p>
         <div class="social-row">
-          <a class="social-btn" href="https://www.twitter.com/WBAI" target="_blank" rel="noopener noreferrer"
-            aria-label="WBAI on X">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M4 4l7.5 9.5L4.3 20H7l5-5.7 4 5.7h4l-7.8-10L19.6 4H17l-4.6 5.2L8.5 4z" />
-            </svg>
-          </a>
-          <a class="social-btn" href="https://www.facebook.com/WBAIRadio" target="_blank" rel="noopener noreferrer"
-            aria-label="WBAI on Facebook">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M14 8.5h2.5V5.2C16 5.1 14.9 5 13.7 5 11.1 5 9.4 6.6 9.4 9.5v2.1H6.5V15h2.9v9h3.4v-9h2.8l.5-3.4h-3.3V9.8c0-1 .3-1.3 1.2-1.3z" />
-            </svg>
-          </a>
-          <a class="social-btn" href="https://www.instagram.com/wbainyc/" target="_blank" rel="noopener noreferrer"
-            aria-label="WBAI on Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <rect x="4" y="4" width="16" height="16" rx="4.5" />
-              <circle cx="12" cy="12" r="3.6" />
-              <circle cx="16.6" cy="7.4" r="1" fill="currentColor" stroke="none" />
-            </svg>
-          </a>
-          <a class="social-btn" href="https://www.linkedin.com/company/wbai/" target="_blank" rel="noopener noreferrer"
-            aria-label="WBAI on LinkedIn">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M5 9h3v10H5zM6.5 4a1.8 1.8 0 1 1 0 3.6A1.8 1.8 0 0 1 6.5 4zM11 9h2.9v1.4h.04c.4-.76 1.4-1.6 2.9-1.6 3.1 0 3.66 2 3.66 4.7V19h-3v-4.9c0-1.17-.02-2.68-1.64-2.68-1.65 0-1.9 1.28-1.9 2.6V19H11z" />
-            </svg>
-          </a>
-          <a class="social-btn" href="https://bsky.app/profile/wbai.org" target="_blank" rel="noopener noreferrer"
-            aria-label="WBAI on Bluesky">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M12 9.2C10.6 6.6 8.2 4.6 5.6 4c-1 0-1.6.5-1.6 1.6 0 2 .5 5.7 3 7.6-1.9-.3-3.5.2-3.5 1.8 0 1.3 1.6 2.1 3.6 2.3-1.3.6-2 1.4-2 2.3 0 1.5 1.7 2.4 3.7 1 1.3-.9 2.4-2.4 3.2-3.9.8 1.5 1.9 3 3.2 3.9 2 1.4 3.7.5 3.7-1 0-.9-.7-1.7-2-2.3 2-.2 3.6-1 3.6-2.3 0-1.6-1.6-2.1-3.5-1.8 2.5-1.9 3-5.6 3-7.6C21.6 4.5 21 4 20 4c-2.6.6-5 2.6-6.4 5.2-.6 1-.8 1.6-1.1 2.3-.3-.7-.5-1.3-1.1-2.3z" />
-            </svg>
-          </a>
+          
+          
+          
+          
+          
         </div>
       </div>
 
@@ -343,11 +312,11 @@
           <h2>Listen</h2>
           <ul>
             <!-- Opens the in-app schedule modal (app.js, drawer IIFE) — a weekly
-               grid DERIVED from the archive's own timestamps, not wbai.org's
+               grid DERIVED from the archive's own timestamps, not the legacy station site's
                pixel-grid page. The href stays real as the fallback if that
                listener never runs, and it keeps open-in-new-tab / copy-link
                working from the context menu. See docs/schedule-dev.md. -->
-            <li><a href="https://wbai.org/schedule/" id="menuSchedule" target="_blank" rel="noopener noreferrer"
+            <li><a href="#schedule" id="menuSchedule" target="_blank" rel="noopener noreferrer"
                 aria-haspopup="dialog" aria-controls="schedModal">
                 <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -355,65 +324,18 @@
                   <path d="M3.5 9.6h17M8 3.4v3.2M16 3.4v3.2" />
                 </svg>
                 <span>Schedule</span></a></li>
-            <li><a href="https://wbai.org/programlist/" target="_blank" rel="noopener noreferrer">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M9 6.8h10.5M9 12h10.5M9 17.2h10.5M4.6 6.8h.01M4.6 12h.01M4.6 17.2h.01" />
-                </svg>
-                <span>Programs A–Z</span></a></li>
-            <li><a href="https://play.google.com/store/apps/details?id=app.pacifica.wbai" target="_blank"
-                rel="noopener noreferrer">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M6 12a6 6 0 0 1 12 0" />
-                  <path d="M6 12v5.4A1.6 1.6 0 0 0 7.6 19h8.8a1.6 1.6 0 0 0 1.6-1.6V12z" />
-                  <path d="M8.2 7.2 6.8 4.8M15.8 7.2l1.4-2.4M9.8 9.6h.01M14.2 9.6h.01" />
-                </svg>
-                <span>WBAI Android App</span></a></li>
-            <li><a href="https://apps.apple.com/us/app/wbai-radio/id6761505687" target="_blank"
-                rel="noopener noreferrer">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path
-                    d="M16.5 12.7c0-2.1 1.7-3.1 1.8-3.2-1-1.4-2.5-1.6-3-1.6-1.3-.1-2.5.7-3.1.7-.6 0-1.6-.7-2.7-.7-1.4 0-2.7.8-3.4 2.1-1.4 2.5-.4 6.1 1 8.1.7 1 1.5 2.1 2.6 2 1 0 1.4-.7 2.7-.7 1.2 0 1.6.7 2.7.6 1.1 0 1.8-1 2.5-2 .8-1.1 1.1-2.2 1.1-2.3 0 0-2.2-.8-2.2-3zM14.4 6.3c.6-.7 1-1.7.9-2.7-.9 0-2 .6-2.6 1.3-.6.6-1.1 1.6-.9 2.6.9.1 1.9-.5 2.6-1.2z" />
-                </svg>
-                <span>WBAI Apple App</span></a></li>
+            
+            
+            
           </ul>
         </div>
         <div class="menu-group">
           <h2>Station</h2>
           <ul>
-            <li><a href="https://wbai.org/about.html" target="_blank" rel="noopener noreferrer">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="8.5" />
-                  <path d="M12 11.2v5M12 7.8h.01" />
-                </svg>
-                <span>About WBAI</span></a></li>
-            <li><a href="https://wbai.org/mission.html" target="_blank" rel="noopener noreferrer">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="8.5" />
-                  <circle cx="12" cy="12" r="4.2" />
-                  <path d="M12 12h.01" />
-                </svg>
-                <span>Mission</span></a></li>
-            <li><a href="https://wbai.org/pacifica.html" target="_blank" rel="noopener noreferrer">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="8.5" />
-                  <path d="M3.6 12h16.8" />
-                  <path
-                    d="M12 3.5c2.2 2.4 3.4 5.3 3.4 8.5S14.2 18.1 12 20.5c-2.2-2.4-3.4-5.3-3.4-8.5S9.8 5.9 12 3.5z" />
-                </svg>
-                <span>Pacifica Foundation</span></a></li>
-            <li><a href="https://wbai.org/news/" target="_blank" rel="noopener noreferrer">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M4 6.5A1.5 1.5 0 0 1 5.5 5h9A1.5 1.5 0 0 1 16 6.5V19H6a2 2 0 0 1-2-2z" />
-                  <path d="M16 9h2.5A1.5 1.5 0 0 1 20 10.5V17a2 2 0 0 1-2 2h-2" />
-                  <path d="M7.2 8.6h5.6M7.2 12h5.6M7.2 15.4h3.6" />
-                </svg>
-                <span>News</span></a></li>
+            
+            
+            
+            
           </ul>
         </div>
         <div class="menu-group">
@@ -423,53 +345,26 @@
                than leaving for a new tab. The href stays real: it is the
                fallback if that listener never runs, and it keeps
                open-in-new-tab / copy-link working from the context menu. -->
-            <li><a href="https://wbai.org/donate/" id="menuDonate" target="_blank" rel="noopener noreferrer"
-                aria-haspopup="dialog" aria-controls="donateModal">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path
-                    d="M12 20.2s-7.3-4.4-7.3-9.3A4.1 4.1 0 0 1 12 8.3a4.1 4.1 0 0 1 7.3 2.6c0 4.9-7.3 9.3-7.3 9.3z" />
-                </svg>
-                <span>Donate</span></a></li>
-            <li><a href="https://wbai.org/volunteers-interns.php" target="_blank" rel="noopener noreferrer">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M15.2 19.8v-1.6a3.4 3.4 0 0 0-3.4-3.4H6.9a3.4 3.4 0 0 0-3.4 3.4v1.6" />
-                  <circle cx="9.35" cy="8" r="3.4" />
-                  <path d="M20.5 19.8v-1.6a3.4 3.4 0 0 0-2.6-3.3M15.7 4.8a3.4 3.4 0 0 1 0 6.4" />
-                </svg>
-                <span>Volunteer</span></a></li>
-            <li><a href="https://wbai.org/contact.php" target="_blank" rel="noopener noreferrer">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="3.5" y="5.5" width="17" height="13" rx="2.5" />
-                  <path d="m4.6 8.2 6.3 4.5a2 2 0 0 0 2.2 0l6.3-4.5" />
-                </svg>
-                <span>Contact</span></a></li>
+            
+            
+            
             <!-- Opens the same framed modal as Donate (app.js, drawer IIFE), just
                pointed at the privacy policy URL instead. -->
-            <li><a href="https://docs.pacifica.org/wbai/wbai-archive-privacy.php" id="menuPrivacy" target="_blank"
-                rel="noopener noreferrer" aria-haspopup="dialog" aria-controls="donateModal">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M12 3.5l7 2.5v5.4c0 4.6-3 8.2-7 9.6-4-1.4-7-5-7-9.6V6l7-2.5z" />
-                  <path d="M9.3 12.2l1.9 1.9 3.5-3.9" />
-                </svg>
-                <span>Privacy Policy</span></a></li>
-            <li><a href="https://wbai.org" target="_blank" rel="noopener noreferrer">
+            
+            <li><a href="{{station.website}}" target="_blank" rel="noopener noreferrer">
                 <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M14 4.5h5.5V10M19.3 4.7 11.6 12.4" />
                   <path d="M18.2 14v4.6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2h4.6" />
                 </svg>
-                <span>wbai.org</span></a></li>
+                <span>{{station.name}} website</span></a></li>
           </ul>
         </div>
       </nav>
 
       <div class="menu-foot">
         <p>A service of the Pacifica Foundation</p>
-        <p>WBAI 99.5 FM · New York, NY</p>
+        <p>{{station.label}} · {{station.city}}</p>
 
       </div>
     </div>
@@ -569,20 +464,20 @@
      actually opens it. Reuses the scrim/dialog/focus-trap/inert pattern of the
      other overlays. -->
   <div class="donate-scrim" id="donateScrim"></div>
-  <div class="donate-modal" id="donateModal" role="dialog" aria-modal="true" aria-label="Donate to WBAI"
+  <div class="donate-modal" id="donateModal" role="dialog" aria-modal="true" aria-label="Donate to {{station.name}}"
     aria-hidden="true">
     <button class="donate-close" id="donateClose" type="button" aria-label="Close donate window">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
         <path d="M6 6l12 12M18 6L6 18" />
       </svg>
     </button>
-    <iframe class="donate-frame" id="donateFrame" title="Donate to WBAI" loading="lazy"
+    <iframe class="donate-frame" id="donateFrame" title="Donate to {{station.name}}" loading="lazy"
       referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
 
   <!-- Weekly schedule. Derived client-side from the archive rows already in
      memory (every broadcast carries its start timestamp), never fetched from
-     wbai.org's grid page — see docs/schedule-dev.md. Day tabs replace the
+     the legacy station site's grid page — see docs/schedule-dev.md. Day tabs replace the
      old-school 7-column table; tapping a show opens the ordinary info sheet,
      which stacks ABOVE this dialog (sheet z 170/180 vs 164/165 here) so
      closing the sheet lands back on the schedule. Same scrim/focus/inert
@@ -592,13 +487,14 @@
     aria-hidden="true">
     <header class="sched-head">
       <h2 class="sched-title">Schedule</h2>
-      <p class="sched-note">All times Eastern · derived from recent broadcasts</p>
+      <p class="sched-note">All times Pacific · published by KPFK</p>
       <button class="sched-close" id="schedClose" type="button" aria-label="Close schedule">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
           <path d="M6 6l12 12M18 6L6 18" />
         </svg>
       </button>
     </header>
+    <label class="sched-week-label" for="scheduleWeek">Published week <select id="scheduleWeek" aria-label="Published week"></select></label>
     <div class="sched-tabs" id="schedTabs" role="tablist" aria-label="Day of week"></div>
     <div class="sched-body" id="schedBody" tabindex="0"></div>
   </div>
@@ -649,7 +545,7 @@
         <path d="M6 9l6 6 6-6" />
       </svg>
     </button>
-    <div class="lp-badge" id="lpBadge"><span class="on-air-dot" aria-hidden="true"></span>Live · WBAI 99.5 FM</div>
+    <div class="lp-badge" id="lpBadge"><span class="on-air-dot" aria-hidden="true"></span>Live · {{station.label}}</div>
 
     <!-- The artwork IS the way into the show's description — no badge pinned to its
        corner. The card is a centred stack, and anything parked in one corner of
@@ -681,7 +577,7 @@
        its own max-height and it silently became a scroller. -->
     <div class="lp-main">
     <div class="lp-meta">
-      <h2 class="lp-title" id="lpTitle">WBAI 99.5 FM</h2>
+      <h2 class="lp-title" id="lpTitle">{{station.label}}</h2>
       <p class="lp-host" id="lpHost" hidden></p>
       <p class="lp-times" id="lpTimes" hidden></p>
       <button class="lp-archive" id="lpArchive" type="button" hidden>
@@ -755,8 +651,8 @@
           </svg>
           Try again
         </button>
-        <a class="lp-alert-btn" id="lpAlertOpen" href="https://wbai.org/listen-live/" target="_blank"
-          rel="noopener">Listen on wbai.org</a>
+        <a class="lp-alert-btn" id="lpAlertOpen" href="{{station.website}}" target="_blank"
+          rel="noopener">Listen on the station website</a>
       </div>
     </div>
     <button class="lp-alert-dismiss" id="lpAlertClose" type="button" aria-label="Dismiss this message">
@@ -770,7 +666,7 @@
   <!-- "About this show" — the on-air show's description and links, opened from the
      info badge on the live player's artwork. app.js fills it by joining the
      now-playing show's altid against the same two sources the archive sheet
-     uses: /api/showinfo (the on-air harvest) and /api/programs (wbai.org's
+     uses: /api/showinfo (the on-air harvest) and /api/programs (the legacy station site's
      directory).
 
      Out here rather than inside #livePlayer for the reason documented on the
@@ -782,7 +678,7 @@
     hidden>
     <div class="lp-info-body" id="lpInfoBody">
       <span class="lp-info-eyebrow">About the show</span>
-      <h2 class="lp-info-title" id="lpInfoTitle">WBAI 99.5 FM</h2>
+      <h2 class="lp-info-title" id="lpInfoTitle">{{station.label}}</h2>
       <p class="lp-info-host" id="lpInfoHost" hidden></p>
       <p class="lp-info-desc" id="lpInfoDesc" hidden></p>
       <p class="lp-info-note" id="lpInfoNote" hidden>No description for this show yet.</p>

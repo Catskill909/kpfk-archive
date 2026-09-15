@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script src="/station.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Studio · WBAI 99.5 FM</title>
+<title>Studio · {{station.label}}</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#1c1615" media="(prefers-color-scheme: dark)">
@@ -20,10 +21,10 @@
     <h1 class="studio-brand">
       <a class="brand" href="/" aria-label="Station studio">
         <span class="brand-text">
-          <img class="brand-logo" src="/assets/header.png" width="1024" height="248" alt="WBAI">
+          <img class="brand-logo" src="{{station.logo}}" width="1024" height="248" alt="{{station.name}}">
           <span class="brand-name">
             Studio
-            <span class="studio-brand-station" id="station">wbai</span>
+            <span class="studio-brand-station" id="station">{{station.name}}</span>
           </span>
         </span>
       </a>
@@ -270,7 +271,7 @@
         <button class="info-btn" type="button" aria-label="About this section" aria-describedby="actionsNote">i</button>
         <p class="info-pop" id="actionsNote" role="tooltip">
           The only controls here that change anything. Each one refreshes one of
-          <em>our</em> caches from WBAI — nothing writes to the station's systems,
+          <em>our</em> caches from {{station.name}} — nothing writes to the station's systems,
           and running one twice is the same as running it once. Re-checking every
           feed is 122 requests to a small server, so it is rate limited.
         </p>
@@ -313,7 +314,7 @@
       <span class="info-wrap">
         <button class="info-btn" type="button" aria-label="About this section" aria-describedby="upstreamNote">i</button>
         <p class="info-pop" id="upstreamNote" role="tooltip">
-          Timed from the requests the app already makes — no synthetic pings. WBAI
+          Timed from the requests the app already makes — no synthetic pings. {{station.name}}
           runs a small server, and monitoring it by adding traffic to it would be
           self-defeating. A 404 is counted apart from a failure: 33 of the slugs the
           listing advertises have no feed behind them, so probing them 404s by

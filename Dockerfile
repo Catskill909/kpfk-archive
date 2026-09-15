@@ -7,6 +7,8 @@ WORKDIR /app
 # Only source is needed; there are no dependencies to install.
 COPY package.json ./
 COPY server.js ./
+COPY lib ./lib
+COPY stations ./stations
 COPY public ./public
 
 # The studio's HTML. Deliberately NOT under public/ — anything in that directory
@@ -33,6 +35,7 @@ COPY seed ./seed
 # starting from the seed above.
 RUN mkdir -p /app/data && chown node:node /app/data
 
+ENV STATION_PROFILE=stations/kpfk.json
 ENV NODE_ENV=production
 ENV PORT=8080
 EXPOSE 8080

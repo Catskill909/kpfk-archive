@@ -30,7 +30,12 @@
  * parse, the app is unaffected — which is the correct priority.
  */
 (function () {
-  var LIVE_HOST = 'streaming.wbai.org';
+  if(!window.StationConfig) return;
+  var stationStream = new URL(window.StationConfig.liveStream);
+  function isLiveUrl(src) {
+    try { var u = new URL(src); return u.origin === stationStream.origin && u.pathname === stationStream.pathname; }
+    catch(e) { return false; }
+  }
 
   function send(payload) {
     // A page being closed is exactly when a beacon matters most; sendBeacon is
@@ -97,7 +102,7 @@
     lastSrc = src;
     lastAt = now;
 
-    if (src.indexOf(LIVE_HOST) >= 0) send({ t: 'live' });
+    if (isLiveUrl(src)) send({ t: 'live' });
     else send({ t: 'play', u: src });
   }, true);   // capture: media events do not bubble
 

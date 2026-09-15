@@ -18,6 +18,14 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { loadProfile, publicProfile } = require('./lib/station-config');
+const stationView = require('./lib/station-view');
+const station = process.env.STATION_PROFILE
+  ? loadProfile(process.env.STATION_PROFILE, { root: __dirname, allowLocal: process.env.PACIFICA_TEST_LOCAL === '1' }) : null;
+if (require.main === module && !station && process.env.STATION_PROVIDER !== 'legacy-xml') {
+  throw new Error('STATION_PROFILE is required. Use npm start for the isolated KPFK app.');
+}
+
 
 const PORT = process.env.PORT || 8080;
 const PUBLIC_DIR = path.join(__dirname, 'public');
@@ -40,6 +48,12 @@ const PUBLIC_DIR = path.join(__dirname, 'public');
  * only /healthz can answer. Never conclude anything about that from a local run.
  */
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
+// Check station ownership BEFORE any boot-time writes or legacy cache loads.
+if (station && fs.existsSync(path.join(DATA_DIR, '.instance.json'))) {
+  const marker = JSON.parse(fs.readFileSync(path.join(DATA_DIR, '.instance.json'), 'utf8'));
+  if (marker.station !== station.id) throw new Error('DATA_DIR belongs to a different station');
+}
+
 // Files that existed at boot and could not be parsed, and where their bytes were
 // moved so they are still recoverable. Declared up here rather than on
 // storageDiag because the irreplaceable store loads long before that object
@@ -48,11 +62,11 @@ const quarantined = [];
 // Which station this deployment is. Only stamped into data files for now, so a
 // volume that gets restored or attached to the wrong app is caught rather than
 // silently merged. The full per-station configuration story is ROADMAP.md item 4.
-const STATION_ID = process.env.STATION_ID || 'wbai';
+const STATION_ID = station ? station.id : (process.env.STATION_ID || 'wbai');
 // The station's own timezone, used only to decide which listeners count as
 // local in the studio's reach breakdown (see geoBucket). One setting rather
 // than a code edit, because every station forking this has a different answer.
-const STATION_TZ = process.env.STATION_TZ || 'America/New_York';
+const STATION_TZ = station ? station.timezone : (process.env.STATION_TZ || 'America/New_York');
 const SHOWINFO_PATH = process.env.SHOWINFO_PATH || path.join(DATA_DIR, 'showinfo.json');
 // Read-only starting set for the harvest cache, baked into the image. Lives
 // outside the data dir on purpose: a mounted volume shadows whatever the image
@@ -62,7 +76,7 @@ const SEED_PATH = process.env.SEED_PATH || path.join(__dirname, 'seed', 'showinf
 const PROGRAMS_PATH = process.env.PROGRAMS_PATH || path.join(DATA_DIR, 'programs.json');
 const PROGRAMS_TTL = 24 * 60 * 60 * 1000;
 
-const UPSTREAM = {
+const UPSTREAM = station ? { liveStream: station.liveStream } : {
   archive: 'https://archive2.wbai.org/',
   schedule: 'https://confessor2.wbai.org/playlist/pub_sched.php',
   nowplaying: 'https://confessor2.wbai.org/playlist/_pl_current_ary.php',
@@ -140,6 +154,7 @@ function trackUpstream(url, startedAt, status, failed) {
 }
 
 async function fetchText(url, opts) {
+  if (station) throw new Error('Legacy upstream fetch disabled for JSON provider');
   opts = opts || {};
   const started = Date.now();
   let res;
@@ -365,7 +380,7 @@ const FEED_CONCURRENCY = 5;   // a small station's Apache. Do not raise.
 // readIrreplaceableJson, NOT readJsonFile: this store accumulates episodes that
 // upstream's five-item window has dropped, so an unparseable file must be moved
 // aside rather than discarded — see the long note on that function.
-const feedStore = readIrreplaceableJson(FEEDS_PATH, {});
+const feedStore = station ? {} : readIrreplaceableJson(FEEDS_PATH, {});
 
 // Every slug the scrape has ever named, kept forever once seen. Confirmed
 // 2026-08-04: `heavywaits` had a live 2-item feed while archive2's listing had
@@ -376,7 +391,7 @@ const feedStore = readIrreplaceableJson(FEEDS_PATH, {});
 // (its `remembered` set) for the same reason: upstream has, once, made a real
 // show vanish from every list it publishes while the feed kept working.
 const KNOWN_SLUGS_PATH = process.env.KNOWN_SLUGS_PATH || path.join(DATA_DIR, 'known-slugs.json');
-const knownSlugs = new Set(readJsonFile(KNOWN_SLUGS_PATH, []));
+const knownSlugs = new Set(station ? [] : readJsonFile(KNOWN_SLUGS_PATH, []));
 
 /**
  * Shows remembered from an earlier listing but not claimed by today's listing.
@@ -541,6 +556,7 @@ function mergeFeedItems(prevItems, freshItems) {
  * already hold.
  */
 async function fetchFeed(slug, force = false) {
+  if (station) throw new Error('XML harvesting disabled for JSON provider');
   const prev = feedStore[slug];
   const headers = { 'User-Agent': 'wbai-archive/1.0 (+https://github.com/Catskill909/wbai-archive)' };
   // `force` skips the conditional request. Used when the listing has already
@@ -754,6 +770,13 @@ let feedIndexCache = null;
 let feedIndexBuiltAt = -1;
 
 function feedIndex() {
+  if (station) {
+    const data = pacifica.peekCatalog();
+    return new Map((data ? data.shows : []).map(r => [r.mp3, {
+      slug: r.sho, item: r, channel: { title: r.title },
+    }]));
+  }
+
   if (feedIndexCache && feedIndexBuiltAt === feedStoreVersion) return feedIndexCache;
   const byMp3 = new Map();
   for (const [slug, rec] of Object.entries(feedStore)) {
@@ -977,6 +1000,13 @@ const archiveCache = makeCache(5 * 60 * 1000);
 let archiveInFlight = null;
 
 async function getArchive() {
+  if (station) {
+    const data = await pacifica.catalog();
+    syncPacificaDirectory(data);
+    archiveCache.set(data);
+    return data;
+  }
+
   const cached = archiveCache.get();
   if (cached) return cached;
   if (archiveInFlight) return archiveInFlight;
@@ -1263,7 +1293,7 @@ process.on('SIGINT', () => flushOnExit('SIGINT'));
 // Covers the ordinary "ran out of work and exited" path, which no signal fires for.
 process.on('beforeExit', () => flushOnExit(null));
 
-const showInfo = readJsonFile(SHOWINFO_PATH, {});
+const showInfo = station ? {} : readJsonFile(SHOWINFO_PATH, {});
 let showInfoUpdated = Object.keys(showInfo).length ? Date.now() : 0;
 
 /**
@@ -1478,6 +1508,7 @@ console.log(
  * because it is newer than anything baked into the image.
  */
 (function seedShowInfo() {
+  if (station) return;
   const seed = readJsonFile(SEED_PATH, null);
   if (!seed) return;
   let added = 0, filled = 0;
@@ -1626,6 +1657,7 @@ async function fetchShowDetail(altid) {
  * DETAIL_RETRY_MS so opening such a sheet repeatedly doesn't re-ask upstream.
  */
 async function getShowDetail(altid) {
+  if (station) { await getArchive(); return showInfo[altid] || null; }
   const held = showInfo[altid];
   if (held && held.desc) return held;
 
@@ -1672,7 +1704,28 @@ async function getShowDetail(altid) {
  * Keyed by a normalised title, because the archive rows have no program id: the
  * only thing the two systems share is the show's name.
  */
-const programCache = readJsonFile(PROGRAMS_PATH, { updated: 0, programs: {} });
+const programCache = station ? { updated: 0, programs: {} } : readJsonFile(PROGRAMS_PATH, { updated: 0, programs: {} });
+const pacifica = station ? require('./lib/pacifica/service').createService({
+  profile: station, dataDir: DATA_DIR, writeJsonAtomic,
+}) : null;
+function syncPacificaDirectory(data) {
+  if (!data) return;
+  for (const key of Object.keys(showInfo)) delete showInfo[key];
+  Object.assign(showInfo, data.directory);
+  showInfoUpdated = data.updated;
+}
+if (pacifica) syncPacificaDirectory(pacifica.peekCatalog());
+// Adapt the existing studio's read model without writing a second XML store.
+function episodeRecords() {
+  if (!pacifica) return feedStore;
+  const data = pacifica.peekCatalog(), records = Object.create(null);
+  for (const row of data ? data.shows : []) {
+    if (!records[row.sho]) records[row.sho] = { channel: { title: row.title }, items: [], fetchedAt: data.validatedAt };
+    records[row.sho].items.push({ ...row, category: row.categoryLabel });
+  }
+  return records;
+}
+
 // The in-flight refresh, not a boolean — so a second caller can *await* the
 // running one instead of being told "already busy" and having to guess when it
 // finished. `feedsInFlight` already works this way; the studio's "refresh the
@@ -1792,6 +1845,7 @@ async function doRefreshPrograms() {
 // Refresh in the background: a cold cache never blocks a request, it just means
 // the first visitors see the sheet without a description.
 function refreshProgramsIfStale() {
+  if (station) return;
   if (Date.now() - (programCache.updated || 0) < PROGRAMS_TTL) return;
   refreshPrograms();
 }
@@ -1801,6 +1855,11 @@ function refreshProgramsIfStale() {
 const nowCache = makeCache(15 * 1000); // 15 seconds
 
 async function getNowPlaying() {
+  if (station) {
+    const data = await pacifica.live();
+    nowCache.set(data); return data;
+  }
+
   const cached = nowCache.get();
   if (cached) return cached;
   // Match the official pl_current1.php exactly: it POSTs an empty body to this
@@ -1910,6 +1969,7 @@ async function probeLiveStream() {
 const PIX_RE = /^[A-Za-z0-9_]+_med_\d+\.jpg$/;
 
 async function proxyPix(file, res) {
+  if (station) { res.writeHead(404); return res.end(); }
   if (!PIX_RE.test(file)) { res.writeHead(400); return res.end('bad image name'); }
   try {
     const upstream = await fetch(UPSTREAM.pixBase + file, {
@@ -1953,7 +2013,7 @@ function securityHeaders() {
     'Content-Security-Policy': [
       "default-src 'self'",
       "img-src 'self' data:",
-      "media-src 'self' https://streaming.wbai.org https://stream.wbai.org https://archive2.wbai.org",
+      station ? "media-src 'self' " + station.origins.audio.join(" ") : "media-src 'self' https://streaming.wbai.org https://stream.wbai.org https://archive2.wbai.org",
       "script-src 'self'",
       "style-src 'self'",
       "connect-src 'self'",
@@ -2009,7 +2069,7 @@ function fileVer(relFromPublic) {
 // X-App-Version header so a deploy can be verified from the command line.
 function appVersion() {
   return `${fileVer('/app.js')}.${fileVer('/styles.css')}.${fileVer('/theme-boot.js')}`
-    + `.${fileVer('/track.js')}`;
+    + `.${fileVer('/track.js')}` + (station ? '.' + crypto.createHash('sha256').update(JSON.stringify(publicProfile(station))).digest('hex').slice(0,12) : '');
 }
 // The studio's own assets, reported separately rather than folded into
 // appVersion(). A studio-only change must be visible on /healthz — otherwise
@@ -2045,8 +2105,8 @@ function stampAssets(html) {
 // that episode's artwork already in the HTML — no client-side code runs in a
 // preview fetch, so nothing app.js does can add it afterwards.
 const OG_RE = /<!-- og:start -->[\s\S]*?<!-- og:end -->/;
-const OG_DEFAULT_TITLE = 'WBAI 99.5 FM Archive';
-const OG_DEFAULT_DESC = "Search, stream, and browse WBAI 99.5 FM's on-demand broadcast archive — Free Speech Radio, Pacifica Radio in New York City.";
+const OG_DEFAULT_TITLE = station ? `${station.name} ${station.frequency} Archive` : 'WBAI 99.5 FM Archive';
+const OG_DEFAULT_DESC = station ? `Search, stream, and browse ${station.name} broadcasts from ${station.city}.` : "Search, stream, and browse WBAI 99.5 FM's on-demand broadcast archive — Free Speech Radio, Pacifica Radio in New York City.";
 
 function htmlAttr(s) {
   return String(s == null ? '' : s)
@@ -2066,7 +2126,7 @@ function ogTags(req, reqUrl) {
   const abs = (p) => (/^https?:/i.test(p) ? p : origin + p);
   let title = OG_DEFAULT_TITLE;
   let desc = OG_DEFAULT_DESC;
-  let image = abs('/assets/icon-512.png');
+  let image = abs(station ? station.assets.icon : '/assets/icon-512.png');
   let pageUrl = origin + '/';
 
   const q = reqUrl.indexOf('?');
@@ -2120,7 +2180,7 @@ function sendFile(req, res, filePath, ext) {
     if (ext === '.html') {
       fs.readFile(filePath, 'utf8', (e2, html) => {
         if (e2) return notFound(req, res, filePath);
-        const body = Buffer.from(injectOg(stampAssets(html), req, req.url || '/'), 'utf8');
+        const body = Buffer.from(injectOg(stampAssets(stationView.render(html, station)), req, req.url || '/'), 'utf8');
         res.writeHead(200, {
           'Content-Type': MIME['.html'],
           'Content-Length': body.length,
@@ -2664,7 +2724,7 @@ function showHistory(slug) {
     const t = monthTotalsFor(slug, statsMonthDays(m));
     return { month: m, plays: t.plays, seconds: t.seconds };
   });
-  const rec = feedStore[slug];
+  const rec = episodeRecords()[slug];
   return {
     slug,
     title: (rec && rec.channel && rec.channel.title) || slug,
@@ -2855,7 +2915,7 @@ function sendStudioHtml(req, res, file) {
     // stampAssets, so the studio's own CSS/JS get the same never-stale
     // guarantee the listener app has. Without it these files sit in the browser
     // cache under a stable name — CLAUDE.md §1, the most expensive bug here.
-    const body = Buffer.from(stampAssets(html), 'utf8');
+    const body = Buffer.from(stampAssets(stationView.render(html, station)), 'utf8');
     res.writeHead(200, {
       'Content-Type': MIME['.html'],
       'Content-Length': body.length,
@@ -2934,7 +2994,7 @@ const DURATION_BUCKETS = [
 ];
 
 function studioStats(usageDays = 30) {
-  const entries = Object.entries(feedStore);
+  const entries = Object.entries(episodeRecords());
   const catMap = new Map();
   const dayMap = new Map();
   const durations = DURATION_BUCKETS.map((b) => ({ label: b.label, episodes: 0 }));
@@ -3093,7 +3153,17 @@ function studioStats(usageDays = 30) {
  */
 const actionLastRun = new Map();
 
-const STUDIO_ACTIONS = {
+const STUDIO_ACTIONS = station ? {
+  catalog: { label: 'Refresh the JSON catalog', cooldownMs: 60000,
+    async run() { const data = await pacifica.catalog(true); syncPacificaDirectory(data); archiveCache.set(data);
+      if (data.stale) throw new Error('Catalog refresh failed; last-good preserved'); return `${data.count} episodes in the catalog`; } },
+  metadata: { label: 'Refresh live metadata', cooldownMs: 30000,
+    async run() { const data = await pacifica.live(true); return data.stale ? 'Metadata is stale' : 'Live metadata refreshed'; } },
+  schedule: { label: 'Refresh the schedule index', cooldownMs: 60000,
+    async run() { const data = await pacifica.schedule(undefined, true); return `${data.weeks.length} published weeks`; } },
+  stream: { label: 'Re-probe the live stream', cooldownMs: 30000,
+    async run() { return (await probeLiveStream()).ok ? 'Live stream reachable' : 'Live stream unreachable'; } },
+} : {
   harvest: {
     label: 'Re-check every feed',
     cooldownMs: 5 * 60 * 1000,
@@ -3206,7 +3276,7 @@ function studioApi(req, res, pathOnly) {
     // Shape-check, not existence-check: a slug we have never seen returns
     // zeros, but an arbitrary string should not get to parade through month
     // sums. Feed slugs are lowercase-hyphen; be a little generous on length.
-    if (!/^[a-z0-9][a-z0-9-]{0,99}$/.test(slug)) {
+    if (!(station ? /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/ : /^[a-z0-9][a-z0-9-]{0,99}$/).test(slug)) {
       return sendStudioJson(res, { error: 'bad slug' }, 400);
     }
     return sendStudioJson(res, showHistory(slug));
@@ -3215,6 +3285,8 @@ function studioApi(req, res, pathOnly) {
     return sendStudioJson(res, {
       station: STATION_ID,
       csrf: studioCsrf(req),
+      provider: station ? station.provider : 'legacy-xml',
+      pacifica: pacifica ? pacifica.health() : undefined,
       actions: Object.entries(STUDIO_ACTIONS).map(([name, a]) => ({
         name, label: a.label, cooldownSec: Math.round(a.cooldownMs / 1000),
       })),
@@ -3312,6 +3384,31 @@ const server = http.createServer(async (req, res) => {
   }
 
   try {
+    if (station) {
+      if (pathOnly === '/api/station') return sendJson(res, publicProfile(station), 200, 0);
+      if (pathOnly === '/station.js') {
+        res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8', 'Cache-Control': 'no-store', ...securityHeaders() });
+        return res.end(stationView.script(station));
+      }
+      if (pathOnly === '/manifest.webmanifest') return sendJson(res, stationView.manifest(station), 200, 0);
+      if (pathOnly === '/api/showinfo') {
+        const data = await getArchive();
+        return sendJson(res, { updated: data.updated, revision: data.revision, count: Object.keys(data.directory).length,
+          shows: data.directory, stale: data.stale }, 200, 0);
+      }
+      if (pathOnly === '/api/programs') return sendJson(res, { count: 0, programs: {}, updated: 0 }, 200, 0);
+      if (pathOnly === '/api/schedule') {
+        const value = new URL(req.url, 'http://localhost').searchParams.get('weekStart');
+        if (value !== null && (!/^\d+$/.test(value) || !Number.isSafeInteger(Number(value)))) return sendJson(res, { error: 'bad weekStart' }, 400);
+        return sendJson(res, await pacifica.schedule(value === null ? undefined : Number(value)), 200, 0);
+      }
+      if (pathOnly.startsWith('/api/artwork/')) {
+        const result = await pacifica.artwork(pathOnly.slice('/api/artwork/'.length));
+        res.writeHead(200, { 'Content-Type': result.contentType, 'Cache-Control': 'public, max-age=86400', ...securityHeaders() });
+        return res.end(result.raw);
+      }
+      if (pathOnly === '/data/shows-fallback.json') return sendJson(res, { error: 'no static fallback' }, 404);
+    }
     if (url === '/api/archive') {
       const data = await getArchive();
       return sendJson(res, data, 200, 300);
@@ -3325,7 +3422,9 @@ const server = http.createServer(async (req, res) => {
         updated: data.updated,
         count: data.count,
         latest: data.latest,
-      }, 200, 60);
+        revision: data.revision,
+        stale: data.stale,
+      }, 200, station ? 0 : 60);
     }
     if (url === '/api/nowplaying') {
       const data = await getNowPlaying();
@@ -3338,7 +3437,7 @@ const server = http.createServer(async (req, res) => {
       const altid = decodeURIComponent(url.slice('/api/showinfo/'.length).split('?')[0]);
       // altids upstream are bare word characters; refuse anything else rather
       // than forward it into a POST body
-      if (!/^[A-Za-z0-9_]{1,64}$/.test(altid)) {
+      if (!(station ? /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/ : /^[A-Za-z0-9_]{1,64}$/).test(altid)) {
         return sendJson(res, { error: 'bad altid' }, 400);
       }
       const info = await getShowDetail(altid);
@@ -3377,6 +3476,9 @@ const server = http.createServer(async (req, res) => {
         // requires already knowing where to look.
         studioVersion: studioVersion(),
         station: STATION_ID,
+        provider: station ? station.provider : 'legacy-xml',
+        ready: pacifica ? !!pacifica.peekCatalog() : true,
+        pacifica: pacifica ? pacifica.health() : undefined,
         // Answers "is persistent storage actually working?" from outside, which
         // is the only place it can be answered — see identifyVolume() and
         // probeMount(). `mounted` is readable on the FIRST deploy: false = no
@@ -3420,7 +3522,7 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, nowCache.stale(), 200, 10);
     }
     console.error(`[error] ${url}:`, err.message);
-    return sendJson(res, { error: 'upstream unavailable' }, 502);
+    return sendJson(res, { error: err.status === 404 ? err.message : 'upstream unavailable' }, err.status || 502);
   }
 });
 
@@ -3429,7 +3531,7 @@ const server = http.createServer(async (req, res) => {
 // port or start the background harvests hanging off the listen callback.
 if (require.main === module) {
   server.listen(PORT, () => {
-    console.log(`WBAI Archive server listening on :${PORT}`);
+    console.log(`${station ? station.name : 'WBAI'} Archive server listening on :${PORT}`);
     refreshProgramsIfStale();
   });
 }

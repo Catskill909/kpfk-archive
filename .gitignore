@@ -21,3 +21,6 @@ chrome.log
 
 # local brainstorming doc, never pushed
 future-dev.md
+
+# Local test/browser state must not be copied into station builds.
+**/*-profile/

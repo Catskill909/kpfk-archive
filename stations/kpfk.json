@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "kpfk",
+  "provider": "pacifica-json",
+  "name": "KPFK",
+  "frequency": "90.7 FM",
+  "city": "Los Angeles",
+  "timezone": "America/Los_Angeles",
+  "primaryChannel": "kpfk",
+  "feeds": {
+    "catalog": "https://archive.kpfk.org/fe_feed/fe_catalog_kpfk.json",
+    "channels": "https://archive.kpfk.org/fe_feed/fe_channels.json"
+  },
+  "liveStream": "https://streams.pacifica.org:9000/kpfk_128",
+  "origins": {
+    "feeds": [
+      "https://archive.kpfk.org"
+    ],
+    "audio": [
+      "https://archive.kpfk.org",
+      "https://streams.pacifica.org:9000"
+    ],
+    "artwork": [
+      "https://confessor.kpfk.org"
+    ]
+  },
+  "links": {
+    "website": "https://www.kpfk.org/",
+    "archive": "https://archive.kpfk.org/"
+  },
+  "assets": {
+    "logo": "/assets/kpfk-logo.png",
+    "icon": "/assets/kpfk-artwork-placeholder.svg"
+  },
+  "categories": {
+    "Arts & Entertainment": "arts",
+    "Espa\u00f1ol": "special",
+    "Health & Spirituality": "health",
+    "Music": "music",
+    "News": "news",
+    "Public Affairs - Local": "public-affairs",
+    "Public Affairs- National+Syndicated": "public-affairs",
+    "Special Program": "special"
+  }
+}

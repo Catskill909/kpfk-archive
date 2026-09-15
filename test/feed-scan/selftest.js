@@ -355,7 +355,7 @@ check('every kind NOTABLE names is a kind diff can actually emit', () => {
 // of this list (the README's) go stale. Drift here does not break the alarm; it
 // makes the alarm arrive empty, which is worse than either working or failing.
 check('the workflow annotation grep lists exactly the NOTABLE kinds', () => {
-  const yml = fs.readFileSync(path.join(__dirname, '..', '..', '.github', 'workflows', 'feed-scan.yml'), 'utf8');
+  const yml = fs.readFileSync(path.join(__dirname, '..', '..', '.github', 'workflows', 'feed-scan.yml.disabled'), 'utf8');
   const m = yml.match(/grep -E '\^ \{4\}\(([A-Z_|]+)\)/);
   assert.ok(m, 'could not find the annotation grep in feed-scan.yml — did it move?');
   assert.deepStrictEqual(m[1].split('|').sort(), [...NOTABLE].sort(),

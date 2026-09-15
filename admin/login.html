@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script src="/station.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Studio · WBAI 99.5 FM</title>
+<title>Studio · {{station.label}}</title>
 <!-- Nothing here should ever be indexed, previewed or linked. -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="dark light">
@@ -49,7 +50,7 @@
 <main class="studio-login">
   <form class="studio-card studio-login-card" id="loginForm" autocomplete="on">
     <h1 class="studio-login-title">
-      <span class="studio-login-station">WBAI 99.5 FM</span>
+      <span class="studio-login-station">{{station.label}}</span>
       Studio
     </h1>
     <p class="studio-login-sub">Station tools. Not for air.</p>
