@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/risingup.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Rising Up]]></title>
+		<link>http://www.kpfk.org/on-air/sonali-kolhatkar/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Tue, 08 Sep 2026 15:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs- National+Syndicated</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Sonali Kolhatkar</itunes:author>
+		<itunes:summary><![CDATA[Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/risingup_it_233.jpg" />
+		<item>
+			<title><![CDATA[Rising Up - Tuesday, September 8, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260908_150000risingup.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260908_150000risingup.mp3</guid>
+			<pubDate>Tue, 08 Sep 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest]]></description>
+			<itunes:summary><![CDATA[Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260908_150000risingup.mp3" length="57654800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Rising Up - Tuesday, September 1, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260901_150000risingup.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260901_150000risingup.mp3</guid>
+			<pubDate>Tue, 01 Sep 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest]]></description>
+			<itunes:summary><![CDATA[Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260901_150000risingup.mp3" length="57653400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Rising Up - Tuesday, August 25, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260825_150000risingup.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260825_150000risingup.mp3</guid>
+			<pubDate>Tue, 25 Aug 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest]]></description>
+			<itunes:summary><![CDATA[Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260825_150000risingup.mp3" length="57664600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Rising Up - Tuesday, August 18, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260818_150000risingup.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260818_150000risingup.mp3</guid>
+			<pubDate>Tue, 18 Aug 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest]]></description>
+			<itunes:summary><![CDATA[Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260818_150000risingup.mp3" length="57659000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Rising Up - Tuesday, August 11, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260811_150000risingup.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260811_150000risingup.mp3</guid>
+			<pubDate>Tue, 11 Aug 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest]]></description>
+			<itunes:summary><![CDATA[Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260811_150000risingup.mp3" length="57665333" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

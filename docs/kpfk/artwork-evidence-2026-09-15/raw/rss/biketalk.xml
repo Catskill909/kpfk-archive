@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/biketalk.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Bike Talk Podcast]]></title>
+		<link>https://www.kpfk.org/on-air/bike-talk/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Bike Talk! celebrates bike rides, collectives, activists, artists, commuters, enthusiasts, professional cyclists, inventors, mechanics, and the bicycle itself as a human-powered mode of transportation.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Sat, 12 Sep 2026 06:01:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs - Local</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Nick Richart</itunes:author>
+		<itunes:summary><![CDATA[Bike Talk! celebrates bike rides, collectives, activists, artists, commuters, enthusiasts, professional cyclists, inventors, mechanics, and the bicycle itself as a human-powered mode of transportation.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://archive.kpfk.org/pix/biketalkpodcast_it_1492.jpg" />
+		<item>
+			<title><![CDATA[Saturday, September 12, 2026 - Bike Filming from Alaska to Tierra Del Fuego, Delhi to Sweden 26/36]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260912_060100biketalk.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260912_060100biketalk.mp3</guid>
+			<pubDate>Sat, 12 Sep 2026 06:01:00 -0700</pubDate>
+			<description><![CDATA[Bike Talk! celebrates bike rides, collectives, activists, artists, commuters, enthusiasts, professional cyclists, inventors, mechanics, and the bicycle itself as a human-powered mode of transportation.]]></description>
+			<itunes:summary><![CDATA[
+<br>&nbsp&nbsp2:30 Jonathan Hale of People&rsquo;s Vision Zero at a <a href="https://scotscoop.com/student-organized-bike-along-brings-awareness-to-current-biking-infrastructure/">&ldquo;ghost tire&rdquo; placing on Forest Lawn Drive in Los Angeles</a>, to honor 70-year-old Bijan Yousefian, a victim of traffic violence who died in a fiery crash there. <br><br>&nbsp&nbsp6:25 High School senior Ben Mangiafico talks about <a href="https://scotscoop.com/student-organized-bike-along-brings-awareness-to-current-biking-infrastructure/">the bike ride he hosted recently</a> to point out the dangerous spots on his route to school. <br><br>12:45 Dr. Timm D&ouml;bert and Leanna Carriere on their 9-month, 30,000km ride from Alaska&rsquo;s High Arctic to Tierra del Fuego to follow the migration of Hudsonian Whimbrels, and Wings of Survival, the documentary about <a href="https://www.wingsofsurvival.com/">their journey</a>. &nbsp;<br><br>25:30 <a href="https://www.bicyclefilmfestival.com/">Bicycle Film Festival </a>Director Brendt Barbur on the Festival&rsquo;s 26 year history and this year&rsquo;s offerings.&nbsp;<br><br>40:06 Another bike film, <a href="https://releasing.dogwoof.com/the-cycle-of-love">The Cycle of Love (2025)</a>, is a documentary about a man who rode 6,000 miles from Delhi to Sweden in 1977 in search of a woman he believed was prophesied to be his wife. Director Orlando von Einsiedel talks with us about his film. <br><br>53:55 News:&nbsp;<br><a href="https://www.berkeleyscanner.com/2026/09/03/community/neighborhood-group-sues-berkeley-hopkins-bike-lanes/">Berkeley sued over Hopkins bike lane plan</a><br><a href="https://www.wbur.org/news/2026/09/04/mit-bike-crash-thomas-rose-memorial-drive">MIT professor dies of injuries after being struck by a driver while cycling on Memorial Drive</a><br><a href="https://www.cbsnews.com/sacramento/news/folsom-considers-crackdown-on-e-bike-wheelies-stunts-and-unsafe-riding/">Folsom considers crackdown on e-bike wheelies, stunts and unsafe riding</a><br><a href="https://www.theguardian.com/world/2026/sep/02/japan-new-speed-limit-30kmh-narrow-city-streets">Japan halves speed limit to 30km/h on all narrow city streets</a>]]></itunes:summary>
+			<itunes:duration>3502</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260912_060100biketalk.mp3" length="39515881" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Saturday, September 5, 2026 - Streetfilms NYC, Anti-bike lane bill in LA 26/35]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260905_060100biketalk.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260905_060100biketalk.mp3</guid>
+			<pubDate>Sat, 05 Sep 2026 06:01:00 -0700</pubDate>
+			<description><![CDATA[Bike Talk! celebrates bike rides, collectives, activists, artists, commuters, enthusiasts, professional cyclists, inventors, mechanics, and the bicycle itself as a human-powered mode of transportation.]]></description>
+			<itunes:summary><![CDATA[
+<br>&nbsp&nbsp2:45 Language was added to <a href="https://www.latimes.com/california/story/2026-08-31/lawmakers-add-last-minute-language-to-bill-that-could-affect-forest-lawn-drive">a bill targeting a much needed protected bike lane and traffic calming project on LA&rsquo;s high speed Forest Lawn Drive,</a> where there have been more than 95 crashes and 4 fatalities since 2013. The bill was paid for by Forest Lawn Cemetery donations, and it&rsquo;ll be an issue in the LA Mayoral race, says Michael Schneider of Streets For All.&nbsp;<br><br>12:19 LA Metro will <a href="https://thesource.metro.net/hey-la-county-get-paid-to-give-your-car-a-rest/">pay some drivers to drive less</a> in a new program, as the city looks toward a more car-light 2028 Olympics. LA Metro spokesperson Patrick Chandler gives the details.&nbsp;<br><br>21:55 Streetfilms filmmaker Clarence Eckerson talks with Taylor about his work as an urbanist educator.<br><br>45:55 News:&nbsp;<br><a href="https://collegian.com/articles/news/2026/08/update-pedestrian-pronounced-dead-after-tour-de-fat-vehicle-crash/">Pedestrian pronounced dead after Tour de Fat vehicle crash, 5 remain injured, in unknown condition</a><br><a href="https://www.nbcchicago.com/news/local/new-illinois-law-sets-license-insurance-requirements-for-e-bike-riders/3981339/">New Illinois law sets license, insurance requirements for e-bike riders</a><br><a href="https://www.cbsnews.com/losangeles/news/newport-beach-residents-frustrated-by-e-bikes-parked-in-front-of-their-homes/">Newport Beach residents frustrated by e-bikes parked in front of their homes</a><br><a href="https://www.calbike.org/ab2168-to-governor/">Bill to strengthen walking and biking programs, AB 2168, headed to governor&rsquo;s desk</a><br><a href="https://sfstandard.com/2026/08/28/market-street-cyclist-safety-hazard/">Cyclists have crashed on Market Street&rsquo;s rail tracks for 130 years. Why can&rsquo;t SF fix them?</a><br><br>49:08 More eulogies from Bike Oven/ Killradio/ Bike Talk/ bike community documentarian and spirit-booster DJ Chickenleather&rsquo;s memorial at the Highland Park Bike Oven.]]></itunes:summary>
+			<itunes:duration>3480</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260905_060100biketalk.mp3" length="43235157" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Saturday, August 29, 2026 - The Journey Makes The Hero 26/34]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260829_060100biketalk.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260829_060100biketalk.mp3</guid>
+			<pubDate>Sat, 29 Aug 2026 06:01:00 -0700</pubDate>
+			<description><![CDATA[Bike Talk! celebrates bike rides, collectives, activists, artists, commuters, enthusiasts, professional cyclists, inventors, mechanics, and the bicycle itself as a human-powered mode of transportation.]]></description>
+			<itunes:summary><![CDATA[
+<br>&nbsp&nbsp2:10 Chickenleather, spirit and documentarian of the LA bike movement for decades, died last week. We bring you his words from 2010 on getting &ldquo;normal&rdquo; people to bike, engaging the youth, and volunteering at a bike collective.&nbsp;<br><br>&nbsp&nbsp7:12 Taylor drafts behind yet another stranger, Josep in Catalu&ntilde;a, Spain, and they talk afterward.&nbsp;<br><br>12:25 Bike Talk listener Tim Dyet says he&rsquo;s inspired by Taylor Nichols&rsquo; ride from SF to Michigan to do a 10 day ride of his own along the Empire Trail bike path in New York. <br><br>17:45 <a href="https://teamsamaritan.org/samaritan-cycling-usa/">Team Samaritan</a>&nbsp;riders Tom Schwein and David McKean aim to raise two million dollars with a Ride Across America for Catholic Charities to help fight the nation&rsquo;s homeless epidemic. <br><br>33:00 Massachusetts Streetsblog reporter and editor Christian MilNeil on&nbsp;<a href="https://mass.streetsblog.org/2026/08/20/against-vocal-opposition-from-east-boston-residents-boston-streets-commissioners-unanimously-vote-to-eliminate-planned-bikeway-near-day-square">the elimination of a Boston bikeway by the Mayor Wu administration</a>. <br><br>46:01 News:&nbsp;<br><b><a href="https://www.nytimes.com/2026/08/23/nyregion/nyc-cycling-bike-deaths.html?unlocked_article_code=1.71A.Gjqh.Y--_JwJrQTAf&smid=bs-share">3 Cyclists Die in One Week in Hit-and-Runs in New York City</a>. <br><a href="https://mass.streetsblog.org/2026/08/20/against-vocal-opposition-from-east-boston-residents-boston-streets-commissioners-unanimously-vote-to-eliminate-planned-bikeway-near-day-square">Against Neighbors&rsquo; Wishes, Boston Streets Commissioners Cancel Planned Bikeway Near Day Square</a>. <br><a href="https://www.ocregister.com/2026/08/20/e-bikes-scooters-boards-prohibited-at-all-of-newport-mesa-unifieds-k-8-campuses/">E-bikes, scooters, boards prohibited at all of Newport-Mesa Unified&rsquo;s K-8 campuses</a>.&nbsp;<br><a href="https://www.theguardian.com/world/2026/aug/20/lake-como-italy-mayor-bans-bikes-city-centre-after-being-hit?CMP=oth_b-aplnews_d-1">Como mayor bans bikes in city centre after being hit &lsquo;by one of these beasts&rsquo;</a>. <br><a href="https://www.latimes.com/california/story/2026-08-21/bass-hit-brakes-on-new-bike-lanes-near-forest-lawn-raman-is-slamming-her-for-it">LA Mayor hits brakes on needed bike lanes near Forest Lawn. Mayoral opponent Raman is slamming her for it</a>.</b><br><br>48:39 Chickenleather&rsquo;s memorial at the&nbsp;<a href="https://bike-oven.com/">Bike Oven</a>&nbsp;in Highland Park, Los Angeles.]]></itunes:summary>
+			<itunes:duration>3480</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260829_060100biketalk.mp3" length="42083502" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Saturday, August 22, 2026 - Backpedaling 26/33]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260822_060100biketalk.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260822_060100biketalk.mp3</guid>
+			<pubDate>Sat, 22 Aug 2026 06:01:00 -0700</pubDate>
+			<description><![CDATA[Bike Talk! celebrates bike rides, collectives, activists, artists, commuters, enthusiasts, professional cyclists, inventors, mechanics, and the bicycle itself as a human-powered mode of transportation.]]></description>
+			<itunes:summary><![CDATA[
+<br>Taylor rides Barcelona, and says it&rsquo;s civilized.<br><br>&nbsp&nbsp4:15 <a href="https://www.theguardian.com/world/2026/aug/14/ontario-free-to-axe-toronto-bike-lanes-regions-top-court-rules">A Quebec court rules against Toronto&rsquo;s famously successful protected lanes</a>. Michael Longfield, Executive Director of Cycle Toronto, explains.&nbsp;<br><br>15:28 <a href="https://nyc.streetsblog.org/2026/08/12/crashland-no-more-mamdani">NYC closes a 1 block gap in Ashland Avenue&rsquo;s protected bike lane in Brooklyn, known as &ldquo;Crashland&rdquo;</a>&nbsp;for the danger created when Mayor Adams&rsquo; corrupt administration blocked that part of the path. Streetsblog NYC reporters Emily Lipstein and Michael Duggan fill in the gaps.&nbsp;<br><br>20:25 <a href="https://www.streetsareforeveryone.org/blog/forest-lawn-drive">A fully funded safety improvement project on Forest Lawn Drive was stopped by LA Mayor Bass despite years of public planning</a>, extensive community outreach, and documented safety concerns. Streets Are For Everyone ED Damian Kevitt breaks it down.<br><br>26:37 News: <br><a href="https://www.nytimes.com/2026/08/19/us/cycling-team-crash-milligan-university.html#:~:text=The%20crash%20happened%20around%208,Carter%20County%2C%20Tenn.%2C%20officials%20said">Driver Hits 11, Kills Two College Cyclists in Tennessee'''</a>.<br><a href="https://www.bbc.com/sport/cycling/articles/czxqqlpnx98o">The car killing of British rider Fin Tarling during Friday&rsquo;s stage of the Volta a Portugal</a>.<br><a href="https://www.thestar.com/news/gta/doug-ford-wins-major-court-battle-to-strip-toronto-of-its-main-downtown-bike-lanes/article_0da549f1-658b-4f93-b3aa-0dcd7f9273a8.html">'''Bike-hating Ontario Premier Doug Ford wins court battle to strip Toronto of its main downtown bike lanes</a>.<br><a href="https://cyclingindustry.news/londons-cycleway-network-grows-five-fold-in-decade-to-450km/">London&rsquo;s Cycleway network grows five-fold in decade to 450km</a>'''.<br><br>28:44 Riders of the&nbsp;&ldquo;<a href="https://www.suburbanreview.com/p/d1011-sponsors-the-friendly-8-ride">friendly 8</a>&rdquo;&nbsp;in Halcyon, New Jersey, Kimberly Organo-Solo and Charles Sontag, with ride leader Lo Sontag, on why they ride and don&rsquo;t ride more.&nbsp;<br><br>39:19 Owner of <a href="https://www.allez-la.com/">Allez LA</a> bike shop in Los Angeles, Kyle Kelley, whom interviewer Jim Cadenhead calls &ldquo;the most famous fixie foo that ever was&rdquo;.<br><br>42:40 Erasure poetry from bike hate mail submissions by Liza Birch, a Rhode Island bike advocate.]]></itunes:summary>
+			<itunes:duration>3051</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260822_060100biketalk.mp3" length="36113067" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Saturday, August 15, 2026 - Beyond Cyclists 26/32]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260815_060100biketalk.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260815_060100biketalk.mp3</guid>
+			<pubDate>Sat, 15 Aug 2026 06:01:00 -0700</pubDate>
+			<description><![CDATA[Bike Talk! celebrates bike rides, collectives, activists, artists, commuters, enthusiasts, professional cyclists, inventors, mechanics, and the bicycle itself as a human-powered mode of transportation.]]></description>
+			<itunes:summary><![CDATA[
+<br>&nbsp&nbsp2:15 <a href="https://www.walkbikeberkeley.org/">Walk Bike Berkeley</a> organizer Ben Gerhardstein on why Berkeley needs the Hopkins Ave protected bike lane they fought for so long to get and finally won, and why the opposition was so vitriolic.&nbsp;<br><br>&nbsp&nbsp6:30 A recent study, &ldquo;<a href="https://www.sciencedirect.com/science/article/pii/S0967070X26003057">Beyond Cyclists</a>,&rdquo; finds that support for and opposition to cycling infrastructure don&rsquo;t always follow intuitive lines, and the ways pro-bike arguments are framed matters. Quebecois researchers J&eacute;r&ocirc;me Laviolette, Kevin Manaugh, Owen Waygood unpack their study. <br><br>35:05 Our bike lawyer Jim Pocrass talks with our news anchor, Stacey Randecker, about her e-bike crash, her medical treatment, her settlement, and why every document mattered.&nbsp;<br><br>44:30 News:&nbsp;<br><a href="https://thehill.com/business/6017218-amazon-new-york-mamdani-e-bikes/">Amazon responds to Mamdani&rsquo;s cease-and-desist letter</a>.<br><a href="https://wbznewsradio.iheart.com/content/boston-city-official-wants-cars-to-stop-blocking-bike-lanes-and-crosswalks/">A Boston City Official Wants Cars To Stop Blocking Bike Lanes And Crosswalks</a>.<br><a href="https://indyweek.com/news/durham-dedicates-1m-to-protecting-bike-lanes/">Durham Dedicates $1M To Protecting Bike Lanes</a>.<br><a href="https://www.kut.org/text/transportation/2026-08-06/austin-tx-university-of-texas-campus-speedway-bike-ban-cycling-pedestrians">UT Austin officials say a new mobility plan is coming as cyclists worry about potential bike ban</a>. <br><br>47:35 Fresno County&rsquo;s Board of Supervisors buried Measure C, a transportation tax favoring local roads and transit over freeway expansion, using a procedural trick. A law just signed by California Governor Newsom would foil the Board and put Measure C on Fresno&rsquo;s ballot in November.&nbsp;<a href="https://fresnoland.org/2026/08/06/the-fight-has-just-begun/">The Supes plan to sue, claiming the law is unconstitutional</a>. Fresnoland&rsquo;s Editor in Chief Danielle Bergstrom reports.]]></itunes:summary>
+			<itunes:duration>3480</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260815_060100biketalk.mp3" length="42736896" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Saturday, August 8, 2026 - We&rsquo;re Not Copenhagen 26/31]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260808_060100biketalk.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260808_060100biketalk.mp3</guid>
+			<pubDate>Sat, 08 Aug 2026 06:01:00 -0700</pubDate>
+			<description><![CDATA[Bike Talk! celebrates bike rides, collectives, activists, artists, commuters, enthusiasts, professional cyclists, inventors, mechanics, and the bicycle itself as a human-powered mode of transportation.]]></description>
+			<itunes:summary><![CDATA[
+<br>Taylor on being a bike nerd and making friends by bike, like&nbsp;<a href="https://kaybikes4kids.com/">Kay Shuster</a>.&nbsp;<br><br>&nbsp&nbsp5:41 <a href="https://www.suburbanreview.com/p/bicycles-are-partisan-now">Bicycles Are Partisan now</a>, writes Lo Sontag in light of the MAGA federal assault on biking. But the real divide isn&rsquo;t left/right, it&rsquo;s who has power and who doesn&rsquo;t.&nbsp;<br><br>19:45 Listener Tim Dyet writes he plans a bike trip in NY, inspired by Taylor&rsquo;s recent ride from SF to Michigan. Tim plans to take his bike on an Amtrak train &ndash; speaking of which, the League of American Bicyclists has issued a&nbsp;<a href="https://bikeleague.org/wp-content/uploads/2026/08/LeagueOfAmericanBicyclists_AmtrakReport_2026.pdf">report</a>&nbsp;on bike-friendly trains.&nbsp;<br><br>24:27 Nietifa, a listener, suggests a &ldquo;<a href="https://bsky.app/profile/lukewanderer.bsky.social/post/3mrajbqsdo22p">limited license</a>&rdquo; for bad drivers.<br><br>25:55 In &ldquo;<a href="https://www.sciencedirect.com/science/article/abs/pii/S0921800918308097">The Social Cost of Automobility, Cycling and Walking in the European Union</a>,&rdquo; Swedish researcher Stephan Gosling says that in advocating for bike infrastructure, we shouldn&rsquo;t argue against cars. <br><br>41:26 Stacey&rsquo;s News:&nbsp;<a href="https://www.berkeleyscanner.com/2026/07/30/community/berkeley-hopkins-bike-lanes-approved/">After years of debate, Berkeley approves Hopkins bike lanes</a>. <br><a href="Archer Ave Bike Lanes Tension Fuels Political Ambitions in Chicago.">Archer Ave Bike Lanes Tension Fuels Political Ambitions in Chicago</a>. <br><a href="https://www.nydailynews.com/2026/08/01/woman-in-queens-bike-lane-fatally-struck-by-suv-driver-who-never-stopped-nypd/">A woman in a Queens bike lane was fatally struck by an SUV driver who never stopped</a>. <br><a href="https://www.clickondetroit.com/news/local/2026/07/28/pedestrians-cyclists-can-cross-gordie-howe-international-bridge-for-free-beginning-aug-5/?fbclid=IwY2xjawTZfQBleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA80MDk5NjI2MjMwODU2MDkAAR7H4ETfc-ie_Zm2liqd5k6jgRd23CpR95PohJUgaZvudYwiPKgoDWtFrp-NoA_aem_nZIXP2dt91R24ORX0X1bQQ">Pedestrians and cyclists can cross the Gordie Howe International Bridge for free in Detroit</a>. <br><br>44:27 Berkeley&rsquo;s long overdue approval of the Hopkins Avenue protected bike lane &ndash; with Robert Prinz,&nbsp;<a href="https://bikeeastbay.org/bike-to-wherever-day/">Bike East Bay</a>.]]></itunes:summary>
+			<itunes:duration>3480</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260808_060100biketalk.mp3" length="42332814" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Saturday, August 1, 2026 - Bike Hope Versus Bike Hate 26/30]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260801_060100biketalk.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260801_060100biketalk.mp3</guid>
+			<pubDate>Sat, 01 Aug 2026 06:01:00 -0700</pubDate>
+			<description><![CDATA[Bike Talk! celebrates bike rides, collectives, activists, artists, commuters, enthusiasts, professional cyclists, inventors, mechanics, and the bicycle itself as a human-powered mode of transportation.]]></description>
+			<itunes:summary><![CDATA[
+<br>&nbsp&nbsp6:50 <a href="http://www.npr.org/2026/07/16/nx-s1-58%E2%80%A6ras-safety-measures">The USDOT/FHWA removed&nbsp; bike lanes, road diets, and speed management tools that have been shown to reduce traffic injuries and fatalities from their list of Proven Safety Countermeasures on USDOT/FHWA sites</a>. Is the administration anti-safety? Of course, as League of American Bicyclists Deputy Executive Director Caron Whitaker explains, the Proven Safety Countermeasures&rsquo; removal by USDOT does not change the fact that they make roads safer.&nbsp;<br><br>17:54 Bike share is transportation! Recognizing this, bike-sharing&nbsp;<a href="http://council.nyc.gov/district-33/">Brooklyn Councilmember Lincoln Restler</a>&nbsp;has a bill to cap Citibike fares at the price of a bus or subway. Lincoln talks about CD 33&rsquo;s other bike/active transportation/safe streets initiatives, too. <br><br>36:08 San Francisco architect Ben Frommagen is on a 4,200 + day streak of riding every day for two hours (almost 12 years). Taylor rides along with Ben and talks over coffee about the personal, mental and physical trade-offs of keeping the streak.]]></itunes:summary>
+			<itunes:duration>3480</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260801_060100biketalk.mp3" length="42966427" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

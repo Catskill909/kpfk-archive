@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/artsinreview.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Arts In Review]]></title>
+		<link>http://www.kpfk.org/on-air/arts-in-review/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Fri, 11 Sep 2026 14:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Arts &#38; Entertainment</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Julio Martinez</itunes:author>
+		<itunes:summary><![CDATA[Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="Arts"><itunes:category text="Performing Arts" /></itunes:category>
+				<itunes:image href="https://confessor.kpfk.org/pix/artsinreview_it_150.jpg" />
+		<item>
+			<title><![CDATA[Arts In Review - Friday, September 11, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260911_140000artsinreview.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260911_140000artsinreview.mp3</guid>
+			<pubDate>Fri, 11 Sep 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.]]></description>
+			<itunes:summary><![CDATA[Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260911_140000artsinreview.mp3" length="28858200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Arts In Review - Friday, September 4, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260904_140000artsinreview.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260904_140000artsinreview.mp3</guid>
+			<pubDate>Fri, 04 Sep 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.]]></description>
+			<itunes:summary><![CDATA[Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260904_140000artsinreview.mp3" length="28849800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Arts In Review - Friday, August 28, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260828_140000artsinreview.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260828_140000artsinreview.mp3</guid>
+			<pubDate>Fri, 28 Aug 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.]]></description>
+			<itunes:summary><![CDATA[Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.]]></itunes:summary>
+			<itunes:duration>1801</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260828_140000artsinreview.mp3" length="28814800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Arts In Review - Friday, August 21, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260821_140000artsinreview.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260821_140000artsinreview.mp3</guid>
+			<pubDate>Fri, 21 Aug 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.]]></description>
+			<itunes:summary><![CDATA[Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260821_140000artsinreview.mp3" length="28858200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Arts In Review - Friday, August 14, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260814_140000artsinreview.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260814_140000artsinreview.mp3</guid>
+			<pubDate>Fri, 14 Aug 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.]]></description>
+			<itunes:summary><![CDATA[Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260814_140000artsinreview.mp3" length="28856800" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

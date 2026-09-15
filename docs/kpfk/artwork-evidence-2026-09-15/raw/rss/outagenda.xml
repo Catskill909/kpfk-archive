@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/outagenda.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - The Out Agenda - Online]]></title>
+		<link>http://www.kpfk.org/on-air/the-out-agenda/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[The Out Agenda - Online]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Mon, 14 Sep 2026 19:05:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs - Local</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Rita Gonzales and Ralph Radebaugh</itunes:author>
+		<itunes:summary><![CDATA[The Out Agenda - Online]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+		
+		<item>
+			<title><![CDATA[The Out Agenda - Online - Monday, September 14, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260914_190500outagenda.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260914_190500outagenda.mp3</guid>
+			<pubDate>Mon, 14 Sep 2026 19:05:00 -0700</pubDate>
+			<description><![CDATA[Rita Gonzales and Ralph Radebaugh]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>2436</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260914_190500outagenda.mp3" length="68221320" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[The Out Agenda - Online - Monday, September 7, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260907_190500outagenda.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260907_190500outagenda.mp3</guid>
+			<pubDate>Mon, 07 Sep 2026 19:05:00 -0700</pubDate>
+			<description><![CDATA[Rita Gonzales and Ralph Radebaugh]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>2505</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260907_190500outagenda.mp3" length="70148632" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Monday, August 31, 2026 - Actors Amber Liekhus and CJ Obilom are joining us to talk about the play &ldquo;Ma Rainy, Black Bottom&rdquo; at A Noise Within.
+
+Also on the program is This Way Out with international LGBTQ+ news]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260831_190500outagenda.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260831_190500outagenda.mp3</guid>
+			<pubDate>Mon, 31 Aug 2026 19:05:00 -0700</pubDate>
+			<description><![CDATA[Rita Gonzales and Ralph Radebaugh]]></description>
+			<itunes:summary><![CDATA[Guest: Amber Liekhus and CJ Obilom ]]></itunes:summary>
+			<itunes:duration>3078</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260831_190500outagenda.mp3" length="86196906" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Monday, August 24, 2026 - Corky Dominguez, Co-Producer and a Director of STAND IN THE LIGHT, A Solo Show Festival at Casa 0101.  One of theatre tracks that Corky will be talking about is the Brown and Out, in the festival.
+
+Also on the program is This Way Out with international LGBTQ+ news]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260824_190500outagenda.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260824_190500outagenda.mp3</guid>
+			<pubDate>Mon, 24 Aug 2026 19:05:00 -0700</pubDate>
+			<description><![CDATA[Rita Gonzales and Ralph Radebaugh]]></description>
+			<itunes:summary><![CDATA[Guest: Corky Dominguez, Co-Producer and a Director ]]></itunes:summary>
+			<itunes:duration>4918</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260824_190500outagenda.mp3" length="137711421" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[The Out Agenda - Online - Monday, August 17, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260817_190500outagenda.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260817_190500outagenda.mp3</guid>
+			<pubDate>Mon, 17 Aug 2026 19:05:00 -0700</pubDate>
+			<description><![CDATA[Rita Gonzales and Ralph Radebaugh]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>2398</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260817_190500outagenda.mp3" length="67149775" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

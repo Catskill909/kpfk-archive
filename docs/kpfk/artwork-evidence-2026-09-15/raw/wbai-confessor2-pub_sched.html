@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<title>WBAI Schedule Grid</title>
+<script type="text/javascript" language="javascript" src="../script/tooltip.js"></script>
+<script type="text/javascript" language="javascript">
+here='/playlist/pub_sched.php';
+//<!--
+function do_next(obj)
+{
+	var dte = document.getElementById('sundte').value;
+	location.href = here + '?dte=' + dte + '&op=next';
+}
+
+function do_prev(obj)
+{
+	var dte = document.getElementById('sundte').value;
+	location.href = here + '?dte=' + dte + '&op=prev';
+}
+//-->
+</script>
+<script type="text/javascript">
+(new Image()).src = "https://confessor2.wbai.org/pix/laughionsundaymorn_med_353.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/earthriotradio_med_387.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/goodmorninnuevayor_med_316.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/animalmatters_med_390.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/caribbevoicesandbe_med_391.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/rfeireann_med_97.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/censored2_med_123.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/wbaisports_med_392.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/ablitionshow_med_393.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/cslatino_med_18.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/ricksmithshow_med_322.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/talkoutschoob_med_394.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/gaoradio_med_22.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/eoinagain_med_23.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/salsasho_med_230.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/awareshow_med_301.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/goodmorninnuevayor_med_316.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/whatsgoingonmoralm_med_336.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/dn_med_28.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/wedecideamericatcr_med_378.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/lawadis_med_8.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/frontlinvoices_med_373.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/attitudarnearnesen_med_361.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/traumacode_med_320.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/talkbackvant_med_79.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/lauraflandeshow_med_358.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/poetandpoem_med_359.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/laborandhealthcacc_med_375.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/chrishedgesreport_med_338.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/bbridges_med_37.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/housing_med_39.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/hotwolf_med_92.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/niteshift_med_43.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/ftsb_med_60.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/afrobeat_med_102.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/breakthrnewsradio_med_379.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/awareshow_med_301.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/goodmorninnuevayor_med_316.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/whatsgoingonlabort_med_330.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/dn_med_28.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/covertactionbullet_med_363.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/mindfield_med_331.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/quantummedicine_med_319.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/foodsluethradio_med_326.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/frontlinvoices_med_373.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/attitudarnearnesen_med_361.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/explorafri_med_176.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/blackstarnews_med_295.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/uncontrolledopposi_med_372.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/indypennewshour_med_327.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/clearifogforcesgre_med_303.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/voice_med_280.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/outfm_med_30.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/crcafe_med_29.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/heavywaits_med_362.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/manrat_med_190.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/grayzone_med_367.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/capitalraceanddemo_med_365.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/ftsb_med_60.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/shenuliving_med_381.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/ricksmithshow_med_322.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/whatsgoingonlabort_med_330.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/dn_med_28.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/equal_med_257.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/ecologica_med_364.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/city_med_283.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/frontlinvoices_med_373.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/attitudarnearnesen_med_361.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/naturalistsupport_med_382.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/katiehalpershowb_med_332.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/drivetime_med_383.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/advojust_med_205.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/electronicintifada_med_333.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/oth_med_64.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/whatshappenin_med_335.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/artex_med_145.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/afrobeat_med_102.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/dust_med_255.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/dorereb_med_66.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/frequency_med_244.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/burnbabyburn_med_384.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/whatsgoingonthursd_med_342.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/dn_med_28.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/equal_med_257.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/joyrapeforum_med_191.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/frontlinvoices_med_373.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/attitudarnearnesen_med_361.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/techtonic_med_385.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/resistanradio_med_337.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/tcoyhealth_med_87.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/drive_med_235.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/blackagendareport_med_366.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/econupsat_med_141.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/shortwave_med_386.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/eatcrossr_med_78.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/backstagestories_med_310.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/haitianallstarz_med_133.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/dorereb_med_66.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/inonews_med_81.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/gaoradio_med_22.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/wedecideamericatcr_med_378.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/dn_med_28.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/btpale_med_16.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/ground_med_242.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/hmind2_med_229.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/frontlinvoices_med_373.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/attitudarnearnesen_med_361.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/greenstreet_med_374.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/liveonfly_med_344.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/speakintruthpower_med_345.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/cspin_med_83.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/reel_med_285.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/gbe_med_89.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/gbemindfli_med_311.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/harlemconnectio_med_348.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/mraverscreative_med_9.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/labbrish_med_80.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/cwave_med_25.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/oldisnewagain_med_259.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/anysat_med_219.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/otcount_med_95.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/dream_med_214.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/earthriotradio_med_387.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/wbairadipopupshop_med_388.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/salsasho_med_230.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/haitiourrevolutcon_med_350.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/ralphnaderradiohou_med_351.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/allmixedup_med_98.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/musicalchairs_med_164.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/groovelines_med_389.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/allmixedup_med_98.jpg";
+(new Image()).src = "https://confessor2.wbai.org/pix/laughionsundaymorn_med_353.jpg";
+</script>
+<style type="text/css">
+body
+{
+	background-color:#000000;
+}
+.odd_tr
+{
+	height:22px;
+}
+.even_tr
+{
+	height:22px;
+}
+td
+{
+	font-size: 10px;
+	font-weight: normal;
+	font-family: Arial,Helvetica,sans-serif;
+}
+.even_time
+{
+	border-right:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	background-color:#333333;
+	font-size:12px;
+	text-align:right;
+	color:#ffffff;
+}
+.odd_time
+{
+	border-right:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	background-color:#666666;
+	font-size:12px;
+	text-align:right;
+	color:#ffffff;
+}
+.day_time
+{
+	border-right:1px solid #ffffff;
+	border-top:1px solid #000000;
+	background-color:#e0e0e0;
+	font-size:12px;
+	text-align:right;
+	color:#000000;
+}
+.nite_time
+{
+	border-right:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	background-color:#303050;
+	font-size:12px;
+	text-align:right;
+	color:#ffffff;
+}
+.title
+{
+	border-bottom: 1px solid #ffffff;
+	background-color:#333333;
+	color:#ffffff;
+	text-align:center;
+	font-size:10px;
+}
+
+
+
+.even_time_td_right
+{
+	border-right:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	background-color:#333333;
+	font-size:12px;
+	text-align:right;
+	color:#ffffff;
+	top: 0px;
+}
+.odd_time_td_right
+{
+	border-right:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	background-color:#666666;
+	font-size:12px;
+	text-align:right;
+	color:#ffffff;
+	top: 0px;
+}
+.title_td
+{
+	border-bottom: 1px solid #ffffff;
+	border-right: 1px solid #ffffff;
+	background-color:#333333;
+	color:#ffffff;
+	text-align:center;
+}
+.show_td
+{
+	border-top: 1px solid #ffffff;
+	border-right: 1px solid #ffffff;
+	padding-top: 4px;
+	background-color: #330000;
+	color:#ffffff;
+	text-align:center;
+}
+a.show_td:link
+{
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	padding-top: 4px;
+	background-color: #330000;
+	color:#ffffff;
+	text-align:center;
+}
+a.show_td:visited
+{
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	padding-top: 4px;
+	background-color: #330000;
+	color:#ffffff;
+	text-align:center;
+}
+a.show_td:hover
+{
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	padding-top: 4px;
+	background-color: #330000;
+	color:#ffffff;
+	text-align:center;
+}
+a.show_td:active
+{
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	padding-top: 4px;
+	background-color: #330000;
+	color:#ffffff;
+	text-align:center;
+}
+.host_span
+{
+	color:#cccccc;
+	font-size: 10px;
+}
+.talk_td
+{
+	border-top: 1px solid #ffffff;
+	border-right: 1px solid #ffffff;
+	padding-top: 4px;
+	background-color: #003300;
+	color:#ffffff;
+	text-align:center;
+}
+a.talk_link:link
+{
+	padding-top: 4px;
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	color:#ffffff;
+}
+a.talk_link:visited
+{
+	padding-top: 4px;
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	color:#ffffff;
+}
+a.talk_link:hover
+{
+	padding-top: 4px;
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	color:#ffffff;
+	font-style: italic;
+}
+a.talk_link:active
+{
+	padding-top: 4px;
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	color:#ffffff;
+	font-style: italic;
+}
+.blank_td
+{
+	border-right:1px solid #ffffff;
+	background-color: #330000;
+	color:#ffffff;
+	text-align:center;
+}
+.blank_talk_td
+{
+	border-right:1px solid #ffffff;
+	background-color: #003300;
+	color:#ffffff;
+	text-align:center;
+}
+a.show_link:link
+{
+	color: #ffffff;
+	padding-top: 4px;
+	text-decoration:underline;
+	font-style: normal;
+	font-size:10px;
+}
+a.show_link:visited
+{
+	color: #ffffff;
+	padding-top: 4px;
+	text-decoration:underline;
+	font-style: normal;
+	font-size: 10px;
+}
+a.show_link:hover
+{
+	color: #ffffff;
+	padding-top: 4px;
+	text-decoration:underline;
+	font-weight:normal;
+	font-style: italic;
+	font-size: 10px;
+}
+a.show_link:active
+{
+	color: #ffffff;
+	padding-top: 4px;
+	text-decoration:none;
+	font-style: normal;
+	font-size: 10px;
+}
+.tooltipShadow 
+{
+	background: url(shadow.png); 
+}
+.tooltipContent 
+{
+	left: -4px; top: -4px;      
+	background-color: #000000;    
+	color:#ffffff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight: normal;
+	border: solid #00ff00 1px;  
+	padding: 15px;            
+	padding-bottom:20px;
+	border-radius: 10px 10px;
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px; 
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); 
+	-webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+	margin-left: 0; 
+	width: 220px;
+	z-index:80;
+}
+</style><style type="text/css">
+.cat_12
+{
+color:#000000;
+background-color:#F1CEE2;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_12
+{
+background-color:#F1CEE2;
+height:30;
+width:30;
+}
+.cat_blank_12
+{
+background-color:#F1CEE2;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_12
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_12
+{
+color:#000000;
+background-color:#F1CEE2;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_12
+{
+border: 0px solid black;
+position: relative;
+left: -32px;
+margin-bottom: 4px;
+}
+a.cat_link_12:link
+{
+color:#6B70FF;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_12:visited
+{
+color:#6B70FF;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_12:hover
+{
+color:#6B70FF;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_12:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_15
+{
+color:#000000;
+background-color:#F6DCB9;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_15
+{
+background-color:#F6DCB9;
+height:30;
+width:30;
+}
+.cat_blank_15
+{
+background-color:#F6DCB9;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_15
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_15
+{
+color:#000000;
+background-color:#F6DCB9;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_15
+{
+border: 0px solid black;
+position: relative;
+left: -32px;
+margin-bottom: 4px;
+}
+a.cat_link_15:link
+{
+color:#3F38FF;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_15:visited
+{
+color:#3F38FF;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_15:hover
+{
+color:#3F38FF;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_15:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_11
+{
+color:#000000;
+background-color:#D7C5DF;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_11
+{
+background-color:#D7C5DF;
+height:30;
+width:30;
+}
+.cat_blank_11
+{
+background-color:#D7C5DF;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_11
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_11
+{
+color:#000000;
+background-color:#D7C5DF;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_11
+{
+border: 0px solid black;
+position: relative;
+left: -32px;
+margin-bottom: 4px;
+}
+a.cat_link_11:link
+{
+color:#3F38FF;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_11:visited
+{
+color:#3F38FF;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_11:hover
+{
+color:#3F38FF;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_11:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_13
+{
+color:#000000;
+background-color:#BADDBC;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_13
+{
+background-color:#BADDBC;
+height:30;
+width:30;
+}
+.cat_blank_13
+{
+background-color:#BADDBC;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_13
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_13
+{
+color:#000000;
+background-color:#BADDBC;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_13
+{
+border: 0px solid black;
+position: relative;
+left: -32px;
+margin-bottom: 4px;
+}
+a.cat_link_13:link
+{
+color:#3F38FF;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_13:visited
+{
+color:#3F38FF;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_13:hover
+{
+color:#3F38FF;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_13:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_14
+{
+color:#000000;
+background-color:#C6E8F2;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_14
+{
+background-color:#C6E8F2;
+height:30;
+width:30;
+}
+.cat_blank_14
+{
+background-color:#C6E8F2;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_14
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_14
+{
+color:#000000;
+background-color:#C6E8F2;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_14
+{
+border: 0px solid black;
+position: relative;
+left: -32px;
+margin-bottom: 4px;
+}
+a.cat_link_14:link
+{
+color:#3F38FF;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_14:visited
+{
+color:#3F38FF;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_14:hover
+{
+color:#3F38FF;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_14:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_16
+{
+color:#000000;
+background-color:#85FF89;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_16
+{
+background-color:#85FF89;
+height:30;
+width:30;
+}
+.cat_blank_16
+{
+background-color:#85FF89;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_16
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_16
+{
+color:#000000;
+background-color:#85FF89;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_16
+{
+border: 0px solid black;
+position: relative;
+left: -32px;
+margin-bottom: 4px;
+}
+a.cat_link_16:link
+{
+color:#3F38FF;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_16:visited
+{
+color:#3F38FF;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_16:hover
+{
+color:#3F38FF;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_16:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_18
+{
+color:#000000;
+background-color:#0DDFFF;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_18
+{
+background-color:#0DDFFF;
+height:30;
+width:30;
+}
+.cat_blank_18
+{
+background-color:#0DDFFF;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_18
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_18
+{
+color:#000000;
+background-color:#0DDFFF;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_18
+{
+border: 0px solid black;
+position: relative;
+left: -32px;
+margin-bottom: 4px;
+}
+a.cat_link_18:link
+{
+color:#000000;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_18:visited
+{
+color:#000000;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_18:hover
+{
+color:#000000;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_18:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+</style></head><body style="font-family:Arial,Helvetica,sans-serif;font-size:10px;background-color:#000000;">
+<script type="text/javascript" language="javascript" src="../script/geometry.js"></script><div style="position:absolute;left:10px;width:900px;">	<div id="logo" style="position:fixed;top:0px;left:0px;width:908px;height:85px;background-color:#000000;z-index:80;text-align:center;">
+	 	 <img src="https://confessor2.wbai.org/pix/WBAI.png" alt="WBAI" height="85px">
+	</div>	<input type="hidden" value="1789272000" id="sundte">
+	<div id="dte_div" style="position:fixed;top:85px;height:52px;width:900px;background-color:#000000;color:#ffffff;z-index:80;">
+	 <div style="position:absolute;top:5px;font-size:24px;width:inherit;text-align:center;">Schedule for Week of Sun 9-13-26</div>
+	 <div style="position:absolute;left:40px;top:10px;width:30px;text-align:center;">
+	  <button style="font-size:20px;" onclick="do_prev(this);">Prev</button>
+	 </div>	 <div style="position:absolute;right:40px;top:10px;width:30px;text-align:center;">
+	  <button style="font-size:20px;" onclick="do_next(this);">Next</button>
+	 </div></div>		<div style="background-color:#000000;position:fixed;top:144px;left:0px;height:50px;width:900px;z-index:70;">
+	<div style="color:#ffffff;background-color:#000000; position:fixed; top:137px; left:10px;height:40px;z-index:80;">
+	 <table width="900" border="0" cellpadding="2px" style="border-collapse:collapse;">
+	<tr valign="middle" height=40">			<td class="cat_key_12"  colspan="2" >Arts</td>			<td class="cat_key_15"  colspan="2" >Health</td>			<td class="cat_key_11"  colspan="2" >Music</td>			<td class="cat_key_13"  colspan="2" >News</td>			<td class="cat_key_14"  colspan="2" >Public Affairs</td>			<td class="cat_key_16"  colspan="2" >Science/Ecology/Technology</td>			<td class="cat_key_18"  colspan="2" >Special Programming</td>
+		</tr>
+   </table>
+  </div>
+  </div>
+		<div style="background-color:#000000;position:fixed;bottom:0px;left:0px;height:40px;width:900px;z-index:70;">
+	<div style="color:#ffffff;background-color:#000000; position:fixed; height:40px;bottom:0px; left:10px;z-index:80;">
+	 <table width="900" border="0" cellpadding="2px" style="border-collapse:collapse;">
+	<tr valign="middle" height=40">			<td class="cat_key_12"  colspan="2" >Arts</td>			<td class="cat_key_15"  colspan="2" >Health</td>			<td class="cat_key_11"  colspan="2" >Music</td>			<td class="cat_key_13"  colspan="2" >News</td>			<td class="cat_key_14"  colspan="2" >Public Affairs</td>			<td class="cat_key_16"  colspan="2" >Science/Ecology/Technology</td>			<td class="cat_key_18"  colspan="2" >Special Programming</td>
+		</tr>
+   </table>
+  </div>
+  </div><div class="title" style="position:fixed;top:179px;left:20px;z-index:80;"><div style="background-color:inherit;position:absolute;top:0px;left:0px;height:30px;width:45px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Time</div></div><div style="background-color:inherit;position:absolute;top:0px;left:815px;height:30px;width:45px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Time</div></div><div style="background-color:inherit;position:absolute;top:0px;left:45px;height:30px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Sunday</div></div><div style="background-color:inherit;position:absolute;top:0px;left:155px;height:30px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Monday</div></div><div style="background-color:inherit;position:absolute;top:0px;left:265px;height:30px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Tuesday</div></div><div style="background-color:inherit;position:absolute;top:0px;left:375px;height:30px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Wednesday</div></div><div style="background-color:inherit;position:absolute;top:0px;left:485px;height:30px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Thursday</div></div><div style="background-color:inherit;position:absolute;top:0px;left:595px;height:30px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Friday</div></div><div style="background-color:inherit;position:absolute;top:0px;left:705px;height:30px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Saturday</div></div></div><div style="position:absolute;left:10px;top:0px;width:45px;"><div class="even_time" style="position:absolute;left:0px;top:204px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:00AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:204px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:00AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:244px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:30AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:244px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:30AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:284px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:00AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:284px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:00AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:324px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:30AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:324px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:30AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:364px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:00AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:364px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:00AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:404px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:30AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:404px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:30AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:444px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:00AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:444px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:00AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:484px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:30AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:484px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:30AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:524px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:00AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:524px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:00AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:564px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:30AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:564px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:30AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:604px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:00AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:604px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:00AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:644px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:30AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:644px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:30AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:684px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">Noon&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:684px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">Noon&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:724px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">12:30PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:724px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">12:30PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:764px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:00PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:764px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:00PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:804px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:30PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:804px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:30PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:844px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:00PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:844px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:00PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:884px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:30PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:884px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:30PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:924px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:00PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:924px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:00PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:964px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:30PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:964px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:30PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1004px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:00PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1004px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:00PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:1044px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:30PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:1044px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:30PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1084px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:00PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1084px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:00PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:1124px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:30PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:1124px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:30PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1164px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:00PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1164px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:00PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:1204px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:30PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:1204px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:30PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1244px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:00PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1244px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:00PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:1284px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:30PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:1284px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:30PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1324px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:00PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1324px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:00PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:1364px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:30PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:1364px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:30PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1404px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:00PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1404px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:00PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:1444px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:30PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:1444px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:30PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1484px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:00PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1484px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:00PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:1524px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:30PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:1524px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:30PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1564px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:00PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1564px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:00PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:1604px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:30PM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:1604px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:30PM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1644px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">Midnight&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1644px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">Midnight&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:1684px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">12:30AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:1684px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">12:30AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1724px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:00AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1724px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:00AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:1764px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:30AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:1764px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:30AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1804px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:00AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1804px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:00AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:1844px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:30AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:1844px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:30AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1884px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:00AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1884px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:00AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:1924px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:30AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:1924px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:30AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:1964px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:00AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:1964px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:00AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:2004px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:30AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:2004px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:30AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:0px;top:2044px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:00AM&ensp;</div></div>
+<div class="even_time" style="position:absolute;left:815px;top:2044px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:00AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:0px;top:2084px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:30AM&ensp;</div></div>
+<div class="odd_time" style="position:absolute;left:815px;top:2084px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:30AM&ensp;</div></div>
+</div><div id="sched_div" style="position:absolute;left:55px;width:900px;top:204px;height:1960px;">
+<div class="cat_11" style="position:absolute;left:0px;top:0px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;"><div>(Laughing On Sunday Morning)</div></div>
+<div class="cat_11" style="position:absolute;left:0px;top:80px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Earth Riot Radio</span><br><br>Earth Riot Radio is a wild, music-filled exploration of the planet&rsquo;s most urgent crisis. Join Reverend Billy and Savitri D every Saturday at noon on WBAI 99.5 FM for a high-energy hour of radical choral music, &quot;stop shopping&quot; sermons, and frontline reports from the fight against the Sixth Extinction.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/earthriotradio_med_387.jpg" alt="Rev Billy and the Stop Shopping Choir" ><div style="position:relative;top:10px;">Rev Billy and the Stop Shopping Choir</div>'"><div>Earth Riot Radio</div><div class="cat_host_11">Rev Billy and the Stop Shopping Choir</div></div>
+<div class="cat_14" style="position:absolute;left:0px;top:160px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Good Morning Nueva York</span><br><br>Good Morning Nueva York-Artivism Sundays is a long-running Sunday morning radio program broadcasting on WBAI 99.5 FM in New York City. Airing weekly from 8:00 AM to 10:00 AM EST, the show serves as a dynamic bridge between creative expression and social change by combining high-energy arts programming with grassroots advocacy. Each episode offers a vibrant mix of music, cultural commentary, and discussions focused on civil rights, justice movements, and community organizing across the New York metropolitan area and beyond.<br><br>The show is hosted by King Downing, a human rights advocate, lawyer, filmmaker, journalist, and musician. Bringing an extensive background in civil rights advocacy and police accountability&mdash;including prior leadership with the ACLU&#039;s Campaign Against Racial Profiling&mdash;Downing integrates legal insights, political analysis, and independent media production into every broadcast. Through interviews with activists, artists, and community leaders, he highlights the impact of art as a tool for social transformation and empowerment.<br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/goodmorninnuevayor_med_316.jpg" alt="King Downing" ><div style="position:relative;top:10px;">King Downing</div>'"><div>Good Morning Nueva York</div><div class="cat_host_14">King Downing</div></div>
+<div class="cat_14" style="position:absolute;left:0px;top:240px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Animal Matters</span><br><br>Calling all animal lovers! Animal Matters is WBAI 99.5 FM&rsquo;s newest show, bringing engaging, insightful, and fun conversations about pets and animals to the airwaves. Hosted by Jeff Simmons&mdash;a devoted dog lover (who also appreciate cats!)&mdash;the show features expert interviews, deep dives into legislation affecting animals, spotlights on nonprofits making a difference, and uplifting pet stories from the news. Listeners are invited to call in and share their thoughts, questions, and personal pet tales. Whether you&rsquo;re a devoted pet parent, an advocate for animal welfare, or just someone who loves a good animal story, Animal Matters is your place to tune in and talk all things furry, feathered, and finned!<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/animalmatters_med_390.jpg" alt="Jeff Simmons" ><div style="position:relative;top:10px;">Jeff Simmons</div>'"><div>Animal Matters</div><div class="cat_host_14">Jeff Simmons</div></div>
+<div class="cat_14" style="position:absolute;left:0px;top:320px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Caribbean Voices and Beyond</span><br><br>Caribbean Voices And Beyond is a spicy blend of entertainment and information, a callaloo of Caribbean music, personalities, politics and island culture. The program presents interviews with personalities and analysis of events of Caribbean importance, to show how Caribbean cultures have influenced and are influencing world culture and how international developments are impacting the Caribbean, with particular emphasis on the large expatriate Caribbean community resident in the USA. <br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/caribbevoicesandbe_med_391.jpg" alt="Isaac Ferguson" ><div style="position:relative;top:10px;">Isaac Ferguson</div>'"><div>Caribbean Voices and Beyond</div><div class="cat_host_14">Isaac Ferguson</div></div>
+<div class="cat_14" style="position:absolute;left:0px;top:400px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Radio Free Eireann</span><br><br>Radio Free Eireann covers the Irish freedom struggle from an Irish republican point of view.<br><br>We use the Irish experience to relate to struggles ranging from the war against the Palestinian people and the Turkish hunger strike to Puerto Rican political prisoners and resisting the burning of Black churches in the south.<br><br>Frequent guests have included human rights activist Bernadette Devlin McAliskey, journalist Eamonn McCann and former IRA commander Brendan Hughes.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/rfeireann_med_97.jpg" alt="John McDonagh" ><div style="position:relative;top:10px;">John McDonagh</div>'"><div>Radio Free Eireann</div><div class="cat_host_14">John McDonagh</div></div>
+<div class="cat_14" style="position:absolute;left:0px;top:480px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Project Censored</span><br><br>The program focuses on The News That Didn&rsquo;t Make the News. Each week, the co-hosts conduct in depth interviews with their guests and offer hard hitting commentary on the key political, social, and economic issues of the day with an emphasis on critical media literacy.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/censored2_med_123.jpg" alt="Mickey Huff and Peter Phillips" ><div style="position:relative;top:10px;">Mickey Huff and Peter Phillips</div>'"><div><a class="cat_link_14" href="http://projectcensored.org" target="New">Project Censored</a></div><div class="cat_host_14">Mickey Huff and Peter Phillips</div></div>
+<div class="cat_14" style="position:absolute;left:0px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">WBAI Sports</span><br><br>Tune in to WBAI Sports with Samori Benjamin, broadcasting live every Sunday from 1:00 PM to 2:00 PM on WBAI 99.5 FM New York. Harlem-native and elite sports journalist Samori Benjamin brings over 20 years of sharp, independent reporting directly to your airwaves. The show delivers unfiltered, deep-dive interviews with the biggest names across basketball, football, baseball, and local New York athletics. By shifting the narrative away from typical sports banter, WBAI Sports focuses heavily on history, context, and true sports journalism. Stream the show live worldwide on WBAI.org or lock your radio dial to 99.5 FM.<br><br>Born and raised in Harlem, he first started covering sports for WBAI in 2005 with the approach to innovate sports journalism.<br><br><br>Over the last 20 years he has built a treasure trove of interviews and original reports with some of the most recognizable figures in sports.<br>A passionate historian of sports check out WBAI Sports.<br><br><br>Alum of Norfolk State University and Columbia University Graduate School Of Journalism.<br><br><br><br>Born and raised in Harlem, he first started covering sports for WBAI in 2005 with the approach to innovate sports journalism.<br><br><br>Over the last 20 years he has built a treasure trove of interviews and original reports with some of the most recognizable figures in sports.<br>A passionate historian of sports check out WBAI Sports.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/wbaisports_med_392.jpg" alt="Samori Benjamin" ><div style="position:relative;top:10px;">Samori Benjamin</div>'"><div>WBAI Sports</div><div class="cat_host_14">Samori Benjamin</div></div>
+<div class="cat_14" style="position:absolute;left:0px;top:640px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Ablitionist Show</span><br><br>This program, hosted by Frenchie Davis, is dedicated to uncovering the lies and false histories<br><br>that perpetuate oppression. Frenchie Davis leads a mission to help listeners get free from repression.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/ablitionshow_med_393.jpg" alt="Frenchie Davis" ><div style="position:relative;top:10px;">Frenchie Davis</div>'"><div>The Ablitionist Show</div><div class="cat_host_14">Frenchie Davis</div></div>
+<div class="cat_11" style="position:absolute;left:0px;top:720px;height:240px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Con Sabor Latino</span><br><br>Con Sabor Latino provides Latin and Caribean Music, Culture, History, Community and so much more. <br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/cslatino_med_18.jpg" alt="Hernando Albericci" ><div style="position:relative;top:10px;">Hernando Albericci</div>'"><div>Con Sabor Latino</div><div class="cat_host_11">Hernando Albericci</div></div>
+<div class="cat_14" style="position:absolute;left:0px;top:960px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Rick Smith Show</span><br><br>The Rick Smith Show brings the voice of the working class to WBAI 99.5 FM, delivering a mix of sharp progressive politics and unfiltered labor advocacy. Hosted by Rick Smith, a former union truck driver, the program cuts through corporate media noise to tackle the real economic challenges facing everyday people. Through hard-hitting commentary and interviews with labor leaders, activists, and policymakers, the show serves as an essential platform for union organizing, worker rights, and the modern labor movement.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/ricksmithshow_med_322.jpg" alt="Rick Smith" ><div style="position:relative;top:10px;">Rick Smith</div>'"><div>Rick Smith Show</div><div class="cat_host_14">Rick Smith</div></div>
+<div class="cat_14" style="position:absolute;left:0px;top:1040px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Talk Out of School</span><br><br>Leonie Haimson is the Executive Director of Class Size Matters, which the NY Times has called the&ldquo;city&rsquo;s leading proponent of smaller classes.The organization is dedicated to providing information on the significant and wide-ranging benefits of smaller classes, particularly for at-risk children, to boost student learning, engagement, and graduation rates, and lower disciplinary referrals.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/talkoutschoob_med_394.jpg" alt="Leonie Haimson &amp; Daniel Alicea" ><div style="position:relative;top:10px;">Leonie Haimson &amp; Daniel Alicea</div>'"><div>Talk Out of School</div><div class="cat_host_14">Leonie Haimson &amp; Daniel Alicea</div></div>
+<div class="cat_12" style="position:absolute;left:0px;top:1120px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Golden Age Of Radio</span><br><br>Vintage broadcasts from the 1930s, &#039;40s, and &#039;50s, laughs, love, thrills and adventure in the theater of the mind.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/gaoradio_med_22.jpg" alt="Max Schmid" ><div style="position:relative;top:10px;">Max Schmid</div>'"><div>Golden Age Of Radio</div><div class="cat_host_12">Max Schmid</div></div>
+<div class="cat_11" style="position:absolute;left:0px;top:1280px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Everything Old Is New Again</span><br><br>An unusual blend of big band Jazz, Swing, Standards, Showtunes, Contemporary Cabaret and Celebrity Interviews!<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/eoinagain_med_23.jpg" alt="David  Kenney" ><div style="position:relative;top:10px;">David  Kenney</div>'"><div>Everything Old Is New Again</div><div class="cat_host_11">David  Kenney</div></div>
+<div class="cat_11" style="position:absolute;left:0px;top:1440px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">La Voz Latina</span><br><br>'"><div>La Voz Latina</div><div class="cat_host_11">Collectiva Latina</div></div>
+<div class="cat_11" style="position:absolute;left:0px;top:1520px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">La Nueva Alternativa</span><br><br>La Nueva Alternativa is the only radio show in the Tri-State area about Rock en Espa&iuml;&iquest;&frac12;ol, or Rock Latino.'"><div>La Nueva Alternativa</div><div class="cat_host_11">Aburto &amp; Lopez</div></div>
+<div class="cat_11" style="position:absolute;left:0px;top:1680px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Latin Roots</span><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/salsasho_med_230.jpg" alt="Felipe Luciano" ><div style="position:relative;top:10px;">Felipe Luciano</div></div>'"><div>Latin Roots</div><div class="cat_host_11">Felipe Luciano</div></div>
+<div class="cat_15" style="position:absolute;left:0px;top:1840px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Aware Show</span><br><br>Lisa Garr hosts a one-hour interview program featuring leading edge visionaries, spiritual teachers and inspiring innovators who bring you the latest in personal development and mind-body wellness.<br><br>With a wide variety of thought-provoking guests, you&#039;ll explore ancient wisdom, gain personal insights and learn about spiritual enlightenment.<br><br>Aware is dedicated to communicating information to inspire positive growth and change. Our goal is an increased awareness and healing on an individual and planetary level. Based on our commitment to the renewal of the human spirit, and combined with our pure faith in the power of love, we are answering a call to action for a more conscious world.<br><br>The first step toward change is Awareness, and listening to the radio show interviews will provide a daily oasis for you to immerse yourself in life-changing information. Listening to these shows will shift you from any space you are in to one of inspiration, while learning information, practical tools and experiential exercises to change your state and keep it that way. Listen and Enjoy!<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/awareshow_med_301.jpg" alt="Lisa Garr" ><div style="position:relative;top:10px;">Lisa Garr</div>'"><div><a class="cat_link_15" href="https://theawareshow.com/" target="New">Aware Show</a></div><div class="cat_host_15">Lisa Garr</div></div>
+<div class="cat_14" style="position:absolute;left:110px;top:0px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Good Morning Nueva York</span><br><br>Good Morning Nueva York-Artivism Sundays is a long-running Sunday morning radio program broadcasting on WBAI 99.5 FM in New York City. Airing weekly from 8:00 AM to 10:00 AM EST, the show serves as a dynamic bridge between creative expression and social change by combining high-energy arts programming with grassroots advocacy. Each episode offers a vibrant mix of music, cultural commentary, and discussions focused on civil rights, justice movements, and community organizing across the New York metropolitan area and beyond.<br><br>The show is hosted by King Downing, a human rights advocate, lawyer, filmmaker, journalist, and musician. Bringing an extensive background in civil rights advocacy and police accountability&mdash;including prior leadership with the ACLU&#039;s Campaign Against Racial Profiling&mdash;Downing integrates legal insights, political analysis, and independent media production into every broadcast. Through interviews with activists, artists, and community leaders, he highlights the impact of art as a tool for social transformation and empowerment.<br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/goodmorninnuevayor_med_316.jpg" alt="King Downing" ><div style="position:relative;top:10px;">King Downing</div>'"><div>Good Morning Nueva York</div><div class="cat_host_14">King Downing</div></div>
+<div class="cat_14" style="position:absolute;left:110px;top:80px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">What&#039;s Going On!</span><br><br>Wake up with WBAI&#039; s new morning magazine show which features news, information, analysis, and entertainment.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/whatsgoingonmoralm_med_336.jpg" alt="Felipe Luciano" ><div style="position:relative;top:10px;">Felipe Luciano</div>'"><div>What&#039;s Going On!</div><div class="cat_host_14">Felipe Luciano</div></div>
+<div class="cat_14" style="position:absolute;left:110px;top:160px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now! </span><br><br>Hard-hitting coverage of war and peace, government policies, and struggles for justice<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/dn_med_28.jpg" alt="Amy Goodman and Juan Gonzalez" ><div style="position:relative;top:10px;">Amy Goodman and Juan Gonzalez</div>'"><div><a class="cat_link_14" href="http://wbai.org/index.php?option=com_content&amp;task=view&amp;id=406&amp;Itemid=141" target="New">Democracy Now! </a></div><div class="cat_host_14">Amy Goodman and Juan Gonzalez</div></div>
+<div class="cat_14" style="position:absolute;left:110px;top:240px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">We Decide: America at the Crossroads </span><br><br>From the latest actions of the Trump administration to the efforts of labor movements across the country to attain fair pay and respectable working conditions, the Pacifica Network&#039;s new national program We Decide: America at the Crossroads with Jenna Flanagan looks for patterns across the major news events of the week and unpacks them with our nation&#039;s foremost progressive thinkers. Priority is given to upcoming elections in all 50 states as the country fights to keep from slipping further into the clutches of authoritarianism.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/wedecideamericatcr_med_378.jpg" alt="Jenna Flanagan" ><div style="position:relative;top:10px;">Jenna Flanagan</div>'"><div>We Decide: America at the Crossroads </div><div class="cat_host_14">Jenna Flanagan</div></div>
+<div class="cat_14" style="position:absolute;left:110px;top:400px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Law and Disorder</span><br><br>A groundbreaking radio program that  encourages listeners to get involved with and understand the legal issues eroding all of our civil liberties.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/lawadis_med_8.jpg" alt="Heidi Boghosian and Michael Smith" ><div style="position:relative;top:10px;">Heidi Boghosian and Michael Smith</div>'"><div><a class="cat_link_14" href="http://ccrjustice.org" target="New">Law and Disorder</a></div><div class="cat_host_14">Heidi Boghosian and Michael Smith</div></div>
+<div class="cat_14" style="position:absolute;left:110px;top:480px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Frontline Voices</span><br><br>Frontline Voices is a public affairs radio program broadcast on WBAI 99.5 FM, a listener-supported Pacifica Radio station serving the New York City metropolitan area.Show OverviewFocus: The show features interviews with prominent journalists, investigative reporters, scholars, and activists addressing major current events, human rights, politics, and social movements.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/frontlinvoices_med_373.jpg" alt="Various" ><div style="position:relative;top:10px;">Various</div>'"><div>Frontline Voices</div><div class="cat_host_14">Various</div></div>
+<div class="cat_14" style="position:absolute;left:110px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Attitude With Arne Arnesen</span><br><br>Check out The Attitude out of Concord New Hampshire with Arnie Arnesen who hosts Arnie hosts progressive voices from politics, journalism, industry, and academia and provides pithy commentary, interviews and stories you won&rsquo;t hear anywhere else. <br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/attitudarnearnesen_med_361.jpg" alt="Arnie Arnesen" ><div style="position:relative;top:10px;">Arnie Arnesen</div>'"><div>The Attitude With Arne Arnesen</div><div class="cat_host_14">Arnie Arnesen</div></div>
+<div class="cat_15" style="position:absolute;left:110px;top:640px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Trauma Code</span><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/traumacode_med_320.jpg" alt="Dr. Simon Fitzgerald, Dr. Cassandra Raphael" ><div style="position:relative;top:10px;">Dr. Simon Fitzgerald, Dr. Cassandra Raphael</div></div>'"><div>Trauma Code</div><div class="cat_host_15">Dr. Simon Fitzgerald, Dr. Cassandra Raphael</div></div>
+<div class="cat_14" style="position:absolute;left:110px;top:720px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Vantage Point</span><br><br>Vantage Point is a weekly current affairs radio show broadcast on Pacifica Radio WBAI (99.5 FM) in collaboration with York College Radio. Hosted by scholar-activist Dr. Ron Daniels (known on air as &quot;the Professor&quot;), the program provides an open forum to explore critical social, political, economic, and cultural topics. Through open discussions, roundtable panels, and in-depth interviews with prominent civil rights leaders, scholars, activists, and community organizers, Vantage Point serves as a platform for progressive commentary on human rights, systemic reform, and key issues facing Black America and global society.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/talkbackvant_med_79.jpg" alt="Dr. Ron Daniels" ><div style="position:relative;top:10px;">Dr. Ron Daniels</div>'"><div>Vantage Point</div><div class="cat_host_14">Dr. Ron Daniels</div></div>
+<div class="cat_14" style="position:absolute;left:110px;top:800px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Laura Flanders Show</span><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/lauraflandeshow_med_358.jpg" >'"><div>Laura Flanders Show</div><div class="cat_host_14"></div></div>
+<div class="cat_12" style="position:absolute;left:110px;top:840px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Poet and The Poem</span><br><br>Created and hosted by award-winning poet, playwright, and former Maryland Poet Laureate Grace Cavalieri, The Poet and the Poem debuted on WPFW in Washington, D.C., in 1977. In 1997, the show partnered with the Library of Congress, where it began recording and archiving sessions with prominent contemporary poets alongside audio engineer Mike Turpin.<br><br>The program combines in-depth conversations with live poetry readings, exploring the creative processes, inspirations, and personal backstories of featured writers. Over its history, the show has held the distinction of interviewing more sitting U.S. Poets Laureate&mdash;including figures like Allen Ginsberg, Gwendolyn Brooks, Rita Dove, Billy Collins, Robert Pinsky, and Louise Gl&uuml;ck&mdash;than any other show.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/poetandpoem_med_359.jpg" alt=" Grace Cavalieri." ><div style="position:relative;top:10px;"> Grace Cavalieri.</div>'"><div>The Poet and The Poem</div><div class="cat_host_12"> Grace Cavalieri.</div></div>
+<div class="cat_15" style="position:absolute;left:110px;top:880px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Labor and Healthcare Confidential</span><br><br>Marianne Pizzitola is a retired member of the FDNY EMS who has dedicated her post-retirement life to advocating for EMS retirees. After the devastating events of 9/11, she founded the FDNY EMS Retirees Association, focusing on ensuring that EMS retirees received the medical care they deserved. Marianne&#039;s unwavering dedication to this cause led her to fight for the rights of these retirees to choose their medical providers, a significant victory in the realm of retiree benefits.<br><br>In 2021, Marianne saw another challenge that needed addressing: the forced enrollment of NYC retirees into Medicare Advantage plans. Understanding the potential impacts on retirees&#039; healthcare options, she established the NYC Organization of Public Service Retirees. Under her leadership, this organization has successfully mobilized tens of thousands of retirees, culminating in several legal victories against the City of New York. Marianne&#039;s efforts have not only safeguarded retirees&#039; healthcare choices but have also highlighted the importance of retiree advocacy.<br><br>Marianne&#039;s commitment and tenacity have not gone unnoticed. She has been recognized among City and State&#039;s Top 100 Labor Leaders in 2022, 2023, 2024 and 2025 and has been celebrated as one of the Women Who Go Above &amp; Beyond in 2023. Her story is a testament to the power of dedicated advocacy and the profound impact one individual can have on the lives of many.<br><br>The Labor &amp; Healthcare Confidential covers labor unions and healthcare both in New York City and nationwide. During each episode Marianne dives into the accomplishments and struggles of labor unions as well as the issues surrounding healthcare, its cost and access.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/laborandhealthcacc_med_375.jpg" alt="Marianne Pizzitola" ><div style="position:relative;top:10px;">Marianne Pizzitola</div>'"><div>Labor and Healthcare Confidential</div><div class="cat_host_15">Marianne Pizzitola</div></div>
+<div class="cat_14" style="position:absolute;left:110px;top:960px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Chris Hedges Report</span><br><br>The Chris Hedges Report broadcasts about U.S. foreign policy, economic realities, books, and civil liberties in American society. Chris Hedges is a Pulitzer Prize-winning journalist, best-selling author, and activist. He interviews writers, intellectuals and dissidents, any banished from mainstream, in his half-hour show. He gives voice to those from Cornel West to Noam Chomsky to the leaders of groups such as Extinction Rebellion, who are on the front lines of the struggle against militarism, corporate capitalism, white supremacy, the looming ecocide, as well as the battle to wrest back our democracy from the clutches of the ruling global oligarchy.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/chrishedgesreport_med_338.jpg" alt="Chris Hedges" ><div style="position:relative;top:10px;">Chris Hedges</div>'"><div>Chris Hedges Report</div><div class="cat_host_14">Chris Hedges</div></div>
+<div class="cat_14" style="position:absolute;left:110px;top:1040px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Building Bridges </span><br><br>Your Community and Labor Report<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/bbridges_med_37.jpg" alt="Ken Nash, Mimi Rosenberg " ><div style="position:relative;top:10px;">Ken Nash, Mimi Rosenberg </div>'"><div>Building Bridges </div><div class="cat_host_14">Ken Nash, Mimi Rosenberg </div></div>
+<div class="cat_14" style="position:absolute;left:110px;top:1120px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Housing Notebook</span><br><br>Advice on tenants rights, decent affordable housing and related urban affairs coverage, with call-ins.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/housing_med_39.jpg" alt="Scott Sommer and Vajra Kilgour" ><div style="position:relative;top:10px;">Scott Sommer and Vajra Kilgour</div>'"><div>Housing Notebook</div><div class="cat_host_14">Scott Sommer and Vajra Kilgour</div></div>
+<div class="cat_12" style="position:absolute;left:110px;top:1200px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Hour Of The Wolf</span><br><br>Free-form live radio with Jim Freund, concentrating on the literature of science fiction, fantasy, and related fields of endeavor.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/hotwolf_med_92.jpg" alt="Jim Freund" ><div style="position:relative;top:10px;">Jim Freund</div>'"><div>Hour Of The Wolf</div><div class="cat_host_12">Jim Freund</div></div>
+<div class="cat_11" style="position:absolute;left:110px;top:1280px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Niteshift</span><br><br>A late-night Radio Magazine covering a broad range of topics from Entertainment media to global issues<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/niteshift_med_43.jpg" alt="Mike Sargent" ><div style="position:relative;top:10px;">Mike Sargent</div>'"><div>Niteshift</div><div class="cat_host_11">Mike Sargent</div></div>
+<div class="cat_11" style="position:absolute;left:110px;top:1440px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">From The Soundboard</span><br><br>Recordings of live concerts regardless of genre&lt;br&gt;&lt;br&gt;<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/ftsb_med_60.jpg" alt="Reggie Johnson" ><div style="position:relative;top:10px;">Reggie Johnson</div>'"><div>From The Soundboard</div><div class="cat_host_11">Reggie Johnson</div></div>
+<div class="cat_11" style="position:absolute;left:110px;top:1600px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">AfroBeat Radio </span><br><br>AfrobeatRadio on WBAI is a global African music show. We play and maintain a library of music of all genres from all over the African world. AfrobeatRadio interviews artists, cultural practitioners, and subject experts to present African perspectives on global issues.<br><br>The AfrobeatrRadio project incorporates a radio station (https://afrobeatradio.com) and Afrobeat Journal (www.afrobeatjournal.org) - a multi-disciplinary and multi-media content Repository for text, videos, podcasts, articles, blogs, presentations, and everything in between that simultaneously provides space for grassroots and scholarly investigations, artistic and creative inquiry, production, and performance. As a community platform and collaborator, we present panels of discussions, film screenings, festivals, etc, in New York City.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/afrobeat_med_102.jpg" alt="Wuyi Jacobs" ><div style="position:relative;top:10px;">Wuyi Jacobs</div>'"><div>AfroBeat Radio </div><div class="cat_host_11">Wuyi Jacobs</div></div>
+<div class="cat_13" style="position:absolute;left:110px;top:1760px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">BreakThrough News Radio</span><br><br>BreakThrough News Radio is a weekly show that combines the best of BreakThrough News, a popular online video and social media platform that produces the shows &quot;The Freedom Side&quot; with Eugene Puryear and Rania Khalek, &quot;Rania Khalek Dispatches,&quot; &quot;The Socialist Program with Brian Becker,&quot; and news reports and explainers by Kei Pritsker, and more. <br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/breakthrnewsradio_med_379.jpg" alt="Eugene Puryear, Rania Khalek, and Kei Pritzker" ><div style="position:relative;top:10px;">Eugene Puryear, Rania Khalek, and Kei Pritzker</div>'"><div>BreakThrough News Radio</div><div class="cat_host_13">Eugene Puryear, Rania Khalek, and Kei Pritzker</div></div>
+<div class="cat_15" style="position:absolute;left:110px;top:1840px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Aware Show</span><br><br>Lisa Garr hosts a one-hour interview program featuring leading edge visionaries, spiritual teachers and inspiring innovators who bring you the latest in personal development and mind-body wellness.<br><br>With a wide variety of thought-provoking guests, you&#039;ll explore ancient wisdom, gain personal insights and learn about spiritual enlightenment.<br><br>Aware is dedicated to communicating information to inspire positive growth and change. Our goal is an increased awareness and healing on an individual and planetary level. Based on our commitment to the renewal of the human spirit, and combined with our pure faith in the power of love, we are answering a call to action for a more conscious world.<br><br>The first step toward change is Awareness, and listening to the radio show interviews will provide a daily oasis for you to immerse yourself in life-changing information. Listening to these shows will shift you from any space you are in to one of inspiration, while learning information, practical tools and experiential exercises to change your state and keep it that way. Listen and Enjoy!<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/awareshow_med_301.jpg" alt="Lisa Garr" ><div style="position:relative;top:10px;">Lisa Garr</div>'"><div><a class="cat_link_15" href="https://theawareshow.com/" target="New">Aware Show</a></div><div class="cat_host_15">Lisa Garr</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:0px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Good Morning Nueva York</span><br><br>Good Morning Nueva York-Artivism Sundays is a long-running Sunday morning radio program broadcasting on WBAI 99.5 FM in New York City. Airing weekly from 8:00 AM to 10:00 AM EST, the show serves as a dynamic bridge between creative expression and social change by combining high-energy arts programming with grassroots advocacy. Each episode offers a vibrant mix of music, cultural commentary, and discussions focused on civil rights, justice movements, and community organizing across the New York metropolitan area and beyond.<br><br>The show is hosted by King Downing, a human rights advocate, lawyer, filmmaker, journalist, and musician. Bringing an extensive background in civil rights advocacy and police accountability&mdash;including prior leadership with the ACLU&#039;s Campaign Against Racial Profiling&mdash;Downing integrates legal insights, political analysis, and independent media production into every broadcast. Through interviews with activists, artists, and community leaders, he highlights the impact of art as a tool for social transformation and empowerment.<br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/goodmorninnuevayor_med_316.jpg" alt="King Downing" ><div style="position:relative;top:10px;">King Downing</div>'"><div>Good Morning Nueva York</div><div class="cat_host_14">King Downing</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:80px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">What&#039;s Going On!</span><br><br>Morning news magazine show covering grassroots news, political analysis, labor rights, community issues, and cultural commentary.<br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/whatsgoingonlabort_med_330.jpg" alt="WBAI" ><div style="position:relative;top:10px;">WBAI</div>'"><div>What&#039;s Going On!</div><div class="cat_host_14">WBAI</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:160px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now! </span><br><br>Hard-hitting coverage of war and peace, government policies, and struggles for justice<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/dn_med_28.jpg" alt="Amy Goodman and Juan Gonzalez" ><div style="position:relative;top:10px;">Amy Goodman and Juan Gonzalez</div>'"><div><a class="cat_link_14" href="http://wbai.org/index.php?option=com_content&amp;task=view&amp;id=406&amp;Itemid=141" target="New">Democracy Now! </a></div><div class="cat_host_14">Amy Goodman and Juan Gonzalez</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:240px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Covert Action Bulletin</span><br><br>CovertAction Bulletin is the Radio Version of CovertAction Magazine&#039;s podcast. hosted by Rachel Hu and Chris Garaffa.<br><br>Covert Action Magazine began publishing in 1978 as a newsletter called Covert Action Information Bulletin (CAIB) and later as CovertAction Quarterly (CAQ). It was cofounded and copublished by Ellen Ray, William Schaap, and Louis Wolf, along with former CIA agents such as James and Elsie Wilcott, and infamous whistleblower, Philip Agee. The magazine developed a following not as a conspiracy-theory-related publication, but as a source for reliable, consistent, and accurate investigative reporting.<br>In 2018 it launched CovertActionMagazine.com, with hundreds of articles that blow the whistle on U.S. imperialism and plutocrats worldwide.<br><br>Rachel Hu was WBAI&#039;s host of Women Fight Back. She is a journalist, activist and designer. She also hosts a podcast host with BreakThrough News, a new independent media project. For the last ten years, Rachel has also been with the ANSWER Coalition.<br><br>Chris Garaffa has been an anti-imperialist and social justice organizer since joining the movement against the Iraq war in 2003. Chris is a weekly guest on Sputnik Radio&#039;s By Any Means Necessary, and co-hosts the podcast The Reboot, focusing on the intersection between technology and human rights.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/covertactionbullet_med_363.jpg" alt="Rachel Hu, Chris Garaffa" ><div style="position:relative;top:10px;">Rachel Hu, Chris Garaffa</div>'"><div>Covert Action Bulletin</div><div class="cat_host_14">Rachel Hu, Chris Garaffa</div></div>
+<div class="cat_15" style="position:absolute;left:220px;top:320px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Mind Field</span><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/mindfield_med_331.jpg" alt="Dr. James McIntosh" ><div style="position:relative;top:10px;">Dr. James McIntosh</div></div>'"><div>Mind Field</div><div class="cat_host_15">Dr. James McIntosh</div></div>
+<div class="cat_15" style="position:absolute;left:220px;top:400px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Quantum Wellness</span><br><br>With the evolving understanding of the nature of reality and the Universe through the eyes of quantum physics, there is an expanded awareness of what is healing and medicinal that is becoming inclusive of other cultural realities and healing technologies, both ancient and modern.<br><br>Dr Kokayi will draw on his over 35 years of experience as a holistically oriented licensed physician to explore the landscape of health issues affecting people and the possibilities for healing and restoration of health that comes from broadening our perspective of what is possible and what has been achieved as we look at health, healing, and wellness from a multi cultural and multi dimensional perspective. Welcome to Quantum Medicine.<br><br>Kamau Kokayi was first exposed to alternative and holistic medical therapeutics during a soul searching year-long hiatus away from Yale Medical School. His exposure to homeopathy and Chinese medicine sent him on parallel tracks within the alternative medical field for over thirty-five years. While completing his medical degree at Yale he wrote his thesis on Physics, Acupuncture and Medicine (Where Philosophy Meets Medicine), which gave him a totally different paradigm from which to view health and disease. He has explored health and healing traditions from around the world and is a graduate Priest of a Traditional African Spiritual Society.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/quantummedicine_med_319.jpg" alt="Dr. Kamau Kokayi" ><div style="position:relative;top:10px;">Dr. Kamau Kokayi</div>'"><div>Quantum Wellness</div><div class="cat_host_15">Dr. Kamau Kokayi</div></div>
+<div class="cat_15" style="position:absolute;left:220px;top:440px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:30 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Food Sleuth Radio</span><br><br>Food Sleuth Radio provides provocative interviews with researchers, authors and others about our food and food system. Host, Melinda Hemmelgarn, MS, RD explores many aspects of our food system: from what nutrients hold the greatest promise for good health, to the environmental and public health implications of policy decisions at every level of government.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/foodsluethradio_med_326.jpg" alt="Melinda Hemmelgarn" ><div style="position:relative;top:10px;">Melinda Hemmelgarn</div>'"><div>Food Sleuth Radio</div><div class="cat_host_15">Melinda Hemmelgarn</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:480px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Frontline Voices</span><br><br>Frontline Voices is a public affairs radio program broadcast on WBAI 99.5 FM, a listener-supported Pacifica Radio station serving the New York City metropolitan area.Show OverviewFocus: The show features interviews with prominent journalists, investigative reporters, scholars, and activists addressing major current events, human rights, politics, and social movements.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/frontlinvoices_med_373.jpg" alt="Various" ><div style="position:relative;top:10px;">Various</div>'"><div>Frontline Voices</div><div class="cat_host_14">Various</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Attitude With Arne Arnesen</span><br><br>Check out The Attitude out of Concord New Hampshire with Arnie Arnesen who hosts Arnie hosts progressive voices from politics, journalism, industry, and academia and provides pithy commentary, interviews and stories you won&rsquo;t hear anywhere else. <br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/attitudarnearnesen_med_361.jpg" alt="Arnie Arnesen" ><div style="position:relative;top:10px;">Arnie Arnesen</div>'"><div>The Attitude With Arne Arnesen</div><div class="cat_host_14">Arnie Arnesen</div></div>
+<div class="cat_16" style="position:absolute;left:220px;top:640px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Exploration</span><br><br>Exploration is a weekly, hour-long radio show hosted by world-renowned theoretical physicist and string field theory co-founder Dr. Michio Kaku. Broadcast on WBAI and syndicated to stations nationwide, the program covers a wide range of topics&mdash;from cutting-edge physics and cosmology, such as parallel universes and the quest for a &quot;theory of everything,&quot; to pressing issues in technology, space policy, and environmental science. Through insightful discussion, Dr. Kaku breaks down complex scientific concepts for general audiences while exploring how scientific discoveries impact the future of humanity.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/explorafri_med_176.jpg" alt="Michio Kaku" ><div style="position:relative;top:10px;">Michio Kaku</div>'"><div>Exploration</div><div class="cat_host_16">Michio Kaku</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:720px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Black Star News</span><br><br>Milton Allimadi publishes Black Star News, a Pan-African news outlet. He is also an Adjunct Professor of African History at John Jay College of the City University of New York. He is the author of &#039;The Hearts of Darkness How White Writers Created the Racist Image of Africa.&#039; Some of his friends call him &#039;Sir Milton.&#039; He claims during his exploration of London he discovered a river he renamed &#039;River Gulu.&#039; British natives called it &#039;Thames.&#039; Allimadi lives by the motto &#039;One Africa, United.&#039;<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/blackstarnews_med_295.jpg" alt="Milton Allimadi" ><div style="position:relative;top:10px;">Milton Allimadi</div>'"><div><a class="cat_link_14" href="https://www.blackstarnews.com" target="New">Black Star News</a></div><div class="cat_host_14">Milton Allimadi</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:800px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Uncontrolled Opposition</span><br><br>UN-OPS exposes motives behind cover-ups involving unconstitutional and criminal activities.<br><br>UN-OPS features hosts Gloria Guillo, investigative journalist and musician, and Jeremy Kuzmarov, professor, author, and managing editor of CovertActionMagazine.<br><br>Their unbiased political analysis encourages independent thinking and healthy debate<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/uncontrolledopposi_med_372.jpg" alt="Gloria Guillo and Professor Jeremy Kuzmarov" ><div style="position:relative;top:10px;">Gloria Guillo and Professor Jeremy Kuzmarov</div>'"><div>Uncontrolled Opposition</div><div class="cat_host_14">Gloria Guillo and Professor Jeremy Kuzmarov</div></div>
+<div class="cat_13" style="position:absolute;left:220px;top:880px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Indypendent News Hour</span><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/indypennewshour_med_327.jpg" alt="John Tarleton,  Amba Guerguerian" ><div style="position:relative;top:10px;">John Tarleton,  Amba Guerguerian</div></div>'"><div>The Indypendent News Hour</div><div class="cat_host_13">John Tarleton,  Amba Guerguerian</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:960px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Clearing The Fog (Forces Of Greed)</span><br><br>The ruling FOG (Forces of Greed) spin news stories in their favor and keep the masses distracted with celebrity gossip and reality shows.<br><br>Each week on Clearing The Fog, we feature guests who are working to expose the truth and offer real solutions to the current crises faced by our nation and the world.<br><br>Knowledge is power, and with this knowledge you will be empowered to act to shift power to the people and weaken the corporate stranglehold on our lives.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/clearifogforcesgre_med_303.jpg" alt="Margaret Flowers" ><div style="position:relative;top:10px;">Margaret Flowers</div>'"><div>Clearing The Fog (Forces Of Greed)</div><div class="cat_host_14">Margaret Flowers</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:1040px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Voices of Resistance</span><br><br>The show airs political and social analysis and reports from the front lines of the struggle with activists involved in the fight against capitalism and imperialism here and abroad.<br><br>It is voices from organizers and activists across the country and abroad struggling against US and other empires. The program is anti &ndash; imperialist, anti-capitalist, anti-neoliberalist and socialist. Voices of Resistance is alternative media and serious journalism from a working class perspective.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/voice_med_280.jpg" alt="Lucy Pagoada-Quesada and Andreia Vizeu" ><div style="position:relative;top:10px;">Lucy Pagoada-Quesada and Andreia Vizeu</div>'"><div>Voices of Resistance</div><div class="cat_host_14">Lucy Pagoada-Quesada and Andreia Vizeu</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:1120px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Out-FM</span><br><br>Progressive lesbian, gay, bisexual, transgendered, two-spirit news, culture, and activism<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/outfm_med_30.jpg" alt="Out-FM Collective" ><div style="position:relative;top:10px;">Out-FM Collective</div>'"><div><a class="cat_link_14" href="http://wbai.org/index.php?option=com_content&amp;task=view&amp;id=360&amp;Itemid=135" target="New">Out-FM</a></div><div class="cat_host_14">Out-FM Collective</div></div>
+<div class="cat_12" style="position:absolute;left:220px;top:1200px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Cat Radio Cafe</span><br><br>Cat Radio Caf&eacute; is WBAI 99.5 FM&rsquo;s premier destination for lively cultural exploration, political commentary, and creative conversation. Hosted by Janet Coleman and David Dozer, the show brings together an eclectic mix of artists, authors, performers, and activists to discuss everything from cutting-edge theater and satirical comedy to historic political movements and local arts scene insights. Whether airing live from the iconic Cornelia Street Caf&eacute; or featuring rare audio archives and insightful interviews, Cat Radio Caf&eacute; offers a unique, engaging window into the vibrant cultural landscape of New York City and beyond.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/crcafe_med_29.jpg" alt="Janet Coleman and David Dozer" ><div style="position:relative;top:10px;">Janet Coleman and David Dozer</div>'"><div>Cat Radio Cafe</div><div class="cat_host_12">Janet Coleman and David Dozer</div></div>
+<div class="cat_11" style="position:absolute;left:220px;top:1280px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Heavy Waits </span><br><br>The Heavy Waits aims to bridge the gap between new and contemporary artists alongside jazz heavyweights. Through curated playlists, insightful interviews, and live performances, The Heavy Waits will showcase the evolution and innovation within the genre.<br><br>By highlighting both emerging talents and established icons, we strive to create a dynamic platform that honors the tradition of jazz while embracing its future possibilities. Our goal is to engage listeners with diverse, forward-thinking content that reflects the vibrancy and relevance of jazz in today&#039;s musical landscape.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/heavywaits_med_362.jpg" alt="Nasheet Waits" ><div style="position:relative;top:10px;">Nasheet Waits</div>'"><div>Heavy Waits </div><div class="cat_host_11">Nasheet Waits</div></div>
+<div class="cat_12" style="position:absolute;left:220px;top:1440px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">A Mansion for the Rat</span><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/manrat_med_190.jpg" alt="Ann-Marie Hendrickson" ><div style="position:relative;top:10px;">Ann-Marie Hendrickson</div></div>'"><div>A Mansion for the Rat</div><div class="cat_host_12">Ann-Marie Hendrickson</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:1520px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Grayzone Radio</span><br><br>Grayzone Radio is a production of The Grayzone, an independent news website dedicated to original investigative journalism and analysis on politics and empire. Washington DC-based independent journalist and author, Max Blumenthal, founded The Grayzone and is your host on Grayzone Radio.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/grayzone_med_367.jpg" alt="Max Blumenthal" ><div style="position:relative;top:10px;">Max Blumenthal</div>'"><div>Grayzone Radio</div><div class="cat_host_14">Max Blumenthal</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:1600px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Capitalism Race and Democracy</span><br><br>Capitalism, Race &amp; Democracy (CRD) is a syndicated national news magazine produced by the Pacifica National Board and the CRD Collective. It airs across the Pacifica Radio Network&mdash;including WBAI (New York), KPFA (Berkeley), KPFK (Los Angeles), WPFW (Washington, D.C.), and KPFT (Houston)&mdash;as well as hundreds of affiliate community radio stations.<br>Labor &amp; Economic Injustice: Worker rights, labor exploitation, corporate monopoly power, and predatory pricing.<br><br>Racial Justice &amp; Civil Rights: Institutional racism, historical resistance, and voting/representation rights.<br><br>Global Politics &amp; Imperialism: International conflicts, grassroots movements, foreign policy, and democracy struggles worldwide.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/capitalraceanddemo_med_365.jpg" alt="Pacifica Radio Collective" ><div style="position:relative;top:10px;">Pacifica Radio Collective</div>'"><div>Capitalism Race and Democracy</div><div class="cat_host_14">Pacifica Radio Collective</div></div>
+<div class="cat_11" style="position:absolute;left:220px;top:1680px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">From The Soundboard</span><br><br>Recordings of live concerts regardless of genre&lt;br&gt;&lt;br&gt;<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/ftsb_med_60.jpg" alt="Reggie Johnson" ><div style="position:relative;top:10px;">Reggie Johnson</div>'"><div>From The Soundboard</div><div class="cat_host_11">Reggie Johnson</div></div>
+<div class="cat_15" style="position:absolute;left:220px;top:1840px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Shenu Living</span><br><br>rab your favorite cup to enjoy your morning motivational tea from an African-diasporic spiritual perspective.<br><br>LaRenn Maman Elaine (aka Queen Mother Imakhu) brings her years of cultural wisdom to WBAI with her show, SHENU Living. In the Kemetic (Ancient Egyptian) language, Shenu means &quot;Ancestors, lake, protective circle, empowered speech, opinions, cognitive thought, bringing things full circle.&quot; SHENU Living is your Afro-Inspiration session. Holistic wellness, insightful guests, uplifting music, meditation, arts and culture awareness, and pertinent social commentary.<br><br>Deeply entrenched in African Spiritual Traditions for four decades, LaRenn Maman Elaine is an initiated Nganga, Manbo Asogwe, Elder High Priestess, and enstooled Queen Mother,. A yogini since age twelve, <br><br>LaRenn is a certified Yoga instructor, but teaches yoga and meditation from their African roots.<br>LaRenn Maman Elaine has a documented family history in the United States going back to the 1500s, yet includes Latin-Caribbean, Gullah Geechee, Nottoway Native, Black Southern and Jersey Girl roots. She has enjoyed a fifty year career as a professional in the arts. A professional storyteller, vocalist, musician, dancer, choreographer, multidisciplinary artist, and author, LaRenn Maman has brought her talents to diverse, multigenerational audiences across the U.S. and Canada. As a cultural scholar, LaRenn Maman has authored books about Ancient African culture, and is a member of the Association for the Study of Classical African Civilizations (ASCAC). She produces educational content through her company, Blacknificently LatinX Media. A career broadcaster/producer in AM/FM radio, Queen Mother Imakhu became the first African American woman to own and operate a 24/7 Black consciousness online/internet station, AKERU Nu Afrakan Network. She served as a columnist for First World News, Paint Magazine, and Nubian News.<br><br><br>An ardent activist, she has been a member of People&#039;s Organization for Progress since 2013. She is currently a WBAI Local Station Board member.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/shenuliving_med_381.jpg" alt="LaRenn Maman Elaine" ><div style="position:relative;top:10px;">LaRenn Maman Elaine</div>'"><div>Shenu Living</div><div class="cat_host_15">LaRenn Maman Elaine</div></div>
+<div class="cat_14" style="position:absolute;left:330px;top:0px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Rick Smith Show</span><br><br>The Rick Smith Show brings the voice of the working class to WBAI 99.5 FM, delivering a mix of sharp progressive politics and unfiltered labor advocacy. Hosted by Rick Smith, a former union truck driver, the program cuts through corporate media noise to tackle the real economic challenges facing everyday people. Through hard-hitting commentary and interviews with labor leaders, activists, and policymakers, the show serves as an essential platform for union organizing, worker rights, and the modern labor movement.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/ricksmithshow_med_322.jpg" alt="Rick Smith" ><div style="position:relative;top:10px;">Rick Smith</div>'"><div>Rick Smith Show</div><div class="cat_host_14">Rick Smith</div></div>
+<div class="cat_14" style="position:absolute;left:330px;top:80px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">What&#039;s Going On!</span><br><br>Morning news magazine show covering grassroots news, political analysis, labor rights, community issues, and cultural commentary.<br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/whatsgoingonlabort_med_330.jpg" alt="WBAI" ><div style="position:relative;top:10px;">WBAI</div>'"><div>What&#039;s Going On!</div><div class="cat_host_14">WBAI</div></div>
+<div class="cat_14" style="position:absolute;left:330px;top:160px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now! </span><br><br>Hard-hitting coverage of war and peace, government policies, and struggles for justice<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/dn_med_28.jpg" alt="Amy Goodman and Juan Gonzalez" ><div style="position:relative;top:10px;">Amy Goodman and Juan Gonzalez</div>'"><div><a class="cat_link_14" href="http://wbai.org/index.php?option=com_content&amp;task=view&amp;id=406&amp;Itemid=141" target="New">Democracy Now! </a></div><div class="cat_host_14">Amy Goodman and Juan Gonzalez</div></div>
+<div class="cat_14" style="position:absolute;left:330px;top:240px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Equal Rights and Justice</span><br><br>Movers and shakers occupy the airwaves to further an understanding of the true history and current events of this country and for us then to pursue and actually realize its promise of democracy.  On Equal Rights and Justice, we educate, agitate and organize to empower - for a Better World is Possible!<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/equal_med_257.jpg" alt="Mimi Rosenberg" ><div style="position:relative;top:10px;">Mimi Rosenberg</div>'"><div>Equal Rights and Justice</div><div class="cat_host_14">Mimi Rosenberg</div></div>
+<div class="cat_16" style="position:absolute;left:330px;top:320px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Eco-Logic</span><br><br>Discussions, interviews and action alerts on diverse ecological concerns. The show covers air, water, soil, wildlife, environmental justice and energy issues from local, national and global perspectives.<br><br>Also:<br>Community Ecology<br>Bioregionalism<br>Restoration and Appreciation of the Natural World<br>Energy Issues<br>Activism<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/ecologica_med_364.jpg" alt="Ken Gale, Donna Stein, Sally Gellert" ><div style="position:relative;top:10px;">Ken Gale, Donna Stein, Sally Gellert</div>'"><div>Eco-Logic</div><div class="cat_host_16">Ken Gale, Donna Stein, Sally Gellert</div></div>
+<div class="cat_14" style="position:absolute;left:330px;top:400px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Living for the City</span><br><br>Living For The City is a program focusing on telling the stories--our stories, our perspectives--of local communities throughout our area, and beyond. If you have lived in NYC for any length of time, you know how difficult it is to get the media to report about a subject in-depth, tell the truth or even cover an issue. We examine those very issues--especially dealing with the power of the real estate lobby, housing and land use--truthfully, accurately and without any conflicts of interest or loyalties, and without kowtowing to the influence of, or pressure from the narrow prism of the mainstream media.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/city_med_283.jpg" alt="Michael G. Haskins" ><div style="position:relative;top:10px;">Michael G. Haskins</div>'"><div>Living for the City</div><div class="cat_host_14">Michael G. Haskins</div></div>
+<div class="cat_14" style="position:absolute;left:330px;top:480px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Frontline Voices</span><br><br>Frontline Voices is a public affairs radio program broadcast on WBAI 99.5 FM, a listener-supported Pacifica Radio station serving the New York City metropolitan area.Show OverviewFocus: The show features interviews with prominent journalists, investigative reporters, scholars, and activists addressing major current events, human rights, politics, and social movements.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/frontlinvoices_med_373.jpg" alt="Various" ><div style="position:relative;top:10px;">Various</div>'"><div>Frontline Voices</div><div class="cat_host_14">Various</div></div>
+<div class="cat_14" style="position:absolute;left:330px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Attitude With Arne Arnesen</span><br><br>Check out The Attitude out of Concord New Hampshire with Arnie Arnesen who hosts Arnie hosts progressive voices from politics, journalism, industry, and academia and provides pithy commentary, interviews and stories you won&rsquo;t hear anywhere else. <br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/attitudarnearnesen_med_361.jpg" alt="Arnie Arnesen" ><div style="position:relative;top:10px;">Arnie Arnesen</div>'"><div>The Attitude With Arne Arnesen</div><div class="cat_host_14">Arnie Arnesen</div></div>
+<div class="cat_15" style="position:absolute;left:330px;top:640px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Naturalistic Support</span><br><br>Every week the producers Corinne Furnari  and Carol Petersen present new and creative ways to help you make sense of health information and bring it home to you and your family. The two have years of clinical experience and research into traditional and cutting edge technologies.<br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/naturalistsupport_med_382.jpg" alt="Arnell Dowret" ><div style="position:relative;top:10px;">Arnell Dowret</div>'"><div>Naturalistic Support</div><div class="cat_host_15">Arnell Dowret</div></div>
+<div class="cat_12" style="position:absolute;left:330px;top:720px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Katie Halper Show</span><br><br>The Katie Halper Show takes a humorous look at the news, politics, pop culture, and the arts through news segments and conversations with writers, journalists, activists, artists and political comedians. Tune in for segments like &quot;Excuse You,&quot; &quot;Right Wing Erotica,&quot; &quot;Family Values,&quot;  and &ldquo;The Sixty-Second Rant.&quot;<br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/katiehalpershowb_med_332.jpg" alt="Katie Halper" ><div style="position:relative;top:10px;">Katie Halper</div>'"><div>The Katie Halper Show</div><div class="cat_host_12">Katie Halper</div></div>
+<div class="cat_14" style="position:absolute;left:330px;top:800px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Drive Time</span><br><br>Buckle up and join the ride with Craig &ldquo;Pasta&rdquo; Jardula on Drive Time, the live call-in show where real talk meets real people. Broadcasting with energy and edge, Pasta dives into the day&rsquo;s biggest headlines and hottest takes, inviting listeners to share their voices and spark authentic conversations. Whether it&rsquo;s politics, culture, or the daily grind, no topic is off-limits, and no opinion gets left in the dust. Left, right, or somewhere in between&mdash;if you&rsquo;ve got something to say, Pasta&rsquo;s ready to hear it. Hit the lines and join the action because it&rsquo;s Drive Time!<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/drivetime_med_383.jpg" alt="Craig Pasta Jardula" ><div style="position:relative;top:10px;">Craig Pasta Jardula</div>'"><div>Drive Time</div><div class="cat_host_14">Craig Pasta Jardula</div></div>
+<div class="cat_14" style="position:absolute;left:330px;top:880px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Advocating for Justice</span><br><br>The show features activists, with a focus on people looking to take the lesson of the Bernie Sanders campaign and apply that grassroots activism to fights around election reform, health care, police misconduct, environmental destruction, education, inequality, student debt, and good-paying jobs, both by organizing around issues and by electing progressives to office.<br>The show includes interviews and coverage of important events in the NYC area.<br><br>Arthur Schwartz Bio:<br><br> Arthur is a progressive activist who cut his teeth in the Vietnam War protest movement and never stopped. He has been a labor and civil rights attorney for nearly 40 years. He has represented and still does represent some of the most militant unions in NYC, and has represented thousands of workers in cases involving employment discrimination, wage theft, and unfair termination. He was General Counsel to ACORN before its demise, and out of it launched a public interest firm which does education, housing, elder law, and gay rights litigation.<br><br>Arthur is politically active. He was in court for Occupy Wall Street, trying to stop the police from shutting it down, and represents NY Black Lives Matter, the Black Institute, and other progressive groups. For 22 years he has been Democratic District Leader in the Village, was N.Y. Counsel to Bernie Sanders in 2016 (and a convention delegate), Treasurer for Zephyr Teachout&iuml;&iquest;&frac12;s 2014 campaign against Andrew Cuomo, was elected as a pro-Obama delegate to the 2008 Democratic Convention, and was a founder and is Political Director for the New York Progressive Action Network.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/advojust_med_205.jpg" alt="Arthur Schwartz" ><div style="position:relative;top:10px;">Arthur Schwartz</div>'"><div>Advocating for Justice</div><div class="cat_host_14">Arthur Schwartz</div></div>
+<div class="cat_14" style="position:absolute;left:330px;top:960px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Electronic Intifada</span><br><br>Update on the situation in Gaza and the fight for the Palestinian spirit. <br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/electronicintifada_med_333.jpg" alt="Ali Abunimah" ><div style="position:relative;top:10px;">Ali Abunimah</div>'"><div>Electronic Intifada</div><div class="cat_host_14">Ali Abunimah</div></div>
+<div class="cat_16" style="position:absolute;left:330px;top:1040px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Off The Hook</span><br><br>OTH is the hacker&#039;s view of the emerging technology, and the threats posed by an increasingly Orwellian society. Hear updates on security flaws from the hacker perspective, as well as the latest news from within the hacker community.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/oth_med_64.jpg" alt="Emmanual Goldstein" ><div style="position:relative;top:10px;">Emmanual Goldstein</div>'"><div>Off The Hook</div><div class="cat_host_16">Emmanual Goldstein</div></div>
+<div class="cat_14" style="position:absolute;left:330px;top:1120px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">What&#039;s Happening</span><br><br>RALPH POYNTER: Born in Western Pennsylvania, the son of a union organizer when Pittsburgh and surrounding area was the steel capital of the world. I remained true to the principles of unionism as founding member of the Teacher&rsquo;s Freedom Party Caucus of the UFT. I continued supporting true union principles until the UFT joined management by supporting the racist Central Board of Education in NYC against the community. After leaving jail, I continued the struggle for justice as a Private Investigator who confronted injustice directly. I supported Lynne Stewart in her lifelong struggle against the double standard so often practiced in the U.S. injustice system pasts and present. Ralph Poynter New Abolitionist Movement Lynne Stewart Defense Org.<br><br>BETTY DAVIS: I have been a warrior in the struggle for community control of education in NYC every since I heard Ralph Poynter speak at a pro union rally supporting the social workers strike against the City of NY in 1967. After his speech, I questioned him further about his radical, revolutionary views and that was it. I joined the struggle to free our community from the oppression in the NYC education system.<br><br>Later that year I met Lynne Stewart and Ralph at a Teacher&#039;s Freedom Party social and her account of the history of the struggle for freedom and democracy in education solidified my resolve to join the struggle. Lynne was a librarian then who later became known as the People&rsquo;s lawyer. I was a social worker soon to become an educator. Together the three of us founded The New Abolitionist Movement because as everyone knows, &quot;Cats don&#039;t educate mice, they eat them.&quot;<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/whatshappenin_med_335.jpg" alt="Ralph Poynter, Betty Davis" ><div style="position:relative;top:10px;">Ralph Poynter, Betty Davis</div>'"><div>What&#039;s Happening</div><div class="cat_host_14">Ralph Poynter, Betty Davis</div></div>
+<div class="cat_12" style="position:absolute;left:330px;top:1200px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Arts Express</span><br><br>Arts Express is a vibrant anthology mix of cultural news, views and interviews, and the organic and intricate ways that art always intertwines and fuses dynamically with political currents of the day. Arts Express provides weekly, in-depth coverage of film; arts news and scoops with a hard core political edge; art alerts and Best Of The Net Hotspots for listeners; and contemplative voyages through web culture served up with an enticing, multi-cultural international flavor.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/artex_med_145.jpg" alt="Prairie Miller, Jack Shalom" ><div style="position:relative;top:10px;">Prairie Miller, Jack Shalom</div>'"><div>Arts Express</div><div class="cat_host_12">Prairie Miller, Jack Shalom</div></div>
+<div class="cat_11" style="position:absolute;left:330px;top:1280px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">AfroBeat Radio </span><br><br>AfrobeatRadio on WBAI is a global African music show. We play and maintain a library of music of all genres from all over the African world. AfrobeatRadio interviews artists, cultural practitioners, and subject experts to present African perspectives on global issues.<br><br>The AfrobeatrRadio project incorporates a radio station (https://afrobeatradio.com) and Afrobeat Journal (www.afrobeatjournal.org) - a multi-disciplinary and multi-media content Repository for text, videos, podcasts, articles, blogs, presentations, and everything in between that simultaneously provides space for grassroots and scholarly investigations, artistic and creative inquiry, production, and performance. As a community platform and collaborator, we present panels of discussions, film screenings, festivals, etc, in New York City.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/afrobeat_med_102.jpg" alt="Wuyi Jacobs" ><div style="position:relative;top:10px;">Wuyi Jacobs</div>'"><div>AfroBeat Radio </div><div class="cat_host_11">Wuyi Jacobs</div></div>
+<div class="cat_12" style="position:absolute;left:330px;top:1440px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Dustbin of History!</span><br><br>Step back in time with Dustbin of History! hosted by Max Schmid and Ann Marie Hedrickson on WBAI 99.5 FM. Unearthing rare audio gems, vintage radio dramas, and classic audio theater, this show rescues forgotten broadcasts from obscurity&mdash;featuring everything from legendary science fiction and thriller serials like Nightfall and Vanishing Point to historic commentary and archival radio treasures. Stream live or dive into the WBAI archives to experience the golden age of audio storytelling restored for a modern audience.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/dust_med_255.jpg" alt="Max Schmid and Ann Marie Hedrickson" ><div style="position:relative;top:10px;">Max Schmid and Ann Marie Hedrickson</div>'"><div>Dustbin of History!</div><div class="cat_host_12">Max Schmid and Ann Marie Hedrickson</div></div>
+<div class="cat_13" style="position:absolute;left:330px;top:1600px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Jimmy Dore Show </span><br><br>Jimmy Dore is the star of several Comedy Central specials, a writer performer for the Off-Broadway hit &ldquo;The Marijuana-Logues&rdquo;, and the host of his own weekly radio show in Los Angeles.<br>His latest effort &ldquo;Citizen Jimmy&rdquo; is the award-winning one-hour Comedy Central Special that was chosen Best Of 2008 by iTunes, and was named one the the top 5 comedy DVDs of the year by Punchline Magazine.<br><br>Jimmy&rsquo;s everyman style and razor-sharp material draws people in and has made him one of fastest rising stars in comedy today.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/dorereb_med_66.jpg" alt="Jimmy Dore" ><div style="position:relative;top:10px;">Jimmy Dore</div>'"><div><a class="cat_link_13" href="http://wbai.org/index.php?option=com_content&amp;task=view&amp;id=10964&amp;Itemid=141" target="New">Jimmy Dore Show </a></div><div class="cat_host_13">Jimmy Dore</div></div>
+<div class="cat_14" style="position:absolute;left:330px;top:1680px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">What&#039;s The Frequency, Kenneth?</span><br><br>What&#039;s the Frequency, Kenneth? is a weekly &quot;newsical&quot;about current events, journalism and the media, told through a mix of narration, music and soundbites.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/frequency_med_244.jpg" alt="Paul Fischer" ><div style="position:relative;top:10px;">Paul Fischer</div>'"><div>What&#039;s The Frequency, Kenneth?</div><div class="cat_host_14">Paul Fischer</div></div>
+<div class="cat_11" style="position:absolute;left:330px;top:1760px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Burn Baby Burn</span><br><br>ister Hewan-Lowe was born in 1952 at Halfway Tree, Jamaica.<br>He relocated to New York in 1972 where he worked for several years as a project leader for Island Records. It was Lister who signed Burning Spear and Black Uhuru to the label.<br><br>In 1980 he launched his own record label, Clappers , A small label that has had tremendous influence on both reggae and hiphop.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/burnbabyburn_med_384.jpg" alt="Lister Hewan-Lowe" ><div style="position:relative;top:10px;">Lister Hewan-Lowe</div>'"><div>Burn Baby Burn</div><div class="cat_host_11">Lister Hewan-Lowe</div></div>
+<div class="cat_14" style="position:absolute;left:440px;top:0px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">What&#039;s Going On! Thursday</span><br><br>Start your Thursdays with &ldquo;What&rsquo;s Going On?&rdquo;&mdash;a sharp, thought-provoking hour where we ask the questions that matter most. From social justice to political chaos, we unpack the week&rsquo;s biggest challenges with bold commentary and real community insight. Tune in every Thursday from 7:00 to 8:00 AM for fresh perspectives, fierce questions, and a space to think out loud!<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/whatsgoingonthursd_med_342.jpg" alt="Frenchie Davis" ><div style="position:relative;top:10px;">Frenchie Davis</div>'"><div>What&#039;s Going On! Thursday</div><div class="cat_host_14">Frenchie Davis</div></div>
+<div class="cat_14" style="position:absolute;left:440px;top:160px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now! </span><br><br>Hard-hitting coverage of war and peace, government policies, and struggles for justice<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/dn_med_28.jpg" alt="Amy Goodman and Juan Gonzalez" ><div style="position:relative;top:10px;">Amy Goodman and Juan Gonzalez</div>'"><div><a class="cat_link_14" href="http://wbai.org/index.php?option=com_content&amp;task=view&amp;id=406&amp;Itemid=141" target="New">Democracy Now! </a></div><div class="cat_host_14">Amy Goodman and Juan Gonzalez</div></div>
+<div class="cat_14" style="position:absolute;left:440px;top:240px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Equal Rights and Justice</span><br><br>Movers and shakers occupy the airwaves to further an understanding of the true history and current events of this country and for us then to pursue and actually realize its promise of democracy.  On Equal Rights and Justice, we educate, agitate and organize to empower - for a Better World is Possible!<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/equal_med_257.jpg" alt="Mimi Rosenberg" ><div style="position:relative;top:10px;">Mimi Rosenberg</div>'"><div>Equal Rights and Justice</div><div class="cat_host_14">Mimi Rosenberg</div></div>
+<div class="cat_14" style="position:absolute;left:440px;top:400px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Joy of Resistance</span><br><br>Mission: To cover the ongoing worldwide struggle for the full liberation of women.<br><br>Joy of Resistance covers &quot;the ongoing and world-wide struggle for the full liberation of women--as it continues to unfold dynamically in every country and culture on the planet.&quot;<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/joyrapeforum_med_191.jpg" alt="Fran Luck and Maretta Short" ><div style="position:relative;top:10px;">Fran Luck and Maretta Short</div>'"><div>Joy of Resistance</div><div class="cat_host_14">Fran Luck and Maretta Short</div></div>
+<div class="cat_14" style="position:absolute;left:440px;top:480px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Frontline Voices</span><br><br>Frontline Voices is a public affairs radio program broadcast on WBAI 99.5 FM, a listener-supported Pacifica Radio station serving the New York City metropolitan area.Show OverviewFocus: The show features interviews with prominent journalists, investigative reporters, scholars, and activists addressing major current events, human rights, politics, and social movements.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/frontlinvoices_med_373.jpg" alt="Various" ><div style="position:relative;top:10px;">Various</div>'"><div>Frontline Voices</div><div class="cat_host_14">Various</div></div>
+<div class="cat_14" style="position:absolute;left:440px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Attitude With Arne Arnesen</span><br><br>Check out The Attitude out of Concord New Hampshire with Arnie Arnesen who hosts Arnie hosts progressive voices from politics, journalism, industry, and academia and provides pithy commentary, interviews and stories you won&rsquo;t hear anywhere else. <br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/attitudarnearnesen_med_361.jpg" alt="Arnie Arnesen" ><div style="position:relative;top:10px;">Arnie Arnesen</div>'"><div>The Attitude With Arne Arnesen</div><div class="cat_host_14">Arnie Arnesen</div></div>
+<div class="cat_16" style="position:absolute;left:440px;top:640px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Techtonic</span><br><br>Host Mark Hurst interviews creators and thinkers about the digital future, while advocating for tech that serves people rather than exploits them.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/techtonic_med_385.jpg" alt="Mark Hurst" ><div style="position:relative;top:10px;">Mark Hurst</div>'"><div>Techtonic</div><div class="cat_host_16">Mark Hurst</div></div>
+<div class="cat_14" style="position:absolute;left:440px;top:720px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Resistance Radio</span><br><br>Nationally recognized Mohawk activist John Kane hosts the program. John lives in the Seneca Nation Territory of Cattaraugus, giving the show perspectives directly from Native territory. Topics are picked from the headlines, mined from buried history and torn open, live on-air. The program features guests, great music from Native artists and a few surprises along the way, <br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/resistanradio_med_337.jpg" alt="John Kane" ><div style="position:relative;top:10px;">John Kane</div>'"><div>Resistance Radio</div><div class="cat_host_14">John Kane</div></div>
+<div class="cat_15" style="position:absolute;left:440px;top:800px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Take Charge Of Your Health</span><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/tcoyhealth_med_87.jpg" alt="Corinne Furnari and Carol Petersen" ><div style="position:relative;top:10px;">Corinne Furnari and Carol Petersen</div></div>'"><div>Take Charge Of Your Health</div><div class="cat_host_15">Corinne Furnari and Carol Petersen</div></div>
+<div class="cat_14" style="position:absolute;left:440px;top:880px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">City Watch</span><br><br>City Watch is a forum for detailed discussion and analysis of social, economic, and political issues affecting New Yorkers. We air the voices of the people living and working in the communities, the researchers, government leaders, budget advocates, and organizers, and provide an opportunity to discuss the issues that matter. Our questions and dialogue help to make the issues come alive for our listeners, and shows also focus on culture, commerce, and controversy - always with an eye toward highlighting the issues of the day.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/drive_med_235.jpg" alt="Jeff Simmons and Carlos Menchaca" ><div style="position:relative;top:10px;">Jeff Simmons and Carlos Menchaca</div>'"><div>City Watch</div><div class="cat_host_14">Jeff Simmons and Carlos Menchaca</div></div>
+<div class="cat_14" style="position:absolute;left:440px;top:960px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Black Agenda Report</span><br><br><br>Hosted by Margaret Kimberley Black Agenda Radio is a broadcast service of Black Agenda Report, which brings you news, commentary and analysis from the Black Left. Black Agenda Report was founded in 2006 and presents local, national and international news.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/blackagendareport_med_366.jpg" alt="Margaret Kimberley" ><div style="position:relative;top:10px;">Margaret Kimberley</div>'"><div>Black Agenda Report</div><div class="cat_host_14">Margaret Kimberley</div></div>
+<div class="cat_14" style="position:absolute;left:440px;top:1040px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Economic Update</span><br><br>Economics Professor Richard D. Wolff and guests discuss the current state of the economy, both locally and globally in relation to the economic crisis.<br><br>They focus on wages, jobs, taxes, and debts - and on interest rates, prices, and profits. The goal is to explain why certain economic changes are happening and other changes get postponed or blocked. They also explore alternative ways to organize enterprises, markets, and government policies.<br><br>This show is for people who want to understand and change, not only their own financial situation, but also the larger economy we all depend on.<br><br>Produced by Democracy at Work. The first show aired on WBAI March 26, 2011.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/econupsat_med_141.jpg" alt="Richard D. Wolff" ><div style="position:relative;top:10px;">Richard D. Wolff</div>'"><div>Economic Update</div><div class="cat_host_14">Richard D. Wolff</div></div>
+<div class="cat_16" style="position:absolute;left:440px;top:1080px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Shortwave Report</span><br><br>Review of news stories recorded from a shortwave radio<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/shortwave_med_386.jpg" alt="Dan Roberts" ><div style="position:relative;top:10px;">Dan Roberts</div>'"><div>Shortwave Report</div><div class="cat_host_16">Dan Roberts</div></div>
+<div class="cat_14" style="position:absolute;left:440px;top:1120px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Education At The Crossroads</span><br><br>Education at the Crossroads attempts to look at education in a broad and comprehensive fashion, and presents a cutting edge vision of what education needs to be.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/eatcrossr_med_78.jpg" alt="Basir Mchawi" ><div style="position:relative;top:10px;">Basir Mchawi</div>'"><div>Education At The Crossroads</div><div class="cat_host_14">Basir Mchawi</div></div>
+<div class="cat_12" style="position:absolute;left:440px;top:1200px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Backstage Stories</span><br><br>A behind-the-scenes look at the arts, culture, and entertainment through in-depth conversations with diverse voices from the global community.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/backstagestories_med_310.jpg" alt="Marcia Pendleton" ><div style="position:relative;top:10px;">Marcia Pendleton</div>'"><div>Backstage Stories</div><div class="cat_host_12">Marcia Pendleton</div></div>
+<div class="cat_11" style="position:absolute;left:440px;top:1280px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Folk Radio</span><br><br>Folk Radio brings an expansive, eclectic mix of acoustic traditions and contemporary roots music to the WBAI airwaves every Thursday night at 10:00 PM. Hosted by the Folk Radio Collective under executive producers Richard Barr and Edward Haber, the show explores the rich storytelling, social commentary, and diverse heritage of folk music&mdash;ranging from classic American singer-songwriters and traditional balladry to contemporary indie-folk and global roots sounds. Rooted in WBAI&rsquo;s legacy of free-speech, listener-supported radio, Folk Radio provides a home for timeless acoustic artistry, fresh discoveries, and the vibrant voices shaping the global folk community today.<br>'"><div>Folk Radio</div><div class="cat_host_11">Barr, Haber</div></div>
+<div class="cat_11" style="position:absolute;left:440px;top:1440px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Haitian All-Starz Radio</span><br><br>fantastic blend of Haitian Kompas, Zouk, RaRa, Kanaval, and much more!<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/haitianallstarz_med_133.jpg" alt="DJ Hard Hittin Harry, DJayCee, Only One Pro, and MC Dred&shy;-I" ><div style="position:relative;top:10px;">DJ Hard Hittin Harry, DJayCee, Only One Pro, and MC Dred&shy;-I</div>'"><div>Haitian All-Starz Radio</div><div class="cat_host_11">DJ Hard Hittin Harry, DJayCee, Only One Pro, and MC Dred&shy;-I</div></div>
+<div class="cat_13" style="position:absolute;left:440px;top:1600px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Jimmy Dore Show </span><br><br>Jimmy Dore is the star of several Comedy Central specials, a writer performer for the Off-Broadway hit &ldquo;The Marijuana-Logues&rdquo;, and the host of his own weekly radio show in Los Angeles.<br>His latest effort &ldquo;Citizen Jimmy&rdquo; is the award-winning one-hour Comedy Central Special that was chosen Best Of 2008 by iTunes, and was named one the the top 5 comedy DVDs of the year by Punchline Magazine.<br><br>Jimmy&rsquo;s everyman style and razor-sharp material draws people in and has made him one of fastest rising stars in comedy today.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/dorereb_med_66.jpg" alt="Jimmy Dore" ><div style="position:relative;top:10px;">Jimmy Dore</div>'"><div><a class="cat_link_13" href="http://wbai.org/index.php?option=com_content&amp;task=view&amp;id=10964&amp;Itemid=141" target="New">Jimmy Dore Show </a></div><div class="cat_host_13">Jimmy Dore</div></div>
+<div class="cat_14" style="position:absolute;left:440px;top:1680px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">In Other News</span><br><br>In this strange period where free energy technology is weaponized, dissent is criminalized, and war economies flourish, the human family is being deliberately assaulted on multiple fronts, in the food, air, water and during sleep.<br>In Other News topics range from the conspiratorial, controversial, and esoteric near the fringe of belief systems. One hour is not usually enough time to explore each topic. Some topics, such as geo-engineering, will be revisited many times.<br><br>Past shows have looked at issues involving electromagnetic weapons, satellite stalking, RFID, google cache, illegal fluoridated drinking water for infants, airport radiation scanners, radiation in human environments, secret societies,energy vampires, psychopathy, surveillance, human trafficking, disaster capitalism, geo-engineering, nanotechnology and extraction industry.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/inonews_med_81.jpg" alt="Geoff Brady" ><div style="position:relative;top:10px;">Geoff Brady</div>'"><div>In Other News</div><div class="cat_host_14">Geoff Brady</div></div>
+<div class="cat_12" style="position:absolute;left:440px;top:1760px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Golden Age Of Radio</span><br><br>Vintage broadcasts from the 1930s, &#039;40s, and &#039;50s, laughs, love, thrills and adventure in the theater of the mind.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/gaoradio_med_22.jpg" alt="Max Schmid" ><div style="position:relative;top:10px;">Max Schmid</div>'"><div>Golden Age Of Radio</div><div class="cat_host_12">Max Schmid</div></div>
+<div class="cat_14" style="position:absolute;left:550px;top:0px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">We Decide: America at the Crossroads </span><br><br>From the latest actions of the Trump administration to the efforts of labor movements across the country to attain fair pay and respectable working conditions, the Pacifica Network&#039;s new national program We Decide: America at the Crossroads with Jenna Flanagan looks for patterns across the major news events of the week and unpacks them with our nation&#039;s foremost progressive thinkers. Priority is given to upcoming elections in all 50 states as the country fights to keep from slipping further into the clutches of authoritarianism.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/wedecideamericatcr_med_378.jpg" alt="Jenna Flanagan" ><div style="position:relative;top:10px;">Jenna Flanagan</div>'"><div>We Decide: America at the Crossroads </div><div class="cat_host_14">Jenna Flanagan</div></div>
+<div class="cat_14" style="position:absolute;left:550px;top:160px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now! </span><br><br>Hard-hitting coverage of war and peace, government policies, and struggles for justice<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/dn_med_28.jpg" alt="Amy Goodman and Juan Gonzalez" ><div style="position:relative;top:10px;">Amy Goodman and Juan Gonzalez</div>'"><div><a class="cat_link_14" href="http://wbai.org/index.php?option=com_content&amp;task=view&amp;id=406&amp;Itemid=141" target="New">Democracy Now! </a></div><div class="cat_host_14">Amy Goodman and Juan Gonzalez</div></div>
+<div class="cat_14" style="position:absolute;left:550px;top:240px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Beyond The Pale</span><br><br>Beyond The Pale explores local, national and international political debate and analysis from a progressive Jewish perspective.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/btpale_med_16.jpg" alt="Schimunov &amp; Brown" ><div style="position:relative;top:10px;">Schimunov &amp; Brown</div>'"><div>Beyond The Pale</div><div class="cat_host_14">Schimunov &amp; Brown</div></div>
+<div class="cat_14" style="position:absolute;left:550px;top:320px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">On The Ground: Voices of Resistance from the Nation&#039;s Capital</span><br><br>WASHINGTON, DC, the belly of the beast of international military and corporate power, is also a place of activism. It is where we come to speak truth to power in the streets and in the halls and assemblies of power. But you won&rsquo;t hear these voices on corporate media. Even so-called progressive cable news outlets focus instead on the jockeying of electoral politics with a distinct neoliberal bias.<br>&quot;On the Ground: Voices of Resistance from the Nation&#039;s Capital&quot; counters this trend by giving a voice to the voiceless 99 percent at the heart of American empire. The award-winning, weekly hour, produced and hosted by Esther Iverem, covers social justice activism about local, national and international issues, with a special emphasis on militarization and war, the police state, the corporate state, environmental justice and the left edge of culture and media. &quot;On the Ground&quot; premiered on May Day, May 1, 2014 on WPFW Pacifica Radio in Washington, DC and is heard on more than a dozen stations across the United States.<br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/ground_med_242.jpg" alt="Esther Iverem" ><div style="position:relative;top:10px;">Esther Iverem</div>'"><div>On The Ground: Voices of Resistance from the Nation&#039;s Capital</div><div class="cat_host_14">Esther Iverem</div></div>
+<div class="cat_15" style="position:absolute;left:550px;top:400px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Heart of Mind</span><br><br>The program features guests, music, meditation and conversation, with a focus on consciousness, spiritual activism and conflict resolution. Discussions are based on an understanding of energetic cosmology, human nature and an historical perspective.<br>Kathryn Davis has been co-host and producer of Health Action since 1995 and producer of Heart Of Mind since 2000.<br><br>Kathryn is a Meditation and Movement teacher, Spiritual Doula and Vibrational Healer. She is certified as a Qigong teacher and in Qigong healing techniques by OCOM, the Oregon College of Oriental Medicine, and is certified in Reiki Energy Healing as well as the Sandlin Technique, an Indigenous Energy Healing practice based on Vision Quest and Shamanic Insight.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/hmind2_med_229.jpg" alt="Kathryn Davis" ><div style="position:relative;top:10px;">Kathryn Davis</div>'"><div>Heart of Mind</div><div class="cat_host_15">Kathryn Davis</div></div>
+<div class="cat_14" style="position:absolute;left:550px;top:480px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Frontline Voices</span><br><br>Frontline Voices is a public affairs radio program broadcast on WBAI 99.5 FM, a listener-supported Pacifica Radio station serving the New York City metropolitan area.Show OverviewFocus: The show features interviews with prominent journalists, investigative reporters, scholars, and activists addressing major current events, human rights, politics, and social movements.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/frontlinvoices_med_373.jpg" alt="Various" ><div style="position:relative;top:10px;">Various</div>'"><div>Frontline Voices</div><div class="cat_host_14">Various</div></div>
+<div class="cat_14" style="position:absolute;left:550px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Attitude With Arne Arnesen</span><br><br>Check out The Attitude out of Concord New Hampshire with Arnie Arnesen who hosts Arnie hosts progressive voices from politics, journalism, industry, and academia and provides pithy commentary, interviews and stories you won&rsquo;t hear anywhere else. <br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/attitudarnearnesen_med_361.jpg" alt="Arnie Arnesen" ><div style="position:relative;top:10px;">Arnie Arnesen</div>'"><div>The Attitude With Arne Arnesen</div><div class="cat_host_14">Arnie Arnesen</div></div>
+<div class="cat_16" style="position:absolute;left:550px;top:640px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Green Street</span><br><br>The mission of Green Street Radio is to provide you with science-based information and practical solutions you can use to protect yourself and your family from many common environmental exposures, and to protect and preserve our natural resources for the next generation.<br>About the Hosts:<br>Patti Wood is a Visiting Scholar at Adelphi University where she lectures on the environment and related health issues in the School of Nursing and serves on the College of Arts and Sciences Advisory Board for Environmental Studies. Ms. Wood is a frequent lecturer at Pace University and serves on the New York State Governor&rsquo;s Advisory Council on Green Procurement and Sustainability.<br><br>Doug Wood is a filmmaker, author, composer and business consultant. He is the producer of numerous films on environmental issues, and serves on the Board of Directors of the American Society of Composers, Authors and Publishers (ASCAP).<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/greenstreet_med_374.jpg" alt="Doug &amp; Patti Wood" ><div style="position:relative;top:10px;">Doug &amp; Patti Wood</div>'"><div><a class="cat_link_16" href="http://www.greenstreetradio.com/" target="New">Green Street</a></div><div class="cat_host_16">Doug &amp; Patti Wood</div></div>
+<div class="cat_14" style="position:absolute;left:550px;top:720px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Live On The Fly</span><br><br>Hosted by political satirist and civil rights activist, Randy Credico. <br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/liveonfly_med_344.jpg" alt="Randy Credico" ><div style="position:relative;top:10px;">Randy Credico</div>'"><div>Live On The Fly</div><div class="cat_host_14">Randy Credico</div></div>
+<div class="cat_14" style="position:absolute;left:550px;top:880px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Speaking Truth To Power</span><br><br>WBAI is happy to welcome the dynamic duo to our airwaves. Charles and Inez Barron have always been part of WBAI&#039;s family and now they are hosting their own program every Friday at five pm. Tune in and join us in welcoming them. <br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/speakintruthpower_med_345.jpg" alt="Charles and Inez Barron" ><div style="position:relative;top:10px;">Charles and Inez Barron</div>'"><div>Speaking Truth To Power</div><div class="cat_host_14">Charles and Inez Barron</div></div>
+<div class="cat_13" style="position:absolute;left:550px;top:960px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">CounterSpin </span><br><br>CounterSpin is a program of media analysis and activism from FAIR, the national media watch group. It exposes inaccurate reporting, narrow political debate, sexism, racism and homophobia in the media and the power of corporate influence<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/cspin_med_83.jpg" alt="Janine Jackson" ><div style="position:relative;top:10px;">Janine Jackson</div>'"><div><a class="cat_link_13" href="http://fair.org" target="New">CounterSpin </a></div><div class="cat_host_13">Janine Jackson</div></div>
+<div class="cat_12" style="position:absolute;left:550px;top:1000px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">ReelWorld</span><br><br>REELWORLD the world of film with your host Mike Sargent. <br><br>Weekly film reviews, interviews, insights, soundtracks, and so much more. <br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/reel_med_285.jpg" alt="Mike Sargent" ><div style="position:relative;top:10px;">Mike Sargent</div>'"><div>ReelWorld</div><div class="cat_host_12">Mike Sargent</div></div>
+<div class="cat_14" style="position:absolute;left:550px;top:1040px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Radio GBE-New York</span><br><br>Message in the music: discs and discussions of African-American sounds and issues<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/gbe_med_89.jpg" alt="Inhotep Gary Byrd" ><div style="position:relative;top:10px;">Inhotep Gary Byrd</div>'"><div>Radio GBE-New York</div><div class="cat_host_14">Inhotep Gary Byrd</div></div>
+<div class="cat_14" style="position:absolute;left:550px;top:1200px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Radio GBE: Soul Travel Experience</span><br><br>Imhotep takes us on a journey through poetry and music and art - Radio GBE&#039;s Soul Travel Experience. <br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/gbemindfli_med_311.jpg" alt="Imhotep Gary Byrd" ><div style="position:relative;top:10px;">Imhotep Gary Byrd</div>'"><div>Radio GBE: Soul Travel Experience</div><div class="cat_host_14">Imhotep Gary Byrd</div></div>
+<div class="cat_11" style="position:absolute;left:550px;top:1280px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Harlem Connection</span><br><br>The Harlem Connection features an eclectic array of artists from different areas and eras that are connected via Harlem, U.S.A.<br><br>We also give info on what&rsquo;s happening Uptown and interview creators, newsmakers, entrepreneurs, and other all-around cool folks.<br><br>In the immortal words of Lakeside&hellip;<br><br>&ldquo;We just want you to feel (We just want you to feel&hellip;)<br>nothing but pleasure. Musical pleasure.<br>&#039;Cause music is a world of fantasy.<br>Let&#039;s live it together. Musical pleasure&hellip;<br>(Dance in the sunshine.) Take a load off of your mind.<br>Our music is very real (So very real)<br>Truly a treasure! Musical treas-ure!&rdquo;<br><br>&quot;So hey, come on, come along, take a ride&hellip;&rdquo; and let MamaSoul and The L.A.W. be your musical conductors as you get onboard&hellip;The Harlem Connection. Departing from the New York City station, WBAI 99.5FM and WBAI.org, Friday nights from 10-Midnight.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/harlemconnectio_med_348.jpg" alt="MamaSoul &amp; The L.A.W." ><div style="position:relative;top:10px;">MamaSoul &amp; The L.A.W.</div>'"><div>The Harlem Connection</div><div class="cat_host_11">MamaSoul &amp; The L.A.W.</div></div>
+<div class="cat_11" style="position:absolute;left:550px;top:1440px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Midnight Ravers</span><br><br>Hear music and documentary focused on one artist each week.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/mraverscreative_med_9.jpg" alt="Terry Wilson, Shawn Rhodes, Nate Walker,Sir Eccleston, Isaac Fergusson, Kwame Heshimu, Colly Charles" ><div style="position:relative;top:10px;">Terry Wilson, Shawn Rhodes, Nate Walker,Sir Eccleston, Isaac Fergusson, Kwame Heshimu, Colly Charles</div>'"><div>Midnight Ravers</div><div class="cat_host_11">Terry Wilson, Shawn Rhodes, Nate Walker,Sir Eccleston, Isaac Fergusson, Kwame Heshimu, Colly Charles</div></div>
+<div class="cat_11" style="position:absolute;left:550px;top:1600px;height:240px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Labbrish</span><br><br>Selassie has been active in everything from the movement to end Apartheid to inspiring a group of prisoners to establish an Organization of Caribbean African Unity. Habte Selassie was born in Kingston, Jamaica and resides in New York City.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/labbrish_med_80.jpg" alt="Habte Selassie" ><div style="position:relative;top:10px;">Habte Selassie</div>'"><div>Labbrish</div><div class="cat_host_11">Habte Selassie</div></div>
+<div class="cat_12" style="position:absolute;left:550px;top:1840px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Back Of The Book</span><br><br>Free Form Live Radio by R. Paul Martin and Pickles of the North. Free Form Live Radio: a radio sculpture done in real time using found objects.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/cwave_med_25.jpg" alt="R. Paul Martin + Pickles of the North" ><div style="position:relative;top:10px;">R. Paul Martin + Pickles of the North</div>'"><div>Back Of The Book</div><div class="cat_host_12">R. Paul Martin + Pickles of the North</div></div>
+<div class="cat_11" style="position:absolute;left:660px;top:0px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Everything Old is New Again - Again!</span><br><br>An unusual blend of Big Band, Swing, Jazz, Standards, Showtunes, Contemporary Cabaret and Celebrity Interviews!<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/oldisnewagain_med_259.jpg" alt="David Kenney" ><div style="position:relative;top:10px;">David Kenney</div>'"><div>Everything Old is New Again - Again!</div><div class="cat_host_11">David Kenney</div></div>
+<div class="cat_12" style="position:absolute;left:660px;top:160px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Any Saturday</span><br><br>Theater, music, interviews, social commentary, and the fleetingly famous.<br>Join David Rothenberg for discount theater tickets, great music of many decades, discussions of arts, politics and criminal justice, a quiz about those formerly in the news, and forthright social commentary by a man who fearlessly goes out on a limb.<br><br>David Rothenberg has been affiliated with WBAI for 35 years. He is the founder of the Fortune Society, an organization for ex-offenders, and was its first executive director, a post he held for 18 years. He is also a former member of NYC Human Rights Commission. In theater, he has been publicist and producer for over a hundred Broadway and off-Broadway productions<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/anysat_med_219.jpg" alt="David Rothenberg" ><div style="position:relative;top:10px;">David Rothenberg</div>'"><div>Any Saturday</div><div class="cat_host_12">David Rothenberg</div></div>
+<div class="cat_14" style="position:absolute;left:660px;top:320px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">On the Count - The Prison And Criminal Justice Report</span><br><br>On the Count! is a program hosted and produced by former prisoners featuring criminal and social justice news, analysis and commentary.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/otcount_med_95.jpg" alt="Andre Ward, Harmony Hope,  Marilyn &quot;Mari&quot; Mateo, Stanley &quot;Jamel&quot; Bellamy, Eddie Ellis" ><div style="position:relative;top:10px;">Andre Ward, Harmony Hope,  Marilyn &quot;Mari&quot; Mateo, Stanley &quot;Jamel&quot; Bellamy, Eddie Ellis</div>'"><div>On the Count - The Prison And Criminal Justice Report</div><div class="cat_host_14">Andre Ward, Harmony Hope,  Marilyn &quot;Mari&quot; Mateo, Stanley &quot;Jamel&quot; Bellamy, Eddie Ellis</div></div>
+<div class="cat_12" style="position:absolute;left:660px;top:400px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">DREAMLEAPERS&reg; with Harriette Cole</span><br><br>Dreamleapers with Harriette Cole is an inspirational and educational talk show featuring successful people who will share their dreams and how they manifested them, their goals and challenges, the twists and turns that have led them to where they are today.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/dream_med_214.jpg" alt="Harriette Cole" ><div style="position:relative;top:10px;">Harriette Cole</div>'"><div>DREAMLEAPERS&reg; with Harriette Cole</div><div class="cat_host_12">Harriette Cole</div></div>
+<div class="cat_11" style="position:absolute;left:660px;top:480px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Earth Riot Radio</span><br><br>Earth Riot Radio is a wild, music-filled exploration of the planet&rsquo;s most urgent crisis. Join Reverend Billy and Savitri D every Saturday at noon on WBAI 99.5 FM for a high-energy hour of radical choral music, &quot;stop shopping&quot; sermons, and frontline reports from the fight against the Sixth Extinction.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/earthriotradio_med_387.jpg" alt="Rev Billy and the Stop Shopping Choir" ><div style="position:relative;top:10px;">Rev Billy and the Stop Shopping Choir</div>'"><div>Earth Riot Radio</div><div class="cat_host_11">Rev Billy and the Stop Shopping Choir</div></div>
+<div class="cat_18" style="position:absolute;left:660px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">WBAI Radio Pop Up Shop</span><br><br>A dedicated segment in the WBAI schedule where producers can step outside their regular show formats and create special content. A space for creative freedom where producers can explore themes, events, or ideas that may not fit into their usual programming but resonate with their interests or current happenings.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/wbairadipopupshop_med_388.jpg" alt="Rotating" ><div style="position:relative;top:10px;">Rotating</div>'"><div>WBAI Radio Pop Up Shop</div><div class="cat_host_18">Rotating</div></div>
+<div class="cat_11" style="position:absolute;left:660px;top:640px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Latin Roots</span><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/salsasho_med_230.jpg" alt="Felipe Luciano" ><div style="position:relative;top:10px;">Felipe Luciano</div></div>'"><div>Latin Roots</div><div class="cat_host_11">Felipe Luciano</div></div>
+<div class="cat_14" style="position:absolute;left:660px;top:800px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Haiti: Our Revolution Continues</span><br><br>The program is co-hosted by longtime Haitian community activist, Dahoud Andre, a member of the Committee to Mobilize Against Dictatorship in Haiti which supports the people&#039;s struggle for justice<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/haitiourrevolutcon_med_350.jpg" alt="Dahoud Andre" ><div style="position:relative;top:10px;">Dahoud Andre</div>'"><div>Haiti: Our Revolution Continues</div><div class="cat_host_14">Dahoud Andre</div></div>
+<div class="cat_14" style="position:absolute;left:660px;top:880px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Ralph Nader Radio Hour</span><br><br>Ralph Nader is joined by co-hosts Steve Skrovan and David Feldman for a lively informative hour of interviews with some of the nation&rsquo;s most influential movers and shakers, and thought provoking discussions of the week&#039;s news.<br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/ralphnaderradiohou_med_351.jpg" alt="Ralph Nader, Steve Skrovan" ><div style="position:relative;top:10px;">Ralph Nader, Steve Skrovan</div>'"><div>Ralph Nader Radio Hour</div><div class="cat_host_14">Ralph Nader, Steve Skrovan</div></div>
+<div class="cat_11" style="position:absolute;left:660px;top:960px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">All Mixed Up</span><br><br>All Mixed Up is an eclectic mix of arts and information, featuring mood-driven music mixes and interviews with figures from the worlds of literature, film, television, theater, and the visual arts. The program has hosted live performances from a diverse cast of acts, including P J Harvey, Ryuichi Sakamoto, Daniel Johnston, and Olu Dara.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/allmixedup_med_98.jpg" alt="Peter Bochan" ><div style="position:relative;top:10px;">Peter Bochan</div>'"><div>All Mixed Up</div><div class="cat_host_11">Peter Bochan</div></div>
+<div class="cat_11" style="position:absolute;left:660px;top:1120px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">K-Wave</span><br><br>Right now, K-pop, Korean Pop Music, is having a moment globally and its undercurrent is exploding in the USA, but despite its fandom and its power on social media, a lot of us in the mainstream don&rsquo;t understand it. K-pop is just good old-fashioned pop music with many influences, think Western music that has been remixed with the Asian ear. It has energetic melodies and electrifying beats that are highly addictive. It can be pop, rock, hip hop, R&amp;B and electronic music and all at once with a focus on fun energy and inclusive positivity. But the medium is more than music, it is a subculture with its own rules, values, and unique terminology. Its beauty is that it is truly for all ages, races, and genders who love music. It is significant for its cultural inclusiveness, ability to break down racial barriers and creative opportunities. <br><br>The K-Wave USA radio show captures that positivity.  The show not only features classic hits, debuts new music, announces upcoming events, and connects hardcore fans with each other, but it also highlights artists, including interviews with industry insiders, producers, and songwriters, and shares the key players who make up the K-pop industry. <br><br>'"><div>K-Wave</div><div class="cat_host_11">Melissa Unger</div></div>
+<div class="cat_11" style="position:absolute;left:660px;top:1280px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Sweet Spot</span><br><br>The Sweet Spot is a musical biography show - a unique and intimate walk down memory lane with some of the most prolific musicians and scene makers of our time. <br><br><br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/musicalchairs_med_164.jpg" alt="Baby K and Kyle" ><div style="position:relative;top:10px;">Baby K and Kyle</div>'"><div>The Sweet Spot</div><div class="cat_host_11">Baby K and Kyle</div></div>
+<div class="cat_11" style="position:absolute;left:660px;top:1440px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Groovelines</span><br><br> this house music show<br><br>brings the beats that will move your body and soul, spotlighting DJs from around the globe and<br><br>keeping listeners up-to-date on the latest events and releases in the house music scene.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/groovelines_med_389.jpg" alt="Tina Dixon (DJ BlackIcon1), DJ Lil Tiger" ><div style="position:relative;top:10px;">Tina Dixon (DJ BlackIcon1), DJ Lil Tiger</div>'"><div>Groovelines</div><div class="cat_host_11">Tina Dixon (DJ BlackIcon1), DJ Lil Tiger</div></div>
+<div class="cat_11" style="position:absolute;left:660px;top:1600px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">All Mixed Up</span><br><br>All Mixed Up is an eclectic mix of arts and information, featuring mood-driven music mixes and interviews with figures from the worlds of literature, film, television, theater, and the visual arts. The program has hosted live performances from a diverse cast of acts, including P J Harvey, Ryuichi Sakamoto, Daniel Johnston, and Olu Dara.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/allmixedup_med_98.jpg" alt="Peter Bochan" ><div style="position:relative;top:10px;">Peter Bochan</div>'"><div>All Mixed Up</div><div class="cat_host_11">Peter Bochan</div></div>
+<div class="cat_11" style="position:absolute;left:660px;top:1760px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Laughing On Sunday Morning</span><br><br>Wonderful, entertaining and delightful classical music broadcaster, The Laughing Cavalier returns to the WBAI airwaves on New Year&#039;s Day, filling the time slot normally occupied by James Irsay, while he is on hiatus.<br><div align="center"><img class="dj_img" src="https://confessor2.wbai.org/pix/laughionsundaymorn_med_353.jpg" alt="Terry Towe" ><div style="position:relative;top:10px;">Terry Towe</div>'"><div>Laughing On Sunday Morning</div><div class="cat_host_11">Terry Towe</div></div>
+</div></body></html>

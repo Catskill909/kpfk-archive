@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/bts_friday.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Beneath The Surface]]></title>
+		<link>https://www.kpfk.org/on-air/suzi-weissman/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Beneath the Surface features interviews with leading thinkers and activists on the important issues of the day, with a focus on deeper analysis.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Sun, 13 Sep 2026 10:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs - Local</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Suzi Weissman</itunes:author>
+		<itunes:summary><![CDATA[Beneath the Surface features interviews with leading thinkers and activists on the important issues of the day, with a focus on deeper analysis.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/bts_friday_it_162.jpg" />
+		<item>
+			<title><![CDATA[Sunday, September 13, 2026 - How to Close a Camp; remembrance of David Cobb]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260913_100000bts_friday.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260913_100000bts_friday.mp3</guid>
+			<pubDate>Sun, 13 Sep 2026 10:00:00 -0700</pubDate>
+			<description><![CDATA[Beneath the Surface features interviews with leading thinkers and activists on the important issues of the day, with a focus on deeper analysis.]]></description>
+			<itunes:summary><![CDATA[Guest: John Washington, David Cobb
+&ldquo;The opposite of a camp is community. Closing one, and keeping it closed, depends on exactly that.&rdquo; <br><br>John Washington on the urgent fight against ICE detention. He has reported from inside the immigration enforcement machine for years, and his new book, "How to Close a Camp: Dispatches from the Fight Against Immigrant Detention" makes the case that detention camps, for all their federal funding and federal cover, are actually built out of thousands of local, mundane, and breakable transactions: county contracts, zoning permits, water hookups, medical licenses. Which means they can be broken. We  talk about the history that got us here &mdash; a bipartisan history, running from Japanese American internment back through the Geary Act of 1892 &mdash; and the campaigns, from Illinois to Vermont to Arizona, that have actually shut camps down. <br><br>Plus Meleiza Figueroa remembers David Cobb, who died on Labor Day.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260913_100000bts_friday.mp3" length="57661800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Sunday, August 30, 2026 - The House of Cards Holding Up the U.S. Economy]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260830_100000bts_friday.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260830_100000bts_friday.mp3</guid>
+			<pubDate>Sun, 30 Aug 2026 10:00:00 -0700</pubDate>
+			<description><![CDATA[Beneath the Surface features interviews with leading thinkers and activists on the important issues of the day, with a focus on deeper analysis.]]></description>
+			<itunes:summary><![CDATA[Guest: Michael Roberts
+Producer/director Meleiza Figueroa guest hosts for Suzi, spending the hour with economist and author Michael Roberts, unpacking what she calls the "teetering house of cards" that is the U.S. and global economy at the moment, and how it is all connected to inflation, the Iran war, the AI bubble, Trump administration policies and more.<br><br>Roberts &mdash; who spent over 30 years in City of London financial institutions and is the author of The Great Recession, The Long Depression, and Capitalism in the 21st Century &mdash; helps us understand what's going on in the bond markets and why we should care; the crisis in private credit, what it is and why it could also be a catalyst for an economic crash; why everyone seems to be getting it wrong on inflation and what to do about it; and whether and how and when we might expect a recession or a depression to be imminent. The discourse in the financial press seems to be talking about an economy that is wildly different from what we are experiencing in our day to day struggles, and we unpack why that is and what the implications of the anxiety at the top of this k shaped economy are for the American working class.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260830_100000bts_friday.mp3" length="57659000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Sunday, August 23, 2026 - Climate, catastrophe and inequality]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260823_100000bts_friday.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260823_100000bts_friday.mp3</guid>
+			<pubDate>Sun, 23 Aug 2026 10:00:00 -0700</pubDate>
+			<description><![CDATA[Beneath the Surface features interviews with leading thinkers and activists on the important issues of the day, with a focus on deeper analysis.]]></description>
+			<itunes:summary><![CDATA[Guest: Mike Davis
+Mike Davis died in 2022, but his work is even more urgent now.<br><br>As record temperatures, fires, floods and drought shake the planet, we're returning to a prescient 1995 talk by Mike, &ldquo;Reconceptualizing the Environment.&rdquo;<br><br>More than thirty years ago, Mike was already challenging the idea of &ldquo;natural disaster.&rdquo; He argued that market-driven development had deliberately put Los Angeles in harm's way&mdash;building homes in wildfire corridors, floodplains and other hazardous landscapes while shifting the costs of disaster onto the public and, ultimately, onto the poor.  <br><br>He ranges much further: indigenous fire management, El Ni&ntilde;o and megadrought, environmental memory, global warming and the growing danger of extreme climate events.<br><br>And the political question beneath them all: when disaster strikes, who is protected&mdash;and who pays?]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260823_100000bts_friday.mp3" length="57663200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Beneath The Surface - Sunday, August 16, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260816_100000bts_friday.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260816_100000bts_friday.mp3</guid>
+			<pubDate>Sun, 16 Aug 2026 10:00:00 -0700</pubDate>
+			<description><![CDATA[Beneath the Surface features interviews with leading thinkers and activists on the important issues of the day, with a focus on deeper analysis.]]></description>
+			<itunes:summary><![CDATA[Beneath the Surface features interviews with leading thinkers and activists on the important issues of the day, with a focus on deeper analysis.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260816_100000bts_friday.mp3" length="57669553" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Sunday, August 9, 2026 - UVM Med Center Unions Bargaining Fight & Common Good Campaig]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260809_100000bts_friday.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260809_100000bts_friday.mp3</guid>
+			<pubDate>Sun, 09 Aug 2026 10:00:00 -0700</pubDate>
+			<description><![CDATA[Beneath the Surface features interviews with leading thinkers and activists on the important issues of the day, with a focus on deeper analysis.]]></description>
+			<itunes:summary><![CDATA[Guest: Gabriel Winant, Melissa LaVallee, Teagan Cook, Emma Galvin
+What happens when a nonprofit hospital network becomes, in the words of Vermont's own regulator, a "corporate shell game"?<br>UVM Medical Center was found to be over-earning by the state board that regulates it. Its response was to cut frontline union jobs &mdash; while its 19 top executives split $3 million in bonuses in a single year.<br><br>Historian Gabriel Winant , author of "The Next Shift: The Fall of Industry and the Rise of Health Care in Rust Belt America," explains how deindustrialization made health care the country's largest employer, but the jobs are understaffed, lower-paid, and more precarious. <br><br>We hear from AFT Vermont union leaders --Melissa LaVallee, Teagan Cook, and Emma Galvin &mdash; fighting for safe staffing as their contract heads toward an August 13th deadline. They describe their work conditions and demands: a chemo scheduler three weeks behind before her day even starts, a still-unimplemented 2011 universal health care law, and a "milk with dignity" campaign that extends to protecting immigrant co]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260809_100000bts_friday.mp3" length="57652000" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

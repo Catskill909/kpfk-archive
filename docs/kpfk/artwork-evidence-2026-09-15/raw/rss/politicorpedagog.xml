@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/politicorpedagog.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Politics Or Pedagogy? 3 min edition]]></title>
+		<link>http://www.kpfk.org/on-air/politics-or-pedagogy/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Politics Or Pedagogy? 3 min edition]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Sun, 13 Sep 2026 12:50:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs - Local</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>John Cromshow</itunes:author>
+		<itunes:summary><![CDATA[Politics Or Pedagogy? 3 min edition]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+		
+		<item>
+			<title><![CDATA[Sunday, September 13, 2026 - Case Files of a Handwriting Expert]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260913_125000politicorpedagog.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260913_125000politicorpedagog.mp3</guid>
+			<pubDate>Sun, 13 Sep 2026 12:50:00 -0700</pubDate>
+			<description><![CDATA[John Cromshow]]></description>
+			<itunes:summary><![CDATA[Guest: Sheila Lowe]]></itunes:summary>
+			<itunes:duration>122</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260913_125000politicorpedagog.mp3" length="2485831" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Sunday, September 6, 2026 - By Ukrainian playwright Natasha Vrozhbyt ]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260906_125000politicorpedagog.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260906_125000politicorpedagog.mp3</guid>
+			<pubDate>Sun, 06 Sep 2026 12:50:00 -0700</pubDate>
+			<description><![CDATA[John Cromshow]]></description>
+			<itunes:summary><![CDATA[Guest: COMMENTARY: Green Corridors]]></itunes:summary>
+			<itunes:duration>181</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260906_125000politicorpedagog.mp3" length="2535497" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Sunday, August 30, 2026 - Detriments to Proper Representstion]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260830_125000politicorpedagog.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260830_125000politicorpedagog.mp3</guid>
+			<pubDate>Sun, 30 Aug 2026 12:50:00 -0700</pubDate>
+			<description><![CDATA[John Cromshow]]></description>
+			<itunes:summary><![CDATA[Guest: Atty. Bill Maestas - Experienced Public Defender]]></itunes:summary>
+			<itunes:duration>181</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260830_125000politicorpedagog.mp3" length="3619440" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Sunday, August 23, 2026 - Protecting Election Integrity ]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260823_125000politicorpedagog.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260823_125000politicorpedagog.mp3</guid>
+			<pubDate>Sun, 23 Aug 2026 12:50:00 -0700</pubDate>
+			<description><![CDATA[John Cromshow]]></description>
+			<itunes:summary><![CDATA[Guest: Lilli McGregor]]></itunes:summary>
+			<itunes:duration>122</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260823_125000politicorpedagog.mp3" length="2481914" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Sunday, August 16, 2026 - Eye Exams for School Children]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260816_125000politicorpedagog.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260816_125000politicorpedagog.mp3</guid>
+			<pubDate>Sun, 16 Aug 2026 12:50:00 -0700</pubDate>
+			<description><![CDATA[John Cromshow]]></description>
+			<itunes:summary><![CDATA[Guest: Dr, Fredy Perez]]></itunes:summary>
+			<itunes:duration>181</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260816_125000politicorpedagog.mp3" length="1450944" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

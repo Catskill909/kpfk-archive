@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/nativenationsreport.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Be a Better Relative]]></title>
+		<link>https://www.kpfk.org/on-air/be-a-better-relative/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Reports from Indigenous water and land protectors around the US, Turtle Island and internationally, and on missing and murdered Indigenous women and girls]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Tue, 08 Sep 2026 19:30:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs - Local</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Lydia Ponce, Sunrose Iron Shell</itunes:author>
+		<itunes:summary><![CDATA[Reports from Indigenous water and land protectors around the US, Turtle Island and internationally, and on missing and murdered Indigenous women and girls]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/nativenationsreport_it_329.jpg" />
+		<item>
+			<title><![CDATA[Be a Better Relative - Tuesday, September 8, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260908_193000nativenationsreport.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260908_193000nativenationsreport.mp3</guid>
+			<pubDate>Tue, 08 Sep 2026 19:30:00 -0700</pubDate>
+			<description><![CDATA[Reports from Indigenous water and land protectors around the US, Turtle Island and internationally, and on missing and murdered Indigenous women and girls]]></description>
+			<itunes:summary><![CDATA[Indigenous environmentalism]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260908_193000nativenationsreport.mp3" length="28862400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Be a Better Relative - Tuesday, September 1, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260901_193000nativenationsreport.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260901_193000nativenationsreport.mp3</guid>
+			<pubDate>Tue, 01 Sep 2026 19:30:00 -0700</pubDate>
+			<description><![CDATA[Reports from Indigenous water and land protectors around the US, Turtle Island and internationally, and on missing and murdered Indigenous women and girls]]></description>
+			<itunes:summary><![CDATA[Indigenous environmentalism]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260901_193000nativenationsreport.mp3" length="28854000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Be a Better Relative - Tuesday, August 25, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260825_193000nativenationsreport.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260825_193000nativenationsreport.mp3</guid>
+			<pubDate>Tue, 25 Aug 2026 19:30:00 -0700</pubDate>
+			<description><![CDATA[Reports from Indigenous water and land protectors around the US, Turtle Island and internationally, and on missing and murdered Indigenous women and girls]]></description>
+			<itunes:summary><![CDATA[Indigenous environmentalism]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260825_193000nativenationsreport.mp3" length="28851200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Be a Better Relative - Tuesday, August 18, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260818_193000nativenationsreport.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260818_193000nativenationsreport.mp3</guid>
+			<pubDate>Tue, 18 Aug 2026 19:30:00 -0700</pubDate>
+			<description><![CDATA[Reports from Indigenous water and land protectors around the US, Turtle Island and internationally, and on missing and murdered Indigenous women and girls]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>1679</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260818_193000nativenationsreport.mp3" length="53730950" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Be a Better Relative - Tuesday, August 11, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260811_193000nativenationsreport.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260811_193000nativenationsreport.mp3</guid>
+			<pubDate>Tue, 11 Aug 2026 19:30:00 -0700</pubDate>
+			<description><![CDATA[Reports from Indigenous water and land protectors around the US, Turtle Island and internationally, and on missing and murdered Indigenous women and girls]]></description>
+			<itunes:summary><![CDATA[Indigenous environmentalism]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260811_193000nativenationsreport.mp3" length="28856800" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

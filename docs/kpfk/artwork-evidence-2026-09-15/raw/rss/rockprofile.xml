@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/rockprofile.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Profiles w/ Maggie LePique]]></title>
+		<link>https://www.kpfk.org/on-air/profiles/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Interviews and profiles of musicians]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Fri, 04 Sep 2026 19:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Arts &#38; Entertainment</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Maggie LePique</itunes:author>
+		<itunes:summary><![CDATA[Interviews and profiles of musicians]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="Arts"><itunes:category text="Performing Arts" /></itunes:category>
+				<itunes:image href="https://confessor.kpfk.org/pix/profileswmaggielepique_it_271.jpg" />
+		<item>
+			<title><![CDATA[Friday, September 4, 2026 - The Collected Works of Jim Morrison]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260904_190000rockprofile.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260904_190000rockprofile.mp3</guid>
+			<pubDate>Fri, 04 Sep 2026 19:00:00 -0700</pubDate>
+			<description><![CDATA[Interviews and profiles of musicians]]></description>
+			<itunes:summary><![CDATA[Guest: Frank Lisciandro
+From the Profiles Archive in 2021. Maggie speaks with filmmaker, writer, photographer Frank Lisciandro who edited the beautiful new book and New York Times Bestseller, The Collected Works of Jim Morrison: Poetry, Journals, Transcripts, and Lyrics - The definitive anthology of Jim Morrison's writings with rare photographs and numerous handwritten excerpts of unpublished and published poetry and lyrics from his 28 privately held notebooks.<br>Created in collaboration with Jim Morrison&rsquo;s estate and inspired by a posthumously discovered list entitled &ldquo;Plan for Book,&rdquo; The Collected Works of Jim Morrison is an almost 600-page anthology of the writings of the late poet and iconic Doors&rsquo; front man. This landmark publication is the definitive opus of Morrison&rsquo;s creative output&mdash;and the book he intended to publish. Throughout, a compelling mix of 160 visual components accompanies the text: excerpts from his 28 privately held notebooks&mdash;all written in his own hand and published here for the first time&mdash;as well as an array of personal images and commentary on the work by Morrison himself. The archive is available for 2 weeks after the show airs. <br>https://jimmorrison.com/]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260904_190000rockprofile.mp3" length="57653400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Friday, August 7, 2026 - Cindy's new album "Coherence"]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260807_190000rockprofile.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260807_190000rockprofile.mp3</guid>
+			<pubDate>Fri, 07 Aug 2026 19:00:00 -0700</pubDate>
+			<description><![CDATA[Interviews and profiles of musicians]]></description>
+			<itunes:summary><![CDATA[Guest: Cindy Blackman Santana
+Maggie speaks with Cindy Blackman Santana about her latest recording from Mack Avenue Records, "Coherence" <br>Drummer, bandleader & composer Cindy Blackman Santana has been a force since her debut album featuring legends Wallace Roney, Joe Henderson, Kenny Garrett, & Buster Williams. Fast forward to 2026, and Cindy commands that same power with her new album, Coherence: a once-in-a-lifetime journey combining jazz, rock, fusion, & spirituality, with special guests John McLaughlin & Carlos Santana. Buckle up for a masterclass in modern music from one of the most electrifying drummers to ever do it. The album's title suggests unity, which is at the core of Blackman Santana's philosophy. As she describes it, "Coherence is about everything in creation coming together." The music reflects that philosophy, breaking down barriers, whether musical, political, or spiritual. As a result, the music is not always genre-specific. She effectively blends jazz and rock with other styles as well. For Blackman Santana, music transcends barriers and directs our attention to something more universal. Coherence CD & Vinyl signed available for a donation to KPFK, call 818-985-5735 option 2 <br>https://cindyblackmansantana.com/]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260807_190000rockprofile.mp3" length="57656200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Friday, June 5, 2026 - doPE (John Densmore & Chuck D) - No Country For Old Men]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260605_190000rockprofile.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260605_190000rockprofile.mp3</guid>
+			<pubDate>Fri, 05 Jun 2026 19:00:00 -0700</pubDate>
+			<description><![CDATA[Interviews and profiles of musicians]]></description>
+			<itunes:summary><![CDATA[Guest: John Densmore
+It&rsquo;s the first Friday of the month, and that means it&rsquo;s time for another edition of Profiles with Maggie LePique.<br>This month, Maggie sits down with legendary rock icon and legendary drummer of The Doors, John Densmore. Together, they dive deep into the John&rsquo;s new explosive new cross-genre collaboration project with Public Enemy&rsquo;s Chuck D, do+pe = no country for old men.<br>An exclusive conversation blending rock history with hip-hop activism, artistic evolution, and the driving rhythm behind a modern revolution. https://recordstoreday.com/SpecialRelease/19800<br>The interview airs in its entirety Friday, June 5, 2026, from 7- 8pm PST on KPFK 90.7 FM Los Angeles, and streaming live worldwide at kpfk.org. Tune in and get inspired! The audio archive of the interview is available for 2 weeks: https://www.kpfk.org/archives/]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260605_190000rockprofile.mp3" length="57654800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Friday, May 1, 2026 - The Pan Detroit Ensemble's "Groove In The Face Of Adversity"]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260501_190000rockprofile.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260501_190000rockprofile.mp3</guid>
+			<pubDate>Fri, 01 May 2026 19:00:00 -0700</pubDate>
+			<description><![CDATA[Interviews and profiles of musicians]]></description>
+			<itunes:summary><![CDATA[Guest: Don Was
+Maggie discusses Don's new album with The Pan Detroit Ensemble's "Groove In The Face Of Adversity" and Bob Weir's passing and the latest at Blue Note Records!<br>Don Was, the 6x GRAMMY&reg; Award-winning musician, producer and composer, pays tribute to his hometown of Detroit with his new band, Don Was and the Pan-Detroit Ensemble, and their debut album Groove In The Face of Adversity. The band includes long-time collaborators like saxophonist Dave McMurray, keyboardist Luis Resto, trombonist Vincent Chandler, trumpeter John Douglas, drummer Jeff Canady, percussionist Mahindi Masai, guitarist Wayne Gerard and vocalist Steffanie Christi'an. The archive is available for 2 weeks aftre the show airs: https://www.kpfk.org/archives/<br>Don Was website: https://donwas.com/]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260501_190000rockprofile.mp3" length="57659000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Friday, April 3, 2026 - Ibrahim Ferrer's Buenos Hermanos ]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260403_190000rockprofile.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260403_190000rockprofile.mp3</guid>
+			<pubDate>Fri, 03 Apr 2026 19:00:00 -0700</pubDate>
+			<description><![CDATA[Interviews and profiles of musicians]]></description>
+			<itunes:summary><![CDATA[Guest: Ry Cooder  (From the Profiles Vaults in 2020) 
+Maggie goes in depth with the 2020 reissue of the Grammy award winning album, Buenos Hermanos. In 2003 Ibrahim released his second solo album for World Circuit, &lsquo;Buenos Hermanos,&rsquo; an album that is firmly rooted in tradition but at the same time expands the horizons of Cuban music with its varied repertoire, or as Ry Cooder simply put it, &lsquo;I think the album&rsquo;s a goddam classic.&rsquo; The album received almost universal praise, going on to win both GRAMMY and Latin Grammy awards. The album was reissued in early 2020 with new mixes of the full album overseen by Ry Cooder, and with 4 previously unheard tracks from the original studio sessions.<br>https://rycooder.com/<br>https://www.worldcircuit.co.uk/artists/ibrahim-ferrer/]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260403_190000rockprofile.mp3" length="57661800" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

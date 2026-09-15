@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/calstalacommunnewshour.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - CalState LA Community News Hour]]></title>
+		<link>https://www.kpfk.org/on-air/cal-state-la-community-news-hour/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Local news and stories produced by the students and staff of the Cal State LA Broadcast and Journalism Department. Covering public issues that affect under-covered areas, such as South and East Los Angeles.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Sun, 06 Sep 2026 10:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs - Local</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Julie Pater Liss</itunes:author>
+		<itunes:summary><![CDATA[Local news and stories produced by the students and staff of the Cal State LA Broadcast and Journalism Department. Covering public issues that affect under-covered areas, such as South and East Los Angeles.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/calstatelacommunitynewshour_it_314.jpg" />
+		<item>
+			<title><![CDATA[CalState LA Community News Hour - Sunday, September 6, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260906_100000calstalacommunnewshour.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260906_100000calstalacommunnewshour.mp3</guid>
+			<pubDate>Sun, 06 Sep 2026 10:00:00 -0700</pubDate>
+			<description><![CDATA[Local news and stories produced by the students and staff of the Cal State LA Broadcast and Journalism Department. Covering public issues that affect under-covered areas, such as South and East Los Angeles.]]></description>
+			<itunes:summary><![CDATA[Local news and stories produced by the students and staff of the Cal State LA Broadcast and Journalism Department]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260906_100000calstalacommunnewshour.mp3" length="57659000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[CalState LA Community News Hour - Sunday, August 4, 2024]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_240804_100000calstalacommunnewshour.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_240804_100000calstalacommunnewshour.mp3</guid>
+			<pubDate>Sun, 04 Aug 2024 10:00:00 -0700</pubDate>
+			<description><![CDATA[Local news and stories produced by the students and staff of the Cal State LA Broadcast and Journalism Department. Covering public issues that affect under-covered areas, such as South and East Los Angeles.]]></description>
+			<itunes:summary><![CDATA[Local news and stories produced by the students and staff of the Cal State LA Broadcast and Journalism Department]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_240804_100000calstalacommunnewshour.mp3" length="57659000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[CalState LA Community News Hour - Sunday, July 7, 2024]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_240707_100000calstalacommunnewshour.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_240707_100000calstalacommunnewshour.mp3</guid>
+			<pubDate>Sun, 07 Jul 2024 10:00:00 -0700</pubDate>
+			<description><![CDATA[Local news and stories produced by the students and staff of the Cal State LA Broadcast and Journalism Department. Covering public issues that affect under-covered areas, such as South and East Los Angeles.]]></description>
+			<itunes:summary><![CDATA[Local news and stories produced by the students and staff of the Cal State LA Broadcast and Journalism Department]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_240707_100000calstalacommunnewshour.mp3" length="57663200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Sunday, June 2, 2024 - UAW 4811 on strike at UC; Unfair Labor Practice at USC]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_240602_100000calstalacommunnewshour.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_240602_100000calstalacommunnewshour.mp3</guid>
+			<pubDate>Sun, 02 Jun 2024 10:00:00 -0700</pubDate>
+			<description><![CDATA[Local news and stories produced by the students and staff of the Cal State LA Broadcast and Journalism Department. Covering public issues that affect under-covered areas, such as South and East Los Angeles.]]></description>
+			<itunes:summary><![CDATA[Guest: Isabel Kain, Marie Salem, Anna Weiss
+We talk to Isabel Kain at UC Santa Cruz, Marie Salem at UCLA and Anna Weiss at USC &ndash; all UAW academic workers &ndash; about the unprecedented labor action on their campuses and the violent response from police called in by their administrations. We recorded the interview with Isabel Kain at UCSC as the police in riot gear moved into the campus. Santa Cruz was the first to go on strike and unlike the other UC campuses, the administration was passive and did not call in the police. Until 1am on May 31.  At the heart of the action is the war in Gaza which has inflicted unspeakable suffering and carnage, provoking widespread actions in solidarity with Palestine on campuses, with new movements organized in encampments demanding an immediate ceasefire, and University divestment from companies tied to Israel&rsquo;s war and occupation.  The response from the administration at UCLA in particular was brutal, calling in the police who assaulted the encampment while standing back when a mob of white nationalists and neo-Nazis joined forces with Zionists to attack the encampment, whose residents included a large number of Jewish students.  Outraged unionized grad students at UC, organized in UAW Local 4811 representing some 48,000 postdocs, teaching assistants, academic and student researchers across the UC system have launched a strike, turning the right to protest and freedom of speech into a labor issue. At USC, academic workers filed an Unfair Labor Practices (ULP) after 5 grad student members were arrested on campus during the crackdown of the protests. We get the story.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_240602_100000calstalacommunnewshour.mp3" length="57652000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[CalState LA Community News Hour - Sunday, May 5, 2024]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_240505_100000calstalacommunnewshour.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_240505_100000calstalacommunnewshour.mp3</guid>
+			<pubDate>Sun, 05 May 2024 10:00:00 -0700</pubDate>
+			<description><![CDATA[Local news and stories produced by the students and staff of the Cal State LA Broadcast and Journalism Department. Covering public issues that affect under-covered areas, such as South and East Los Angeles.]]></description>
+			<itunes:summary><![CDATA[Local news and stories produced by the students and staff of the Cal State LA Broadcast and Journalism Department]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_240505_100000calstalacommunnewshour.mp3" length="57659000" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

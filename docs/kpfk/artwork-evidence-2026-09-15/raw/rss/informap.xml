@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/informap.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Informativo Pacifica Online]]></title>
+		<link>http://www.kpfk.org/on-air/informativo-pacifica/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Informativo Pacifica Online]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Tue, 15 Sep 2026 20:01:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Espa&#241;ol</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Norma Velazquez</itunes:author>
+		<itunes:summary><![CDATA[Informativo Pacifica Online]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+		
+		<item>
+			<title><![CDATA[Informativo Pacifica Online - Tuesday, September 15, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260915_200100informap.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260915_200100informap.mp3</guid>
+			<pubDate>Tue, 15 Sep 2026 20:01:00 -0700</pubDate>
+			<description><![CDATA[Norma Velazquez]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>1700</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260915_200100informap.mp3" length="27197022" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Informativo Pacifica Online - Monday, September 14, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260914_200100informap.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260914_200100informap.mp3</guid>
+			<pubDate>Mon, 14 Sep 2026 20:01:00 -0700</pubDate>
+			<description><![CDATA[Norma Velazquez]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>1700</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260914_200100informap.mp3" length="27197022" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Informativo Pacifica Online - Friday, September 11, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260911_200100informap.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260911_200100informap.mp3</guid>
+			<pubDate>Fri, 11 Sep 2026 20:01:00 -0700</pubDate>
+			<description><![CDATA[Norma Velazquez]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>1700</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260911_200100informap.mp3" length="27205799" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Informativo Pacifica Online - Thursday, September 10, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260910_200100informap.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260910_200100informap.mp3</guid>
+			<pubDate>Thu, 10 Sep 2026 20:01:00 -0700</pubDate>
+			<description><![CDATA[Norma Velazquez]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>1680</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260910_200100informap.mp3" length="26881881" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Informativo Pacifica Online - Wednesday, September 9, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260909_200100informap.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260909_200100informap.mp3</guid>
+			<pubDate>Wed, 09 Sep 2026 20:01:00 -0700</pubDate>
+			<description><![CDATA[Norma Velazquez]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>1702</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260909_200100informap.mp3" length="27231481" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

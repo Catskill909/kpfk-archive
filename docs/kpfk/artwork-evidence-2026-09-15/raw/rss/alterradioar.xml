@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/alterradioar.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Alternative Radio]]></title>
+		<link>http://www.alternativeradio.org</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Wed, 09 Sep 2026 14:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs- National+Syndicated</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>David  Barsamian</itunes:author>
+		<itunes:summary><![CDATA[A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/alterradioar_it_333.jpg" />
+		<item>
+			<title><![CDATA[Alternative Radio - Wednesday, September 9, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260909_140000alterradioar.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260909_140000alterradioar.mp3</guid>
+			<pubDate>Wed, 09 Sep 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.]]></description>
+			<itunes:summary><![CDATA[A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260909_140000alterradioar.mp3" length="57663200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Alternative Radio - Wednesday, September 2, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260902_140000alterradioar.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260902_140000alterradioar.mp3</guid>
+			<pubDate>Wed, 02 Sep 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.]]></description>
+			<itunes:summary><![CDATA[A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260902_140000alterradioar.mp3" length="57663608" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Alternative Radio - Wednesday, August 26, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260826_140000alterradioar.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260826_140000alterradioar.mp3</guid>
+			<pubDate>Wed, 26 Aug 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.]]></description>
+			<itunes:summary><![CDATA[A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260826_140000alterradioar.mp3" length="57654800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Alternative Radio - Wednesday, August 19, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260819_140000alterradioar.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260819_140000alterradioar.mp3</guid>
+			<pubDate>Wed, 19 Aug 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.]]></description>
+			<itunes:summary><![CDATA[A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260819_140000alterradioar.mp3" length="57660400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Alternative Radio - Wednesday, August 12, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260812_140000alterradioar.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260812_140000alterradioar.mp3</guid>
+			<pubDate>Wed, 12 Aug 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.]]></description>
+			<itunes:summary><![CDATA[A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260812_140000alterradioar.mp3" length="57650600" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

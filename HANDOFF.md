@@ -137,17 +137,28 @@ loaded, Live row correct, no-recording expand/collapse (forced by intercepting
 
 ## Waiting on Pacifica's engineer
 
-Paul was about to send these on 2026-09-15. Check with him whether he did and
-what came back:
+**Decision (Paul, 2026-09-15): the app is JSON-only.** Where the feeds are
+wrong or incomplete, tell the developer. Do not scrape Confessor or RSS to fill
+the gaps.
 
-- Are the 81 empty catalog `photoUrl` values missing source artwork, or is the exporter omitting it?
-- Schedule/now-playing `photoUrl` is `https://confessor.kpfk.org/pix` with no filename (403). Is that intentional, and is there another artwork source?
-- **Paul says the live site shows a global default image for shows without art.**
-  It is not in any of the eight JSON feeds (station/channels metadata have no
-  logo/default field). Ask for that URL or have it added to the feed. Until then
-  our dark placeholder stands in. If a URL arrives, it belongs in
-  `stations/kpfk.json` (not hardcoded CSS), and the origin must be allowed in
-  `origins.artwork`.
+Artwork is fully analysed in
+[`docs/kpfk/artwork-evidence-2026-09-15/README.md`](docs/kpfk/artwork-evidence-2026-09-15/README.md)
+(raw captures + per-show CSV; rerun with `node tools/artwork-evidence.js`). In short:
+
+- The 81 empty catalog `photoUrl` values are **not** an export bug. They match KPFK's
+  Confessor schedule page exactly: 20 on-air shows (Counterspin, Radio Maiz,
+  Something's Happening…) have no artwork uploaded. KPFK is at 80%, WBAI at 96%.
+- **Export bug:** all 444 schedule slots and now-playing have `photoUrl`
+  `https://confessor.kpfk.org/pix`, the prefix with no filename (403). The app
+  works around it by joining the catalog image.
+- **Export gap:** two podcast uploads (Bike Talk, Scholars Circle – Podcast) have
+  RSS images the catalog exports as `""`.
+- There is no default-image field in any feed. `confessor.kpfk.org/pix/KPFK.jpg` is only
+  the Confessor page's header logo. The ask is a station-level default in
+  `fe_channels.json`. If one arrives, put it in `stations/kpfk.json` (not hardcoded CSS) and
+  allow its origin in `origins.artwork`.
+
+Check with Paul what the developer answered.
 
 ## Remaining work (from the implementation checkpoint, in rough order)
 

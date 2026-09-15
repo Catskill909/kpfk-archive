@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<title>KPFK Schedule Grid</title>
+<script type="text/javascript" language="javascript" src="../script/tooltip.js"></script>
+<script type="text/javascript" language="javascript">
+here='/playlist/pub_sched.php';
+//<!--
+function do_next(obj)
+{
+	var dte = document.getElementById('sundte').value;
+	location.href = here + '?dte=' + dte + '&op=next';
+}
+
+function do_prev(obj)
+{
+	var dte = document.getElementById('sundte').value;
+	location.href = here + '?dte=' + dte + '&op=prev';
+}
+//-->
+</script>
+<script type="text/javascript">
+(new Image()).src = "https://confessor.kpfk.org/pix/gospelclassics_med_106.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/alanwatts_med_108.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/onconta_med_274.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/prisonrights_med_200.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/bts_friday_med_162.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/backgroundbriefing_med_370.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/nader_med_207.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/meif_med_187.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/reggaecent_med_145.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/folkscene_med_175.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/darkstardeadmusic_med_373.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/latw_med_227.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/soundwaves_med_114.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/musicmix_med_117.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/ecojustiradio_med_268.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/workingvoices_med_332.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/qrcode_med_379.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/dn_med_97.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/lawsnddisor_med_380.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/hartmann_med_222.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/gv_derek_med_104.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/ivmon_med_267.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/marmoudian_med_167.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/friedman_med_210.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/backgroundbriefing_med_370.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/kpfknews_med_163.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/imru_med_177.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/thiswayout_med_383.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/infopac_med_181.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/ladiverylainclu_med_352.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/qrcode_med_379.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/dn_med_97.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/lawsnddisor_med_380.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/hartmann_med_222.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/gv_tue_med_129.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/plantingmedecine_med_376.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/philandtedrsqsexyboomershow_med_316.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/risingup_med_233.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/dn_med_97.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/backgroundbriefing_med_370.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/kpfknews_med_163.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/covidraceanddemocr_med_288.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/nativenationsreport_med_329.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/infopac_med_181.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/vocesdelibertad_med_185.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/radioinsurgencia_med_184.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/suplemento_med_203.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/qrcode_med_379.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/dn_med_97.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/lawsnddisor_med_380.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/hartmann_med_222.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/gv_yatrika_med_130.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/aware_med_141.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/alterradioar_med_333.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/lawyersguild_med_190.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/dn_med_97.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/backgroundbriefing_med_370.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/kpfknews_med_163.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/femmag_med_186.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/infopac_med_181.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/golpe_med_205.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/luke_med_206.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/radiobilingu_med_281.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/qrcode_med_379.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/dn_med_97.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/lawsnddisor_med_380.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/hartmann_med_222.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/gv_john_med_131.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/aware_med_141.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/larb_med_229.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/bibliocracy_med_153.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/morningmradiojaguar_med_320.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/dn_med_97.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/backgroundbriefing_med_370.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/kpfknews_med_163.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/infopac_med_181.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/nuestravoz_med_192.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/enfoque_med_171.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/medianoche_med_253.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/codepinradio_med_311.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/sojourner_med_99.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/mornimixcutchasewsylveriver_med_323.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/hartmann_med_222.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/caryharrisfiles_med_374.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/gv_sergio_med_132.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/visionalryactivist_med_371.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/artsinreview_med_150.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/pperf_med_155.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/pocho_med_168.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/johnwiener_med_166.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/dn_med_97.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/kpfknews_med_163.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/soulrebel_med_188.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/breakbeats_med_119.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/deepend_med_296.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/potira_med_115.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/awakenings_med_377.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/wayoutwest_med_384.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/wayoutwest_med_384.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/aliveandpicking_med_212.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/conversatpiece_med_340.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/freedomnow_med_183.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/signal_med_385.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/carshow_med_110.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/rhapsody_med_189.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/afrodicia_med_144.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/cantossin_med_172.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/cantotropical_med_173.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/traveltips_med_127.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/allabove_med_112.jpg";
+(new Image()).src = "https://confessor.kpfk.org/pix/lstation_med_120.jpg";
+</script>
+<style type="text/css">
+body
+{
+	background-color:#000000;
+}
+.odd_tr
+{
+	height:22px;
+}
+.even_tr
+{
+	height:22px;
+}
+td
+{
+	font-size: 10px;
+	font-weight: normal;
+	font-family: Arial,Helvetica,sans-serif;
+}
+.even_time
+{
+	border-right:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	background-color:#333333;
+	font-size:12px;
+	text-align:right;
+	color:#ffffff;
+}
+.odd_time
+{
+	border-right:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	background-color:#666666;
+	font-size:12px;
+	text-align:right;
+	color:#ffffff;
+}
+.day_time
+{
+	border-right:1px solid #ffffff;
+	border-top:1px solid #000000;
+	background-color:#e0e0e0;
+	font-size:12px;
+	text-align:right;
+	color:#000000;
+}
+.nite_time
+{
+	border-right:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	background-color:#303050;
+	font-size:12px;
+	text-align:right;
+	color:#ffffff;
+}
+.title
+{
+	border-bottom: 1px solid #ffffff;
+	background-color:#333333;
+	color:#ffffff;
+	text-align:center;
+	font-size:10px;
+}
+
+
+
+.even_time_td_right
+{
+	border-right:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	background-color:#333333;
+	font-size:12px;
+	text-align:right;
+	color:#ffffff;
+	top: 0px;
+}
+.odd_time_td_right
+{
+	border-right:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	background-color:#666666;
+	font-size:12px;
+	text-align:right;
+	color:#ffffff;
+	top: 0px;
+}
+.title_td
+{
+	border-bottom: 1px solid #ffffff;
+	border-right: 1px solid #ffffff;
+	background-color:#333333;
+	color:#ffffff;
+	text-align:center;
+}
+.show_td
+{
+	border-top: 1px solid #ffffff;
+	border-right: 1px solid #ffffff;
+	padding-top: 4px;
+	background-color: #330000;
+	color:#ffffff;
+	text-align:center;
+}
+a.show_td:link
+{
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	padding-top: 4px;
+	background-color: #330000;
+	color:#ffffff;
+	text-align:center;
+}
+a.show_td:visited
+{
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	padding-top: 4px;
+	background-color: #330000;
+	color:#ffffff;
+	text-align:center;
+}
+a.show_td:hover
+{
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	padding-top: 4px;
+	background-color: #330000;
+	color:#ffffff;
+	text-align:center;
+}
+a.show_td:active
+{
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	padding-top: 4px;
+	background-color: #330000;
+	color:#ffffff;
+	text-align:center;
+}
+.host_span
+{
+	color:#cccccc;
+	font-size: 10px;
+}
+.talk_td
+{
+	border-top: 1px solid #ffffff;
+	border-right: 1px solid #ffffff;
+	padding-top: 4px;
+	background-color: #003300;
+	color:#ffffff;
+	text-align:center;
+}
+a.talk_link:link
+{
+	padding-top: 4px;
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	color:#ffffff;
+}
+a.talk_link:visited
+{
+	padding-top: 4px;
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	color:#ffffff;
+}
+a.talk_link:hover
+{
+	padding-top: 4px;
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	color:#ffffff;
+	font-style: italic;
+}
+a.talk_link:active
+{
+	padding-top: 4px;
+	border-top: 0px solid #ffffff;
+	border-right: 0px solid #ffffff;
+	color:#ffffff;
+	font-style: italic;
+}
+.blank_td
+{
+	border-right:1px solid #ffffff;
+	background-color: #330000;
+	color:#ffffff;
+	text-align:center;
+}
+.blank_talk_td
+{
+	border-right:1px solid #ffffff;
+	background-color: #003300;
+	color:#ffffff;
+	text-align:center;
+}
+a.show_link:link
+{
+	color: #ffffff;
+	padding-top: 4px;
+	text-decoration:underline;
+	font-style: normal;
+	font-size:10px;
+}
+a.show_link:visited
+{
+	color: #ffffff;
+	padding-top: 4px;
+	text-decoration:underline;
+	font-style: normal;
+	font-size: 10px;
+}
+a.show_link:hover
+{
+	color: #ffffff;
+	padding-top: 4px;
+	text-decoration:underline;
+	font-weight:normal;
+	font-style: italic;
+	font-size: 10px;
+}
+a.show_link:active
+{
+	color: #ffffff;
+	padding-top: 4px;
+	text-decoration:none;
+	font-style: normal;
+	font-size: 10px;
+}
+.tooltipShadow 
+{
+	background: url(shadow.png); 
+}
+.tooltipContent 
+{
+	transform: scale(1.1764705882353,1.1764705882353);transform-origin: top left;;
+	left: -4px; top: -4px;      
+	background-color: #000000;    
+	color:#ffffff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight: normal;
+	border: solid #00ff00 1px;  
+	padding: 15px;            
+	padding-bottom:20px;
+	border-radius: 10px 10px;
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px; 
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); 
+	-webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+	margin-left: 0; 
+	width: 220px;
+	z-index:80;
+	pointer-events: none;
+}
+</style><style type="text/css">
+.cat_12
+{
+color:#FFFFFF;
+background-color:#96A8FF;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_12
+{
+background-color:#96A8FF;
+height:60;
+width:60;
+}
+.cat_blank_12
+{
+background-color:#96A8FF;
+color:#FFFFFF;
+border-right: 1px solid #000;
+}
+.cat_host_12
+{
+color:#FFFFFF;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_12
+{
+color:#FFFFFF;
+background-color:#96A8FF;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_12
+{
+border: 1px solid black;
+position: relative;
+left: -17px;
+margin-bottom: 4px;
+}
+a.cat_link_12:link
+{
+color:#E9FF8F;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_12:visited
+{
+color:#E9FF8F;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_12:hover
+{
+color:#E9FF8F;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_12:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_10
+{
+color:#000000;
+background-color:#FFE2BD;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_10
+{
+background-color:#FFE2BD;
+height:60;
+width:60;
+}
+.cat_blank_10
+{
+background-color:#FFE2BD;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_10
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_10
+{
+color:#000000;
+background-color:#FFE2BD;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_10
+{
+border: 1px solid black;
+position: relative;
+left: -17px;
+margin-bottom: 4px;
+}
+a.cat_link_10:link
+{
+color:#2D26FF;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_10:visited
+{
+color:#2D26FF;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_10:hover
+{
+color:#2D26FF;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_10:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_11
+{
+color:#000000;
+background-color:#FFEB87;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_11
+{
+background-color:#FFEB87;
+height:60;
+width:60;
+}
+.cat_blank_11
+{
+background-color:#FFEB87;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_11
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_11
+{
+color:#000000;
+background-color:#FFEB87;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_11
+{
+border: 1px solid black;
+position: relative;
+left: -17px;
+margin-bottom: 4px;
+}
+a.cat_link_11:link
+{
+color:#1F35FF;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_11:visited
+{
+color:#1F35FF;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_11:hover
+{
+color:#1F35FF;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_11:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_4
+{
+color:#000000;
+background-color:#FFD9E4;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_4
+{
+background-color:#FFD9E4;
+height:60;
+width:60;
+}
+.cat_blank_4
+{
+background-color:#FFD9E4;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_4
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_4
+{
+color:#000000;
+background-color:#FFD9E4;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_4
+{
+border: 1px solid black;
+position: relative;
+left: -17px;
+margin-bottom: 4px;
+}
+a.cat_link_4:link
+{
+color:#0000FF;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_4:visited
+{
+color:#0000FF;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_4:hover
+{
+color:#0000FF;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_4:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_6
+{
+color:#000000;
+background-color:#E8FFEA;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_6
+{
+background-color:#E8FFEA;
+height:60;
+width:60;
+}
+.cat_blank_6
+{
+background-color:#E8FFEA;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_6
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_6
+{
+color:#000000;
+background-color:#E8FFEA;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_6
+{
+border: 1px solid black;
+position: relative;
+left: -17px;
+margin-bottom: 4px;
+}
+a.cat_link_6:link
+{
+color:#000000;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_6:visited
+{
+color:#000000;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_6:hover
+{
+color:#000000;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_6:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_3
+{
+color:#000000;
+background-color:#E5D9FF;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_3
+{
+background-color:#E5D9FF;
+height:60;
+width:60;
+}
+.cat_blank_3
+{
+background-color:#E5D9FF;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_3
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_3
+{
+color:#000000;
+background-color:#E5D9FF;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_3
+{
+border: 1px solid black;
+position: relative;
+left: -17px;
+margin-bottom: 4px;
+}
+a.cat_link_3:link
+{
+color:#241CFF;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_3:visited
+{
+color:#241CFF;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_3:hover
+{
+color:#241CFF;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_3:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_9
+{
+color:#000000;
+background-color:#CABFE0;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_9
+{
+background-color:#CABFE0;
+height:60;
+width:60;
+}
+.cat_blank_9
+{
+background-color:#CABFE0;
+color:#000000;
+border-right: 1px solid #000;
+}
+.cat_host_9
+{
+color:#000000;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_9
+{
+color:#000000;
+background-color:#CABFE0;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_9
+{
+border: 1px solid black;
+position: relative;
+left: -17px;
+margin-bottom: 4px;
+}
+a.cat_link_9:link
+{
+color:#3D1FFF;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_9:visited
+{
+color:#3D1FFF;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_9:hover
+{
+color:#3D1FFF;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_9:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+
+.cat_14
+{
+color:#FFFFFF;
+background-color:#FF757A;
+font-weight: bold;
+padding-top: 4px;
+text-align:center;
+}
+.cat_thumb_14
+{
+background-color:#FF757A;
+height:60;
+width:60;
+}
+.cat_blank_14
+{
+background-color:#FF757A;
+color:#FFFFFF;
+border-right: 1px solid #000;
+}
+.cat_host_14
+{
+color:#FFFFFF;
+font-weight: normal;
+font-style: italic;
+text-align:center;
+}
+.cat_key_14
+{
+color:#FFFFFF;
+background-color:#FF757A;
+border-right: 2px solid #000;
+text-align:left;
+font-size:10px;
+font-weight:bold;
+}
+.cat_icon_14
+{
+border: 1px solid black;
+position: relative;
+left: -17px;
+margin-bottom: 4px;
+}
+a.cat_link_14:link
+{
+color:#270FFF;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_14:visited
+{
+color:#270FFF;
+text-align:center;
+font-weight: bold;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_14:hover
+{
+color:#270FFF;
+font-style: italic;
+font-weight: bold;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+a.cat_link_14:active
+{
+color: white;
+font-weight: bold;
+font-style: italic;
+text-align:center;
+border-top: 0px solid #000;
+border-right: 0px solid #000;
+}
+.dj_img
+{
+position:relative;
+height:auto;
+top:10px;
+border: 1px solid #0030ff;
+border-radius: 12px;
+width: 180px;
+}
+</style></head><body style="font-family:Arial,Helvetica,sans-serif;font-size:10px;background-color:#000000;overflow-x:hidden;transform: scale(0.85,0.85);transform-origin: top left;">
+<script type="text/javascript" language="javascript" src="../script/geometry.js"></script><div style="position:absolute;left:10px;width:900px;">	<div id="logo" style="position:fixed;top:0px;left:0px;width:908px;height:85px;background-color:#000000;z-index:80;text-align:center;">
+	 	 <img src="https://confessor.kpfk.org/pix/KPFK.jpg" alt="KPFK" height="85px">
+	</div>	<input type="hidden" value="1789282800" id="sundte">
+	<div id="dte_div" style="position:fixed;top:85px;height:52px;width:900px;background-color:#000000;color:#ffffff;z-index:80;">
+	 <div style="position:absolute;top:5px;font-size:24px;width:inherit;text-align:center;">Schedule for Week of Sun 9-13-26</div>
+	 <div style="position:absolute;left:40px;top:10px;width:30px;text-align:center;">
+	  <button style="font-size:20px;" onclick="do_prev(this);">Prev</button>
+	 </div>	 <div style="position:absolute;right:40px;top:10px;width:30px;text-align:center;">
+	  <button style="font-size:20px;" onclick="do_next(this);">Next</button>
+	 </div></div>		<div style="background-color:#000000;position:fixed;top:144px;left:0px;height:50px;width:900px;z-index:70;">
+	<div style="color:#ffffff;background-color:#000000; position:fixed; top:137px; left:10px;height:40px;z-index:80;">
+	 <table width="900" border="0" cellpadding="2px" style="border-collapse:collapse;">
+	<tr valign="middle" height=40">			<td class="cat_key_12"  colspan="2" >Arts & Entertainment</td>			<td class="cat_key_10"  colspan="2" >Espa&ntilde;ol</td>			<td class="cat_key_11"  colspan="2" >Health & Spirituality</td>			<td class="cat_key_4"  colspan="2" >Music</td>			<td class="cat_key_6"  colspan="2" >News</td>			<td class="cat_key_3"  colspan="2" >Public Affairs - Local</td>			<td class="cat_key_9"  colspan="2" >Public Affairs- National+Syndicated</td>			<td class="cat_key_14"  colspan="2" >Special Program</td>
+		</tr>
+   </table>
+  </div>
+  </div><div class="title" style="position:fixed;top:179px;left:20px;z-index:80;"><div style="background-color:inherit;position:absolute;top:0px;left:0px;height:30px;width:45px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Time</div></div><div style="background-color:inherit;position:absolute;top:0px;left:815px;height:30px;width:45px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Time</div></div><div style="background-color:inherit;position:absolute;top:0px;left:45px;height:26px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Sunday</div></div><div style="background-color:inherit;position:absolute;top:0px;left:155px;height:26px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Monday</div></div><div style="background-color:inherit;position:absolute;top:0px;left:265px;height:26px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Tuesday</div></div><div style="background-color:inherit;position:absolute;top:0px;left:375px;height:26px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Wednesday</div></div><div style="background-color:inherit;position:absolute;top:0px;left:485px;height:26px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Thursday</div></div><div style="background-color:inherit;position:absolute;top:0px;left:595px;height:26px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Friday</div></div><div style="background-color:inherit;position:absolute;top:0px;left:705px;height:26px;width:110px;outline:#d0d0d0 solid 1px;text-align:center;"><div style="position:absolute;top:8px;text-align:center;width:inherit;">Saturday</div></div></div><div style="position:absolute;left:10px;top:0px;width:45px;"><div class="day_time" style="position:absolute;left:0px;top:204px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:204px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:244px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:244px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:284px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:284px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:324px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:324px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:364px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:364px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:404px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:404px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:444px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:444px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:484px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:484px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:524px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:524px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:564px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:564px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:604px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:604px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:644px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:644px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:684px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">Noon&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:684px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">Noon&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:724px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">12:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:724px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">12:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:764px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:764px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:804px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:804px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:844px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:844px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:884px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:884px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:924px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:924px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:964px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:964px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:1004px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:1004px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:1044px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:1044px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:1084px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:1084px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:1124px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:1124px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:1164px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:1164px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:00&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:0px;top:1204px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:30&ensp;</div></div>
+<div class="day_time" style="position:absolute;left:815px;top:1204px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">06:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1244px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1244px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1284px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1284px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">07:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1324px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1324px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1364px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1364px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">08:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1404px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1404px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1444px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1444px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">09:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1484px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1484px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1524px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1524px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">10:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1564px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1564px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1604px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1604px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">11:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1644px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">Midnight&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1644px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">Midnight&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1684px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">12:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1684px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">12:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1724px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1724px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1764px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1764px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">01:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1804px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1804px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1844px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1844px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">02:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1884px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1884px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1924px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1924px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">03:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:1964px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:1964px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:2004px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:2004px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">04:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:2044px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:2044px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:00&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:0px;top:2084px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:30&ensp;</div></div>
+<div class="nite_time" style="position:absolute;left:815px;top:2084px;width:45px;height:40px;"><div style="position:absolute;top:11px;width:inherit;height:inherit;font-size:11px;">05:30&ensp;</div></div>
+</div><div id="sched_div" style="position:absolute;left:55px;width:900px;top:204px;height:1960px;">
+<div class="cat_4" style="position:absolute;left:0px;top:0px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Edna Tatum&#039;s Gospel Classics</span><br><br>The best in Gospel Music. An uplifting program to get your Sunday going.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/gospelclassics_med_106.jpg" alt="Gil Fears" ><div style="position:relative;top:10px;">Gil Fears</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/edna-tatums-gospel-classics/" target="New">Edna Tatum&#039;s Gospel Classics</a></div><div class="cat_host_4">Gil Fears</div></div>
+<div class="cat_11" style="position:absolute;left:0px;top:160px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Alan Watts</span><br><br>or more than forty years, Alan Watts has earned a reputation as one of the foremost interpreters of Eastern philosophies for the West. Beginning at age sixteen, when he wrote essay for the journal of the Buddhist Lodge in London, he developed an audience of millions who were enriched through his books, tape recordings, radio, television, and public lectures. In all, Watts has written more than twenty-five books and recorded hundreds of lectures and seminars, all building toward a personal philosophy that he shares in complete candor and joy with his readers and listeners throughout the world. His overall works have presented a model of individuality and self-expression that can be matched by few philosophers. We continue to air Watts on Sunday mornings and during Somethings Happening at midnight on Thursdays overnight to Friday.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/alanwatts_med_108.jpg" alt="Roy Tuckman" ><div style="position:relative;top:10px;">Roy Tuckman</div>'"><div><a class="cat_link_11" href="http://www.kpfk.org/on-air/alan-watts2/" target="New">Alan Watts</a></div><div class="cat_host_11">Roy Tuckman</div></div>
+<div class="cat_9" style="position:absolute;left:0px;top:200px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:30 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">On Contact</span><br><br>Chris Hedges weekly interview show &lsquo;On Contact,&rsquo; which features &ldquo;dissident voices&rdquo; currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/onconta_med_274.jpg" alt="Chris Hedges" ><div style="position:relative;top:10px;">Chris Hedges</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/" target="New">On Contact</a></div><div class="cat_host_9">Chris Hedges</div></div>
+<div class="cat_3" style="position:absolute;left:0px;top:240px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Think Outside The Cage</span><br><br>Insights, analysis and testimony from incarcerated and formerly incarcerated people and their families<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/prisonrights_med_200.jpg" alt="Geri Silva, Jesse Bliss, Mark Coffield and others" ><div style="position:relative;top:10px;">Geri Silva, Jesse Bliss, Mark Coffield and others</div>'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/think-outside-the-cage/" target="New">Think Outside The Cage</a></div><div class="cat_host_3">Geri Silva, Jesse Bliss, Mark Coffield and others</div></div>
+<div class="cat_3" style="position:absolute;left:0px;top:320px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Beneath The Surface</span><br><br>Beneath the Surface features interviews with leading thinkers and activists on the important issues of the day, with a focus on deeper analysis.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/bts_friday_med_162.jpg" alt="Suzi Weissman" ><div style="position:relative;top:10px;">Suzi Weissman</div><div style="font-size:10px;font-style:normal;"><br>On Today&#039;s Show:<br>Guest: John Washington, David Cobb - <br>How to Close a Camp; remembrance of David Cobb<br>&ldquo;The opposite of a camp is community. Closing one, and keeping it closed, depends on exactly that.&amp;rdquo; <br><br>John Washington on the urgent fight against ICE detention. He has reported from inside the immigration enforcement machine for years, and his new book, &quot;How to Close a Camp: Dispatches from the Fight Against Immigrant Detention&quot; makes the case that detention camps, for all their federal funding and federal cover, are actually built out of thousands of local, mundane, and breakable transactions: county contracts, zoning permits, water hookups, medical licenses. Which means they can be broken. We  talk about the history that got us here &amp;mdash; a bipartisan history, running from Japanese American internment back through the Geary Act of 1892 &amp;mdash; and the campaigns, from Illinois to Vermont to Arizona, that have actually shut camps down. <br><br>Plus Meleiza Figueroa remembers David Cobb, who died on Labor Day.<br></div>'"><div><a class="cat_link_3" href="https://www.kpfk.org/on-air/suzi-weissman/" target="New">Beneath The Surface</a></div><div class="cat_host_3">Suzi Weissman</div><div style="font-size:8px;font-style:normal;width:103px;border 3px solid black;background-color:#303030;border-radius:8px;color:#00ff00;">How to Close a Camp; remembrance of David Cobb</div></div>
+<div class="cat_9" style="position:absolute;left:0px;top:400px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Background Briefing</span><br><br>The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/backgroundbriefing_med_370.jpg" alt="Ian Masters" ><div style="position:relative;top:10px;">Ian Masters</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/background-briefing/" target="New">Background Briefing</a></div><div class="cat_host_9">Ian Masters</div></div>
+<div class="cat_9" style="position:absolute;left:0px;top:480px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Ralph Nader Radio Hour</span><br><br>The Ralph Nader Radio Hour is a weekly talk show broadcast on the Pacifica Radio Network. Ralph Nader is joined by co-hosts Steve Skrovan and David Feldman for a lively informative hour of interviews with some of the nation&#039;s most influential movers and shakers.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/nader_med_207.jpg" alt="Ralph Nader" ><div style="position:relative;top:10px;">Ralph Nader</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/ralph-nader-radio-hour/" target="New">Ralph Nader Radio Hour</a></div><div class="cat_host_9">Ralph Nader</div></div>
+<div class="cat_9" style="position:absolute;left:0px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Middle East In Focus</span><br><br>Middle East in Focus has been airing regularly on KPFK since 1980. It was launched by the News Department shortly after Iranian students began holding 63 Americans hostage in the US Embassy in Tehran. After the hostages were released a year later, MEIF continued broadcasting news and opinion about the so-called &quot;Middle East.&quot; The area is actually southwestern Asia.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/meif_med_187.jpg" alt="Nagwa Ibrahim and Estee Chandler" ><div style="position:relative;top:10px;">Nagwa Ibrahim and Estee Chandler</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/middle-east-in-focus/" target="New">Middle East In Focus</a></div><div class="cat_host_9">Nagwa Ibrahim and Estee Chandler</div></div>
+<div class="cat_4" style="position:absolute;left:0px;top:640px;height:240px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Reggae Central</span><br><br>Chuck Foster hosts Reggae Central Sundays from 2-5 PM on KPFK. He features ska, rocksteady, dub, local and international reggae and dancehall with a special emphasis on roots music.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/reggaecent_med_145.jpg" alt="Chuck Foster" ><div style="position:relative;top:10px;">Chuck Foster</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/reggae-central/" target="New">Reggae Central</a></div><div class="cat_host_4">Chuck Foster</div></div>
+<div class="cat_4" style="position:absolute;left:0px;top:880px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">CinemaScore</span><br><br>A different look at classical and orchestral music from noted classical music announcer John Santana featuring music from films and heir composers'"><div>CinemaScore</div><div class="cat_host_4">John Santana</div></div>
+<div class="cat_4" style="position:absolute;left:0px;top:960px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">FolkScene</span><br><br>FolkScene is a syndicated music program established in 1970.  The program features recorded music, and in studio live performances.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/folkscene_med_175.jpg" alt="Allen Larman &amp; Kat Griffin" ><div style="position:relative;top:10px;">Allen Larman &amp; Kat Griffin</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/folkscene/" target="New">FolkScene</a></div><div class="cat_host_4">Allen Larman &amp; Kat Griffin</div></div>
+<div class="cat_4" style="position:absolute;left:0px;top:1120px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Dark Star, Dead &amp; Music</span><br><br>Devoted to Grateful Dead and beyond, including all of the psychedelic music of the past and present<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/darkstardeadmusic_med_373.jpg" alt="Arnella Barbara" ><div style="position:relative;top:10px;">Arnella Barbara</div>'"><div>Dark Star, Dead &amp; Music</div><div class="cat_host_4">Arnella Barbara</div></div>
+<div class="cat_12" style="position:absolute;left:0px;top:1280px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">LA Theater Works</span><br><br>LATW&#039;s mission is to record and preserve great performances of important stage plays, using new technology to make world-class theatre accessible to the widest possible audience, and to expand the use of theatre as a teaching tool.<br><br>LATW was founded in 1974 to give voice to underrepresented groups, bring attention to new plays and playwrights, and produce plays that address critical historical, cultural and social issues. In the 1990&#039;s, LATW embraced audio recording in lieu of conventional theatrical presentation. Today, LATW is the nation&#039;s leading producer of audio theatre. We produce world classics, modern masterpieces, contemporary and original works that speak to the issues of our times.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/latw_med_227.jpg" alt="Susan Albert Loewenberg" ><div style="position:relative;top:10px;">Susan Albert Loewenberg</div>'"><div><a class="cat_link_12" href="http://www.kpfk.org/on-air/l-a-theatre-works/" target="New">LA Theater Works</a></div><div class="cat_host_12">Susan Albert Loewenberg</div></div>
+<div class="cat_4" style="position:absolute;left:0px;top:1440px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Soundwaves</span><br><br>Soundwaves Radio is a weekly open-format radio program that features established and burgeoning artists, creative personalities, and DJ&#039;s from all over the globe.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/soundwaves_med_114.jpg" alt="Val Contreras" ><div style="position:relative;top:10px;">Val Contreras</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/soundwaves/" target="New">Soundwaves</a></div><div class="cat_host_4">Val Contreras</div></div>
+<div class="cat_4" style="position:absolute;left:0px;top:1600px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Stairway To Heaven</span><br><br>A soulful excursion through music and the stories they tell. Teddy Angelo Robinson rewinds your listening mind with classic soul from the artists/creators of the Philly Sound, Motown, Stax / Volt record labels and more. The music spans the late 1950s rhythm &amp; blues to classic 1970s Soul, weaving real life stories in love, relationships, and good ole down home grooving.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/musicmix_med_117.jpg" alt="Teddy Angelo Robinson" ><div style="position:relative;top:10px;">Teddy Angelo Robinson</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/stairway-to-heaven/" target="New">Stairway To Heaven</a></div><div class="cat_host_4">Teddy Angelo Robinson</div></div>
+<div class="cat_3" style="position:absolute;left:0px;top:1760px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">California  Solartopia</span><br><br>Energy independence through ending fossil fuels and nuclear power<div style="font-size:10px;font-style:normal;"><br>On Today&#039;s Show:<br>Guest: Susie Shannon &amp; Jane Fonda - <br>SOLARTOPIA SHOW LINKS BALCONY SOLAR TO HOMELESS<br>Host: Harvey Wasserman &amp; Kevin Kamps<br>CALIFORNIA SOLARTOPIA / THE PACIFICA SOLARTOPIA SHOW LINKS BALCONY SOLAR TO HOMELESSNESS &amp; RAMPAGING RADIOACTIVE ELECTRIC BILLS<br><br><br>Solartopia/Pacifica &amp; the California Solartopia Show brings us together with the hard realities of homelessness &amp; of soaring electric bills.<br><br>With legendary housing activist Susie Shannon, we face the growing problem of homelessness in Los Angeles &amp; around the nation. Susie also reports on the California Democratic Party&#039;s abandonment of a safe energy platform as it signals its intended embrace of unneeded, costly, dirty, and dangerous nuclear power.<br><br>We are also joined on tape by the great JANE FONDA who lays into the atomic energy industry and its lethal lies about the true costs of the &ldquo;Peaceful Atom,&amp;rdquo; both economically &amp; in terms of our health &amp; security.<br><br>From Kalamazoo our co-host KEVIN KAMPS reports from Michigan&#039;s insane attempt to re-start the long-dead nuclear hulk known as Palisades, rising from the graveyard with Iowa&amp;rsquo;s Duane Arnold &amp; Three Mile Island in PA.<br><br>The corrupt failure of these projects joins the sabotage by CA Gov. Gavin Newsom of California&amp;rsquo;s Demand Side Grid Project, which aims to avoid brown/blackouts with rising battery tech.  <br><br>Newsom has also refused, along with NY&amp;rsquo;s Cathy Hochul, to sign the new balcony solar legislation aiming to bring renewables easily and cheaply to every American household.<br><br>Thus, both major parties have joined Donald Trump in his sole control of atomic power regulation, and in their collective refusal to DO THE MATH while blocking the way to Solartopia.<br><br><br>= = = = = = <br><br>Host: Harvey &quot;Sunny&quot; Wasserman<br>Co-Host: Kevin Kamps<br>Producer: Myla Reson<br>Engineer &amp; Editor: Gary Scott<br></div>'"><div><a class="cat_link_3" href="http://kpfk.orghttp://www.kpfk.org/on-air/california-solartopia/" target="New">California  Solartopia</a></div><div class="cat_host_3">Harvey Wasserman</div><div style="font-size:8px;font-style:normal;width:103px;border 3px solid black;background-color:#303030;border-radius:8px;color:#00ff00;">SOLARTOPIA SHOW LINKS BALCONY SOLAR TO HOMELESS</div></div>
+<div class="cat_3" style="position:absolute;left:0px;top:1800px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:30 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Eco-Justice Radio</span><br><br>EcoJustice Radio presents environmental and climate stories from a social justice frame, featuring voices not necessarily heard on mainstream media. Our purpose is to amplify community voices, broaden the reach of grassroots-based movements, and inspire action. We aim to educate on and provide solutions for social and environmental justice and climate issues that challenge human health and wild landscapes across the USA, and around the world.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/ecojustiradio_med_268.jpg" alt="Jessica Aldridge, Jack Eidt" ><div style="position:relative;top:10px;">Jessica Aldridge, Jack Eidt</div>'"><div><a class="cat_link_3" href="https://www.kpfk.org/on-air/eco-justice-radio/" target="New">Eco-Justice Radio</a></div><div class="cat_host_3">Jessica Aldridge, Jack Eidt</div></div>
+<div class="cat_3" style="position:absolute;left:0px;top:1840px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Working Voices</span><br><br>Working Voices focuses on the issues and concerns of working people and the labor movement including living wages, occupational health and safety, economic inequality, ending race and gender discrimination,wage theft, and also solidarity, unity and organizing the unorganized.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/workingvoices_med_332.jpg" alt="Joe Ayala &amp; Enrique Sanchez" ><div style="position:relative;top:10px;">Joe Ayala &amp; Enrique Sanchez</div>'"><div><a class="cat_link_3" href="https://www.kpfk.org//on-air/working-voices/" target="New">Working Voices</a></div><div class="cat_host_3">Joe Ayala &amp; Enrique Sanchez</div></div>
+<div class="cat_9" style="position:absolute;left:110px;top:0px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">QR Code</span><br><br>From the creators of the nationally-syndicated show Civic Cipher, we are proud to introduce The QR Code! Debuting on KPFK 90.7 FM in Los Angeles, The QR Code is hosted by Q Ward and Ramses Ja. The acronym C.O.D.E. stands for Culture, Opinions, Dialogue, and Entertainment&mdash;the four pillars around which the show is built. The hosts hold insightful and engaging conversations on topics that are widely discussed in popular culture, social media, and traditional media outlets alike. Expect political discussions, world news, sports stories, and conversations on the social evolution of America. Special guests/experts infuse the program with a degree of variety and provide additional perspective.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/qrcode_med_379.jpg" alt="Q Ward &amp; Ramses Ja" ><div style="position:relative;top:10px;">Q Ward &amp; Ramses Ja</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/qr-code/" target="New">QR Code</a></div><div class="cat_host_9">Q Ward &amp; Ramses Ja</div></div>
+<div class="cat_9" style="position:absolute;left:110px;top:80px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now!</span><br><br>Democracy Now! goes beyond the rhetoric and party politics offered by the mainstream media. Instead, it highlights grassroots efforts to enhance and ignite democracy in the U.S. These days, some are labeling this &quot;public journalism&quot; or &quot;civic journalism.&quot; We call it Radio in the Pacifica Tradition.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/dn_med_97.jpg" alt="Amy Goodman" ><div style="position:relative;top:10px;">Amy Goodman</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/democracy-now/" target="New">Democracy Now!</a></div><div class="cat_host_9">Amy Goodman</div></div>
+<div class="cat_9" style="position:absolute;left:110px;top:160px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Law and Disorder</span><br><br>What happens when a movement gets a microphone? You get Law &amp; Disorder&mdash;a fearless new show on KPFK hosted by longtime organizer, artist, and abolitionist Cat Brooks. This is not your average talk show. Law &amp; Disorder exposes systemic injustice, uplifts movement voices, and agitates for real change. With sharp interviews, cultural insight, and a commitment to truth, this show brings the fire every week.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/lawsnddisor_med_380.jpg" alt="Cat Brooks" ><div style="position:relative;top:10px;">Cat Brooks</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/law-and-disorder-with-cat-brooks1/law-and-disorder-with-cat-brooks/" target="New">Law and Disorder</a></div><div class="cat_host_9">Cat Brooks</div></div>
+<div class="cat_9" style="position:absolute;left:110px;top:240px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Thom Hartmann Program</span><br><br>Covering psychiatry, ecology, politics, economics and more<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/hartmann_med_222.jpg" alt="live call ins. The number is (202) 808-9925" ><div style="position:relative;top:10px;">live call ins. The number is (202) 808-9925</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/thom-hartmann/" target="New">Thom Hartmann Program</a></div><div class="cat_host_9">live call ins. The number is (202) 808-9925</div></div>
+<div class="cat_4" style="position:absolute;left:110px;top:400px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Global Village - Mon</span><br><br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/gv_derek_med_104.jpg" alt="Kathy Diaz" ><div style="position:relative;top:10px;">Kathy Diaz</div></div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/global-village-mondays-w-maya-jupiter/" target="New">Global Village - Mon</a></div><div class="cat_host_4">Kathy Diaz</div></div>
+<div class="cat_11" style="position:absolute;left:110px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Expansion Zone</span><br><br>Explores the human experience from vast perspectives. We examine the life and our quest to understand who and what we are. These conversations will impact our perception of the world and the way that we engage with it.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/ivmon_med_267.jpg" alt="Sonia Barrett" ><div style="position:relative;top:10px;">Sonia Barrett</div>'"><div><a class="cat_link_11" href="http://www.kpfk.org/on-air/expansion-zone/" target="New">Expansion Zone</a></div><div class="cat_host_11">Sonia Barrett</div></div>
+<div class="cat_3" style="position:absolute;left:110px;top:640px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Scholars Circle</span><br><br>Qe seek to elevate the discourse of contemporary issues and discuss the globe&#039;s challenges with scholars and researchers from all over the world.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/marmoudian_med_167.jpg" alt="Maria Armoudian" ><div style="position:relative;top:10px;">Maria Armoudian</div>'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/scholars-circle/" target="New">Scholars Circle</a></div><div class="cat_host_3">Maria Armoudian</div></div>
+<div class="cat_3" style="position:absolute;left:110px;top:720px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Brad Friedman&#039;s BradCast</span><br><br>Investigative journalist, blogger, muckraker, troublemaker and broadcaster Brad Friedman&#039;s investigative interviews, analysis and commentary, as ripped from the pages of The BRAD BLOG, today&#039;s current events (if they matter) and even, on occasion, from the dark recesses of his mind.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/friedman_med_210.jpg" alt="Brad Friedman" ><div style="position:relative;top:10px;">Brad Friedman</div>'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/bradcast-with-brad-friedman/" target="New">Brad Friedman&#039;s BradCast</a></div><div class="cat_host_3">Brad Friedman</div></div>
+<div class="cat_3" style="position:absolute;left:110px;top:800px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Making Contact</span><br><br>Analyses critical issues and showcases grassroots solutions in order to inform and inspire audiences to action. '"><div><a class="cat_link_3" href="https://www.kpfk.org/on-air/making-contact/" target="New">Making Contact</a></div><div class="cat_host_3">Various</div></div>
+<div class="cat_9" style="position:absolute;left:110px;top:840px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Counterspin</span><br><br>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/counterspin/" target="New">Counterspin</a></div><div class="cat_host_9">FAIR</div></div>
+<div class="cat_9" style="position:absolute;left:110px;top:880px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Background Briefing</span><br><br>The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/backgroundbriefing_med_370.jpg" alt="Ian Masters" ><div style="position:relative;top:10px;">Ian Masters</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/background-briefing/" target="New">Background Briefing</a></div><div class="cat_host_9">Ian Masters</div></div>
+<div class="cat_6" style="position:absolute;left:110px;top:960px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Pacifica Evening News</span><br><br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/kpfknews_med_163.jpg" alt="With the Pacifica News Dept" ><div style="position:relative;top:10px;">With the Pacifica News Dept</div></div>'"><div><a class="cat_link_6" href="http://www.kpfk.org/on-air/pacifica-news/" target="New">Pacifica Evening News</a></div><div class="cat_host_6">With the Pacifica News Dept</div></div>
+<div class="cat_3" style="position:absolute;left:110px;top:1040px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">IMRU - LGBT Issues</span><br><br>IMRU Radio Magazine is a vehicle for the LGBTQ community support and political change. Our principal goal since our first broadcast in 1974 has been to produce the best radio show possible to support this mission. As a magazine we consist of short reports on multiple LGBTQ topics<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/imru_med_177.jpg" alt="IMRU Collective" ><div style="position:relative;top:10px;">IMRU Collective</div>'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/imru/" target="New">IMRU - LGBT Issues</a></div><div class="cat_host_3">IMRU Collective</div></div>
+<div class="cat_9" style="position:absolute;left:110px;top:1080px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">This Way Out</span><br><br>The only internationally distributed weekly LGBTQ radio program, currently airing on some 200 local community radio stations around the world. The award-winning half-hour magazine-style program features a summary of some of the major news events in or affecting the queer community (NewsWrap), in-depth coverage of major events, interviews with key queer figures, plus music, literature, entertainment &mdash; all the information and culture of a community on the move!<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/thiswayout_med_383.jpg" alt="Greg Gordon &amp; Lucia Chappelle" ><div style="position:relative;top:10px;">Greg Gordon &amp; Lucia Chappelle</div>'"><div><a class="cat_link_9" href="https://www.thiswayout.org/" target="New">This Way Out</a></div><div class="cat_host_9">Greg Gordon &amp; Lucia Chappelle</div></div>
+<div class="cat_10" style="position:absolute;left:110px;top:1120px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Informativo Pacifica</span><br><br>Daily Spanish language newscast - noticiero diario en espa~nol<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/infopac_med_181.jpg" alt="Norma Martinez Velazquez" ><div style="position:relative;top:10px;">Norma Martinez Velazquez</div>'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/informativo-pacifica/" target="New">Informativo Pacifica</a></div><div class="cat_host_10">Norma Martinez Velazquez</div></div>
+<div class="cat_10" style="position:absolute;left:110px;top:1160px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Radio Maiz</span><br><br>adio Ma&iacute;z is a food justice radio show dedicated to protecting people&#039;s right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.'"><div><a class="cat_link_10" href="https://www.kpfk.org/on-air/radio-maiz/" target="New">Radio Maiz</a></div><div class="cat_host_10">Christian Soliz &amp; Anet Aguilar</div></div>
+<div class="cat_10" style="position:absolute;left:110px;top:1200px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Hablando de Sudamerica</span><br><br>Un programa objetivo, destinado a la audiencia latinoamericana y en especial a la suramericana. Tiene el prop&oacute;sito de informar y llevar los acontecimientos m&aacute;s actualizados de America del Sur en cuanto a su pol&iacute;tica econ&oacute;mica y social. El objetivo principal es acortar la distancia y romper el cerco medi&aacute;tico corporativo al que esta sujeto Latinoam&eacute;rica en la actualidad.'"><div><a class="cat_link_10" href="https://www.kpfk.org/on-air/hablando-de-sudamerica/" target="New">Hablando de Sudamerica</a></div><div class="cat_host_10">Luis Zambrano</div></div>
+<div class="cat_10" style="position:absolute;left:110px;top:1240px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Perspectiva de Las Americas</span><br><br>Perspectiva de Las Am&eacute;ricas is a dynamic, 60-minute weekly radio magazine broadcast Monday nights on KPFK 90.7 FM that explores the rich landscape of Latin American politics, art, and grassroots activism. Blending sharp geopolitical analysis with compelling audio biographies of influential visionaries, the program connects major international currents directly to the struggles and triumphs of Southern California&rsquo;s immigrant communities. From hyper-local community updates in neighborhoods like Boyle Heights to socially conscious music selections, this Spanish-language broadcast serves as an essential analytical and cultural bridge for the Americas.'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/perspectiva-de-las-americas/" target="New">Perspectiva de Las Americas</a></div><div class="cat_host_10">Brenda Martinez</div></div>
+<div class="cat_10" style="position:absolute;left:110px;top:1320px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Contacto Ancestral</span><br><br>Programadores / Hosts: Manuel Felipe Perez, Ruben Rucuch, Alicia Ivonne Estrada, Magdalena Sarat Pacheco, Francisco Aguare, Adel Perez'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/contacto-ancestral/" target="New">Contacto Ancestral</a></div><div class="cat_host_10">Alicia Ivonne Estrada</div></div>
+<div class="cat_10" style="position:absolute;left:110px;top:1400px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Revolucion Arcoiris</span><br><br>programa dedicado a temas relacionados con la divesidad de genero, perspectivas, retos y organizacion de la comunidad Lesbica, gay y trans<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/ladiverylainclu_med_352.jpg" alt="Sergio Serdio" ><div style="position:relative;top:10px;">Sergio Serdio</div>'"><div>Revolucion Arcoiris</div><div class="cat_host_10">Sergio Serdio</div></div>
+<div class="cat_3" style="position:absolute;left:110px;top:1440px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening A  hour 1</span><br><br>Tues- Creative Frontline; Wed - About Health; Thu - David Emory&#039;s For the Record; Fri- Alan Watts'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening A  hour 1</a></div><div class="cat_host_3">Buzz</div></div>
+<div class="cat_3" style="position:absolute;left:110px;top:1520px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening A  hour 2</span><br><br>Tue - Behind the News w Doug Henwood; Wed - Herbal Highway, Thu - The Grayzone Radio; Fri -Sounds True w Tami Simon'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening A  hour 2</a></div><div class="cat_host_3">Buzz</div></div>
+<div class="cat_3" style="position:absolute;left:110px;top:1600px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening A  hour 3</span><br><br>Tue - Project Censored w Mickey Huff; Wed - Green Street News, Food Sleuth Radio; Thu - The Final Straw Radio; Fri- The Magical Mystery Tour with Tonio Epstein'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening A  hour 3</a></div><div class="cat_host_3">Buzz</div></div>
+<div class="cat_9" style="position:absolute;left:110px;top:1680px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening B Hour 1</span><br><br>Tue - Equal Rights &amp; Justice with Mimi Rosenberg; Wed - Whole Mother wi Pat Jones; Thu - Out-FM w John Riley, Stahamili Mapp; Fri - Caroline Casey, Visionary Activist'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening B Hour 1</a></div><div class="cat_host_9"></div></div>
+<div class="cat_9" style="position:absolute;left:110px;top:1760px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening B Hour 2</span><br><br>Hour 2 of Thom Hartmann Program non-commercial version from earlier on the prior day'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening B Hour 2</a></div><div class="cat_host_9"></div></div>
+<div class="cat_9" style="position:absolute;left:110px;top:1840px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening B Hour 3</span><br><br>Tue-Fri, 3rd hour of the Thom Hartmann Program from earlier on prior day'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening B Hour 3</a></div><div class="cat_host_9"></div></div>
+<div class="cat_9" style="position:absolute;left:220px;top:0px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">QR Code</span><br><br>From the creators of the nationally-syndicated show Civic Cipher, we are proud to introduce The QR Code! Debuting on KPFK 90.7 FM in Los Angeles, The QR Code is hosted by Q Ward and Ramses Ja. The acronym C.O.D.E. stands for Culture, Opinions, Dialogue, and Entertainment&mdash;the four pillars around which the show is built. The hosts hold insightful and engaging conversations on topics that are widely discussed in popular culture, social media, and traditional media outlets alike. Expect political discussions, world news, sports stories, and conversations on the social evolution of America. Special guests/experts infuse the program with a degree of variety and provide additional perspective.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/qrcode_med_379.jpg" alt="Q Ward &amp; Ramses Ja" ><div style="position:relative;top:10px;">Q Ward &amp; Ramses Ja</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/qr-code/" target="New">QR Code</a></div><div class="cat_host_9">Q Ward &amp; Ramses Ja</div></div>
+<div class="cat_9" style="position:absolute;left:220px;top:80px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now!</span><br><br>Democracy Now! goes beyond the rhetoric and party politics offered by the mainstream media. Instead, it highlights grassroots efforts to enhance and ignite democracy in the U.S. These days, some are labeling this &quot;public journalism&quot; or &quot;civic journalism.&quot; We call it Radio in the Pacifica Tradition.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/dn_med_97.jpg" alt="Amy Goodman" ><div style="position:relative;top:10px;">Amy Goodman</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/democracy-now/" target="New">Democracy Now!</a></div><div class="cat_host_9">Amy Goodman</div></div>
+<div class="cat_9" style="position:absolute;left:220px;top:160px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Law and Disorder</span><br><br>What happens when a movement gets a microphone? You get Law &amp; Disorder&mdash;a fearless new show on KPFK hosted by longtime organizer, artist, and abolitionist Cat Brooks. This is not your average talk show. Law &amp; Disorder exposes systemic injustice, uplifts movement voices, and agitates for real change. With sharp interviews, cultural insight, and a commitment to truth, this show brings the fire every week.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/lawsnddisor_med_380.jpg" alt="Cat Brooks" ><div style="position:relative;top:10px;">Cat Brooks</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/law-and-disorder-with-cat-brooks1/law-and-disorder-with-cat-brooks/" target="New">Law and Disorder</a></div><div class="cat_host_9">Cat Brooks</div></div>
+<div class="cat_9" style="position:absolute;left:220px;top:240px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Thom Hartmann Program</span><br><br>Covering psychiatry, ecology, politics, economics and more<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/hartmann_med_222.jpg" alt="live call ins. The number is (202) 808-9925" ><div style="position:relative;top:10px;">live call ins. The number is (202) 808-9925</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/thom-hartmann/" target="New">Thom Hartmann Program</a></div><div class="cat_host_9">live call ins. The number is (202) 808-9925</div></div>
+<div class="cat_4" style="position:absolute;left:220px;top:400px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Global Village - Tuesday</span><br><br>Baca (aka G-Spot, Mr. G) brings the recording artist into your room for a more intimate, personal talk.  He asks the important questions about music we want to know.  The guests have included Dave Chapelle, Black Eyed Peas, Ziggy Marley, Micky Dolenz (The Monkees), Ray Parker Jr (Raydio), Macy Gray, WAR, Charlie Wilson (Gap band), Johnny Mathis, Boy George (Culture Club), De La Soul, Bootsy Collins (P-Funk), Michael Henderson, Chaka Khan (Rufus), Robin Thicke, Carlos Santana, Sheila E, George Clinton, El Debarge, The B-52&rsquo;s, Swing Out Sister, Ice Cube, Rakim, The Brothers Johnson, Average White Band, Morris Day &amp; Jerome Benton (The Time)...<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/gv_tue_med_129.jpg" alt="Gary Baca" ><div style="position:relative;top:10px;">Gary Baca</div>'"><div><a class="cat_link_4" href="https://www.kpfk.org/on-air/global-village-tuesdays/" target="New">Global Village - Tuesday</a></div><div class="cat_host_4">Gary Baca</div></div>
+<div class="cat_11" style="position:absolute;left:220px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Planting Medicine</span><br><br>Enhancing the community&rsquo;s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/plantingmedecine_med_376.jpg" alt="Emiliano Lemus &amp; Ren&eacute;e Camila" ><div style="position:relative;top:10px;">Emiliano Lemus &amp; Ren&eacute;e Camila</div>'"><div>Planting Medicine</div><div class="cat_host_11">Emiliano Lemus &amp; Ren&eacute;e Camila</div></div>
+<div class="cat_12" style="position:absolute;left:220px;top:640px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Phil &amp; Ted&#039;s Sexy Boomer Show</span><br><br>Free-form, comedy/talk co-hosted by long-time collaborators and Pacifica Radio veterans, Phil Proctor and Ted Bonnitt, and featuring special guests and Hollywood stars in fun and deep conversations.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/philandtedrsqsexyboomershow_med_316.jpg" alt="Phil Proctor, Ted Bonnitt" ><div style="position:relative;top:10px;">Phil Proctor, Ted Bonnitt</div>'"><div><a class="cat_link_12" href="https://www.kpfk.org/on-air/phil-and-teds-sexy-boomer-show/" target="New">Phil &amp; Ted&#039;s Sexy Boomer Show</a></div><div class="cat_host_12">Phil Proctor, Ted Bonnitt</div></div>
+<div class="cat_9" style="position:absolute;left:220px;top:720px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Rising Up</span><br><br>Rising Up is a daily digest of independent news analysis, investigation, education, artistic expression, activism in the public interest<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/risingup_med_233.jpg" alt="Sonali Kolhatkar" ><div style="position:relative;top:10px;">Sonali Kolhatkar</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/sonali-kolhatkar/" target="New">Rising Up</a></div><div class="cat_host_9">Sonali Kolhatkar</div></div>
+<div class="cat_9" style="position:absolute;left:220px;top:800px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now!</span><br><br>Democracy Now! goes beyond the rhetoric and party politics offered by the mainstream media. Instead, it highlights grassroots efforts to enhance and ignite democracy in the U.S. These days, some are labeling this &quot;public journalism&quot; or &quot;civic journalism.&quot; We call it Radio in the Pacifica Tradition.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/dn_med_97.jpg" alt="Amy Goodman" ><div style="position:relative;top:10px;">Amy Goodman</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/democracy-now/" target="New">Democracy Now!</a></div><div class="cat_host_9">Amy Goodman</div></div>
+<div class="cat_9" style="position:absolute;left:220px;top:880px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Background Briefing</span><br><br>The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/backgroundbriefing_med_370.jpg" alt="Ian Masters" ><div style="position:relative;top:10px;">Ian Masters</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/background-briefing/" target="New">Background Briefing</a></div><div class="cat_host_9">Ian Masters</div></div>
+<div class="cat_6" style="position:absolute;left:220px;top:960px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Pacifica Evening News</span><br><br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/kpfknews_med_163.jpg" alt="With the Pacifica News Dept" ><div style="position:relative;top:10px;">With the Pacifica News Dept</div></div>'"><div><a class="cat_link_6" href="http://www.kpfk.org/on-air/pacifica-news/" target="New">Pacifica Evening News</a></div><div class="cat_host_6">With the Pacifica News Dept</div></div>
+<div class="cat_9" style="position:absolute;left:220px;top:1040px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Capitalism, Race and Democracy</span><br><br>As the COVID crisis has been knocked from the headlines, but not from the realities of people&rsquo;s lives, by a countrywide uprising against racist police murders with impunity, Pacifica is in the process of launching its first new national radio program in many years. COVID, Race &amp; Democracy features contributions from all five Pacifica stations &mdash; WBAI in NY, WPFW in DC, KPFT in Houston, TX, KPFK in Southern California, and KPFA/KPFB in Berkeley &mdash; plus the contributions of the Pacifica Affiliates Network, hundreds of radio stations from all around the US and beyond. The show will also feature independently produced segments as well as international elements<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/covidraceanddemocr_med_288.jpg" alt="Various" ><div style="position:relative;top:10px;">Various</div>'"><div><a class="cat_link_9" href="https://covidtaskforce.pacifica.org" target="New">Capitalism, Race and Democracy</a></div><div class="cat_host_9">Various</div></div>
+<div class="cat_3" style="position:absolute;left:220px;top:1080px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Be a Better Relative</span><br><br>Reports from Indigenous water and land protectors around the US, Turtle Island and internationally, and on missing and murdered Indigenous women and girls<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/nativenationsreport_med_329.jpg" alt="Lydia Ponce, Sunrose Iron Shell" ><div style="position:relative;top:10px;">Lydia Ponce, Sunrose Iron Shell</div>'"><div><a class="cat_link_3" href="https://www.kpfk.org/on-air/be-a-better-relative/" target="New">Be a Better Relative</a></div><div class="cat_host_3">Lydia Ponce, Sunrose Iron Shell</div></div>
+<div class="cat_10" style="position:absolute;left:220px;top:1120px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Informativo Pacifica</span><br><br>Daily Spanish language newscast - noticiero diario en espa~nol<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/infopac_med_181.jpg" alt="Norma Martinez Velazquez" ><div style="position:relative;top:10px;">Norma Martinez Velazquez</div>'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/informativo-pacifica/" target="New">Informativo Pacifica</a></div><div class="cat_host_10">Norma Martinez Velazquez</div></div>
+<div class="cat_10" style="position:absolute;left:220px;top:1160px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Voces de Libertad</span><br><br>Voces de Libertad on KPFK 90.7 FM is a striking public affairs program hosted by Rodrigo Argueta that explores the complexities of grassroots resistance. The podcast provides a dedicated platform focusing on the deep-rooted political and revolutionary struggles within Mexico. Listeners can tune in to gain critical insights into community organizing, social justice movements, and the systemic fight for liberation. This program cuts through mainstream narratives to deliver authentic voices directly from the frontlines of activism.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/vocesdelibertad_med_185.jpg" alt="Rodrigo Argueta" ><div style="position:relative;top:10px;">Rodrigo Argueta</div>'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/voces-de-libertad/" target="New">Voces de Libertad</a></div><div class="cat_host_10">Rodrigo Argueta</div></div>
+<div class="cat_10" style="position:absolute;left:220px;top:1200px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Insurgencia Feminina</span><br><br>Radio Insurgencia Femenina es un programa de radio para mujeres que se transmite cada 15 dias. Nos enfocamos en noticias no corporativas, activismo, temas que afectan el bienestar social y emocional de las mujeres latinas, chicanas e ind&iacute;genas. Tambi&eacute;n traemos arte y cultura a nuestro programa para elevar el talento y dar voz a cientos de mujeres incre&iacute;bles en todo nuestro continente.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/radioinsurgencia_med_184.jpg" alt="Varias" ><div style="position:relative;top:10px;">Varias</div>'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/radio-insurgencia-femenina/" target="New">Insurgencia Feminina</a></div><div class="cat_host_10">Varias</div></div>
+<div class="cat_10" style="position:absolute;left:220px;top:1280px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Suplemento Comunitario</span><br><br>Suplemento Comunitario es un programa radial semanal de asuntos p&uacute;blicos en espa&ntilde;ol transmitido por la emisora comunitaria KPFK 90.7 FM en el sur de California. El espacio est&aacute; dedicado principalmente al an&aacute;lisis pol&iacute;tico, la difusi&oacute;n de las luchas de las organizaciones sociales y la provisi&oacute;n de informaci&oacute;n de alta relevancia para las comunidades migrantes.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/suplemento_med_203.jpg" alt="Oscar Ulloa, Polina Vasiliev" ><div style="position:relative;top:10px;">Oscar Ulloa, Polina Vasiliev</div>'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/suplemento-comunitario/" target="New">Suplemento Comunitario</a></div><div class="cat_host_10">Oscar Ulloa, Polina Vasiliev</div></div>
+<div class="cat_14" style="position:absolute;left:220px;top:1360px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Special Music Programming</span><br><br>'"><div><a class="cat_link_14" href="http://www.kpfk.org/" target="New">Special Music Programming</a></div><div class="cat_host_14">Various</div></div>
+<div class="cat_3" style="position:absolute;left:220px;top:1440px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening A  hour 1</span><br><br>Tues- Creative Frontline; Wed - About Health; Thu - David Emory&#039;s For the Record; Fri- Alan Watts'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening A  hour 1</a></div><div class="cat_host_3">Buzz</div></div>
+<div class="cat_3" style="position:absolute;left:220px;top:1520px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening A  hour 2</span><br><br>Tue - Behind the News w Doug Henwood; Wed - Herbal Highway, Thu - The Grayzone Radio; Fri -Sounds True w Tami Simon'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening A  hour 2</a></div><div class="cat_host_3">Buzz</div></div>
+<div class="cat_3" style="position:absolute;left:220px;top:1600px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening A  hour 3</span><br><br>Tue - Project Censored w Mickey Huff; Wed - Green Street News, Food Sleuth Radio; Thu - The Final Straw Radio; Fri- The Magical Mystery Tour with Tonio Epstein'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening A  hour 3</a></div><div class="cat_host_3">Buzz</div></div>
+<div class="cat_9" style="position:absolute;left:220px;top:1680px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening B Hour 1</span><br><br>Tue - Equal Rights &amp; Justice with Mimi Rosenberg; Wed - Whole Mother wi Pat Jones; Thu - Out-FM w John Riley, Stahamili Mapp; Fri - Caroline Casey, Visionary Activist'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening B Hour 1</a></div><div class="cat_host_9"></div></div>
+<div class="cat_9" style="position:absolute;left:220px;top:1760px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening B Hour 2</span><br><br>Hour 2 of Thom Hartmann Program non-commercial version from earlier on the prior day'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening B Hour 2</a></div><div class="cat_host_9"></div></div>
+<div class="cat_9" style="position:absolute;left:220px;top:1840px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening B Hour 3</span><br><br>Tue-Fri, 3rd hour of the Thom Hartmann Program from earlier on prior day'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening B Hour 3</a></div><div class="cat_host_9"></div></div>
+<div class="cat_9" style="position:absolute;left:330px;top:0px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">QR Code</span><br><br>From the creators of the nationally-syndicated show Civic Cipher, we are proud to introduce The QR Code! Debuting on KPFK 90.7 FM in Los Angeles, The QR Code is hosted by Q Ward and Ramses Ja. The acronym C.O.D.E. stands for Culture, Opinions, Dialogue, and Entertainment&mdash;the four pillars around which the show is built. The hosts hold insightful and engaging conversations on topics that are widely discussed in popular culture, social media, and traditional media outlets alike. Expect political discussions, world news, sports stories, and conversations on the social evolution of America. Special guests/experts infuse the program with a degree of variety and provide additional perspective.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/qrcode_med_379.jpg" alt="Q Ward &amp; Ramses Ja" ><div style="position:relative;top:10px;">Q Ward &amp; Ramses Ja</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/qr-code/" target="New">QR Code</a></div><div class="cat_host_9">Q Ward &amp; Ramses Ja</div></div>
+<div class="cat_9" style="position:absolute;left:330px;top:80px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now!</span><br><br>Democracy Now! goes beyond the rhetoric and party politics offered by the mainstream media. Instead, it highlights grassroots efforts to enhance and ignite democracy in the U.S. These days, some are labeling this &quot;public journalism&quot; or &quot;civic journalism.&quot; We call it Radio in the Pacifica Tradition.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/dn_med_97.jpg" alt="Amy Goodman" ><div style="position:relative;top:10px;">Amy Goodman</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/democracy-now/" target="New">Democracy Now!</a></div><div class="cat_host_9">Amy Goodman</div></div>
+<div class="cat_9" style="position:absolute;left:330px;top:160px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Law and Disorder</span><br><br>What happens when a movement gets a microphone? You get Law &amp; Disorder&mdash;a fearless new show on KPFK hosted by longtime organizer, artist, and abolitionist Cat Brooks. This is not your average talk show. Law &amp; Disorder exposes systemic injustice, uplifts movement voices, and agitates for real change. With sharp interviews, cultural insight, and a commitment to truth, this show brings the fire every week.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/lawsnddisor_med_380.jpg" alt="Cat Brooks" ><div style="position:relative;top:10px;">Cat Brooks</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/law-and-disorder-with-cat-brooks1/law-and-disorder-with-cat-brooks/" target="New">Law and Disorder</a></div><div class="cat_host_9">Cat Brooks</div></div>
+<div class="cat_9" style="position:absolute;left:330px;top:240px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Thom Hartmann Program</span><br><br>Covering psychiatry, ecology, politics, economics and more<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/hartmann_med_222.jpg" alt="live call ins. The number is (202) 808-9925" ><div style="position:relative;top:10px;">live call ins. The number is (202) 808-9925</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/thom-hartmann/" target="New">Thom Hartmann Program</a></div><div class="cat_host_9">live call ins. The number is (202) 808-9925</div></div>
+<div class="cat_4" style="position:absolute;left:330px;top:400px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Global Village - Weds</span><br><br>An eclectic mix of global, jazz, indigenous, folk,<br>ambient and classical sounds, making musical connections between our geographical and diverse musical cultures.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/gv_yatrika_med_130.jpg" alt="Various Hosts" ><div style="position:relative;top:10px;">Various Hosts</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/global-village-wednesdays-wyatrika-shah-rais/" target="New">Global Village - Weds</a></div><div class="cat_host_4">Various Hosts</div></div>
+<div class="cat_11" style="position:absolute;left:330px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Aware Show, The</span><br><br>Aware is dedicated to communicating information to inspire positive growth and change. Our goal is an increased awareness and healing on an individual and planetary level. Based on our commitment to the renewal of the human spirit, and combined with our pure faith in the power of love, we are answering a call to action for a more conscious world.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/aware_med_141.jpg" alt="Lisa Garr" ><div style="position:relative;top:10px;">Lisa Garr</div>'"><div><a class="cat_link_11" href="http://www.kpfk.org/on-air/aware-with-lisa-garr/" target="New">Aware Show, The</a></div><div class="cat_host_11">Lisa Garr</div></div>
+<div class="cat_9" style="position:absolute;left:330px;top:640px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Alternative Radio</span><br><br>A long-running syndicated weekly program of in-depth analysis, speeches and public affairs with leading public intellectuals such as Noam Chomsky, hosted by author, anthologist and archivist David Basamian.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/alterradioar_med_333.jpg" alt="David  Barsamian" ><div style="position:relative;top:10px;">David  Barsamian</div>'"><div><a class="cat_link_9" href="http://www.alternativeradio.org" target="New">Alternative Radio</a></div><div class="cat_host_9">David  Barsamian</div></div>
+<div class="cat_3" style="position:absolute;left:330px;top:720px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Lawyers Guild, The</span><br><br>A public affairs program where political activists and experts discuss current political developments and progressive movements for social change.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/lawyersguild_med_190.jpg" alt="Jim Lafferty, Maria Hall" ><div style="position:relative;top:10px;">Jim Lafferty, Maria Hall</div>'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/the-lawyers-guild-with-jim-lafferty/" target="New">Lawyers Guild, The</a></div><div class="cat_host_3">Jim Lafferty, Maria Hall</div></div>
+<div class="cat_9" style="position:absolute;left:330px;top:800px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now!</span><br><br>Democracy Now! goes beyond the rhetoric and party politics offered by the mainstream media. Instead, it highlights grassroots efforts to enhance and ignite democracy in the U.S. These days, some are labeling this &quot;public journalism&quot; or &quot;civic journalism.&quot; We call it Radio in the Pacifica Tradition.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/dn_med_97.jpg" alt="Amy Goodman" ><div style="position:relative;top:10px;">Amy Goodman</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/democracy-now/" target="New">Democracy Now!</a></div><div class="cat_host_9">Amy Goodman</div></div>
+<div class="cat_9" style="position:absolute;left:330px;top:880px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Background Briefing</span><br><br>The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/backgroundbriefing_med_370.jpg" alt="Ian Masters" ><div style="position:relative;top:10px;">Ian Masters</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/background-briefing/" target="New">Background Briefing</a></div><div class="cat_host_9">Ian Masters</div></div>
+<div class="cat_6" style="position:absolute;left:330px;top:960px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Pacifica Evening News</span><br><br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/kpfknews_med_163.jpg" alt="With the Pacifica News Dept" ><div style="position:relative;top:10px;">With the Pacifica News Dept</div></div>'"><div><a class="cat_link_6" href="http://www.kpfk.org/on-air/pacifica-news/" target="New">Pacifica Evening News</a></div><div class="cat_host_6">With the Pacifica News Dept</div></div>
+<div class="cat_3" style="position:absolute;left:330px;top:1040px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Feminist Magazine</span><br><br>Feminist Magazine is the weekly Southern California radio show with intersectional feminist perspectives.  Covering stories that you don&#039;t hear on mainstream media!  We broadcast local and global stories, news and opinions about women making a radical difference.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/femmag_med_186.jpg" alt="Women&#039;s Collective" ><div style="position:relative;top:10px;">Women&#039;s Collective</div>'"><div><a class="cat_link_3" href="http://www.feministmagazine.org" target="New">Feminist Magazine</a></div><div class="cat_host_3">Women&#039;s Collective</div></div>
+<div class="cat_10" style="position:absolute;left:330px;top:1120px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Informativo Pacifica</span><br><br>Daily Spanish language newscast - noticiero diario en espa~nol<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/infopac_med_181.jpg" alt="Norma Martinez Velazquez" ><div style="position:relative;top:10px;">Norma Martinez Velazquez</div>'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/informativo-pacifica/" target="New">Informativo Pacifica</a></div><div class="cat_host_10">Norma Martinez Velazquez</div></div>
+<div class="cat_10" style="position:absolute;left:330px;top:1160px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Senderos de Oaxaca</span><br><br>Alternating with La Plomada; indigenous voices from central Mexico'"><div><a class="cat_link_10" href="https://www.kpfk.org/on-air/senderos-de-oaxaca/" target="New">Senderos de Oaxaca</a></div><div class="cat_host_10">Alternating with La Plomada; indigenous voices from central Mexico</div></div>
+<div class="cat_10" style="position:absolute;left:330px;top:1240px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Contragolpe</span><br><br>Contragolpe es un programa de radio que informa a la comunidad Latina de los acontecimientos que realmente le impactan en su total dimensi&oacute;n. Producido por el experimentado Jos&eacute; Benavides, Contragolpe fue creado para despertar la conciencia y la reflexi&oacute;n mediante el combate a la farsa, a la mentira y al mal llamado balance informativo que s&oacute;lo encubre intereses creados.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/golpe_med_205.jpg" alt="Jose Benavides" ><div style="position:relative;top:10px;">Jose Benavides</div>'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/contragolpe/" target="New">Contragolpe</a></div><div class="cat_host_10">Jose Benavides</div></div>
+<div class="cat_10" style="position:absolute;left:330px;top:1320px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Encuentros con Gregorio Luke</span><br><br>&quot;Encuentros&quot; es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la m&uacute;sica tradicional de Am&eacute;rica Latina.&quot;Encuentros&quot; is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/luke_med_206.jpg" alt="Gregorio Luke" ><div style="position:relative;top:10px;">Gregorio Luke</div>'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/encuentros/" target="New">Encuentros con Gregorio Luke</a></div><div class="cat_host_10">Gregorio Luke</div></div>
+<div class="cat_10" style="position:absolute;left:330px;top:1400px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Radio Bilingue</span><br><br>Edici&oacute;n Semanaria is a weekly 14-minute Spanish-language news magazine, on air since 1993 and the only of its kind in the nation. Vibrant three- to five-minute features explore top stories of the week, human interest and arts from communities around the U.S.  Listeners may hear a feature from our &ldquo;Raices&rdquo; series on traditional and new interpretations of folk arts of the Americas; from our &ldquo;Emerging Landscapes&rdquo; series on Native American &ndash; Latino environmental connections; an investigation from our Immigration Desk, a hands-on look at how to navigate the new health law, and profiles of Latino legends and everyday heroes.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/radiobilingu_med_281.jpg" alt="Aura Gonzalez" ><div style="position:relative;top:10px;">Aura Gonzalez</div>'"><div><a class="cat_link_10" href="https://www.kpfk.org/on-air/radio-bilingue/" target="New">Radio Bilingue</a></div><div class="cat_host_10">Aura Gonzalez</div></div>
+<div class="cat_3" style="position:absolute;left:330px;top:1440px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening A  hour 1</span><br><br>Tues- Creative Frontline; Wed - About Health; Thu - David Emory&#039;s For the Record; Fri- Alan Watts'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening A  hour 1</a></div><div class="cat_host_3">Buzz</div></div>
+<div class="cat_3" style="position:absolute;left:330px;top:1520px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening A  hour 2</span><br><br>Tue - Behind the News w Doug Henwood; Wed - Herbal Highway, Thu - The Grayzone Radio; Fri -Sounds True w Tami Simon'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening A  hour 2</a></div><div class="cat_host_3">Buzz</div></div>
+<div class="cat_3" style="position:absolute;left:330px;top:1600px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening A  hour 3</span><br><br>Tue - Project Censored w Mickey Huff; Wed - Green Street News, Food Sleuth Radio; Thu - The Final Straw Radio; Fri- The Magical Mystery Tour with Tonio Epstein'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening A  hour 3</a></div><div class="cat_host_3">Buzz</div></div>
+<div class="cat_9" style="position:absolute;left:330px;top:1680px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening B Hour 1</span><br><br>Tue - Equal Rights &amp; Justice with Mimi Rosenberg; Wed - Whole Mother wi Pat Jones; Thu - Out-FM w John Riley, Stahamili Mapp; Fri - Caroline Casey, Visionary Activist'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening B Hour 1</a></div><div class="cat_host_9"></div></div>
+<div class="cat_9" style="position:absolute;left:330px;top:1760px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening B Hour 2</span><br><br>Hour 2 of Thom Hartmann Program non-commercial version from earlier on the prior day'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening B Hour 2</a></div><div class="cat_host_9"></div></div>
+<div class="cat_9" style="position:absolute;left:330px;top:1840px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening B Hour 3</span><br><br>Tue-Fri, 3rd hour of the Thom Hartmann Program from earlier on prior day'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening B Hour 3</a></div><div class="cat_host_9"></div></div>
+<div class="cat_9" style="position:absolute;left:440px;top:0px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">QR Code</span><br><br>From the creators of the nationally-syndicated show Civic Cipher, we are proud to introduce The QR Code! Debuting on KPFK 90.7 FM in Los Angeles, The QR Code is hosted by Q Ward and Ramses Ja. The acronym C.O.D.E. stands for Culture, Opinions, Dialogue, and Entertainment&mdash;the four pillars around which the show is built. The hosts hold insightful and engaging conversations on topics that are widely discussed in popular culture, social media, and traditional media outlets alike. Expect political discussions, world news, sports stories, and conversations on the social evolution of America. Special guests/experts infuse the program with a degree of variety and provide additional perspective.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/qrcode_med_379.jpg" alt="Q Ward &amp; Ramses Ja" ><div style="position:relative;top:10px;">Q Ward &amp; Ramses Ja</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/qr-code/" target="New">QR Code</a></div><div class="cat_host_9">Q Ward &amp; Ramses Ja</div></div>
+<div class="cat_9" style="position:absolute;left:440px;top:80px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now!</span><br><br>Democracy Now! goes beyond the rhetoric and party politics offered by the mainstream media. Instead, it highlights grassroots efforts to enhance and ignite democracy in the U.S. These days, some are labeling this &quot;public journalism&quot; or &quot;civic journalism.&quot; We call it Radio in the Pacifica Tradition.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/dn_med_97.jpg" alt="Amy Goodman" ><div style="position:relative;top:10px;">Amy Goodman</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/democracy-now/" target="New">Democracy Now!</a></div><div class="cat_host_9">Amy Goodman</div></div>
+<div class="cat_9" style="position:absolute;left:440px;top:160px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Law and Disorder</span><br><br>What happens when a movement gets a microphone? You get Law &amp; Disorder&mdash;a fearless new show on KPFK hosted by longtime organizer, artist, and abolitionist Cat Brooks. This is not your average talk show. Law &amp; Disorder exposes systemic injustice, uplifts movement voices, and agitates for real change. With sharp interviews, cultural insight, and a commitment to truth, this show brings the fire every week.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/lawsnddisor_med_380.jpg" alt="Cat Brooks" ><div style="position:relative;top:10px;">Cat Brooks</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/law-and-disorder-with-cat-brooks1/law-and-disorder-with-cat-brooks/" target="New">Law and Disorder</a></div><div class="cat_host_9">Cat Brooks</div></div>
+<div class="cat_9" style="position:absolute;left:440px;top:240px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Thom Hartmann Program</span><br><br>Covering psychiatry, ecology, politics, economics and more<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/hartmann_med_222.jpg" alt="live call ins. The number is (202) 808-9925" ><div style="position:relative;top:10px;">live call ins. The number is (202) 808-9925</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/thom-hartmann/" target="New">Thom Hartmann Program</a></div><div class="cat_host_9">live call ins. The number is (202) 808-9925</div></div>
+<div class="cat_4" style="position:absolute;left:440px;top:400px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Global Village - Thurs</span><br><br>Music from around the world and around the block.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/gv_john_med_131.jpg" alt="John Schneider" ><div style="position:relative;top:10px;">John Schneider</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/global-village-thursdays-w-john-schneider/" target="New">Global Village - Thurs</a></div><div class="cat_host_4">John Schneider</div></div>
+<div class="cat_11" style="position:absolute;left:440px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Aware Show, The</span><br><br>Aware is dedicated to communicating information to inspire positive growth and change. Our goal is an increased awareness and healing on an individual and planetary level. Based on our commitment to the renewal of the human spirit, and combined with our pure faith in the power of love, we are answering a call to action for a more conscious world.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/aware_med_141.jpg" alt="Lisa Garr" ><div style="position:relative;top:10px;">Lisa Garr</div>'"><div><a class="cat_link_11" href="http://www.kpfk.org/on-air/aware-with-lisa-garr/" target="New">Aware Show, The</a></div><div class="cat_host_11">Lisa Garr</div></div>
+<div class="cat_12" style="position:absolute;left:440px;top:640px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">LARB Radio Hour</span><br><br>The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/larb_med_229.jpg" alt="Kate Wolf, Medaya Ocher, and Eric Newman." ><div style="position:relative;top:10px;">Kate Wolf, Medaya Ocher, and Eric Newman.</div>'"><div><a class="cat_link_12" href="http://www.kpfk.org/on-air/la-review-of-books/" target="New">LARB Radio Hour</a></div><div class="cat_host_12">Kate Wolf, Medaya Ocher, and Eric Newman.</div></div>
+<div class="cat_12" style="position:absolute;left:440px;top:680px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Bibliocracy</span><br><br>A weekly half-hour books discussion and interview program hosted by writer and Santa Monica Review editor Andrew Tonkovich featuring writers of literary fiction and nonfiction, poetry, memoir, political and cultural criticism.  Recent guests have included anti-fascist scholar Federico Finkelstein, So Cal novelist and editor David Ulin, writer Venita Blackburn, publisher and essayist Steve Wasserman, and short story writer Mary Jones.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/bibliocracy_med_153.jpg" alt="Andrew Tonkovich" ><div style="position:relative;top:10px;">Andrew Tonkovich</div>'"><div><a class="cat_link_12" href="http://www.kpfk.org/on-air/bibliocracy/" target="New">Bibliocracy</a></div><div class="cat_host_12">Andrew Tonkovich</div></div>
+<div class="cat_3" style="position:absolute;left:440px;top:720px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">La Raza Radio</span><br><br>Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/morningmradiojaguar_med_320.jpg" alt="Matt Sedillo, Vanessa Bustamante, Ernesto Ayala" ><div style="position:relative;top:10px;">Matt Sedillo, Vanessa Bustamante, Ernesto Ayala</div>'"><div><a class="cat_link_3" href="https://www.kpfk.org/on-air/morning-mix-la-raza-radio/" target="New">La Raza Radio</a></div><div class="cat_host_3">Matt Sedillo, Vanessa Bustamante, Ernesto Ayala</div></div>
+<div class="cat_9" style="position:absolute;left:440px;top:800px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now!</span><br><br>Democracy Now! goes beyond the rhetoric and party politics offered by the mainstream media. Instead, it highlights grassroots efforts to enhance and ignite democracy in the U.S. These days, some are labeling this &quot;public journalism&quot; or &quot;civic journalism.&quot; We call it Radio in the Pacifica Tradition.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/dn_med_97.jpg" alt="Amy Goodman" ><div style="position:relative;top:10px;">Amy Goodman</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/democracy-now/" target="New">Democracy Now!</a></div><div class="cat_host_9">Amy Goodman</div></div>
+<div class="cat_9" style="position:absolute;left:440px;top:880px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Background Briefing</span><br><br>The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/backgroundbriefing_med_370.jpg" alt="Ian Masters" ><div style="position:relative;top:10px;">Ian Masters</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/background-briefing/" target="New">Background Briefing</a></div><div class="cat_host_9">Ian Masters</div></div>
+<div class="cat_6" style="position:absolute;left:440px;top:960px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Pacifica Evening News</span><br><br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/kpfknews_med_163.jpg" alt="With the Pacifica News Dept" ><div style="position:relative;top:10px;">With the Pacifica News Dept</div></div>'"><div><a class="cat_link_6" href="http://www.kpfk.org/on-air/pacifica-news/" target="New">Pacifica Evening News</a></div><div class="cat_host_6">With the Pacifica News Dept</div></div>
+<div class="cat_3" style="position:absolute;left:440px;top:1040px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">American Indian Airwaves</span><br><br>American Indian Airwaves is produced in Coyote Radio and Burntswamp Studios and was established in 1988 in order to give indigenous peoples and their respective first nations a voice about the continuous struggles against Colonialism and Imperialism by the occupying and settler societies often referred to as the United States, Canada, Mexico, and Latin and South America countries located therein.'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/american-indian-airwaves/" target="New">American Indian Airwaves</a></div><div class="cat_host_3">Larry Smith</div></div>
+<div class="cat_10" style="position:absolute;left:440px;top:1120px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Informativo Pacifica</span><br><br>Daily Spanish language newscast - noticiero diario en espa~nol<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/infopac_med_181.jpg" alt="Norma Martinez Velazquez" ><div style="position:relative;top:10px;">Norma Martinez Velazquez</div>'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/informativo-pacifica/" target="New">Informativo Pacifica</a></div><div class="cat_host_10">Norma Martinez Velazquez</div></div>
+<div class="cat_10" style="position:absolute;left:440px;top:1160px;height:120px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Nuestra Voz</span><br><br>Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/nuestravoz_med_192.jpg" alt="Freya Rojo, Lily Lopez &amp; Rosario Vigil" ><div style="position:relative;top:10px;">Freya Rojo, Lily Lopez &amp; Rosario Vigil</div>'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/nuestra-voz/" target="New">Nuestra Voz</a></div><div class="cat_host_10">Freya Rojo, Lily Lopez &amp; Rosario Vigil</div></div>
+<div class="cat_10" style="position:absolute;left:440px;top:1280px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Enfoque Latino</span><br><br>Enfoque Latino &quot; Su Programa para Derrotar la Indiferencia&quot;<br> Public Affairs Radio Magazine<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/enfoque_med_171.jpg" alt="Ruben Tapia" ><div style="position:relative;top:10px;">Ruben Tapia</div>'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/enfoque-latino-con-ruben-tapia/" target="New">Enfoque Latino</a></div><div class="cat_host_10">Ruben Tapia</div></div>
+<div class="cat_10" style="position:absolute;left:440px;top:1360px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Dialogos de Media Noche</span><br><br>Dialogos de Media Noche, ayudando a nuestra comunidad,  con informacion de vivienda, educacion y cultura.<br><br>A radio magazine that combines Latino-american poetry, traditional Mexican music and theater in Spanish. We focus in the Los Angeles production. In the format we always go for the live interpretations and Facebook live.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/medianoche_med_253.jpg" alt="Sergio Serdio" ><div style="position:relative;top:10px;">Sergio Serdio</div>'"><div><a class="cat_link_10" href="http://www.kpfk.org/on-air/dialogos-de-media-noche/" target="New">Dialogos de Media Noche</a></div><div class="cat_host_10">Sergio Serdio</div></div>
+<div class="cat_3" style="position:absolute;left:440px;top:1440px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening A  hour 1</span><br><br>Tues- Creative Frontline; Wed - About Health; Thu - David Emory&#039;s For the Record; Fri- Alan Watts'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening A  hour 1</a></div><div class="cat_host_3">Buzz</div></div>
+<div class="cat_3" style="position:absolute;left:440px;top:1520px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening A  hour 2</span><br><br>Tue - Behind the News w Doug Henwood; Wed - Herbal Highway, Thu - The Grayzone Radio; Fri -Sounds True w Tami Simon'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening A  hour 2</a></div><div class="cat_host_3">Buzz</div></div>
+<div class="cat_3" style="position:absolute;left:440px;top:1600px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening A  hour 3</span><br><br>Tue - Project Censored w Mickey Huff; Wed - Green Street News, Food Sleuth Radio; Thu - The Final Straw Radio; Fri- The Magical Mystery Tour with Tonio Epstein'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening A  hour 3</a></div><div class="cat_host_3">Buzz</div></div>
+<div class="cat_9" style="position:absolute;left:440px;top:1680px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening B Hour 1</span><br><br>Tue - Equal Rights &amp; Justice with Mimi Rosenberg; Wed - Whole Mother wi Pat Jones; Thu - Out-FM w John Riley, Stahamili Mapp; Fri - Caroline Casey, Visionary Activist'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening B Hour 1</a></div><div class="cat_host_9"></div></div>
+<div class="cat_9" style="position:absolute;left:440px;top:1760px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening B Hour 2</span><br><br>Hour 2 of Thom Hartmann Program non-commercial version from earlier on the prior day'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening B Hour 2</a></div><div class="cat_host_9"></div></div>
+<div class="cat_9" style="position:absolute;left:440px;top:1840px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Something&#039;s Happening B Hour 3</span><br><br>Tue-Fri, 3rd hour of the Thom Hartmann Program from earlier on prior day'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/somethings-happening/" target="New">Something&#039;s Happening B Hour 3</a></div><div class="cat_host_9"></div></div>
+<div class="cat_9" style="position:absolute;left:550px;top:0px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">CodePINK Radio</span><br><br>Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/codepinradio_med_311.jpg" alt="Code Pink" ><div style="position:relative;top:10px;">Code Pink</div>'"><div><a class="cat_link_9" href="https://www.kpfk.org/on-air/codepink-radio/" target="New">CodePINK Radio</a></div><div class="cat_host_9">Code Pink</div></div>
+<div class="cat_9" style="position:absolute;left:550px;top:80px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Sojourner Truth Radio</span><br><br>Sojourner Truth is a hard-hitting news and public affairs program that brings you views and voices rarely heard in corporate media. Hosted by longtime journalist and activist Margaret Prescod and renowned human rights attorney Nana Gyamfi, the show delivers deep and intersectional analysis of the policies, politics, and movements shaping our world.<br><br>Each week, Sojourner Truth covers local, national, and international issues, with a focus on how women, communities of color, and other frontline communities are organizing for justice. Whether spotlighting political repression, economic inequality, or global uprisings, the program amplifies grassroots responses and connects the dots between struggles.<br><br>With sharp headlines, in-depth interviews, and cultural segments, the show explores:<br>&bull; Movement building and abolitionist organizing<br>&bull; Black liberation and international solidarity<br>&bull; The intersection of gender, race, and class<br>&bull; The impact of U.S. and global policy on marginalized communities<br>&bull; The role of art, media, and resistance culture in shaping public consciousness<br><br>Sojourner Truth is radio in the tradition of radical journalism &mdash; unapologetically grounded in truth-telling, community power, and transformative justice.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/sojourner_med_99.jpg" alt="Margaret Prescod &amp; Nana Gyamfi" ><div style="position:relative;top:10px;">Margaret Prescod &amp; Nana Gyamfi</div>'"><div><a class="cat_link_9" href="http://sotrueradio.org/" target="New">Sojourner Truth Radio</a></div><div class="cat_host_9">Margaret Prescod &amp; Nana Gyamfi</div></div>
+<div class="cat_3" style="position:absolute;left:550px;top:160px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Cut to the Chase</span><br><br>Cut To The Chase&nbsp;gets straight to the real issues&mdash;bringing activists, politicians, authors, and everyday thinkers together every Friday morning at 8. Host Sly Rivers cuts through the noise with fearless conversations, live music, speeches, and honest analysis&mdash;all sharpened for one purpose: raising consciousness and tearing down injustice, bigotry, poverty, and fear.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/mornimixcutchasewsylveriver_med_323.jpg" alt="Sylvester Rivers" ><div style="position:relative;top:10px;">Sylvester Rivers</div>'"><div><a class="cat_link_3" href="https://www.kpfk.org/on-air/cut-to-the-chase/" target="New">Cut to the Chase</a></div><div class="cat_host_3">Sylvester Rivers</div></div>
+<div class="cat_9" style="position:absolute;left:550px;top:240px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Thom Hartmann Program</span><br><br>Covering psychiatry, ecology, politics, economics and more<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/hartmann_med_222.jpg" alt="live call ins. The number is (202) 808-9925" ><div style="position:relative;top:10px;">live call ins. The number is (202) 808-9925</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/thom-hartmann/" target="New">Thom Hartmann Program</a></div><div class="cat_host_9">live call ins. The number is (202) 808-9925</div></div>
+<div class="cat_9" style="position:absolute;left:550px;top:320px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Cary Harrison Files</span><br><br>Award-winning raconteur Cary Harrison, cuts through the noise - revealing the murky agendas behind today&#039;s headlines through uncompromising journalism, unapologetic advocacy, independent voices, and a global audience with live listener call-ins shaping the conversation.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/caryharrisfiles_med_374.jpg" >'"><div>Cary Harrison Files</div><div class="cat_host_9"></div></div>
+<div class="cat_4" style="position:absolute;left:550px;top:400px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Global Village - Fri</span><br><br>Music from around the world and around the block.<br>Sergio says: Free non-stop stream of Brazilian Music hosted by Sergio can be found here: www.brazilianhour.org<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/gv_sergio_med_132.jpg" alt="Sergio Mielniczenko" ><div style="position:relative;top:10px;">Sergio Mielniczenko</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/global-village-fridays-w-sergio-mielniczenko/" target="New">Global Village - Fri</a></div><div class="cat_host_4">Sergio Mielniczenko</div></div>
+<div class="cat_9" style="position:absolute;left:550px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Visionary Activist Show</span><br><br>Dedicated to &ldquo;anything we need to know to have a democracy&rdquo;: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline&#039;s guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/visionalryactivist_med_371.jpg" alt="Caroline Casey" ><div style="position:relative;top:10px;">Caroline Casey</div>'"><div>The Visionary Activist Show</div><div class="cat_host_9">Caroline Casey</div></div>
+<div class="cat_12" style="position:absolute;left:550px;top:640px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Arts In Review</span><br><br>Arts in Review celebrates the best in local live performance, including theatre, cabaret, music and dance. Hosted by arts journalist Julio Martinez, the weekly one-hour program features interviews and performances by a wide range of talented performers who are performing locally.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/artsinreview_med_150.jpg" alt="Julio Martinez" ><div style="position:relative;top:10px;">Julio Martinez</div>'"><div><a class="cat_link_12" href="http://www.kpfk.org/on-air/arts-in-review/" target="New">Arts In Review</a></div><div class="cat_host_12">Julio Martinez</div></div>
+<div class="cat_12" style="position:absolute;left:550px;top:680px;height:40px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:30 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Pacifica Performance Showcase</span><br><br>PACIFICA PERFORMANCE SHOWCASE, arts &amp; culture to enlighten, enliven and educate with host Donna Walker, covers the best in film, theatre, music, and the arts.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/pperf_med_155.jpg" alt="D. Walker" ><div style="position:relative;top:10px;">D. Walker</div>'"><div><a class="cat_link_12" href="http://www.kpfk.org/on-air/pacifica-performance-showcase/" target="New">Pacifica Performance Showcase</a></div><div class="cat_host_12">D. Walker</div></div>
+<div class="cat_3" style="position:absolute;left:550px;top:720px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					03:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Pocho Hour Of Power</span><br><br>While L.A.&#039;s 90.7 KPFK, part of the Pacifica Radio Network, is not generally known for humor or colorfully exuberant personalities, there are a few exceptions, and the Pocho Hour of Power is a notable one. Billing itself as &quot;the nation&#039;s only English-language, Latino-themed political satire program,&quot; the show and its hosts &mdash; Lalo Alcaraz, Jeffrey Keller, Patrick Perez and Esteban Zul &mdash; along with producer Gary Baca and music DJ Boxy Dee, maintain a sense of freewheeling fun, deftly weaving thoughtfully respectful discussions on art, politics and personal anecdotes with a vibe of controlled chaos bordering on merry pranksterism. Together they&#039;re a kind of super team, fusing Latino consciousness with the broader landscape of L.A. and the world, bringing in acclaimed artists, writers, comedians and activists as guests for an hour that&#039;s poignant, funny and fast-paced.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/pocho_med_168.jpg" alt="Lalo Alcaraz" ><div style="position:relative;top:10px;">Lalo Alcaraz</div>'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/pocho-hour-of-power/" target="New">Pocho Hour Of Power</a></div><div class="cat_host_3">Lalo Alcaraz</div></div>
+<div class="cat_3" style="position:absolute;left:550px;top:800px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Living In The USA</span><br><br>&ldquo;Living in the USA&rdquo; with Jon Wiener: talking about politics, thinking about the Left.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/johnwiener_med_166.jpg" alt="Jon Wiener" ><div style="position:relative;top:10px;">Jon Wiener</div>'"><div><a class="cat_link_3" href="https://podcasts.apple.com/us/podcast/living-in-the-usa/id1201366678" target="New">Living In The USA</a></div><div class="cat_host_3">Jon Wiener</div></div>
+<div class="cat_9" style="position:absolute;left:550px;top:880px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Democracy Now!</span><br><br>Democracy Now! goes beyond the rhetoric and party politics offered by the mainstream media. Instead, it highlights grassroots efforts to enhance and ignite democracy in the U.S. These days, some are labeling this &quot;public journalism&quot; or &quot;civic journalism.&quot; We call it Radio in the Pacifica Tradition.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/dn_med_97.jpg" alt="Amy Goodman" ><div style="position:relative;top:10px;">Amy Goodman</div>'"><div><a class="cat_link_9" href="http://www.kpfk.org/on-air/democracy-now/" target="New">Democracy Now!</a></div><div class="cat_host_9">Amy Goodman</div></div>
+<div class="cat_6" style="position:absolute;left:550px;top:960px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Pacifica Evening News</span><br><br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/kpfknews_med_163.jpg" alt="With the Pacifica News Dept" ><div style="position:relative;top:10px;">With the Pacifica News Dept</div></div>'"><div><a class="cat_link_6" href="http://www.kpfk.org/on-air/pacifica-news/" target="New">Pacifica Evening News</a></div><div class="cat_host_6">With the Pacifica News Dept</div></div>
+<div class="cat_3" style="position:absolute;left:550px;top:1040px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Soul Rebel Radio</span><br><br>Soul Rebel Radio creates segments that include content about: current events, cutting-edge topics, comedy, youth voices, underground music, and interviews with various industry professionals.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/soulrebel_med_188.jpg" alt="Miguel Paredes" ><div style="position:relative;top:10px;">Miguel Paredes</div>'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/soul-rebel-radio/" target="New">Soul Rebel Radio</a></div><div class="cat_host_3">Miguel Paredes</div></div>
+<div class="cat_4" style="position:absolute;left:550px;top:1120px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">East Side Radio</span><br><br>From classic soul and rare oldies to the sounds defining the East Side today, we&rsquo;re celebrating the music that raised us. It&rsquo;s two hours of curated rhythms and cultural history, every Friday night from 8 to 10. And we&#039;ll be taking your shout-outs and requests!'"><div>East Side Radio</div><div class="cat_host_4"></div></div>
+<div class="cat_4" style="position:absolute;left:550px;top:1280px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Breakbeats And Rhymes</span><br><br>Breakbreats and Rhymes Radio, bringing you the finest in Hip Hop music and more, broadcasting live late Friday nights from 10 pm-12 a.m.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/breakbeats_med_119.jpg" alt="Matt Perez &amp; Rebels To The Grain" ><div style="position:relative;top:10px;">Matt Perez &amp; Rebels To The Grain</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/breakbeats-and-rhymes/" target="New">Breakbeats And Rhymes</a></div><div class="cat_host_4">Matt Perez &amp; Rebels To The Grain</div></div>
+<div class="cat_4" style="position:absolute;left:550px;top:1440px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Midnight Snack</span><br><br>A blend of house, electro pop, and everything in between with DJ Dani Mamath<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/deepend_med_296.jpg" alt="Dani Mamath" ><div style="position:relative;top:10px;">Dani Mamath</div>'"><div><a class="cat_link_4" href="https://www.kpfk.org//on-air/midnight-snack/" target="New">Midnight Snack</a></div><div class="cat_host_4">Dani Mamath</div></div>
+<div class="cat_4" style="position:absolute;left:550px;top:1600px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">World Massive</span><br><br>Massive sounds from across the globe including moombahton, baile funk, dancehall, afrobeats, bhangra and much more. Guest DJs / producers, both local and international, join host d.painter weekly to expose you to the latest in modern world music.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/potira_med_115.jpg" alt="DJ d.painter" ><div style="position:relative;top:10px;">DJ d.painter</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/dj-potira/" target="New">World Massive</a></div><div class="cat_host_4">DJ d.painter</div></div>
+<div class="cat_4" style="position:absolute;left:550px;top:1760px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Awakenings</span><br><br>Dedicated to the music and inspirations of John &amp; Alice Coltrane. Hosted by their daughter Michelle Coltrane<br>Wake up to the celestial sounds of Alice Coltrane compositions, &amp; the impressions of a master improvisor who sought freedom in his sound. John Coltrane. We will explore artist collaborators in connection with the Coltrane&rsquo;s. Receive information about live music happening in our town. Enjoy a cup of tea or coffee or get your steps in for the day. This music will soothe your soul.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/awakenings_med_377.jpg" alt="Michelle Coltrane" ><div style="position:relative;top:10px;">Michelle Coltrane</div>'"><div><a class="cat_link_4" href="https://www.johncoltrane.com/" target="New">Awakenings</a></div><div class="cat_host_4">Michelle Coltrane</div></div>
+<div class="cat_4" style="position:absolute;left:550px;top:1840px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					05:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Way Out West</span><br><br>Blues, Western, Jazz - Your Saturday Morning Music!<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/wayoutwest_med_384.jpg" alt="Jerry Ough" ><div style="position:relative;top:10px;">Jerry Ough</div>'"><div><a class="cat_link_4" href="https://www.kpfk.org/on-air/way-out-west" target="New">Way Out West</a></div><div class="cat_host_4">Jerry Ough</div></div>
+<div class="cat_4" style="position:absolute;left:660px;top:0px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;"><div>(Way Out West)</div></div>
+<div class="cat_4" style="position:absolute;left:660px;top:80px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					07:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Roots Music and Beyond</span><br><br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/aliveandpicking_med_212.jpg" alt="Various" ><div style="position:relative;top:10px;">Various</div></div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/roots-music-and-beyond/" target="New">Roots Music and Beyond</a></div><div class="cat_host_4">Various</div></div>
+<div class="cat_14" style="position:absolute;left:660px;top:240px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					09:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Special Programming</span><br><br>'"><div><a class="cat_link_14" href="http://www.kpfk.org/on-air/special-programming/" target="New">Special Programming</a></div><div class="cat_host_14">Various Hosts</div></div>
+<div class="cat_3" style="position:absolute;left:660px;top:320px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Conversation Piece</span><br><br>Public affairs interviews from a Black woman&#039;s perspective with Angela Birdsong<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/conversatpiece_med_340.jpg" alt="Angela Birdsong" ><div style="position:relative;top:10px;">Angela Birdsong</div>'"><div>Conversation Piece</div><div class="cat_host_3">Angela Birdsong</div></div>
+<div class="cat_3" style="position:absolute;left:660px;top:400px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					11:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Freedom Now</span><br><br>Pan-African public affairs and history, ready for revolution<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/freedomnow_med_183.jpg" alt="Dr. Gerald Horne" ><div style="position:relative;top:10px;">Dr. Gerald Horne</div>'"><div><a class="cat_link_3" href="http://www.kpfk.org/on-air/freedom-now/" target="New">Freedom Now</a></div><div class="cat_host_3">Dr. Gerald Horne</div></div>
+<div class="cat_3" style="position:absolute;left:660px;top:480px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Signal</span><br><br>News, Information &amp; Analysis with Dino<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/signal_med_385.jpg" alt="Armando Gudino" ><div style="position:relative;top:10px;">Armando Gudino</div>'"><div><a class="cat_link_3" href="https://www.kpfk.org/on-air/the-signal/" target="New">The Signal</a></div><div class="cat_host_3">Armando Gudino</div></div>
+<div class="cat_3" style="position:absolute;left:660px;top:560px;height:80px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					01:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">The Car Show</span><br><br>Everything about the automotive world including listener call-ins, event calender, industry news, racing news,new products, vehicle road tests,classic and collector vehicles, in-studio and call-in guests on all automotive and related subjects---and it has been on since 1973.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/carshow_med_110.jpg" alt="Mark Vaughn" ><div style="position:relative;top:10px;">Mark Vaughn</div>'"><div><a class="cat_link_3" href="https://www.kpfk.org/on-air/car-show-the/" target="New">The Car Show</a></div><div class="cat_host_3">Mark Vaughn</div></div>
+<div class="cat_4" style="position:absolute;left:660px;top:640px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Rhapsody In Black</span><br><br>Classic R &amp; B, Soul and Rock &amp; Roll<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/rhapsody_med_189.jpg" alt="Jim Dawson" ><div style="position:relative;top:10px;">Jim Dawson</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/rhapsody-in-black/" target="New">Rhapsody In Black</a></div><div class="cat_host_4">Jim Dawson</div></div>
+<div class="cat_4" style="position:absolute;left:660px;top:800px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Afro-Dicia</span><br><br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/afrodicia_med_144.jpg" alt="DJ Nnamdi" ><div style="position:relative;top:10px;">DJ Nnamdi</div></div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/afrodicia1/" target="New">Afro-Dicia</a></div><div class="cat_host_4">DJ Nnamdi</div></div>
+<div class="cat_4" style="position:absolute;left:660px;top:960px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					06:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Canto Sin Fronteras</span><br><br>The best music from Latin- America and the World with a Political Edge<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/cantossin_med_172.jpg" alt="Tanya Torres" ><div style="position:relative;top:10px;">Tanya Torres</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/canto-sin-fronteras/" target="New">Canto Sin Fronteras</a></div><div class="cat_host_4">Tanya Torres</div></div>
+<div class="cat_4" style="position:absolute;left:660px;top:1120px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					08:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Canto Tropical</span><br><br>&quot;Canto Tropical&quot; is a trilingual fast-paced music show focusing on Salsa, Mambo,  Afro-Cuban, &amp; Latin jazz from throughout the world. Exciting new selections each week, insightful interviews with local and visiting artists, and CD/ticket &amp; other weekly give-aways.<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/cantotropical_med_173.jpg" alt="Hector Resendez, Kathy Diaz" ><div style="position:relative;top:10px;">Hector Resendez, Kathy Diaz</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/canto-tropical/" target="New">Canto Tropical</a></div><div class="cat_host_4">Hector Resendez, Kathy Diaz</div></div>
+<div class="cat_4" style="position:absolute;left:660px;top:1280px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					10:00 PM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Travel Tips For Aztlan</span><br><br>The best music from the latin youth culture including rock, salsa, cumbia, hip-hop, ska, electronica and LatinX ChicanoX Music, Cultural news and information showcase<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/traveltips_med_127.jpg" alt="Mark Torres" ><div style="position:relative;top:10px;">Mark Torres</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/travel-tips-for-aztlan/" target="New">Travel Tips For Aztlan</a></div><div class="cat_host_4">Mark Torres</div></div>
+<div class="cat_4" style="position:absolute;left:660px;top:1440px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					12:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">In The Cut Radio</span><br><br>DJ Ben Vera brings you a Saturday night extravaganza of sound, blending club cuts with crate digging.  This is the Saturday night party you&rsquo;ve been looking for.  DJ Ben will sample all flavors of funk, jazz, hiphop, r&amp;b and EDM.  The best way to spend your weekend &ndash; dancing and singing along to your favorite jams as well as discovering new future classics.  A good time is all we are after so join us every Saturday night for your entry to the best party on FM radio.  Welcome to In The Cut &ndash; Live From The Launchpad with DJ Ben Vera.'"><div><a class="cat_link_4" href="https://www.kpfk.org/on-air/in-the-cut-radio/" target="New">In The Cut Radio</a></div><div class="cat_host_4">Ben Vera</div></div>
+<div class="cat_4" style="position:absolute;left:660px;top:1600px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					02:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">All Of The  Above</span><br><br>Transmitting live from the West Coast of the Milky Way, our weekly radio show explores high quality music of every genre. With no commercials and no playlist, All Of The Above is a non-stop journey through sound unlike any other found on today&rsquo;s airwaves. Host Django Craig and DJ Ben Vera teamed up with the specific vision of achieving something ground breaking and sky shattering. What resulted was not only genre bending but also lively and infectious. Using rare vinyl, hypnotic drums and eclectic grooves we take you on a journey into sound and what is possible when all limits are removed. All recordings are 100% live and in free form with nothing premeditated. Anything and everything can happen!<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/allabove_med_112.jpg" alt="Django" ><div style="position:relative;top:10px;">Django</div>'"><div><a class="cat_link_4" href="http://www.kpfk.org/on-air/all-of-the-above/" target="New">All Of The  Above</a></div><div class="cat_host_4">Django</div></div>
+<div class="cat_4" style="position:absolute;left:660px;top:1760px;height:160px;width:105px;outline:#000000 solid 1px;padding:2px;font-size:9px;					style="cursor:pointer;" onmouseover="Tooltip.schedule(this,event);" tooltip='
+					04:00 AM<br>
+					<span style="font-weight:bold;color:#a0ffa0;">Nightscapes</span><br><br>Now on weekly with late night music stylings<br><div align="center"><img class="dj_img" src="https://confessor.kpfk.org/pix/lstation_med_120.jpg" alt="Jillian Rise" ><div style="position:relative;top:10px;">Jillian Rise</div>'"><div><a class="cat_link_4" href="https://www.kpfk.org/on-air/nightscapes/" target="New">Nightscapes</a></div><div class="cat_host_4">Jillian Rise</div></div>
+</div><br />
+<b>Notice</b>:  Undefined variable: bottom_keys_str in <b>/home/kpfkconf/public_html/playlist/pub_sched.php</b> on line <b>1407</b><br />
+</body></html>

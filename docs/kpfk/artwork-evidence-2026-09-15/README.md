@@ -1,0 +1,96 @@
+# KPFK JSON feeds — show artwork evidence
+
+**Captured:** 2026-09-15 17:00 UTC (catalog `updated` 1789491601).
+**Question:** many KPFK shows have no artwork in the Pacifica JSON feeds. Is the
+exporter dropping it, or does the artwork not exist upstream?
+**Method:** for all 184 shows in `fe_catalog_kpfk.json`, the exact raw
+`photoUrl` was compared with what KPFK's other public outputs carry for the same
+show: Confessor's public schedule page (`pub_sched.php`, the page WBAI's app
+has always taken show images from), each show's podcast RSS (70 feeds), and the
+per-show info record (`_pa_get_show_info.php`). Every alternative image found
+was fetched to confirm it loads. Raw responses are in [`raw/`](raw/), and the
+per-show table is in [`shows.csv`](shows.csv). Reproduce with
+`node tools/artwork-evidence.js <out-dir>`.
+
+## Findings
+
+### 1. The catalog's empty values are genuinely empty, and they match Confessor
+
+- 81 of 184 shows have `"photoUrl": ""`. The key is always present and never `null` or missing.
+- 28 of the 109 shows **with recordings** are among them.
+- The 103 populated URLs are all `https://confessor.kpfk.org/pix/<slug>_med_<n>.jpg`,
+  and all load (see [`../artwork-audit-2026-09-15.md`](../artwork-audit-2026-09-15.md)).
+- Confessor's schedule page shows images for exactly **81 shows / 110 of 148
+  slots**. Those 81 image URLs are **identical** to the catalog's, with 0 differences.
+  For every on-air show the catalog leaves empty, Confessor's own page also has
+  no image. Its tooltip for Counterspin or Radio Maiz has text only.
+- The per-show info record has no photo field at all (category, description,
+  producer only), so no larger image is being skipped.
+
+**Conclusion: for on-air shows the exporter is faithful. The artwork was never
+entered in KPFK's Confessor.** For comparison, on the same kind of page:
+
+| Confessor `pub_sched.php` | Slots with show image | Shows with show image |
+| --- | ---: | ---: |
+| WBAI (`confessor2.wbai.org`) | 131 / 135 (97%) | 104 / 108 (96%) |
+| KPFK (`confessor.kpfk.org`) | 110 / 148 (74%) | 81 / 101 (80%) |
+
+KPFK on-air shows with no image **anywhere** (20): American Indian Airwaves,
+California Solartopia, CinemaScore, Contacto Ancestral, Counterspin, East Side
+Radio, Hablando de Sudamerica, In The Cut Radio, Making Contact, Perspectiva de
+Las Americas, Radio Maiz, Senderos de Oaxaca, Something's Happening A hours 1–3,
+Something's Happening B hours 1–3, Special Music Programming, Special
+Programming.
+
+### 2. Export gap: podcast (`2kpfk`) artwork that exists in RSS is exported as `""`
+
+| altid | Show | Episodes | JSON `photoUrl` | Image in the show's RSS (loads, HTTP 200 image/jpeg) |
+| --- | --- | ---: | --- | --- |
+| `biketalk` | Bike Talk Podcast | 13 | `""` | `https://archive.kpfk.org/pix/biketalkpodcast_it_1492.jpg` |
+| `scholacirclepodast` | Scholars Circle - Podcast | 11 | `""` | `https://archive.kpfk.org/pix/scholarscircle-podcast_it_1686.jpg` |
+
+These are podcast (`_it_`) images kept by the archive, not Confessor show
+photos. The catalog doesn't read them. Other uploads with no image in any
+source: BradCast w/ Brad Friedman, Informativo Pacifica Online, Politics Or
+Pedagogy? 3 min edition, SWANA Podcast, The Out Agenda - Online, and The
+People's Game (on-air source, no schedule slot).
+
+### 3. Export bug: schedule and now-playing never carry an image filename
+
+- All **444** slots across the three `fe_schedule_kpfk_*.json` weeks, and
+  `fe_nowplaying_kpfk.json` `current.photoUrl`, are exactly
+  `"https://confessor.kpfk.org/pix"`. That URL has no filename; it redirects to
+  `/pix/` and returns **HTTP 403 HTML**.
+- This includes the 110 slots whose shows **do** have artwork. Confessor's own
+  schedule page renders those same slots with `…/pix/<slug>_med_<n>.jpg`.
+- This looks like the directory prefix being written without the file name. The
+  catalog gets it right for the same shows.
+
+### 4. No global default image in the feeds
+
+No JSON file (catalog, channels, now-playing, schedule index/weeks) contains a
+station logo or default-artwork field. The only station image on Confessor's
+schedule page is `https://confessor.kpfk.org/pix/KPFK.jpg` (100×100 JPEG, loads).
+It is the page's **header logo** and no show entry uses it as a fallback.
+
+## Asks for the feed developer
+
+1. **Schedule + now-playing `photoUrl`:** include the file name
+   (`/pix/<slug>_med_<n>.jpg`), matching the catalog. All 444 slots and
+   now-playing are currently affected.
+2. **Podcast uploads:** when a show has no Confessor photo but its podcast has an
+   image (`/pix/*_it_*.jpg`), export that in the catalog `photoUrl`, or add a
+   separate field (e.g. `podcastImageUrl`).
+3. **Default artwork:** add a station-level default image to `fe_channels.json`
+   (or the `station` block). Apps then have an official fallback for the shows
+   with no photo, instead of each app inventing its own.
+4. **Not a feed bug, for KPFK staff:** the 20 on-air shows above need artwork
+   uploaded in Confessor. Once it is there, the catalog already exports it
+   correctly.
+
+## What the app does meanwhile
+
+The app reads only the JSON. It does not scrape Confessor or RSS to fill these
+gaps. Shows with an empty `photoUrl` get the dark waveform placeholder. Schedule
+slots borrow the catalog image for the same show key, which works around ask #1
+without inventing data.

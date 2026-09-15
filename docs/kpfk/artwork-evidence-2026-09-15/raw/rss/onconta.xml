@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/onconta.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - On Contact]]></title>
+		<link>https://www.kpfk.org/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Chris Hedges weekly interview show &lsquo;On Contact,&rsquo; which features &ldquo;dissident voices&rdquo; currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Sun, 13 Sep 2026 08:30:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs- National+Syndicated</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Chris Hedges</itunes:author>
+		<itunes:summary><![CDATA[Chris Hedges weekly interview show &lsquo;On Contact,&rsquo; which features &ldquo;dissident voices&rdquo; currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/onconta_it_274.jpg" />
+		<item>
+			<title><![CDATA[On Contact - Sunday, September 13, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260913_083000onconta.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260913_083000onconta.mp3</guid>
+			<pubDate>Sun, 13 Sep 2026 08:30:00 -0700</pubDate>
+			<description><![CDATA[Chris Hedges weekly interview show &lsquo;On Contact,&rsquo; which features &ldquo;dissident voices&rdquo; currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.]]></description>
+			<itunes:summary><![CDATA[Chris Hedges weekly interview show ‘On Contact,’ which features “dissident voices” currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260913_083000onconta.mp3" length="28861000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[On Contact - Sunday, September 6, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260906_083000onconta.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260906_083000onconta.mp3</guid>
+			<pubDate>Sun, 06 Sep 2026 08:30:00 -0700</pubDate>
+			<description><![CDATA[Chris Hedges weekly interview show &lsquo;On Contact,&rsquo; which features &ldquo;dissident voices&rdquo; currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.]]></description>
+			<itunes:summary><![CDATA[Chris Hedges weekly interview show ‘On Contact,’ which features “dissident voices” currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260906_083000onconta.mp3" length="28859600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[On Contact - Sunday, August 30, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260830_083000onconta.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260830_083000onconta.mp3</guid>
+			<pubDate>Sun, 30 Aug 2026 08:30:00 -0700</pubDate>
+			<description><![CDATA[Chris Hedges weekly interview show &lsquo;On Contact,&rsquo; which features &ldquo;dissident voices&rdquo; currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.]]></description>
+			<itunes:summary><![CDATA[Chris Hedges weekly interview show ‘On Contact,’ which features “dissident voices” currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260830_083000onconta.mp3" length="28858200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[On Contact - Sunday, August 23, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260823_083000onconta.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260823_083000onconta.mp3</guid>
+			<pubDate>Sun, 23 Aug 2026 08:30:00 -0700</pubDate>
+			<description><![CDATA[Chris Hedges weekly interview show &lsquo;On Contact,&rsquo; which features &ldquo;dissident voices&rdquo; currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.]]></description>
+			<itunes:summary><![CDATA[Chris Hedges weekly interview show ‘On Contact,’ which features “dissident voices” currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260823_083000onconta.mp3" length="28861000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[On Contact - Sunday, August 16, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260816_083000onconta.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260816_083000onconta.mp3</guid>
+			<pubDate>Sun, 16 Aug 2026 08:30:00 -0700</pubDate>
+			<description><![CDATA[Chris Hedges weekly interview show &lsquo;On Contact,&rsquo; which features &ldquo;dissident voices&rdquo; currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.]]></description>
+			<itunes:summary><![CDATA[Chris Hedges weekly interview show ‘On Contact,’ which features “dissident voices” currently missing from the mainstream media. Hedges interviews the black sheep of the establishment.]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260816_083000onconta.mp3" length="28859600" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

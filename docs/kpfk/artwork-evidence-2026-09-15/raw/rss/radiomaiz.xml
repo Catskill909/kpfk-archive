@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/radiomaiz.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Radio Maiz]]></title>
+		<link>https://www.kpfk.org/on-air/radio-maiz/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[adio Ma&iacute;z is a food justice radio show dedicated to protecting people's right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Mon, 14 Sep 2026 20:30:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Espa&#241;ol</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Christian Soliz &#38; Anet Aguilar</itunes:author>
+		<itunes:summary><![CDATA[adio Ma&iacute;z is a food justice radio show dedicated to protecting people's right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+		
+		<item>
+			<title><![CDATA[Radio Maiz - Monday, September 14, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260914_203000radiomaiz.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260914_203000radiomaiz.mp3</guid>
+			<pubDate>Mon, 14 Sep 2026 20:30:00 -0700</pubDate>
+			<description><![CDATA[adio Ma&iacute;z is a food justice radio show dedicated to protecting people's right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.]]></description>
+			<itunes:summary><![CDATA[adio Maíz is a food justice radio show dedicated to protecting people&#039;s right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260914_203000radiomaiz.mp3" length="28859600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Radio Maiz - Monday, September 7, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260907_203000radiomaiz.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260907_203000radiomaiz.mp3</guid>
+			<pubDate>Mon, 07 Sep 2026 20:30:00 -0700</pubDate>
+			<description><![CDATA[adio Ma&iacute;z is a food justice radio show dedicated to protecting people's right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.]]></description>
+			<itunes:summary><![CDATA[adio Maíz is a food justice radio show dedicated to protecting people&#039;s right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260907_203000radiomaiz.mp3" length="28852600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Radio Maiz - Monday, August 31, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260831_203000radiomaiz.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260831_203000radiomaiz.mp3</guid>
+			<pubDate>Mon, 31 Aug 2026 20:30:00 -0700</pubDate>
+			<description><![CDATA[adio Ma&iacute;z is a food justice radio show dedicated to protecting people's right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.]]></description>
+			<itunes:summary><![CDATA[adio Maíz is a food justice radio show dedicated to protecting people&#039;s right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260831_203000radiomaiz.mp3" length="28847000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Radio Maiz - Monday, August 24, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260824_203000radiomaiz.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260824_203000radiomaiz.mp3</guid>
+			<pubDate>Mon, 24 Aug 2026 20:30:00 -0700</pubDate>
+			<description><![CDATA[adio Ma&iacute;z is a food justice radio show dedicated to protecting people's right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.]]></description>
+			<itunes:summary><![CDATA[adio Maíz is a food justice radio show dedicated to protecting people&#039;s right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260824_203000radiomaiz.mp3" length="28854000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Radio Maiz - Monday, August 17, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260817_203000radiomaiz.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260817_203000radiomaiz.mp3</guid>
+			<pubDate>Mon, 17 Aug 2026 20:30:00 -0700</pubDate>
+			<description><![CDATA[adio Ma&iacute;z is a food justice radio show dedicated to protecting people's right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.]]></description>
+			<itunes:summary><![CDATA[adio Maíz is a food justice radio show dedicated to protecting people&#039;s right to healthy food and their right to food sovereignty. We uplift traditional and Indigenous food systems through the voices of communities, farmers, seed keepers, food experts, and food justice advocates, centering maize as an ancestral staple of the Americas.]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260817_203000radiomaiz.mp3" length="28855400" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

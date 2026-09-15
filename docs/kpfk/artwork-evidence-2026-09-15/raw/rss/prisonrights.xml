@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/prisonrights.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Think Outside The Cage]]></title>
+		<link>http://www.kpfk.org/on-air/think-outside-the-cage/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Insights, analysis and testimony from incarcerated and formerly incarcerated people and their families]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Sun, 13 Sep 2026 09:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs - Local</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Geri Silva, Jesse Bliss, Mark Coffield and others</itunes:author>
+		<itunes:summary><![CDATA[Insights, analysis and testimony from incarcerated and formerly incarcerated people and their families]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/prisonrights_it_200.jpg" />
+		<item>
+			<title><![CDATA[Think Outside The Cage - Sunday, September 13, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260913_090000prisonrights.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260913_090000prisonrights.mp3</guid>
+			<pubDate>Sun, 13 Sep 2026 09:00:00 -0700</pubDate>
+			<description><![CDATA[Insights, analysis and testimony from incarcerated and formerly incarcerated people and their families]]></description>
+			<itunes:summary><![CDATA[KPFK prison show for decarceration]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260913_090000prisonrights.mp3" length="57663200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Think Outside The Cage - Sunday, September 6, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260906_090000prisonrights.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260906_090000prisonrights.mp3</guid>
+			<pubDate>Sun, 06 Sep 2026 09:00:00 -0700</pubDate>
+			<description><![CDATA[Insights, analysis and testimony from incarcerated and formerly incarcerated people and their families]]></description>
+			<itunes:summary><![CDATA[KPFK prison show for decarceration]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260906_090000prisonrights.mp3" length="57654800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Think Outside The Cage - Sunday, August 30, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260830_090000prisonrights.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260830_090000prisonrights.mp3</guid>
+			<pubDate>Sun, 30 Aug 2026 09:00:00 -0700</pubDate>
+			<description><![CDATA[Insights, analysis and testimony from incarcerated and formerly incarcerated people and their families]]></description>
+			<itunes:summary><![CDATA[KPFK prison show for decarceration]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260830_090000prisonrights.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Think Outside The Cage - Sunday, August 23, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260823_090000prisonrights.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260823_090000prisonrights.mp3</guid>
+			<pubDate>Sun, 23 Aug 2026 09:00:00 -0700</pubDate>
+			<description><![CDATA[Insights, analysis and testimony from incarcerated and formerly incarcerated people and their families]]></description>
+			<itunes:summary><![CDATA[KPFK prison show for decarceration]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260823_090000prisonrights.mp3" length="57650600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Think Outside The Cage - Sunday, August 16, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260816_090000prisonrights.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260816_090000prisonrights.mp3</guid>
+			<pubDate>Sun, 16 Aug 2026 09:00:00 -0700</pubDate>
+			<description><![CDATA[Insights, analysis and testimony from incarcerated and formerly incarcerated people and their families]]></description>
+			<itunes:summary><![CDATA[KPFK prison show for decarceration]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260816_090000prisonrights.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

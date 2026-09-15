@@ -1,0 +1,55 @@
+{
+  "fetchedAt": "2026-09-15T17:00:39.994Z",
+  "catalogUpdated": 1789491601,
+  "catalogBytes": 520415,
+  "shows": 184,
+  "withEpisodes": 109,
+  "jsonPhotoKeyMissing": 0,
+  "jsonPhotoRawValues": {
+    "\"\"": 81
+  },
+  "jsonHasImage": 103,
+  "jsonEmpty": 81,
+  "jsonEmptyWithEpisodes": 28,
+  "verdicts": {
+    "JSON_EMPTY — IMAGE EXISTS ELSEWHERE": 2,
+    "EMPTY IN ALL CHECKED SOURCES": 79,
+    "JSON_HAS_IMAGE": 103
+  },
+  "verdictsWithEpisodes": {
+    "JSON_EMPTY — IMAGE EXISTS ELSEWHERE": 2,
+    "EMPTY IN ALL CHECKED SOURCES": 26,
+    "JSON_HAS_IMAGE": 81
+  },
+  "jsonImageMatchesPubSched": 81,
+  "jsonImageDiffersFromPubSched": 0,
+  "pubSchedSlugs": 81,
+  "pubSchedSlugsNotInCatalog": [],
+  "rssFeeds": 70,
+  "rssFeedsWithImage": 54,
+  "scheduleJsonSlots": 444,
+  "scheduleJsonPhotoRawValues": [
+    "\"https://confessor.kpfk.org/pix\""
+  ],
+  "nowplayingPhotoRaw": "\"https://confessor.kpfk.org/pix\"",
+  "alternativeImagesChecked": 2,
+  "alternativeImagesLoading": 2,
+  "examples": [
+    {
+      "altid": "biketalk",
+      "name": "Bike Talk Podcast",
+      "episodes": 13,
+      "json_photoUrl": "\"\"",
+      "confessor_image": "",
+      "rss_image": "https://archive.kpfk.org/pix/biketalkpodcast_it_1492.jpg"
+    },
+    {
+      "altid": "scholacirclepodast",
+      "name": "Scholars Circle - Podcast",
+      "episodes": 11,
+      "json_photoUrl": "\"\"",
+      "confessor_image": "",
+      "rss_image": "https://archive.kpfk.org/pix/scholarscircle-podcast_it_1686.jpg"
+    }
+  ]
+}

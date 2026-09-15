@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/counterspin.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Counterspin]]></title>
+		<link>http://www.kpfk.org/on-air/counterspin/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Counterspin]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Mon, 14 Sep 2026 16:30:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs- National+Syndicated</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>FAIR</itunes:author>
+		<itunes:summary><![CDATA[Counterspin]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+		
+		<item>
+			<title><![CDATA[Counterspin - Monday, September 14, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260914_163000counterspin.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260914_163000counterspin.mp3</guid>
+			<pubDate>Mon, 14 Sep 2026 16:30:00 -0700</pubDate>
+			<description><![CDATA[FAIR]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260914_163000counterspin.mp3" length="28858200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Counterspin - Monday, September 7, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260907_163000counterspin.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260907_163000counterspin.mp3</guid>
+			<pubDate>Mon, 07 Sep 2026 16:30:00 -0700</pubDate>
+			<description><![CDATA[FAIR]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260907_163000counterspin.mp3" length="28851200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Counterspin - Monday, August 31, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260831_163000counterspin.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260831_163000counterspin.mp3</guid>
+			<pubDate>Mon, 31 Aug 2026 16:30:00 -0700</pubDate>
+			<description><![CDATA[FAIR]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260831_163000counterspin.mp3" length="28866600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Counterspin - Monday, August 24, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260824_163000counterspin.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260824_163000counterspin.mp3</guid>
+			<pubDate>Mon, 24 Aug 2026 16:30:00 -0700</pubDate>
+			<description><![CDATA[FAIR]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>1801</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260824_163000counterspin.mp3" length="28812000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Counterspin - Friday, January 9, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260109_060000counterspin.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260109_060000counterspin.mp3</guid>
+			<pubDate>Fri, 09 Jan 2026 06:00:00 -0800</pubDate>
+			<description><![CDATA[FAIR]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>1808</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260109_060000counterspin.mp3" length="28858200" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

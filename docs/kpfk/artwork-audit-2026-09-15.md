@@ -25,4 +25,6 @@ Fetched all eight current feeds: catalog, channels, now-playing, schedule index,
 
 The catalog still has 103 populated photoUrl fields and 81 empty fields. All 444 published schedule slots contain `https://confessor.kpfk.org/pix`, with no image filename. The current now-playing photoUrl has that same value. Fetching it follows a redirect to `/pix/` and returns HTTP 403 with HTML, not an image. Channels, index and stamp contain no artwork fields.
 
+**Answered later the same day — see [artwork-evidence-2026-09-15/](artwork-evidence-2026-09-15/README.md):** the empty catalog values match Confessor's own public schedule page exactly (the artwork was never entered for those on-air shows). Two podcast uploads have RSS images the catalog omits, and schedule/now-playing drop the filename for every slot. The original caveat follows.
+
 The conclusion is limited to the supplied current JSON: it does not establish whether Pacifica has additional artwork in its database or on show websites. Ask the engineer whether empty catalog photoUrl values reflect missing source artwork or an export issue, and whether the filename omission in schedule/live photoUrl is intentional.

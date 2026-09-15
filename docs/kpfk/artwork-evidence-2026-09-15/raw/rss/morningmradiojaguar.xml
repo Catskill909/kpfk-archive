@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/morningmradiojaguar.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - La Raza Radio]]></title>
+		<link>https://www.kpfk.org/on-air/morning-mix-la-raza-radio/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Thu, 10 Sep 2026 15:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs - Local</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Matt Sedillo, Vanessa Bustamante, Ernesto Ayala</itunes:author>
+		<itunes:summary><![CDATA[Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/morningmradiojaguar_it_320.jpg" />
+		<item>
+			<title><![CDATA[La Raza Radio - Thursday, September 10, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260910_150000morningmradiojaguar.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260910_150000morningmradiojaguar.mp3</guid>
+			<pubDate>Thu, 10 Sep 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.]]></description>
+			<itunes:summary><![CDATA[Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260910_150000morningmradiojaguar.mp3" length="57660400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[La Raza Radio - Thursday, September 3, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260903_150000morningmradiojaguar.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260903_150000morningmradiojaguar.mp3</guid>
+			<pubDate>Thu, 03 Sep 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.]]></description>
+			<itunes:summary><![CDATA[Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260903_150000morningmradiojaguar.mp3" length="57656200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[La Raza Radio - Thursday, August 27, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260827_150000morningmradiojaguar.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260827_150000morningmradiojaguar.mp3</guid>
+			<pubDate>Thu, 27 Aug 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.]]></description>
+			<itunes:summary><![CDATA[Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260827_150000morningmradiojaguar.mp3" length="57654800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[La Raza Radio - Thursday, August 20, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260820_150000morningmradiojaguar.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260820_150000morningmradiojaguar.mp3</guid>
+			<pubDate>Thu, 20 Aug 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.]]></description>
+			<itunes:summary><![CDATA[Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260820_150000morningmradiojaguar.mp3" length="57663955" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[La Raza Radio - Thursday, August 13, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260813_150000morningmradiojaguar.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260813_150000morningmradiojaguar.mp3</guid>
+			<pubDate>Thu, 13 Aug 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.]]></description>
+			<itunes:summary><![CDATA[Explore the rich tapestry of Chicano history, culture, and internationalism with La Raza Radio. Hosted by Matt Sedillo, Dr. Vanessa Bustamante, and Ernesto Ayala, this compelling weekly public affairs program delivers sharp political commentary and working-class narratives from a progressive, grassroots perspective. Tune in for powerful interviews with community organizers, authors, and activists dedicated to social justice and labor rights across Southern California and beyond.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs - Local</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260813_150000morningmradiojaguar.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

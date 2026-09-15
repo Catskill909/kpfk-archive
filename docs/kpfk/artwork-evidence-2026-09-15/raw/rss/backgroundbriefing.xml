@@ -1,0 +1,794 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/backgroundbriefing.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Background Briefing]]></title>
+		<link>https://www.kpfk.org/on-air/background-briefing/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Mon, 14 Sep 2026 17:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs- National+Syndicated</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Ian Masters</itunes:author>
+		<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/backgroundbriefing_it_370.jpg" />
+		<item>
+			<title><![CDATA[Background Briefing - Monday, September 14, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260914_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260914_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 14 Sep 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260914_170000backgroundbriefing.mp3" length="57652000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, September 13, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260913_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260913_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 13 Sep 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260913_110000backgroundbriefing.mp3" length="57661800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, September 10, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260910_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260910_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 10 Sep 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260910_170000backgroundbriefing.mp3" length="57654800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, September 9, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260909_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260909_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 09 Sep 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260909_170000backgroundbriefing.mp3" length="57654800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Tuesday, September 8, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260908_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260908_170000backgroundbriefing.mp3</guid>
+			<pubDate>Tue, 08 Sep 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260908_170000backgroundbriefing.mp3" length="57664600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Monday, September 7, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260907_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260907_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 07 Sep 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260907_170000backgroundbriefing.mp3" length="57661800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, September 6, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260906_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260906_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 06 Sep 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260906_110000backgroundbriefing.mp3" length="57661800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, September 3, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260903_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260903_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 03 Sep 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260903_170000backgroundbriefing.mp3" length="57653400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, September 2, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260902_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260902_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 02 Sep 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260902_170000backgroundbriefing.mp3" length="57654800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Tuesday, September 1, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260901_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260901_170000backgroundbriefing.mp3</guid>
+			<pubDate>Tue, 01 Sep 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260901_170000backgroundbriefing.mp3" length="57659000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Monday, August 31, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260831_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260831_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 31 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260831_170000backgroundbriefing.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, August 30, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260830_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260830_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 30 Aug 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260830_110000backgroundbriefing.mp3" length="57659000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, August 27, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260827_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260827_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 27 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3580</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260827_170000backgroundbriefing.mp3" length="57281000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, August 26, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260826_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260826_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 26 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260826_170000backgroundbriefing.mp3" length="57661800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Tuesday, August 25, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260825_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260825_170000backgroundbriefing.mp3</guid>
+			<pubDate>Tue, 25 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260825_170000backgroundbriefing.mp3" length="57664600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Monday, August 24, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260824_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260824_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 24 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260824_170000backgroundbriefing.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, August 23, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260823_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260823_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 23 Aug 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260823_110000backgroundbriefing.mp3" length="57661800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, August 20, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260820_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260820_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 20 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260820_170000backgroundbriefing.mp3" length="57653400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, August 19, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260819_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260819_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 19 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260819_170000backgroundbriefing.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Tuesday, August 18, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260818_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260818_170000backgroundbriefing.mp3</guid>
+			<pubDate>Tue, 18 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260818_170000backgroundbriefing.mp3" length="57652000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Monday, August 17, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260817_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260817_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 17 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260817_170000backgroundbriefing.mp3" length="57663200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, August 16, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260816_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260816_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 16 Aug 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260816_110000backgroundbriefing.mp3" length="57650600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, August 13, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260813_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260813_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 13 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260813_170000backgroundbriefing.mp3" length="57654800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, August 12, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260812_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260812_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 12 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260812_170000backgroundbriefing.mp3" length="57660400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Tuesday, August 11, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260811_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260811_170000backgroundbriefing.mp3</guid>
+			<pubDate>Tue, 11 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260811_170000backgroundbriefing.mp3" length="57660400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Monday, August 10, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260810_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260810_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 10 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>1</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260810_170000backgroundbriefing.mp3" length="9800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, August 9, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260809_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260809_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 09 Aug 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260809_110000backgroundbriefing.mp3" length="57656200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, August 6, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260806_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260806_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 06 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260806_170000backgroundbriefing.mp3" length="57666000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, August 5, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260805_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260805_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 05 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260805_170000backgroundbriefing.mp3" length="57653400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Tuesday, August 4, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260804_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260804_170000backgroundbriefing.mp3</guid>
+			<pubDate>Tue, 04 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260804_170000backgroundbriefing.mp3" length="57656200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Monday, August 3, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260803_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260803_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 03 Aug 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260803_170000backgroundbriefing.mp3" length="57666000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, August 2, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260802_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260802_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 02 Aug 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260802_110000backgroundbriefing.mp3" length="57666000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, July 30, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260730_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260730_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 30 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260730_170000backgroundbriefing.mp3" length="57654800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, July 29, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260729_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260729_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 29 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260729_170000backgroundbriefing.mp3" length="57653400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Tuesday, July 28, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260728_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260728_170000backgroundbriefing.mp3</guid>
+			<pubDate>Tue, 28 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260728_170000backgroundbriefing.mp3" length="57659000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Monday, July 27, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260727_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260727_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 27 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260727_170000backgroundbriefing.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, July 26, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260726_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260726_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 26 Jul 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260726_110000backgroundbriefing.mp3" length="57650600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, July 23, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260723_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260723_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 23 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260723_170000backgroundbriefing.mp3" length="57663200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, July 22, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260722_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260722_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 22 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3606</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260722_170000backgroundbriefing.mp3" length="57702400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Monday, July 20, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260720_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260720_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 20 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260720_170000backgroundbriefing.mp3" length="57661800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, July 19, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260719_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260719_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 19 Jul 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260719_110000backgroundbriefing.mp3" length="57653400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, July 16, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260716_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260716_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 16 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260716_170000backgroundbriefing.mp3" length="57656200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, July 15, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260715_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260715_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 15 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260715_170000backgroundbriefing.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Tuesday, July 14, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260714_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260714_170000backgroundbriefing.mp3</guid>
+			<pubDate>Tue, 14 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260714_170000backgroundbriefing.mp3" length="57666000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Monday, July 13, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260713_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260713_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 13 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260713_170000backgroundbriefing.mp3" length="57653400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, July 12, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260712_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260712_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 12 Jul 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260712_110000backgroundbriefing.mp3" length="57666000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, July 9, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260709_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260709_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 09 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260709_170000backgroundbriefing.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, July 8, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260708_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260708_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 08 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260708_170000backgroundbriefing.mp3" length="57664600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Tuesday, July 7, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260707_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260707_170000backgroundbriefing.mp3</guid>
+			<pubDate>Tue, 07 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260707_170000backgroundbriefing.mp3" length="57656200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Monday, July 6, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260706_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260706_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 06 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260706_170000backgroundbriefing.mp3" length="57653400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, July 5, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260705_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260705_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 05 Jul 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260705_110000backgroundbriefing.mp3" length="57656200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, July 2, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260702_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260702_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 02 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260702_170000backgroundbriefing.mp3" length="57653400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, July 1, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260701_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260701_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 01 Jul 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260701_170000backgroundbriefing.mp3" length="57652000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Tuesday, June 30, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260630_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260630_170000backgroundbriefing.mp3</guid>
+			<pubDate>Tue, 30 Jun 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260630_170000backgroundbriefing.mp3" length="57668800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Monday, June 29, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260629_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260629_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 29 Jun 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260629_170000backgroundbriefing.mp3" length="57660400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, June 28, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260628_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260628_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 28 Jun 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260628_110000backgroundbriefing.mp3" length="57666000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, June 25, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260625_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260625_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 25 Jun 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260625_170000backgroundbriefing.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, June 24, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260624_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260624_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 24 Jun 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260624_170000backgroundbriefing.mp3" length="57663200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Tuesday, June 23, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260623_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260623_170000backgroundbriefing.mp3</guid>
+			<pubDate>Tue, 23 Jun 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260623_170000backgroundbriefing.mp3" length="57661800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Monday, June 22, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260622_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260622_170000backgroundbriefing.mp3</guid>
+			<pubDate>Mon, 22 Jun 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260622_170000backgroundbriefing.mp3" length="57660400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Sunday, June 21, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260621_110000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260621_110000backgroundbriefing.mp3</guid>
+			<pubDate>Sun, 21 Jun 2026 11:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260621_110000backgroundbriefing.mp3" length="57663200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Thursday, June 18, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260618_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260618_170000backgroundbriefing.mp3</guid>
+			<pubDate>Thu, 18 Jun 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260618_170000backgroundbriefing.mp3" length="57660400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Wednesday, June 17, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260617_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260617_170000backgroundbriefing.mp3</guid>
+			<pubDate>Wed, 17 Jun 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260617_170000backgroundbriefing.mp3" length="57660400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Background Briefing - Tuesday, June 16, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260616_170000backgroundbriefing.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260616_170000backgroundbriefing.mp3</guid>
+			<pubDate>Tue, 16 Jun 2026 17:00:00 -0700</pubDate>
+			<description><![CDATA[The nationally-syndicated one hour daily public radio program &ldquo;Background Briefing&rdquo; with Ian Masters offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.<br>&ldquo;Background Briefing&rdquo; focuses on national security in the broadest sense going beyond defense and intelligence to encompass the soft power of cultural influence, economic strength and social justice covering everything from healthcare to human rights, the environmentto enterprise, sociology to science, the law to labor, immigration toinnovation, race to religion, economics to education, transportation to technology.]]></description>
+			<itunes:summary><![CDATA[The nationally-syndicated one hour daily public radio program “Background Briefing” with Ian Masters available 24/7 at backgroundbriefing.org offers an alternative media platform in a media landscape dominated by monopolies and oligopolies following the loss of net neutrality in what could be the last frontier of non-commercial non-corporate media left in the country.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260616_170000backgroundbriefing.mp3" length="57663200" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

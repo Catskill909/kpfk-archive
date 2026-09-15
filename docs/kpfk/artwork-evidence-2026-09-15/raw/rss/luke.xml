@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/luke.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Encuentros con Gregorio Luke]]></title>
+		<link>http://www.kpfk.org/on-air/encuentros/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA["Encuentros" es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la m&uacute;sica tradicional de Am&eacute;rica Latina."Encuentros" is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Wed, 09 Sep 2026 22:30:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Espa&#241;ol</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Gregorio Luke</itunes:author>
+		<itunes:summary><![CDATA["Encuentros" es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la m&uacute;sica tradicional de Am&eacute;rica Latina."Encuentros" is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/luke_it_206.jpg" />
+		<item>
+			<title><![CDATA[Encuentros con Gregorio Luke - Wednesday, September 9, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260909_223000luke.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260909_223000luke.mp3</guid>
+			<pubDate>Wed, 09 Sep 2026 22:30:00 -0700</pubDate>
+			<description><![CDATA["Encuentros" es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la m&uacute;sica tradicional de Am&eacute;rica Latina."Encuentros" is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.]]></description>
+			<itunes:summary><![CDATA["Encuentros" es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la música tradicional de América Latina."Encuentros" is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260909_223000luke.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Encuentros con Gregorio Luke - Wednesday, September 2, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260902_223000luke.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260902_223000luke.mp3</guid>
+			<pubDate>Wed, 02 Sep 2026 22:30:00 -0700</pubDate>
+			<description><![CDATA["Encuentros" es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la m&uacute;sica tradicional de Am&eacute;rica Latina."Encuentros" is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.]]></description>
+			<itunes:summary><![CDATA["Encuentros" es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la música tradicional de América Latina."Encuentros" is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260902_223000luke.mp3" length="57666735" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Encuentros con Gregorio Luke - Wednesday, August 26, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260826_223000luke.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260826_223000luke.mp3</guid>
+			<pubDate>Wed, 26 Aug 2026 22:30:00 -0700</pubDate>
+			<description><![CDATA["Encuentros" es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la m&uacute;sica tradicional de Am&eacute;rica Latina."Encuentros" is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.]]></description>
+			<itunes:summary><![CDATA["Encuentros" es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la música tradicional de América Latina."Encuentros" is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260826_223000luke.mp3" length="57659000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Encuentros con Gregorio Luke - Wednesday, August 19, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260819_223000luke.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260819_223000luke.mp3</guid>
+			<pubDate>Wed, 19 Aug 2026 22:30:00 -0700</pubDate>
+			<description><![CDATA["Encuentros" es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la m&uacute;sica tradicional de Am&eacute;rica Latina."Encuentros" is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.]]></description>
+			<itunes:summary><![CDATA["Encuentros" es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la música tradicional de América Latina."Encuentros" is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260819_223000luke.mp3" length="57654800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Encuentros con Gregorio Luke - Wednesday, August 12, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260812_223000luke.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260812_223000luke.mp3</guid>
+			<pubDate>Wed, 12 Aug 2026 22:30:00 -0700</pubDate>
+			<description><![CDATA["Encuentros" es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la m&uacute;sica tradicional de Am&eacute;rica Latina."Encuentros" is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.]]></description>
+			<itunes:summary><![CDATA["Encuentros" es un vibrante programa cultural de 60 minutos conducido por Gregorio Luke en KPFK 90.7 FM, dedicado a explorar el arte, la historia y la música tradicional de América Latina."Encuentros" is a vibrant, 60-minute cultural program hosted by Gregorio Luke on KPFK 90.7 FM, dedicated to exploring the art, history, and traditional music of Latin America.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260812_223000luke.mp3" length="57653400" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/enfoque.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Enfoque Latino]]></title>
+		<link>http://www.kpfk.org/on-air/enfoque-latino-con-ruben-tapia/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Enfoque Latino " Su Programa para Derrotar la Indiferencia"<br> Public Affairs Radio Magazine]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Thu, 10 Sep 2026 22:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Espa&#241;ol</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Ruben Tapia</itunes:author>
+		<itunes:summary><![CDATA[Enfoque Latino " Su Programa para Derrotar la Indiferencia"<br> Public Affairs Radio Magazine]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/enfoque_it_171.jpg" />
+		<item>
+			<title><![CDATA[Enfoque Latino - Thursday, September 10, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260910_220000enfoque.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260910_220000enfoque.mp3</guid>
+			<pubDate>Thu, 10 Sep 2026 22:00:00 -0700</pubDate>
+			<description><![CDATA[Enfoque Latino " Su Programa para Derrotar la Indiferencia"<br> Public Affairs Radio Magazine]]></description>
+			<itunes:summary><![CDATA[Enfoque Latino " Su Programa para Derrotar la Indiferencia"<br> Public Affairs Radio Magazine]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260910_220000enfoque.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Enfoque Latino - Thursday, September 3, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260903_220000enfoque.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260903_220000enfoque.mp3</guid>
+			<pubDate>Thu, 03 Sep 2026 22:00:00 -0700</pubDate>
+			<description><![CDATA[Enfoque Latino " Su Programa para Derrotar la Indiferencia"<br> Public Affairs Radio Magazine]]></description>
+			<itunes:summary><![CDATA[Enfoque Latino " Su Programa para Derrotar la Indiferencia"<br> Public Affairs Radio Magazine]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260903_220000enfoque.mp3" length="57663200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Enfoque Latino - Thursday, August 27, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260827_220000enfoque.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260827_220000enfoque.mp3</guid>
+			<pubDate>Thu, 27 Aug 2026 22:00:00 -0700</pubDate>
+			<description><![CDATA[Enfoque Latino " Su Programa para Derrotar la Indiferencia"<br> Public Affairs Radio Magazine]]></description>
+			<itunes:summary><![CDATA[Enfoque Latino " Su Programa para Derrotar la Indiferencia"<br> Public Affairs Radio Magazine]]></itunes:summary>
+			<itunes:duration>3606</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260827_220000enfoque.mp3" length="57697539" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Enfoque Latino - Thursday, August 20, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260820_220000enfoque.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260820_220000enfoque.mp3</guid>
+			<pubDate>Thu, 20 Aug 2026 22:00:00 -0700</pubDate>
+			<description><![CDATA[Enfoque Latino " Su Programa para Derrotar la Indiferencia"<br> Public Affairs Radio Magazine]]></description>
+			<itunes:summary><![CDATA[Enfoque Latino " Su Programa para Derrotar la Indiferencia"<br> Public Affairs Radio Magazine]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260820_220000enfoque.mp3" length="57654800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Enfoque Latino - Thursday, August 13, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260813_220000enfoque.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260813_220000enfoque.mp3</guid>
+			<pubDate>Thu, 13 Aug 2026 22:00:00 -0700</pubDate>
+			<description><![CDATA[Enfoque Latino " Su Programa para Derrotar la Indiferencia"<br> Public Affairs Radio Magazine]]></description>
+			<itunes:summary><![CDATA[Enfoque Latino " Su Programa para Derrotar la Indiferencia"<br> Public Affairs Radio Magazine]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260813_220000enfoque.mp3" length="57656200" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

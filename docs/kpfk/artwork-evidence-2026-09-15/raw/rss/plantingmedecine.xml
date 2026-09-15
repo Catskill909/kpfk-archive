@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/plantingmedecine.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Planting Medicine]]></title>
+		<link>https://archive.kpfk.org</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Enhancing the community&rsquo;s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Tue, 08 Sep 2026 13:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Health &#38; Spirituality</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Emiliano Lemus &#38; Ren&#233;e Camila</itunes:author>
+		<itunes:summary><![CDATA[Enhancing the community&rsquo;s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="Health"><itunes:category text="Alternative Health" /></itunes:category>
+				<itunes:image href="https://confessor.kpfk.org/pix/plantingmedecine_it_376.jpg" />
+		<item>
+			<title><![CDATA[Planting Medicine - Tuesday, September 8, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260908_130000plantingmedecine.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260908_130000plantingmedecine.mp3</guid>
+			<pubDate>Tue, 08 Sep 2026 13:00:00 -0700</pubDate>
+			<description><![CDATA[Enhancing the community&rsquo;s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.]]></description>
+			<itunes:summary><![CDATA[Enhancing the community’s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Health &#38; Spirituality</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260908_130000plantingmedecine.mp3" length="57660400" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Planting Medicine - Tuesday, September 1, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260901_130000plantingmedecine.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260901_130000plantingmedecine.mp3</guid>
+			<pubDate>Tue, 01 Sep 2026 13:00:00 -0700</pubDate>
+			<description><![CDATA[Enhancing the community&rsquo;s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.]]></description>
+			<itunes:summary><![CDATA[Enhancing the community’s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Health &#38; Spirituality</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260901_130000plantingmedecine.mp3" length="57656200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Planting Medicine - Tuesday, August 25, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260825_130000plantingmedecine.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260825_130000plantingmedecine.mp3</guid>
+			<pubDate>Tue, 25 Aug 2026 13:00:00 -0700</pubDate>
+			<description><![CDATA[Enhancing the community&rsquo;s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.]]></description>
+			<itunes:summary><![CDATA[Enhancing the community’s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Health &#38; Spirituality</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260825_130000plantingmedecine.mp3" length="57666000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Planting Medicine - Tuesday, August 18, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260818_130000plantingmedecine.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260818_130000plantingmedecine.mp3</guid>
+			<pubDate>Tue, 18 Aug 2026 13:00:00 -0700</pubDate>
+			<description><![CDATA[Enhancing the community&rsquo;s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.]]></description>
+			<itunes:summary><![CDATA[Enhancing the community’s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Health &#38; Spirituality</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260818_130000plantingmedecine.mp3" length="57668174" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Planting Medicine - Tuesday, August 11, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260811_134155plantingmedecine.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260811_134155plantingmedecine.mp3</guid>
+			<pubDate>Tue, 11 Aug 2026 13:41:55 -0700</pubDate>
+			<description><![CDATA[Enhancing the community&rsquo;s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.]]></description>
+			<itunes:summary><![CDATA[Enhancing the community’s knowledge of herbal medicine by sharing voices of traditional, holistic healers and healing practices.]]></itunes:summary>
+			<itunes:duration>1079</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Health &#38; Spirituality</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260811_134155plantingmedecine.mp3" length="17260600" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

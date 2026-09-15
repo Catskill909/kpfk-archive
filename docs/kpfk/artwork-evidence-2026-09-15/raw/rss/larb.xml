@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/larb.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - LARB Radio Hour]]></title>
+		<link>http://www.kpfk.org/on-air/la-review-of-books/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Thu, 10 Sep 2026 14:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Arts &#38; Entertainment</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Kate Wolf, Medaya Ocher, and Eric Newman.</itunes:author>
+		<itunes:summary><![CDATA[The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="Arts"><itunes:category text="Performing Arts" /></itunes:category>
+				<itunes:image href="https://confessor.kpfk.org/pix/larb_it_229.jpg" />
+		<item>
+			<title><![CDATA[LARB Radio Hour - Thursday, September 10, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260910_140000larb.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260910_140000larb.mp3</guid>
+			<pubDate>Thu, 10 Sep 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.]]></description>
+			<itunes:summary><![CDATA[The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260910_140000larb.mp3" length="28858200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[LARB Radio Hour - Thursday, September 3, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260903_140000larb.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260903_140000larb.mp3</guid>
+			<pubDate>Thu, 03 Sep 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.]]></description>
+			<itunes:summary><![CDATA[The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260903_140000larb.mp3" length="28859600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[LARB Radio Hour - Thursday, August 27, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260827_140000larb.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260827_140000larb.mp3</guid>
+			<pubDate>Thu, 27 Aug 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.]]></description>
+			<itunes:summary><![CDATA[The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.]]></itunes:summary>
+			<itunes:duration>1791</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260827_140000larb.mp3" length="28660800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[LARB Radio Hour - Thursday, August 20, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260820_140000larb.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260820_140000larb.mp3</guid>
+			<pubDate>Thu, 20 Aug 2026 14:00:00 -0700</pubDate>
+			<description><![CDATA[The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.]]></description>
+			<itunes:summary><![CDATA[The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.]]></itunes:summary>
+			<itunes:duration>1804</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260820_140000larb.mp3" length="28859600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[LARB Radio Hour - Thursday, August 13, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260813_142144larb.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260813_142144larb.mp3</guid>
+			<pubDate>Thu, 13 Aug 2026 14:21:44 -0700</pubDate>
+			<description><![CDATA[The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.]]></description>
+			<itunes:summary><![CDATA[The Los Angeles Review of Books Radio Hour is a weekly show featuring interviews, readings and discussions about all things literary. Hosted by LARB Editors-at-Large Kate Wolf, Medaya Ocher, and Eric Newman.]]></itunes:summary>
+			<itunes:duration>490</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Arts &#38; Entertainment</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260813_142144larb.mp3" length="7835800" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

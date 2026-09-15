@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/codepinradio.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - CodePINK Radio]]></title>
+		<link>https://www.kpfk.org/on-air/codepink-radio/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Fri, 11 Sep 2026 06:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs- National+Syndicated</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Code Pink</itunes:author>
+		<itunes:summary><![CDATA[Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/codepinradio_it_311.jpg" />
+		<item>
+			<title><![CDATA[CodePINK Radio - Friday, September 11, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260911_060000codepinradio.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260911_060000codepinradio.mp3</guid>
+			<pubDate>Fri, 11 Sep 2026 06:00:00 -0700</pubDate>
+			<description><![CDATA[Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.]]></description>
+			<itunes:summary><![CDATA[Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260911_060000codepinradio.mp3" length="57650600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[CodePINK Radio - Friday, September 4, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260904_060000codepinradio.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260904_060000codepinradio.mp3</guid>
+			<pubDate>Fri, 04 Sep 2026 06:00:00 -0700</pubDate>
+			<description><![CDATA[Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.]]></description>
+			<itunes:summary><![CDATA[Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260904_060000codepinradio.mp3" length="57665348" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[CodePINK Radio - Friday, August 28, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260828_060000codepinradio.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260828_060000codepinradio.mp3</guid>
+			<pubDate>Fri, 28 Aug 2026 06:00:00 -0700</pubDate>
+			<description><![CDATA[Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.]]></description>
+			<itunes:summary><![CDATA[Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260828_060000codepinradio.mp3" length="57656200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[CodePINK Radio - Friday, August 21, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260821_060000codepinradio.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260821_060000codepinradio.mp3</guid>
+			<pubDate>Fri, 21 Aug 2026 06:00:00 -0700</pubDate>
+			<description><![CDATA[Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.]]></description>
+			<itunes:summary><![CDATA[Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260821_060000codepinradio.mp3" length="57657600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[CodePINK Radio - Friday, August 14, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260814_060000codepinradio.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260814_060000codepinradio.mp3</guid>
+			<pubDate>Fri, 14 Aug 2026 06:00:00 -0700</pubDate>
+			<description><![CDATA[Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.]]></description>
+			<itunes:summary><![CDATA[Robust conversation with global grassroots peacemakers, from Yemen to Venezuela to Iran to right here in the U.S.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260814_060000codepinradio.mp3" length="57666408" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

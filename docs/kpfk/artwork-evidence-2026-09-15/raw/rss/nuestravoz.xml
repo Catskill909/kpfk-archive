@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/nuestravoz.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Nuestra Voz]]></title>
+		<link>http://www.kpfk.org/on-air/nuestra-voz/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Thu, 10 Sep 2026 20:30:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Espa&#241;ol</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Freya Rojo, Lily Lopez &#38; Rosario Vigil</itunes:author>
+		<itunes:summary><![CDATA[Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/nuestravoz_it_192.jpg" />
+		<item>
+			<title><![CDATA[Nuestra Voz - Thursday, September 10, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260910_203000nuestravoz.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260910_203000nuestravoz.mp3</guid>
+			<pubDate>Thu, 10 Sep 2026 20:30:00 -0700</pubDate>
+			<description><![CDATA[Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735]]></description>
+			<itunes:summary><![CDATA[Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735]]></itunes:summary>
+			<itunes:duration>5404</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260910_203000nuestravoz.mp3" length="86462600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Nuestra Voz - Thursday, September 3, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260903_203000nuestravoz.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260903_203000nuestravoz.mp3</guid>
+			<pubDate>Thu, 03 Sep 2026 20:30:00 -0700</pubDate>
+			<description><![CDATA[Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735]]></description>
+			<itunes:summary><![CDATA[Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735]]></itunes:summary>
+			<itunes:duration>5403</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260903_203000nuestravoz.mp3" length="86454200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Nuestra Voz - Thursday, August 27, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260827_203000nuestravoz.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260827_203000nuestravoz.mp3</guid>
+			<pubDate>Thu, 27 Aug 2026 20:30:00 -0700</pubDate>
+			<description><![CDATA[Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735]]></description>
+			<itunes:summary><![CDATA[Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735]]></itunes:summary>
+			<itunes:duration>5399</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260827_203000nuestravoz.mp3" length="86388525" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Nuestra Voz - Thursday, August 20, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260820_203000nuestravoz.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260820_203000nuestravoz.mp3</guid>
+			<pubDate>Thu, 20 Aug 2026 20:30:00 -0700</pubDate>
+			<description><![CDATA[Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735]]></description>
+			<itunes:summary><![CDATA[Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735]]></itunes:summary>
+			<itunes:duration>5404</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260820_203000nuestravoz.mp3" length="86459800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Nuestra Voz - Thursday, August 13, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260813_203000nuestravoz.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260813_203000nuestravoz.mp3</guid>
+			<pubDate>Thu, 13 Aug 2026 20:30:00 -0700</pubDate>
+			<description><![CDATA[Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735]]></description>
+			<itunes:summary><![CDATA[Roundtable of Latino and Latin American issues. Topics include environment, politics, education, health, human rights and international issues. Open phone lines, calls welcome. Call in number (818) 985-5735]]></itunes:summary>
+			<itunes:duration>5404</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260813_203000nuestravoz.mp3" length="86461200" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

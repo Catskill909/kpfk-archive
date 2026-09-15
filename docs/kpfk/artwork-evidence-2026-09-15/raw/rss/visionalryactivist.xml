@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/visionalryactivist.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - The Visionary Activist Show]]></title>
+		<link>https://archive.kpfk.org</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Dedicated to &ldquo;anything we need to know to have a democracy&rdquo;: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline's guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Fri, 11 Sep 2026 13:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs- National+Syndicated</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Caroline Casey</itunes:author>
+		<itunes:summary><![CDATA[Dedicated to &ldquo;anything we need to know to have a democracy&rdquo;: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline's guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/visionalryactivist_it_371.jpg" />
+		<item>
+			<title><![CDATA[The Visionary Activist Show - Friday, September 11, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260911_130000visionalryactivist.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260911_130000visionalryactivist.mp3</guid>
+			<pubDate>Fri, 11 Sep 2026 13:00:00 -0700</pubDate>
+			<description><![CDATA[Dedicated to &ldquo;anything we need to know to have a democracy&rdquo;: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline's guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.]]></description>
+			<itunes:summary><![CDATA[Dedicated to “anything we need to know to have a democracy”: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline&#039;s guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260911_130000visionalryactivist.mp3" length="57664600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[The Visionary Activist Show - Friday, September 4, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260904_130000visionalryactivist.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260904_130000visionalryactivist.mp3</guid>
+			<pubDate>Fri, 04 Sep 2026 13:00:00 -0700</pubDate>
+			<description><![CDATA[Dedicated to &ldquo;anything we need to know to have a democracy&rdquo;: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline's guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.]]></description>
+			<itunes:summary><![CDATA[Dedicated to “anything we need to know to have a democracy”: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline&#039;s guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260904_130000visionalryactivist.mp3" length="57666000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[The Visionary Activist Show - Friday, August 28, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260828_130000visionalryactivist.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260828_130000visionalryactivist.mp3</guid>
+			<pubDate>Fri, 28 Aug 2026 13:00:00 -0700</pubDate>
+			<description><![CDATA[Dedicated to &ldquo;anything we need to know to have a democracy&rdquo;: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline's guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.]]></description>
+			<itunes:summary><![CDATA[Dedicated to “anything we need to know to have a democracy”: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline&#039;s guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260828_130000visionalryactivist.mp3" length="57666000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[The Visionary Activist Show - Friday, August 21, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260821_130000visionalryactivist.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260821_130000visionalryactivist.mp3</guid>
+			<pubDate>Fri, 21 Aug 2026 13:00:00 -0700</pubDate>
+			<description><![CDATA[Dedicated to &ldquo;anything we need to know to have a democracy&rdquo;: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline's guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.]]></description>
+			<itunes:summary><![CDATA[Dedicated to “anything we need to know to have a democracy”: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline&#039;s guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260821_130000visionalryactivist.mp3" length="57664600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[The Visionary Activist Show - Friday, August 14, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260814_130000visionalryactivist.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260814_130000visionalryactivist.mp3</guid>
+			<pubDate>Fri, 14 Aug 2026 13:00:00 -0700</pubDate>
+			<description><![CDATA[Dedicated to &ldquo;anything we need to know to have a democracy&rdquo;: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline's guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.]]></description>
+			<itunes:summary><![CDATA[Dedicated to “anything we need to know to have a democracy”: Democratic Animism, Pragmatic Mysticism, Applied Divination, Renaissance of Reverent Ingenuity. Caroline&#039;s guests are allies contributing to a culture of reverent ingenuity. Critique and Solution.]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260814_130000visionalryactivist.mp3" length="57655220" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

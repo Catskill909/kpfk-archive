@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/infopac.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Informativo Pacifica]]></title>
+		<link>http://www.kpfk.org/on-air/informativo-pacifica/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Daily Spanish language newscast - noticiero diario en espa~nol]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Mon, 14 Sep 2026 20:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Espa&#241;ol</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Norma Martinez Velazquez</itunes:author>
+		<itunes:summary><![CDATA[Daily Spanish language newscast - noticiero diario en espa~nol]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/infopac_it_181.jpg" />
+		<item>
+			<title><![CDATA[Informativo Pacifica - Monday, September 14, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260914_200000infopac.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260914_200000infopac.mp3</guid>
+			<pubDate>Mon, 14 Sep 2026 20:00:00 -0700</pubDate>
+			<description><![CDATA[Daily Spanish language newscast - noticiero diario en espa~nol]]></description>
+			<itunes:summary><![CDATA[Daily Spanish language newscast - noticiero diario en espa~nol]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260914_200000infopac.mp3" length="28851200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Informativo Pacifica - Thursday, September 10, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260910_200000infopac.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260910_200000infopac.mp3</guid>
+			<pubDate>Thu, 10 Sep 2026 20:00:00 -0700</pubDate>
+			<description><![CDATA[Daily Spanish language newscast - noticiero diario en espa~nol]]></description>
+			<itunes:summary><![CDATA[Daily Spanish language newscast - noticiero diario en espa~nol]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260910_200000infopac.mp3" length="28845600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Informativo Pacifica - Wednesday, September 9, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260909_200000infopac.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260909_200000infopac.mp3</guid>
+			<pubDate>Wed, 09 Sep 2026 20:00:00 -0700</pubDate>
+			<description><![CDATA[Daily Spanish language newscast - noticiero diario en espa~nol]]></description>
+			<itunes:summary><![CDATA[Daily Spanish language newscast - noticiero diario en espa~nol]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260909_200000infopac.mp3" length="28854000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Informativo Pacifica - Tuesday, September 8, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260908_200000infopac.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260908_200000infopac.mp3</guid>
+			<pubDate>Tue, 08 Sep 2026 20:00:00 -0700</pubDate>
+			<description><![CDATA[Daily Spanish language newscast - noticiero diario en espa~nol]]></description>
+			<itunes:summary><![CDATA[Daily Spanish language newscast - noticiero diario en espa~nol]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260908_200000infopac.mp3" length="28849800" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Informativo Pacifica - Monday, September 7, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260907_200000infopac.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260907_200000infopac.mp3</guid>
+			<pubDate>Mon, 07 Sep 2026 20:00:00 -0700</pubDate>
+			<description><![CDATA[Daily Spanish language newscast - noticiero diario en espa~nol]]></description>
+			<itunes:summary><![CDATA[Daily Spanish language newscast - noticiero diario en espa~nol]]></itunes:summary>
+			<itunes:duration>1803</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Espa&#241;ol</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260907_200000infopac.mp3" length="28856800" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/bradcast2.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - BradCast w/ Brad Friedman]]></title>
+		<link>http://bradblog.com</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Investigative journalist, blogger, and broadcaster Brad Friedman's investigative interviews, analysis and commentary, as ripped from the pages of The BRAD BLOG (BradBlog.com), today's current events (if they matter) and the rest of the stuff we have to live with.]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Mon, 14 Sep 2026 15:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>Public Affairs- National+Syndicated</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>Brad Friedman</itunes:author>
+		<itunes:summary><![CDATA[Investigative journalist, blogger, and broadcaster Brad Friedman's investigative interviews, analysis and commentary, as ripped from the pages of The BRAD BLOG (BradBlog.com), today's current events (if they matter) and the rest of the stuff we have to live with.]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+		
+		<item>
+			<title><![CDATA[Monday, September 14, 2026 - Elections; Trump's attacks on voting by mail]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260914_150000bradcast2.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260914_150000bradcast2.mp3</guid>
+			<pubDate>Mon, 14 Sep 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Investigative journalist, blogger, and broadcaster Brad Friedman's investigative interviews, analysis and commentary, as ripped from the pages of The BRAD BLOG (BradBlog.com), today's current events (if they matter) and the rest of the stuff we have to live with.]]></description>
+			<itunes:summary><![CDATA[
+Just 50 days to go until the critical midterm elections, with the last chance to vote on Nov. 3. The US Postal Service's restructuring resulted in thousands of legal, on-time mail-in ballots being rejected across the country. Two federal courts (and the US Supreme Court, after airtime) blocked Donald Trump's unconstitutional executive order directing USPS to interfere with mail-in balloting. A whistleblower and the Postal Workers union warn USPS is radically unprepared to implement the order. Voters can make a plan to vote early, submitting their ballot at a dropbox or in person at a polling place. If using USPS, mail ballots at least 7 days before Election Day and ask for a manual postmark. The road ahead will get very bumpy. Callers weigh in.]]></itunes:summary>
+			<itunes:duration>3450</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260914_150000bradcast2.mp3" length="55202275" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Friday, September 11, 2026 - Elections; Voter suppression; Environment ]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260911_150000bradcast2.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260911_150000bradcast2.mp3</guid>
+			<pubDate>Fri, 11 Sep 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Investigative journalist, blogger, and broadcaster Brad Friedman's investigative interviews, analysis and commentary, as ripped from the pages of The BRAD BLOG (BradBlog.com), today's current events (if they matter) and the rest of the stuff we have to live with.]]></description>
+			<itunes:summary><![CDATA[
+Original airdate 9-8-2026. Donald Trump is launching the first-ever GOP Midterm convention in Texas this week, focused primarily on himself. Trump Administration appealed to the US Supreme Court to allow the US Postal Service to move forward with a scheme to interfere with mail-in ballots, even states are already sending absentee ballots. Republican officials in Ft. Worth, Texas closed 92 polling places used in the 2022 midterms. Missouri's state Supreme Court blocked GOP state lawmakers' newly-gerrymandered voting maps. Incumbent Sen. Roger Marshall (R-KS) sued 700 of his own low-income patients for non-payment. Plus our new 'Green News Report.']]></itunes:summary>
+			<itunes:duration>3480</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260911_150000bradcast2.mp3" length="55682092" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Thursday, September 10, 2026 - Gerrymander Wars; Corruption; Environment]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260910_150000bradcast2.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260910_150000bradcast2.mp3</guid>
+			<pubDate>Thu, 10 Sep 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Investigative journalist, blogger, and broadcaster Brad Friedman's investigative interviews, analysis and commentary, as ripped from the pages of The BRAD BLOG (BradBlog.com), today's current events (if they matter) and the rest of the stuff we have to live with.]]></description>
+			<itunes:summary><![CDATA[
+For the second time in a week, the US Supreme Court ordered Missouri Republican officials to use the state's original 2022 maps for the critical November midterm elections. Interesting results from Rhode Island's primary. Indiana Supreme Court ruled legal ballots must be counted despite minor clerical errors made by election officials, handing a narrow primary victory to a GOP state senator who defied Donald Trump's demands for extremely gerrymandered maps. Crude oil prices, mortgage rates and inflation soar. Donald Trump promised to give $5000 checks to all adult US citizens - but only if Republicans win both uses of Congress in November, adding to his long list of false promises. Plus our new 'Green News Report.']]></itunes:summary>
+			<itunes:duration>3480</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260910_150000bradcast2.mp3" length="55682092" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Wednesday, September 9, 2026 - Missouri Gerrymander War; Elections; Iran War]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260909_150000bradcast2.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260909_150000bradcast2.mp3</guid>
+			<pubDate>Wed, 09 Sep 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Investigative journalist, blogger, and broadcaster Brad Friedman's investigative interviews, analysis and commentary, as ripped from the pages of The BRAD BLOG (BradBlog.com), today's current events (if they matter) and the rest of the stuff we have to live with.]]></description>
+			<itunes:summary><![CDATA[Guest: Richard Von Glahn, Politicians Not People
+Missouri's midterm elections were thrown into chaos after a federal judge issued a ruling defying both the Missouri state Supreme Court and the US Supreme Court, ordering the use of the GOP state legislature's newly-gerrymandered maps in the November election. RICHARD VON GLAHN, Policy Director at non-profit People Not Politicians, explains how state Republican officials deployed schemes to deny the will of the voters; the latest twists and turns in the legal battle; and much more. Noteworthy results from New Hampshire's primary elections. Global oil prices soared again due to the Iran War, as Donald Trump claimed gas prices won't fall until AFTER the midterm elections.]]></itunes:summary>
+			<itunes:duration>3480</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260909_150000bradcast2.mp3" length="55682092" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Tuesday, September 8, 2026 - Elections; Voter suppression; Environment]]></title>
+			<link>https://archive.kpfk.org/mp3/2kpfk_260908_150000bradcast2.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/2kpfk_260908_150000bradcast2.mp3</guid>
+			<pubDate>Tue, 08 Sep 2026 15:00:00 -0700</pubDate>
+			<description><![CDATA[Investigative journalist, blogger, and broadcaster Brad Friedman's investigative interviews, analysis and commentary, as ripped from the pages of The BRAD BLOG (BradBlog.com), today's current events (if they matter) and the rest of the stuff we have to live with.]]></description>
+			<itunes:summary><![CDATA[
+Donald Trump is launching the first-ever GOP Midterm convention in Texas this week, focused primarily on himself. Trump Administration appealed to the US Supreme Court to allow the US Postal Service to move forward with a scheme to interfere with mail-in ballots, even states are already sending absentee ballots. Republican officials in Ft. Worth, Texas closed 92 polling places used in the 2022 midterms. Missouri's state Supreme Court blocked GOP state lawmakers' newly-gerrymandered voting maps. Incumbent Sen. Roger Marshall (R-KS) sued 700 of his own low-income patients for non-payment. Plus our new 'Green News Report.']]></itunes:summary>
+			<itunes:duration>3480</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>Public Affairs- National+Syndicated</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/2kpfk_260908_150000bradcast2.mp3" length="55682092" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>

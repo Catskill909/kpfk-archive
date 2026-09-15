@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+<atom:link href="https://archive.kpfk.org/xml/kpfknews.xml" rel="self" type="application/rss+xml" />
+		<title><![CDATA[KPFK - Pacifica Evening News]]></title>
+		<link>http://www.kpfk.org/on-air/pacifica-news/</link>
+		<managingEditor>webmaster@kpfk.org (Archive Manager)</managingEditor>
+		<webMaster>webmaster@kpfk.org (KPFK Admin)</webMaster>
+		<description><![CDATA[Pacifica Evening News]]></description>
+		<language>en-us</language>
+		<lastBuildDate>Mon, 14 Sep 2026 18:00:00 -0700</lastBuildDate>
+		<ttl>60</ttl>
+		<generator>Pacifica Archive archiver_9.0.1</generator>
+		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		<category>News</category>
+		<itunes:owner>
+		<itunes:name>KPFK Public Radio - Online Archives</itunes:name>
+		<itunes:email>webmaster@kpfk.org</itunes:email>
+		</itunes:owner>
+		<itunes:author>With the Pacifica News Dept</itunes:author>
+		<itunes:summary><![CDATA[Pacifica Evening News]]></itunes:summary>
+		<itunes:explicit>no</itunes:explicit>
+		<itunes:category text="News &amp; Politics" />
+				<itunes:image href="https://confessor.kpfk.org/pix/kpfknews_it_163.jpg" />
+		<item>
+			<title><![CDATA[Pacifica Evening News - Monday, September 14, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260914_180000kpfknews.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260914_180000kpfknews.mp3</guid>
+			<pubDate>Mon, 14 Sep 2026 18:00:00 -0700</pubDate>
+			<description><![CDATA[With the Pacifica News Dept]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>News</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260914_180000kpfknews.mp3" length="57650600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Pacifica Evening News - Friday, September 11, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260911_180000kpfknews.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260911_180000kpfknews.mp3</guid>
+			<pubDate>Fri, 11 Sep 2026 18:00:00 -0700</pubDate>
+			<description><![CDATA[With the Pacifica News Dept]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>News</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260911_180000kpfknews.mp3" length="57664600" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Pacifica Evening News - Thursday, September 10, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260910_180000kpfknews.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260910_180000kpfknews.mp3</guid>
+			<pubDate>Thu, 10 Sep 2026 18:00:00 -0700</pubDate>
+			<description><![CDATA[With the Pacifica News Dept]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>3603</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>News</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260910_180000kpfknews.mp3" length="57652000" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Pacifica Evening News - Wednesday, September 9, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260909_180000kpfknews.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260909_180000kpfknews.mp3</guid>
+			<pubDate>Wed, 09 Sep 2026 18:00:00 -0700</pubDate>
+			<description><![CDATA[With the Pacifica News Dept]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>News</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260909_180000kpfknews.mp3" length="57663200" type="audio/mpeg" />
+		</item>
+		<item>
+			<title><![CDATA[Pacifica Evening News - Tuesday, September 8, 2026]]></title>
+			<link>https://archive.kpfk.org/mp3/kpfk_260908_180000kpfknews.mp3</link>
+			<guid>https://archive.kpfk.org/mp3/kpfk_260908_180000kpfknews.mp3</guid>
+			<pubDate>Tue, 08 Sep 2026 18:00:00 -0700</pubDate>
+			<description><![CDATA[With the Pacifica News Dept]]></description>
+			<itunes:summary><![CDATA[]]></itunes:summary>
+			<itunes:duration>3604</itunes:duration>
+			<itunes:explicit>no</itunes:explicit>
+			<category>News</category> 
+			<enclosure url="https://archive.kpfk.org/mp3/kpfk_260908_180000kpfknews.mp3" length="57663200" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>
