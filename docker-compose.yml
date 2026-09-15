@@ -1,29 +1,32 @@
-# For local runs and as a reference for Coolify's "Docker Compose" deploy type.
+# For local runs with plain `docker compose`. On Coolify use the Dockerfile build
+# pack and configure storage in the UI — see docs/DEPLOYMENT.md.
+#
+# Every name here is kpfk-*, never wbai-*: this repo is a copy of WBAI's, and a
+# compose file still naming wbai-archive would, on a host that also runs WBAI,
+# collide with its container and attach WBAI's volume. (The server refuses to
+# boot on another station's data dir, so that fails loudly — but don't rely on it.)
 services:
-  wbai-archive:
+  kpfk-archive:
     build: .
-    image: wbai-archive:latest
-    container_name: wbai-archive
+    image: kpfk-archive:latest
+    container_name: kpfk-archive
     restart: unless-stopped
     environment:
-      - PORT=8080
       - NODE_ENV=production
       # One directory for everything the server persists; same string as the
       # mount below. See .env.example.
       - DATA_DIR=/app/data
-      - STATION_ID=wbai
+      # Unset = the studio does not exist. Passed through from your shell/.env.
+      - STUDIO_PASSWORD
+    # Host port 8081, so it cannot collide with a WBAI container on 8080.
     ports:
-      - "8080:8080"
+      - "8081:8080"
     volumes:
-      # Keeps the caches (and, later, the analytics rollups) across redeploys.
-      #
-      # This works under plain `docker compose`. It has been observed NOT to be
-      # honoured by Coolify, which is how this deployment spent weeks silently
-      # rebuilding its data dir on every deploy — so on Coolify configure the
-      # mount in the UI (Storages -> Volume Mount -> /app/data) and treat this
-      # block as documentation. Either way, confirm with /healthz rather than
-      # assuming: `storage.instanceId` must not change across a redeploy.
-      - wbai-archive-data:/app/data
+      # Usage counters (the studio's stats) and the accepted Pacifica snapshots.
+      # Coolify has been observed NOT honouring this block — configure the mount
+      # in its Storages UI instead and confirm with /healthz: `storage.instanceId`
+      # must not change across a redeploy.
+      - kpfk-archive-data:/app/data
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/healthz"]
       interval: 30s
@@ -32,4 +35,4 @@ services:
       start_period: 10s
 
 volumes:
-  wbai-archive-data:
+  kpfk-archive-data:

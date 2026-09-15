@@ -28,7 +28,7 @@ station profile and a new provider layer.
 | Branch | `main` (was `kpfk-json` locally before the first push) |
 | Commits | KPFK conversion is commit `f7f6222` on top of WBAI's full history (`f2ea8e8`). |
 | Remotes | `origin` → https://github.com/Catskill909/kpfk-archive (push here). `wbai-baseline` → the local WBAI folder — **never push to it.** |
-| Deploy | Never deployed. No host, no volume, no Coolify app. |
+| Deploy | **Deployment-ready, not yet deployed** (audited 2026-09-15). Next step is Paul creating the Coolify app. See "Deployment" below and `docs/DEPLOYMENT.md`. |
 | WBAI | Separate folder, port 8080, own data. Do not touch it from here. |
 
 Removed in the copy only: WBAI seed/fallback data (`seed/showinfo.json`,
@@ -142,6 +142,37 @@ in `app.js`):
 Verified in headless Chrome against 8081: no dropdown, 7 tabs, 24/24 images
 loaded, Live row correct, no-recording expand/collapse (forced by intercepting
 `/api/archive`), zero JS errors.
+
+## Deployment (audited 2026-09-15)
+
+Follow [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md), which was rewritten for KPFK (the
+old one was WBAI's). In short, on Coolify:
+
+- Public repo `Catskill909/kpfk-archive`, `main`. **Dockerfile** build pack, port `8080`.
+- One env var: `STUDIO_PASSWORD`, runtime-only. A generated 32-character value is in
+  `kpfk-archive/.env.coolify.local` on Paul's Mac (git- and docker-ignored,
+  mode 600). Once it's in Coolify and a password manager, delete that file.
+- Storages → Volume Mount → new volume `kpfk-archive-data` at **`/app/data`**. It holds
+  the studio usage stats (irreplaceable) and the feed snapshots. Never reuse WBAI's
+  volume; the server refuses to boot on another station's data dir.
+- Verify `/healthz` after deploy 1 (`mounted:true`, `freshVolume:true`, note
+  `instanceId`), redeploy, and confirm the **same `instanceId`**.
+
+Fixed in the audit: `docker-compose.yml` still named `wbai-archive` with
+`STATION_ID=wbai` and host port 8080 (collision with WBAI and its volume). The Dockerfile
+copied an empty `seed/`. The backup script targeted WBAI's container and `feeds.json`. A
+misleading `[feeds] … full sweep will run` boot line is now `[pacifica] …`.
+
+Rehearsed without Docker (none on the Mac): the Dockerfile's exact COPY set, booted
+with the container env on an empty data dir, passed 24/24. That covered fresh-volume
+detection, archive/schedule/now-playing/artwork, CSP, studio login and cookie flags,
+authorized and unauthorized studio APIs, SIGTERM flushing stats, a second boot with
+the same `instanceId` and counts intact, and no password meaning no studio. Not
+covered: the real Docker build, the Coolify volume, Traefik, and host egress.
+
+Not blockers, still open: no donate/privacy URLs in `stations/kpfk.json` (the Donate
+button hides itself). Live-stream/UI browser suites are not adapted to KPFK. A studio
+tooltip still says "wbai.org program name".
 
 ## Waiting on Pacifica's engineer
 

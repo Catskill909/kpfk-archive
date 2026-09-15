@@ -1,10 +1,11 @@
-# WBAI Archive — single-stage, zero-dependency Node image.
+# KPFK Archive — single-stage, zero-dependency Node image.
 FROM node:24-alpine
 
 # Run as the unprivileged built-in "node" user.
 WORKDIR /app
 
-# Only source is needed; there are no dependencies to install.
+# Only source is needed; there are no dependencies to install. This is the
+# complete runtime: server.js requires nothing outside lib/ and stations/.
 COPY package.json ./
 COPY server.js ./
 COPY lib ./lib
@@ -16,11 +17,8 @@ COPY public ./public
 # the password gate. Only an authenticated route ever reads these.
 COPY admin ./admin
 
-# Starting set for the show-info cache. Kept outside /app/data because a mounted
-# volume shadows the image's copy of that directory — the server merges this in
-# at boot so a fresh deploy has descriptions immediately instead of waiting for
-# the whole schedule to rotate past the on-air feed.
-COPY seed ./seed
+# (No seed/: the KPFK app reads show descriptions from the Pacifica JSON catalog,
+# so there is no warm-start file to ship. WBAI's image copied one.)
 
 # Writable spot for everything the server persists (DATA_DIR, default /app/data).
 #
@@ -28,11 +26,9 @@ COPY seed ./seed
 # like it asks for persistence and does the opposite when no explicit mount is
 # supplied: Docker then creates an *anonymous* volume, a new one per container,
 # so data survives restarts and is thrown away on the next deploy — invisible in
-# any UI, and the exact symptom this deployment showed (CLAUDE.md §4, and
-# docs/admin-page.md §5.3). Persistence comes from an explicit mount instead:
+# any UI (CLAUDE.md §4). Persistence comes from an explicit mount instead:
 # Coolify → Storages → Volume Mount → /app/data. Verify with /healthz; do not
-# assume. Without a mount the app still runs and relearns from the live feed,
-# starting from the seed above.
+# assume. See docs/DEPLOYMENT.md.
 RUN mkdir -p /app/data && chown node:node /app/data
 
 ENV STATION_PROFILE=stations/kpfk.json

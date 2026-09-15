@@ -2784,8 +2784,11 @@ console.log(USAGE_TRACKING
   : '[usage] disabled — USAGE_TRACKING=off, nothing is counted');
 
 // Says whether this boot inherited a usable harvest clock, i.e. whether it is
-// about to re-fetch 122 feeds from a small station's server or skip them.
-console.log(feedsHarvestedAt
+// about to re-fetch 122 feeds from a small station's server or skip them. In
+// JSON mode there is no XML harvest at all, so say what is read instead.
+console.log(station
+  ? `[pacifica] ${station.name}: catalog, schedule and now-playing from ${station.origins.feeds.join(', ')} (no XML harvest)`
+  : feedsHarvestedAt
   ? `[feeds] ${Object.keys(feedStore).length} held, all confirmed current ${Math.round((Date.now() - feedsHarvestedAt) / 60000)}m ago — full sweep due in ${Math.max(0, Math.round((FEEDS_TTL - (Date.now() - feedsHarvestedAt)) / 60000))}m`
   : '[feeds] no usable harvest clock on disk — a full sweep will run');
 
