@@ -74,15 +74,16 @@ Each file is daily counters and nothing else:
 
 ## Open items, in order
 
-0. **Paul — rotate `STUDIO_PASSWORD` in Coolify. Still outstanding.** The live
-   password was pasted into a chat transcript on 2026-09-15 so the studio fix could be
-   verified, and it still worked at 23:05 UTC that evening. Change it in the Coolify
-   env and redeploy. Nothing else needs to change: the value exists **only** in
-   Coolify — the repo and the Mac have no copy (see below), so there is nothing else
-   to update and nothing to lose by changing it.
-   *Done 2026-09-15:* `.env.coolify.local`, the generated paste-into-Coolify scratch
-   file that held it, was deleted from the Mac. It was never committed (`.env.*` is
-   git-ignored) and nothing read it. `.env.example` remains — a template, no secrets.
+0. **`STUDIO_PASSWORD` — closed, do not re-raise.** The live password was shared in a
+   chat transcript on 2026-09-15 so the studio fix could be verified. **Paul's call,
+   same day: leave it.** Private machine, private conversation, and what studio access
+   grants is a read-only dashboard plus rate-limited, idempotent feed refreshes — it
+   cannot change content, listener data or configuration. Rotating it is one field in
+   Coolify plus a redeploy whenever he wants it.
+   *Also done 2026-09-15:* `.env.coolify.local`, the generated paste-into-Coolify
+   scratch file that held it, was deleted from the Mac. It was never committed
+   (`.env.*` is git-ignored) and nothing read it, so the value now exists **only** in
+   Coolify's env. `.env.example` remains — a template, no secrets.
 1. **Exports — the next development.** Specified 2026-09-15 in
    [docs/exports.md](docs/exports.md), no code written. Four datasets (listening,
    inventory, coverage, profile) in CSV, JSON and a printable report, downloaded from
