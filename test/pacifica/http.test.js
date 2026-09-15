@@ -25,7 +25,27 @@ test('missing profile and foreign DATA_DIR fail before boot writes', t => {
   assert.notEqual(foreign.status, 0); assert.match(foreign.stderr, /different station/);
   assert.deepEqual(fs.readdirSync(dir), ['.instance.json']);
 });
-test('real HTTP archive serves every JSON episode, exact show metadata, branding and durable restart', async t => {
+// The listener archive shows only programs in the published schedule (policy
+// 2026-09-15). Expected membership is computed here straight from the fixture
+// files, independently of the service code under test.
+function fixtureScheduledArchive() {
+  const catalog = JSON.parse(fs.readFileSync(path.join(fixtureDir, 'fe_catalog_kpfk.json'), 'utf8'));
+  const altids = new Set();
+  const walk = node => {
+    if (Array.isArray(node)) return node.forEach(walk);
+    if (!node || typeof node !== 'object') return;
+    if (typeof node.altid === 'string') altids.add(node.altid);
+    Object.values(node).forEach(walk);
+  };
+  for (const f of fs.readdirSync(fixtureDir).filter(f => /^fe_schedule_kpfk_\d+\.json$/.test(f))) walk(JSON.parse(fs.readFileSync(path.join(fixtureDir, f), 'utf8')));
+  const onAir = catalog.episodes.kpfk;
+  const episodes = [...altids].reduce((n, a) => n + Object.keys(onAir[a] || {}).length, 0);
+  const programs = catalog.shows.kpfk.filter(s => altids.has(s.altid)).map(s => s.altid);
+  return { altids, episodes, programs, allEpisodes: Object.values(catalog.episodes).reduce((n, g) => n + Object.values(g).reduce((m, e) => m + Object.keys(e).length, 0), 0) };
+}
+test('real HTTP archive serves every episode of scheduled programs only, exact show metadata, branding and durable restart', async t => {
+  const expected = fixtureScheduledArchive();
+  assert.ok(expected.episodes > 0 && expected.episodes < expected.allEpisodes, 'fixture has both scheduled and hidden episodes');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kpfk-http-'));
   const requested = [];
   let online = true;
@@ -65,11 +85,12 @@ test('real HTTP archive serves every JSON episode, exact show metadata, branding
   }
   await boot();
   const archive = await (await fetch(url + '/api/archive')).json();
-  assert.equal(archive.count, 1143); assert.equal(archive.shows.length, 1143);
+  assert.equal(archive.count, expected.episodes); assert.equal(archive.shows.length, expected.episodes);
+  assert.ok(archive.shows.every(r => r.archiveSource === 'kpfk' && expected.altids.has(r.upstreamAltId)), 'only scheduled on-air programs');
   assert.equal(archive.shows.filter(r => r.upstreamAltId === 'dn').length, 69);
-  assert.equal(archive.shows.filter(r => r.archiveSource === '2kpfk').length, 137);
-  const info = await (await fetch(url + '/api/showinfo')).json(); assert.equal(info.count, 184);
-  const detail = await (await fetch(url + '/api/showinfo/kpfk.kpfk.bts_friday')).json(); assert.ok(detail.info.name);
+  assert.equal(archive.shows.filter(r => r.archiveSource === '2kpfk').length, 0, 'archive-only uploads are not served');
+  const info = await (await fetch(url + '/api/showinfo')).json(); assert.equal(info.count, expected.programs.length);
+  const detail = await (await fetch(url + '/api/showinfo/kpfk.kpfk.' + expected.programs[0])).json(); assert.ok(detail.info.name);
   const head = await (await fetch(url + '/api/archive/head')).json(); assert.equal(head.revision, archive.revision);
   const home = await (await fetch(url)).text(); assert.match(home, /KPFK/); assert.doesNotMatch(home, /WBAI|wbai\.org|\{\{station\./);
   const settings = await (await fetch(url + '/api/station')).json(); assert.equal(settings.id, 'kpfk');
@@ -81,11 +102,14 @@ test('real HTTP archive serves every JSON episode, exact show metadata, branding
   const week = await (await fetch(url + '/api/schedule?weekStart=' + sched.weeks[0].weekStart)).json(); assert.equal(week.days.length, 7);
   assert.equal((await fetch(url + '/api/schedule?weekStart=bad')).status, 400);
   const health = await (await fetch(url + '/healthz')).json(); assert.equal(health.station, 'kpfk'); assert.equal(health.ready, true);
+  assert.equal(health.archiveFilter.basis, 'schedule'); assert.equal(health.archiveFilter.hiddenEpisodes, expected.allEpisodes - expected.episodes);
   assert.equal(requested.filter(p => p.endsWith('fe_catalog_kpfk.json')).length, 1);
   assert.doesNotMatch(logs, /UNEXPECTED_UPSTREAM/);
   const identity = health.storage.instanceId;
   child.kill(); await new Promise(resolve => child.once('exit', resolve)); online = false;
   await boot(); const recovered = await (await fetch(url + '/api/archive')).json();
-  assert.equal(recovered.revision, archive.revision); assert.equal(recovered.count, 1143);
+  // Offline restart: the saved schedule, not just the saved catalog, must come
+  // back — a primary-channel fallback here would change both count and revision.
+  assert.equal(recovered.revision, archive.revision); assert.equal(recovered.count, expected.episodes);
   assert.equal((await (await fetch(url + '/healthz')).json()).storage.instanceId, identity);
 });

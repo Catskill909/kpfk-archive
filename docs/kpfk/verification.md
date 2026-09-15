@@ -4,7 +4,7 @@ Status: acceptance plan. “Required” below does not mean run or passed. Histo
 
 ## Confirmed episode policy
 
-**Display every episode in the accepted Pacifica JSON catalog, across all archive source groups.** There is no app-side five/six-episode cap, two-week cutoff, minimum-duration filter, or expiry-based play restriction. Pacifica controls its published availability, including the music window. `expires` may inform display text but never overrides catalog membership. Pagination may limit what is drawn at once, never which episodes can be reached.
+**Display every episode in the accepted Pacifica JSON catalog that belongs to a program in the published schedule.** (Changed by Paul on 2026-09-15: archive-only uploads — the `2kpfk` group — and programs no longer in any published week are not shown. They stay in the saved catalog snapshot; see `archive()` in `lib/pacifica/service.js`. If no schedule can be loaded the archive falls back to the on-air channel and `/healthz` `archiveFilter.basis` says so.) Within those programs there is no app-side five/six-episode cap, two-week cutoff, minimum-duration filter, or expiry-based play restriction. Pacifica controls its published availability, including the music window. `expires` may inform display text but never overrides catalog membership. Pagination may limit what is drawn at once, never which episodes can be reached.
 
 The HTML archive and WBAI RSS are comparison evidence, not additional eligibility gates. Do not add page-only recordings to KPFK or remove JSON-only recordings because the page differs. On a successful valid catalog refresh, the current episode list follows that catalog; on a fetch/parse/validation failure, serve labeled last-known-good data. Keep show-directory records as metadata; a directory entry alone is not an episode or evidence of current programming.
 
@@ -24,7 +24,7 @@ Implement meaningful fixtures that differ from the live happy path. Register new
 
 | ID | Input / fault | Required observable outcome |
 | --- | --- | --- |
-| C01 | Pinned catalog, both source groups | 184 directory records, 1,143 episode rows with no app-side retention filtering; 137 uploads retained; 109 shows with episodes and 75 without |
+| C01 | Pinned catalog, both source groups | 184 directory records, 1,143 episode rows in the catalog mirror with no retention filtering; 137 uploads retained in the mirror but not served by `archive()` (scheduled programs only); 109 shows with episodes and 75 without |
 | C02 | Same slug in two sources; same numeric ID in two sources | Distinct canonical routes, show maps, analytics attribution and episode groups |
 | C03 | Reordered object keys, corrected notes, corrected MP3 URL | Reordering leaves revision unchanged; each content correction changes it with count/latest unchanged |
 | C04 | String IDs, underscore slug, long invalid slug | Deep-link/OG/show-info/studio agree on accepted IDs; malformed input is rejected without upstream fetch |
@@ -36,7 +36,7 @@ Implement meaningful fixtures that differ from the live happy path. Register new
 | C10 | Missing/directory artwork; valid catalog image | Correct fallback; no directory-image requests or broken-image loop |
 | C11 | Corrected show description cleared to empty | Old description does not reappear through legacy caches/seeds/program matching |
 | C12 | Future upload; type disagreement; unknown category | Recording retained; dates labeled accurately; no invented release/genre/retention rule |
-| C13 | Known/past expiry, music older than two weeks, >6 episodes, future upload, omitted/reappearing item | Every catalog episode remains reachable/playable regardless of those fields; successful catalog membership changes are reflected; no app-side caps |
+| C13 | Known/past expiry, music older than two weeks, >6 episodes, future upload, omitted/reappearing item | Every catalog episode of a scheduled program remains reachable/playable regardless of those fields; successful catalog membership changes are reflected; no app-side caps |
 | C14 | Browser timezone differs from Los Angeles | Archive dates, schedule today and time labels consistently use station timezone |
 | C15 | Blank/null current/next; empty song after previous track | Valid unavailable metadata state; old song clears; live play remains available |
 | C16 | Schedule with missing archive/show join | Published slot remains visible; no guessed archive link and no fabricated playable row |
@@ -119,7 +119,7 @@ All items start pending; evidence must be recorded in the implementation log.
 - [ ] No-recording program profile, unknown episode link and metadata-only refresh verified.
 - [ ] No WBAI network/runtime fallback in captured KPFK traffic.
 - [ ] Correct station content/links/assets and configured security origins reviewed.
-- [ ] All JSON episodes are reachable; no local episode cap, music-date cutoff, minimum-duration or expiry-based play filter exists.
+- [ ] All JSON episodes of scheduled programs are reachable, and uploads/unscheduled programs are not; no local episode cap, music-date cutoff, minimum-duration or expiry-based play filter exists.
 - [ ] Studio actions, source health and usage attribution verified without changing privacy semantics.
 - [ ] Staging generation/transition/day-boundary evidence captured; unobserved live checks named.
 - [ ] Persistent volume identity survives redeploy; backup and rollback rehearsed.

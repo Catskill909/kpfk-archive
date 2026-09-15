@@ -771,7 +771,7 @@ let feedIndexBuiltAt = -1;
 
 function feedIndex() {
   if (station) {
-    const data = pacifica.peekCatalog();
+    const data = pacifica.peekArchive();   // scheduled programs only — see archive() in lib/pacifica/service.js
     return new Map((data ? data.shows : []).map(r => [r.mp3, {
       slug: r.sho, item: r, channel: { title: r.title },
     }]));
@@ -1001,7 +1001,7 @@ let archiveInFlight = null;
 
 async function getArchive() {
   if (station) {
-    const data = await pacifica.catalog();
+    const data = await pacifica.archive();   // scheduled programs only; uploads and off-air shows are not served
     syncPacificaDirectory(data);
     archiveCache.set(data);
     return data;
@@ -1714,11 +1714,11 @@ function syncPacificaDirectory(data) {
   Object.assign(showInfo, data.directory);
   showInfoUpdated = data.updated;
 }
-if (pacifica) syncPacificaDirectory(pacifica.peekCatalog());
+if (pacifica) syncPacificaDirectory(pacifica.peekArchive());
 // Adapt the existing studio's read model without writing a second XML store.
 function episodeRecords() {
   if (!pacifica) return feedStore;
-  const data = pacifica.peekCatalog(), records = Object.create(null);
+  const data = pacifica.peekArchive(), records = Object.create(null);
   for (const row of data ? data.shows : []) {
     if (!records[row.sho]) records[row.sho] = { channel: { title: row.title }, items: [], fetchedAt: data.validatedAt };
     records[row.sho].items.push({ ...row, category: row.categoryLabel });
@@ -3155,8 +3155,9 @@ const actionLastRun = new Map();
 
 const STUDIO_ACTIONS = station ? {
   catalog: { label: 'Refresh the JSON catalog', cooldownMs: 60000,
-    async run() { const data = await pacifica.catalog(true); syncPacificaDirectory(data); archiveCache.set(data);
-      if (data.stale) throw new Error('Catalog refresh failed; last-good preserved'); return `${data.count} episodes in the catalog`; } },
+    async run() { const data = await pacifica.archive(true); syncPacificaDirectory(data); archiveCache.set(data);
+      if (data.stale) throw new Error('Catalog refresh failed; last-good preserved');
+      return `${data.count} scheduled episodes shown (${data.filter.hiddenEpisodes} archive-only or unscheduled hidden)`; } },
   metadata: { label: 'Refresh live metadata', cooldownMs: 30000,
     async run() { const data = await pacifica.live(true); return data.stale ? 'Metadata is stale' : 'Live metadata refreshed'; } },
   schedule: { label: 'Refresh the schedule index', cooldownMs: 60000,
@@ -3479,6 +3480,9 @@ const server = http.createServer(async (req, res) => {
         provider: station ? station.provider : 'legacy-xml',
         ready: pacifica ? !!pacifica.peekCatalog() : true,
         pacifica: pacifica ? pacifica.health() : undefined,
+        // basis "schedule" is normal; "primary-channel" means no published
+        // schedule could be loaded and the archive fell back to on-air shows.
+        archiveFilter: pacifica ? (pacifica.peekArchive() || {}).filter : undefined,
         // Answers "is persistent storage actually working?" from outside, which
         // is the only place it can be answered — see identifyVolume() and
         // probeMount(). `mounted` is readable on the FIRST deploy: false = no

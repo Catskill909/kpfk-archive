@@ -102,3 +102,48 @@ test('every photo the service hands the browser is same-origin, schedule slots i
   assert.ok(withArt.length > 0 && withArt.every(s => s.photo.startsWith('/api/artwork/')),
     'a slot whose show has catalog artwork gets the proxied image, even if the week loaded before the catalog');
 });
+
+// Display policy (2026-09-15): the listener archive shows only programs in the
+// published schedule. Archive-only uploads (`2kpfk`) and programs no longer on
+// the air stay in the catalog mirror but are not served.
+function fixtureService(t, fail = () => false) {
+  const dir = path.join(__dirname, '../../docs/fixtures/pacifica-kpfk-2026-09-14');
+  const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'kpfk-scheduled-'));
+  t.after(() => fs.rmSync(dataDir, { recursive: true, force: true }));
+  const fetchImpl = async url => {
+    const name = path.basename(new URL(url).pathname);
+    if (fail(name)) throw new Error(`offline: ${name}`);
+    return json(JSON.parse(fs.readFileSync(path.join(dir, name), 'utf8')));
+  };
+  return createService({ profile, dataDir, writeJsonAtomic: write, fetchImpl, now: () => 1789435100000 });
+}
+test('archive() serves exactly the scheduled programs; the catalog mirror keeps everything', async t => {
+  const service = fixtureService(t);
+  const catalog = await service.catalog();
+  const index = await service.schedule();
+  const scheduled = new Set();
+  for (const w of index.weeks) (await service.schedule(w.weekStart)).days.forEach(d => d.slots.forEach(s => scheduled.add(s.showKey)));
+  // Positive controls: the fixture really contains what must be hidden.
+  const uploads = catalog.shows.filter(r => r.archiveSource === '2kpfk');
+  const unscheduledOnAir = catalog.shows.filter(r => r.archiveSource === 'kpfk' && !scheduled.has(r.sho));
+  assert.ok(uploads.length > 100, 'fixture has archive-only uploads');
+  const view = await service.archive();
+  assert.equal(view.filter.basis, 'schedule');
+  assert.deepEqual(new Set(view.shows.map(r => r.sho)), new Set(catalog.shows.map(r => r.sho).filter(k => scheduled.has(k))));
+  assert.equal(view.shows.filter(r => r.archiveSource === '2kpfk').length, 0, 'no uploads served');
+  assert.equal(view.shows.filter(r => unscheduledOnAir.includes(r)).length, 0, 'no unscheduled on-air shows served');
+  assert.ok(Object.keys(view.directory).every(k => scheduled.has(k)), 'directory limited to scheduled programs');
+  assert.equal(view.count, view.shows.length); assert.equal(view.filter.hiddenEpisodes, catalog.count - view.count);
+  assert.equal((await service.catalog()).count, 1143, 'catalog mirror is untouched');
+  assert.notEqual(view.revision, catalog.revision, 'membership is part of the archive revision');
+  assert.equal(service.peekArchive().count, view.count, 'the synchronous view agrees');
+});
+test('a schedule outage limits the archive to the on-air channel, labelled, instead of emptying it', async t => {
+  const service = fixtureService(t, name => name !== 'fe_catalog_kpfk.json');
+  const catalog = await service.catalog();
+  const view = await service.archive();
+  assert.equal(view.filter.basis, 'primary-channel');
+  assert.ok(view.count > 0);
+  assert.equal(view.count, catalog.shows.filter(r => r.archiveSource === 'kpfk').length);
+  assert.equal(view.shows.filter(r => r.archiveSource === '2kpfk').length, 0, 'uploads stay hidden during the outage');
+});

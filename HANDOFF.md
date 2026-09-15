@@ -82,10 +82,18 @@ curl -s localhost:8081/healthz
 | `docs/kpfk/artwork-audit-2026-09-15.md` | Why some show images are missing (with per-URL probe evidence) |
 | `docs/fixtures/pacifica-kpfk-2026-09-14/` | Pinned raw feeds + headers + checksums; tests use these, don't replace them |
 
-**Episode policy (confirmed with Paul, do not re-litigate):** show every episode
-in the accepted JSON catalog. No app-side episode cap, date cutoff, duration
-filter or expiry gate. Successful refresh replaces membership; a failed or
-invalid refresh keeps last-good.
+**Episode policy (Paul, revised 2026-09-15, do not re-litigate):** show every
+episode in the JSON catalog **that belongs to a program in the published
+schedule**. Archive-only uploads (the `2kpfk` group: Informativo Pacifica Online,
+BradCast, Bike Talk Podcast…) and programs no longer in any published week are
+hidden. They stay in the saved catalog snapshot (`service.catalog()` is the
+untouched mirror), but `service.archive()` / `peekArchive()` is what every
+listener-facing route reads. Within scheduled programs: no episode cap, date
+cutoff, duration filter or expiry gate. If no schedule can be loaded at all,
+the archive falls back to the on-air channel (uploads still hidden), and
+`/healthz` `archiveFilter.basis` reads `primary-channel` instead of `schedule`.
+On 2026-09-15 this took the archive from 1,143 episodes / 109 shows to
+1,000 / 99.
 
 ## Done this session (2026-09-15)
 
