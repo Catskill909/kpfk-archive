@@ -12,9 +12,9 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 | --- | --- |
 | Live | **https://kpfk-archive.supersoul.top** — Coolify app "KPFK Archive", Dockerfile build, container port 8080 |
 | Repo | https://github.com/Catskill909/kpfk-archive · `main` · push to `origin` only (never `wbai-baseline`) |
-| Deploy | Manual Coolify redeploy after push. Last verified deploy includes everything through `1276a51` (menu); later commits are docs only |
-| Storage | Named volume `…-kpfk-archive-data` at `/app/data`. **Persistence proven** 2026-09-15: `instanceId` `e4a9aac9-e3dd-4e9b-8c5b-17656032bd0d` unchanged across a redeploy, `freshVolume:false` |
-| Studio | `/studio`, password in Coolify env `STUDIO_PASSWORD` (runtime only) |
+| Deploy | Manual Coolify redeploy after push. Last verified deploy includes everything through `761816b` (studio titles), audited live 2026-09-15 evening |
+| Storage | Named volume `…-kpfk-archive-data` at `/app/data`. **Persistence proven twice** 2026-09-15: `instanceId` `e4a9aac9-e3dd-4e9b-8c5b-17656032bd0d` unchanged across two redeploys, `freshVolume:false`, and the usage counters kept counting across both |
+| Studio | `/studio`, password in Coolify env `STUDIO_PASSWORD` (runtime only — **not** on the Mac and not in the repo; read it from Coolify, never from a file) |
 | Local | `npm start` → http://localhost:8081, `./data` |
 | Tests | `npm test` green: inherited offline suites + 28 Pacifica tests |
 
@@ -43,6 +43,10 @@ KPFK's on-demand archive, read entirely from Pacifica's public JSON feeds
 
 ## Open items, in order
 
+0. **Paul — rotate `STUDIO_PASSWORD` in Coolify.** The live password was pasted
+   into a chat transcript on 2026-09-15 so the studio fix could be verified. Change
+   it in the Coolify env and redeploy. Nothing else needs to change: nothing in the
+   repo or on the Mac reads it.
 1. **Paul:** save the studio password in a password manager, then delete
    `.env.coolify.local` (still present on the Mac; git- and docker-ignored).
 2. **Backups:** on the VPS, `CONTAINER=<coolify container> tools/backup-data.sh /backups`
@@ -62,7 +66,11 @@ KPFK's on-demand archive, read entirely from Pacifica's public JSON feeds
    when you next touch its area.
 7. From the original plan (`docs/kpfk/implementation.md`): program-only deep links,
    studio source-health wording for JSON feeds, desktop (Tauri) KPFK build. None block
-   the live web app.
+   the live web app. **Still WBAI-shaped in the studio's System panel:** "Programs 0"
+   (the scraped `/programlist/` directory, which KPFK does not use) and "Records on disk
+   at boot: 0 shows, 0 feeds" (the XML feed store, empty by design here — the Pacifica
+   snapshots live in `data/pacifica/`). Both are labels, not wrong data; the two
+   *charts* with the same problem were fixed on 2026-09-15 (see below).
 
 ## Session log — 2026-09-15
 
@@ -81,9 +89,60 @@ Claude Code then made these changes, each committed with its evidence:
 | `1276a51` | Side menu from the station profile; donate + privacy links; CSP frame-src from links |
 | end of session | Docs: README, CLAUDE.md, this handoff, `docs/README.md` index, implementation checkpoint |
 
-**Final live audit (after the last deploy), over HTTP:**
+**Live audit after that deploy, over HTTP:**
 - **Storage proof passed:** same `instanceId`, `freshVolume:false`, named volume, nothing quarantined.
 - **Deployed bundle** matches the repo's `version` sizes.
 - **Share card, icon and touch icon** are served byte-identical to the repo.
 - **Menu:** 12 items and 4 socials, zero "WBAI" in the page.
 - **CSP** `frame-src https://docs.pacifica.org`; studio API 401 without a session; no feed errors.
+
+## Session log — 2026-09-15, evening (studio)
+
+Paul reported that the studio's **Most listened shows** chart named shows by slug
+(`kpfk.kpfk.reggaecent`) where WBAI's shows real titles.
+
+| Commit | Change |
+| --- | --- |
+| `761816b` | `usageReport()` read WBAI's XML `feedStore` for titles; on a station build that store is always `{}` (`server.js:383`), so every title fell back to the slug. It now reads `episodeRecords()`, the adapter the rest of the studio already used |
+| `<this commit>` | Studio stops reporting what the JSON provider cannot measure: **Total size** (Pacifica carries no file sizes — the tile read "0.0 GB", which says *empty archive*, not *unmeasurable*) and the two **program-directory** coverage ratios (WBAI's scraped `/programlist/`, which read "0 of 99 matched"). Server sends `totals.bytes: null` and omits `coverage.directoryPrograms`; the page omits the tile and the meters |
+
+**The class, for next time:** anything in the studio that reads `feedStore`,
+`programCache` or per-episode `bytes` is reading a **WBAI XML-era source** that is
+empty on a JSON station. Show data comes from `episodeRecords()`; descriptions from
+`showInfo`. A count of 0 from those sources is not a finding, it is the wrong
+question — either route it through the adapter or omit it, but never draw it as a zero.
+
+**Tests** (`test/pacifica/http.test.js`, the real-server suite): it now signs in to
+the studio, sends real `play` and `listen` beacons for one scheduled episode, and
+asserts that every show named by `usage`, `stats` and `showhistory` carries the
+archive's title, and that the studio reports no byte total and no directory ratio
+while still reporting the totals it *can* measure. Both assertions were run against
+the unfixed code and shown to fail (`kpfk.kpfk.backgroundbriefing`; `bytes: 0`).
+`npm test` green: 28 Pacifica tests + the inherited offline suites.
+
+**Browser proof of the client change** (CLAUDE.md §1), headless Chrome against
+`/studio.js?v=aeb1-mu39hr9h`, the bundle the page actually loaded: tiles render
+`Shows · Episodes · Audio held · Categories · Window` with no size tile, Coverage
+renders the single ratio `99 / 99 · 100%`, and no empty gap lists. Five tiles were
+still seen, so the absence is measured, not assumed.
+
+**Live audit of the `761816b` deploy** (https://kpfk-archive.supersoul.top):
+- **Most listened shows** now reads *Stairway To Heaven, Reggae Central, Global
+  Village - Tuesday, Way Out West, Breakbeats And Rhymes* — no slugs in the usage
+  chart, the 99-row table or show history.
+- **Storage:** `instanceId` unchanged, `freshVolume:false`, named volume, nothing
+  quarantined; the usage counters survived the redeploy and kept counting.
+- **Deploy was real:** container booted 78s after the commit; `app.js` and
+  `styles.css` served byte-identical to the repo; `X-App-Version` matched `/healthz`.
+- **Feeds:** catalog, channels, schedule index, three weeks, now-playing all ready,
+  none stale, no errors. Filter `schedule`: 1,004 episodes / 99 programs, 142 hidden,
+  no `2kpfk`.
+- **Artwork:** all 1,255 `photo` fields (archive, directory, now-playing, schedule)
+  same-origin; all 82 distinct images load. Note the sibling `photoUrl` is the raw
+  `confessor.kpfk.org` URL by design — it is data, never handed to the browser
+  (`lib/pacifica/service.js:24`).
+- **Branding/security:** no "WBAI" or "99.5" in the app or the studio; icons and
+  share card byte-identical; CSP intact; studio API 401 signed out; bogus beacon 204.
+- **Not an exposure:** `/data/stats/` answers 200 only because any extensionless path
+  falls back to `index.html`. Real files under `/data/` 404. `stats/` is a directory
+  *inside* the volume, with no URL.

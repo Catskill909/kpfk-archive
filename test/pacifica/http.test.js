@@ -135,11 +135,22 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   assert.equal(login.status, 200);
   const cookie = login.headers.get('set-cookie').split(';')[0];
   const studio = async p => { const r = await fetch(url + p, { headers: { Cookie: cookie } }); assert.equal(r.status, 200, p); return r.json(); };
+  const stats = await studio('/api/studio/stats');
   const named = [
     ...(await studio('/api/studio/usage')).topShows.map(s => ['usage.topShows', s]),
-    ...(await studio('/api/studio/stats')).shows.map(s => ['stats.shows', s]),
+    ...stats.shows.map(s => ['stats.shows', s]),
     ['showhistory', await studio('/api/studio/showhistory?slug=' + encodeURIComponent(played.sho))],
   ];
+  // The studio reports only what this provider can measure. Pacifica's JSON
+  // carries no file sizes and no separate program directory, and reporting
+  // those as 0 read as "empty archive" / "0 of 99 shows matched" — a wrong
+  // answer, not a missing one. What it CAN measure must still be a real figure.
+  assert.equal(stats.totals.bytes, null, 'no byte total from a provider without file sizes');
+  assert.ok(stats.totals.hours > 0 && stats.totals.episodes === expected.episodes, 'the measurable totals are still measured');
+  assert.equal(stats.coverage.directoryPrograms, undefined, 'no scraped-directory ratio on a JSON station');
+  assert.equal(stats.coverage.noDirectory, undefined);
+  assert.equal(stats.coverage.withDescription, stats.coverage.feeds, 'every show has a Pacifica description');
+  assert.ok(stats.coverage.feeds > 0);
   // Prove the sweep can see the played show in each report, not an empty list.
   for (const where of ['usage.topShows', 'stats.shows', 'showhistory']) {
     assert.ok(named.some(([w, s]) => w === where && s.slug === played.sho), `${where} includes the played show`);

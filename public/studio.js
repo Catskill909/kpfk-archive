@@ -578,18 +578,21 @@
 
     function renderStats(d) {
       stats = d;
-      var gb = d.totals.bytes / 1e9;
 
       var kpis = document.getElementById('kpis');
       kpis.textContent = '';
-      [
+      var tiles = [
         [num(d.totals.feeds), '', 'Shows'],
         [num(d.totals.episodes), '', 'Episodes'],
         [num(d.totals.hours), 'h', 'Audio held'],
-        [gb.toFixed(1), 'GB', 'Total size'],
-        [num(d.totals.categories), '', 'Categories'],
-        [num(d.window.days), 'd', 'Window'],
-      ].forEach(function (k) {
+      ];
+      // Total size only where the source states file sizes. A provider that does
+      // not (Pacifica's JSON) sends null, and a "0.0 GB" tile would say the
+      // archive is empty when what we mean is that nobody told us.
+      if (d.totals.bytes) tiles.push([(d.totals.bytes / 1e9).toFixed(1), 'GB', 'Total size']);
+      tiles.push([num(d.totals.categories), '', 'Categories']);
+      tiles.push([num(d.window.days), 'd', 'Window']);
+      tiles.forEach(function (k) {
         var tile = el('div', 'kpi');
         var v = el('div', 'kpi-value', k[0]);
         if (k[1]) v.appendChild(el('span', 'kpi-unit', k[1]));
@@ -632,11 +635,15 @@
       columnChart(document.getElementById('perDay'), d.perDay);
 
       var c = d.coverage;
-      meters(document.getElementById('coverage'), [
-        { label: 'Shows with a harvested description', value: c.withDescription, of: c.feeds },
-        { label: 'Shows matched to the program directory', value: c.withDirectory, of: c.feeds },
-        { label: 'Directory programs with a feed', value: c.withDirectory, of: c.directoryPrograms },
-      ]);
+      var ratios = [{ label: 'Shows with a harvested description', value: c.withDescription, of: c.feeds }];
+      // The last two ratios exist only where a separate scraped program
+      // directory does. On a JSON station the directory is the description
+      // source itself, so the server omits these rather than reporting 0 of 99.
+      if (c.directoryPrograms != null) {
+        ratios.push({ label: 'Shows matched to the program directory', value: c.withDirectory, of: c.feeds });
+        ratios.push({ label: 'Directory programs with a feed', value: c.withDirectory, of: c.directoryPrograms });
+      }
+      meters(document.getElementById('coverage'), ratios);
 
       // Collapsed by default. Naming the gaps is the point — a count nobody can
       // act on is decoration — but 35 slugs unfurled is a wall of text that
@@ -650,7 +657,7 @@
         [c.noDirectory, 'no match in the program directory',
           'The feed title and the station directory name differ, or the show is not listed there.'],
       ].forEach(function (g) {
-        if (!g[0].length) return;
+        if (!g[0] || !g[0].length) return;
         var d = document.createElement('details');
         d.className = 'gap-list';
         var s = document.createElement('summary');

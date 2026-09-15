@@ -3083,10 +3083,14 @@ function studioStats(usageDays = 30) {
   const programs = programCache.programs || {};
   const programKeys = new Set(Object.keys(programs));
   const noDescription = [];
-  const noDirectory = [];
+  // The scraped program directory is a WBAI-only source: on a JSON station the
+  // directory IS showInfo, so a second ratio here would either read 0 of 99
+  // (what it did) or restate the description ratio. Reported only where a
+  // separate directory exists; the studio omits the meters when it is absent.
+  const noDirectory = station ? null : [];
   for (const [slug, rec] of entries) {
     if (!showInfo[slug]) noDescription.push(slug);
-    if (!programKeys.has(normTitle(rec && rec.channel && rec.channel.title))) noDirectory.push(slug);
+    if (noDirectory && !programKeys.has(normTitle(rec && rec.channel && rec.channel.title))) noDirectory.push(slug);
   }
 
   return {
@@ -3100,7 +3104,10 @@ function studioStats(usageDays = 30) {
       feeds: entries.length,
       episodes,
       hours: Math.round(seconds / 3600),
-      bytes,
+      // null, not 0, when the provider carries no file sizes — Pacifica's JSON
+      // does not, and "0.0 GB" reads as an empty archive rather than as an
+      // unmeasurable one. The studio omits the tile instead of drawing a zero.
+      bytes: bytes || null,
       categories: catMap.size,
       programs: programKeys.size,
       showinfo: Object.keys(showInfo).length,
@@ -3133,11 +3140,13 @@ function studioStats(usageDays = 30) {
     coverage: {
       feeds: entries.length,
       withDescription: entries.length - noDescription.length,
-      withDirectory: entries.length - noDirectory.length,
-      directoryPrograms: programKeys.size,
       // Named, not just counted — a number nobody can act on is decoration.
       noDescription: noDescription.slice(0, 60),
-      noDirectory: noDirectory.slice(0, 60),
+      ...(noDirectory ? {
+        withDirectory: entries.length - noDirectory.length,
+        directoryPrograms: programKeys.size,
+        noDirectory: noDirectory.slice(0, 60),
+      } : {}),
     },
     // The window the plays/listened columns were summed over, echoed back so
     // the table's labelling comes from the data it renders, not from what the
