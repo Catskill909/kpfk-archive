@@ -94,6 +94,9 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const head = await (await fetch(url + '/api/archive/head')).json(); assert.equal(head.revision, archive.revision);
   const home = await (await fetch(url)).text(); assert.match(home, /KPFK/); assert.doesNotMatch(home, /WBAI|wbai\.org|\{\{station\./);
   assert.doesNotMatch(home, /99\.5/, 'no WBAI frequency, including in accessible names');
+  // Donate/Privacy open in an iframe; the CSP must allow exactly the profile's link origins.
+  const homeCsp = (await fetch(url)).headers.get('content-security-policy');
+  assert.match(homeCsp, new RegExp(`frame-src ${new URL(profile.links.donate).origin.replace(/\./g, '\\.')}(;| )`));
   // Link previews and home screens: every image a crawler, iOS or Android is told
   // about must be a PNG that actually loads (they ignore SVG).
   const attr = (html, re) => (html.match(re) || [])[1];

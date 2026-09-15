@@ -26,7 +26,24 @@
   },
   "links": {
     "website": "https://www.kpfk.org/",
-    "archive": "https://archive.kpfk.org/"
+    "archive": "https://archive.kpfk.org/",
+    "schedule": "https://www.kpfk.org/schedule/",
+    "programs": "https://www.kpfk.org/on-air/",
+    "androidApp": "https://play.google.com/apps/testing/app.pacifica.kpfk",
+    "appleApp": "https://apps.apple.com/us/app/kpfk-radio/id6755395576",
+    "about": "https://www.kpfk.org/about",
+    "pacifica": "https://pacifica.org/",
+    "news": "https://www.kpfk.org/news/",
+    "donate": "https://docs.pacifica.org/kpfk/donate/",
+    "volunteer": "https://www.kpfk.org/support/volunteer/",
+    "contact": "https://www.kpfk.org/blogs/info-about-kpfk-and-pacifica/",
+    "privacy": "https://docs.pacifica.org/kpfk/kpfk-privacy.php"
+  },
+  "social": {
+    "x": "https://x.com/KPFK",
+    "facebook": "https://www.facebook.com/KPFK90.7/",
+    "instagram": "https://www.instagram.com/kpfk/",
+    "youtube": "https://www.youtube.com/@KPFKRadio"
   },
   "assets": {
     "logo": "/assets/kpfk-logo.png",

@@ -170,9 +170,13 @@ authorized and unauthorized studio APIs, SIGTERM flushing stats, a second boot w
 the same `instanceId` and counts intact, and no password meaning no studio. Not
 covered: the real Docker build, the Coolify volume, Traefik, and host egress.
 
-Not blockers, still open: no donate/privacy URLs in `stations/kpfk.json` (the Donate
-button hides itself). Live-stream/UI browser suites are not adapted to KPFK. A studio
-tooltip still says "wbai.org program name".
+Side menu, Donate and Privacy (2026-09-15): the menu is rendered from `links` and `social`
+in `stations/kpfk.json` (`lib/station-view.js` `menu()`). Items without a link are omitted, and
+KPFK has no Mission page. Donate/Privacy open `docs.pacifica.org/kpfk/…` in the in-app frame; the
+CSP `frame-src` is derived from those links. The Android link is Google Play *closed testing*
+until the app is public; swap `links.androidApp` then. Tests: `test/pacifica/menu.test.js`.
+
+Still open: live-stream/UI browser suites are not adapted to KPFK.
 
 ## Waiting on Pacifica's engineer
 

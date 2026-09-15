@@ -295,71 +295,15 @@
       <div class="menu-brand">
         <p>Free Speech Radio. Progressive &amp; independent news, arts &amp; music, listener-supported and broadcasting
           as part of the Pacifica Foundation.</p>
-        <div class="social-row">
-          
-          
-          
-          
-          
-        </div>
+        <div class="social-row">{{menu.social}}</div>
       </div>
 
-      <nav class="menu-nav">
-        <!-- Every item carries a leading glyph. They are inline SVG (no icon font,
-           no sprite request) and inherit currentColor so the hover/theme rules
-           in styles.css reach them without a second colour system. -->
-        <div class="menu-group">
-          <h2>Listen</h2>
-          <ul>
-            <!-- Opens the in-app schedule modal (app.js, drawer IIFE) — a weekly
-               grid DERIVED from the archive's own timestamps, not the legacy station site's
-               pixel-grid page. The href stays real as the fallback if that
-               listener never runs, and it keeps open-in-new-tab / copy-link
-               working from the context menu. See docs/schedule-dev.md. -->
-            <li><a href="#schedule" id="menuSchedule" target="_blank" rel="noopener noreferrer"
-                aria-haspopup="dialog" aria-controls="schedModal">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="3.5" y="5" width="17" height="15" rx="3" />
-                  <path d="M3.5 9.6h17M8 3.4v3.2M16 3.4v3.2" />
-                </svg>
-                <span>Schedule</span></a></li>
-            
-            
-            
-          </ul>
-        </div>
-        <div class="menu-group">
-          <h2>Station</h2>
-          <ul>
-            
-            
-            
-            
-          </ul>
-        </div>
-        <div class="menu-group">
-          <h2>Support &amp; contact</h2>
-          <ul>
-            <!-- Opens the framed donate modal in-app (app.js, drawer IIFE) rather
-               than leaving for a new tab. The href stays real: it is the
-               fallback if that listener never runs, and it keeps
-               open-in-new-tab / copy-link working from the context menu. -->
-            
-            
-            
-            <!-- Opens the same framed modal as Donate (app.js, drawer IIFE), just
-               pointed at the privacy policy URL instead. -->
-            
-            <li><a href="{{station.website}}" target="_blank" rel="noopener noreferrer">
-                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M14 4.5h5.5V10M19.3 4.7 11.6 12.4" />
-                  <path d="M18.2 14v4.6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2h4.6" />
-                </svg>
-                <span>{{station.name}} website</span></a></li>
-          </ul>
-        </div>
+      <!-- Social row and menu groups are built from the station profile's links and
+         social blocks (lib/station-view.js menu()): an item appears only when its
+         link is configured, so a station edits stations/<id>.json, not this file.
+         Schedule, Donate and Privacy keep their ids for app.js, which opens them
+         in-app; their hrefs stay real for open-in-new-tab. -->
+      <nav class="menu-nav">{{menu.nav}}
       </nav>
 
       <div class="menu-foot">

@@ -2005,6 +2005,11 @@ const MIME = {
   '.woff2': 'font/woff2',
 };
 
+// Origins the Donate/Privacy modal may frame: exactly those of the profile's links.
+const FRAME_ORIGINS = station
+  ? [...new Set(['donate', 'privacy'].map(k => station.links[k]).filter(Boolean).map(u => new URL(u).origin))].join(' ')
+  : '';
+
 function securityHeaders() {
   return {
     'X-Content-Type-Options': 'nosniff',
@@ -2017,13 +2022,14 @@ function securityHeaders() {
       "script-src 'self'",
       "style-src 'self'",
       "connect-src 'self'",
-      // The Donate button embeds WBAI's real donate page in an iframe. Without
-      // this it falls under `default-src 'self'` and the browser refuses the
+      // Donate and Privacy open the station's real pages in an iframe. Without
+      // this they fall under `default-src 'self'` and the browser refuses the
       // frame outright ("Refused to load ... neither the frame-src directive
-      // nor the default-src directive"), leaving the modal blank. The child
-      // document's own subresources (its fonts, etc.) are governed by its
-      // origin, not ours — CSP does not inherit across a cross-origin frame.
-      "frame-src https://docs.pacifica.org",
+      // nor the default-src directive"), leaving the modal blank. The allowed
+      // origins follow the profile's links, so a station whose donate page
+      // lives elsewhere is not silently blanked. The child document's own
+      // subresources are governed by its origin, not ours.
+      "frame-src " + (FRAME_ORIGINS || 'https://docs.pacifica.org'),
       "frame-ancestors 'self'",
       "base-uri 'self'",
     ].join('; '),
