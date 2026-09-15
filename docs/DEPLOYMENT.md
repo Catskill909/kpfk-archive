@@ -55,6 +55,7 @@ straight from Pacifica; the server fetches feeds and show artwork.
    [usage] counting plays and page views (no identifiers, no search terms)
    [pacifica] KPFK: catalog, schedule and now-playing from https://archive.kpfk.org (no XML harvest)
    KPFK Archive server listening on :8080
+   [pacifica] archive ready: ~1000 episodes (schedule, ~143 hidden)
    ```
 7. **Redeploy once more** (no code change needed) and compare `/healthz` again.
    Only a second boot can prove the volume persists.
@@ -72,7 +73,7 @@ curl -s https://<domain>/healthz
 | --- | --- |
 | `station` / `provider` | `"kpfk"` / `"pacifica-json"` |
 | `ready` | `true` |
-| `archiveFilter.basis` | `"schedule"` (the archive shows scheduled programs only). `"primary-channel"` means no schedule could be loaded — check outbound access to `archive.kpfk.org`. |
+| `archiveFilter.basis` | `"schedule"` (the archive shows scheduled programs only). `"pending"` for the first seconds after boot is normal. `"primary-channel"` means no schedule could be loaded — check outbound access to `archive.kpfk.org`. |
 | `storage.writable` | `true`. `false` = mount permissions; the container runs as uid `node`. |
 | `storage.mounted` | `true`. **`false` = nothing mounted at `/app/data`; everything dies with the container. Go back to step 5.** |
 | `storage.anonymousVolume` | `false`. `true` = Docker made a throwaway volume; it will be replaced next deploy. |

@@ -107,7 +107,17 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   assert.doesNotMatch(logs, /UNEXPECTED_UPSTREAM/);
   const identity = health.storage.instanceId;
   child.kill(); await new Promise(resolve => child.once('exit', resolve)); online = false;
-  await boot(); const recovered = await (await fetch(url + '/api/archive')).json();
+  await boot();
+  // Straight after a (re)deploy nobody has asked for the archive yet, and that is
+  // when /healthz gets read. The boot warm-up alone must settle the filter on
+  // "schedule" — never report the outage fallback for a healthy start.
+  let basis = null;
+  for (let i = 0; i < 100 && basis !== 'schedule'; i++) {
+    basis = ((await (await fetch(url + '/healthz')).json()).archiveFilter || {}).basis;
+    if (basis !== 'schedule') await sleep(30);
+  }
+  assert.equal(basis, 'schedule', 'boot warm-up settles the archive filter without a visitor');
+  const recovered = await (await fetch(url + '/api/archive')).json();
   // Offline restart: the saved schedule, not just the saved catalog, must come
   // back — a primary-channel fallback here would change both count and revision.
   assert.equal(recovered.revision, archive.revision); assert.equal(recovered.count, expected.episodes);

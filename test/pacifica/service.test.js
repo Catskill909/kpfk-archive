@@ -120,6 +120,10 @@ function fixtureService(t, fail = () => false) {
 test('archive() serves exactly the scheduled programs; the catalog mirror keeps everything', async t => {
   const service = fixtureService(t);
   const catalog = await service.catalog();
+  // Not yet measured: must not claim a schedule outage ("primary-channel"), and must not serve uploads.
+  const early = service.peekArchive();
+  assert.equal(early.filter.basis, "pending");
+  assert.equal(early.shows.filter(r => r.archiveSource === "2kpfk").length, 0);
   const index = await service.schedule();
   const scheduled = new Set();
   for (const w of index.weeks) (await service.schedule(w.weekStart)).days.forEach(d => d.slots.forEach(s => scheduled.add(s.showKey)));

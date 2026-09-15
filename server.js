@@ -3483,8 +3483,9 @@ const server = http.createServer(async (req, res) => {
         provider: station ? station.provider : 'legacy-xml',
         ready: pacifica ? !!pacifica.peekCatalog() : true,
         pacifica: pacifica ? pacifica.health() : undefined,
-        // basis "schedule" is normal; "primary-channel" means no published
-        // schedule could be loaded and the archive fell back to on-air shows.
+        // basis "schedule" is normal; "pending" only in the first seconds after
+        // boot; "primary-channel" means no published schedule could be loaded
+        // and the archive fell back to on-air shows.
         archiveFilter: pacifica ? (pacifica.peekArchive() || {}).filter : undefined,
         // Answers "is persistent storage actually working?" from outside, which
         // is the only place it can be answered — see identifyVolume() and
@@ -3540,6 +3541,13 @@ if (require.main === module) {
   server.listen(PORT, () => {
     console.log(`${station ? station.name : 'WBAI'} Archive server listening on :${PORT}`);
     refreshProgramsIfStale();
+    // Measure scheduled-program membership now rather than on the first visitor,
+    // so /healthz and the show-info index settle on basis "schedule" within
+    // seconds of a deploy. A failure here is not fatal (the first request
+    // retries), but it is logged: it usually means no outbound access to the feeds.
+    if (pacifica) getArchive()
+      .then(data => console.log(`[pacifica] archive ready: ${data.count} episodes (${data.filter.basis}, ${data.filter.hiddenEpisodes} hidden)`))
+      .catch(e => console.error('[pacifica] archive warm-up failed:', e.message));
   });
 }
 
