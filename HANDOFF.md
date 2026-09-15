@@ -25,9 +25,9 @@ station profile and a new provider layer.
 | | |
 | --- | --- |
 | Folder | `/Users/paulhenshaw/Desktop/kpfk-archive` |
-| Branch | `kpfk-json` |
-| Commits | **None yet.** All KPFK work is uncommitted on top of WBAI `f2ea8e8`. Run `git status` before anything destructive. |
-| Remotes | Only `wbai-baseline` → the local WBAI folder. **No publishing remote. Do not push to it.** |
+| Branch | `main` (was `kpfk-json` locally before the first push) |
+| Commits | KPFK conversion is commit `f7f6222` on top of WBAI's full history (`f2ea8e8`). |
+| Remotes | `origin` → https://github.com/Catskill909/kpfk-archive (push here). `wbai-baseline` → the local WBAI folder — **never push to it.** |
 | Deploy | Never deployed. No host, no volume, no Coolify app. |
 | WBAI | Separate folder, port 8080, own data. Do not touch it from here. |
 
@@ -125,9 +125,7 @@ what came back:
 
 ## Remaining work (from the implementation checkpoint, in rough order)
 
-1. **Commit the work.** Nothing is committed. Keep commits small and revertable;
-   don't stage `data/`.
-2. **Rewrite `CLAUDE.md` for KPFK** (port 8081, JSON provider, the docs above)
+1. **Rewrite `CLAUDE.md` for KPFK** (port 8081, JSON provider, the docs above)
    and retire or rename `@handoff.md`.
 3. Live/archive audio checks in a real browser: sleep/resume, Media Session, and
    an observed program transition. Adapt `test/live-stream` to KPFK and run
