@@ -84,30 +84,44 @@ Each file is daily counters and nothing else:
    scratch file that held it, was deleted from the Mac. It was never committed
    (`.env.*` is git-ignored) and nothing read it, so the value now exists **only** in
    Coolify's env. `.env.example` remains — a template, no secrets.
-1. **Exports — the next development.** Specified 2026-09-15 in
-   [docs/exports.md](docs/exports.md), no code written. Four datasets (listening,
-   inventory, coverage, profile) in CSV, JSON and a printable report, downloaded from
-   `/studio` by station staff. Built for Pacifica and every station running this
-   software, not just KPFK. Phase 1 is `listening` in CSV + JSON.
-2. **Backups — already covered, do not re-raise.** The VPS has snapshots and full
+1. **Exports — next build, planned and ready to implement.**
+   [docs/exports.md](docs/exports.md) holds the product spec *and* a phase 1 build
+   plan: six ordered steps with file anchors, eight acceptance criteria, seven tests
+   with how each is shown to fail, and the verification ritual. Decisions locked with
+   Paul 2026-09-15: **calendar months + all time** (not rolling windows — a board asks
+   for "September"), **UTC day buckets left alone and labelled `date_utc`** (they
+   cannot be re-split after the fact; the manifest also states the station timezone,
+   `America/Los_Angeles`), and **phase 1 only** — `listening` as CSV + JSON with a
+   download section in `/studio`. Four datasets eventually (listening, inventory,
+   coverage, profile), CSV + JSON + a printable report, built for every Pacifica
+   station, not just KPFK. **No new persisted state is needed:** titles for shows that
+   have left the schedule come from `peekCatalog().directory`, the untouched mirror.
+2. **Station settings in the studio — spec not yet written.** Paul, 2026-09-15: the
+   **station timezone should be settable in the admin panel** rather than only in
+   `stations/kpfk.json`. This would be the studio's first setting that *writes station
+   configuration*, so it needs an override file on the data volume, precedence rules
+   against the profile, validation, and it moves schedule rendering as well as
+   reporting. Deliberately kept separate from the export build. Exports do not depend
+   on it — they report whatever timezone is in force when they run.
+3. **Backups — already covered, do not re-raise.** The VPS has snapshots and full
    backups for 10 days (Paul, 2026-09-15), so `tools/backup-data.sh` is redundant for
    disaster recovery. What snapshots do *not* give anyone is a portable, readable,
    longer-than-10-days copy — that is what the export above is for, and it is a
    reporting feature, not a backup feature.
-3. **Artwork:** 20 scheduled programs have an empty catalog `photoUrl`, and Confessor has
+4. **Artwork:** 20 scheduled programs have an empty catalog `photoUrl`, and Confessor has
    no image for them either. Examples: Something's Happening ×6, Counterspin, Radio Maiz,
    Contacto Ancestral, Making Contact. KPFK staff need to upload it in Confessor; it then
    appears automatically. Evidence: `docs/kpfk/artwork-evidence-2026-09-15/`.
-4. **Android app link** is Google Play *closed testing*. Swap `links.androidApp` for the
+5. **Android app link** is Google Play *closed testing*. Swap `links.androidApp` for the
    public listing once it exists.
-5. **Browser test suites** (`test/live-stream` normal + `--strict`, `test/ui`,
+6. **Browser test suites** (`test/live-stream` normal + `--strict`, `test/ui`,
    `test/schedule`, `test/episode-rail`, `test/share`, `test/touch`, `test/motion`)
    are inherited from WBAI and not adapted. Until they are, check Listen Live and one
    archive episode on a real phone after player changes.
-6. **Docs:** WBAI-era docs in `docs/` (ARCHITECTURE, DEVELOPMENT, schedule-dev, …)
+7. **Docs:** WBAI-era docs in `docs/` (ARCHITECTURE, DEVELOPMENT, schedule-dev, …)
    describe WBAI's XML/scrape design. They're marked in `docs/README.md`; rewrite each
    when you next touch its area.
-7. From the original plan (`docs/kpfk/implementation.md`): program-only deep links,
+8. From the original plan (`docs/kpfk/implementation.md`): program-only deep links,
    studio source-health wording for JSON feeds, desktop (Tauri) KPFK build. None block
    the live web app. **Still WBAI-shaped in the studio's System panel:** "Programs 0"
    (the scraped `/programlist/` directory, which KPFK does not use) and "Records on disk

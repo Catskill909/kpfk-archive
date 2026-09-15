@@ -172,9 +172,146 @@ Per CLAUDE.md §3a — assert the effect, not the declaration:
 6. **Empty windows:** a station with no data yet exports headers and zero rows, not
    an error and not an empty file.
 
-## Phases
+## Decisions, locked 2026-09-15 (Paul)
 
-1. `listening` in CSV + JSON, studio download section. The one that matters.
-2. `inventory` and `coverage`.
-3. Printable report.
+| Decision | Choice | Why it was a decision |
+| --- | --- | --- |
+| Reporting period | **Calendar months, plus all time** | A board or a funder asks for "September 2026", never "the last 30 days". Stats are already one file per month, so this is also the cheapest to build. Rolling windows stay on the dashboard, where they belong. |
+| Day boundary | **Leave UTC, label it `date_utc`** | Counters are bucketed per UTC day at write time (`server.js:2385`) and **cannot be re-split afterwards** — a UTC day cannot be reassigned to two Pacific days. Shifting boundaries on export would misattribute the edges silently. The manifest states both the bucket (UTC) and the station timezone (`America/Los_Angeles`). |
+| Tomorrow's scope | **Export phase 1 only** | The studio settings panel (below) introduces the first config *write*; keeping them apart keeps each one verifiable. |
+
+**Related dev, tracked separately:** Paul wants the **station timezone settable in
+the studio** rather than living only in `stations/kpfk.json`. That is the studio's
+first setting that writes station configuration — it needs an override stored on the
+data volume, precedence against the profile, validation, and it moves schedule
+rendering as well as reporting. Own spec, own day. Exports do not block on it: they
+report the timezone in force at generation time, whatever sets it.
+
+## Phase 1 — build plan
+
+**Goal:** a station manager signs in to `/studio`, picks a month, clicks once, and
+opens the result in Excel or Sheets.
+
+**In scope:** the `listening` dataset, CSV + JSON, calendar month or all time, a
+download section in the studio. **Out of scope:** the other three datasets, the
+printable report, zip bundling, the settings panel.
+
+### What exists already (nothing here is new work)
+
+| Need | Where it is |
+| --- | --- |
+| Month files on disk, newest live from memory | `listStatsMonths()` `server.js:2600`, `statsMonthDays(m)` `server.js:2612` |
+| Per-day counters | the day records in those files — see "What `stats/` is" in HANDOFF |
+| Per-show plays and seconds | `byShow` / `secondsByShow` in each day record; sum with `sumBySlug()` `server.js:2580` |
+| Show titles | `episodeRecords()` `server.js:1719`; **fall back to `pacifica.peekCatalog().directory`** for shows that have left the schedule — the catalog is an untouched mirror, so it can still name them (`lib/pacifica/service.js:188`) |
+| Auth + no-store headers | `studioAuthed()` `server.js:2844`, `sendStudioJson()` `server.js:2909` |
+| Route table | `studioApi()` `server.js:3278` |
+| Studio page + picker pattern | `admin/studio.html` (`.win-picker`), `public/studio.js:842` |
+
+### Steps, in order
+
+**1. `lib/export/csv.js` — the CSV writer.** One exported function,
+`toCsv(columns, rows)`. RFC 4180 quoting (quote when the value holds a comma, quote,
+CR or LF; double the quotes inside), `\r\n` line endings, UTF-8 **with BOM** so Excel
+does not mangle `Español`. Numbers unquoted and unrounded. No dependency, no
+streaming — the largest realistic file is a few thousand rows.
+*Done when:* unit tests cover a comma, a quote, a newline, a non-ASCII title and an
+empty value, and the BOM is the first three bytes.
+
+**2. `buildListeningExport({ month | all })` in `server.js`** — one pure function
+returning the whole export as data, so both formats and every test read the same
+object. Three tables plus a manifest:
+
+- **`daily`** — one row per day in the period, **including days with no activity**
+  (a gap is information; a sparse file reads as a rendering hole).
+  Columns: `station`, `date_utc`, `page_views`, `episode_plays`, `live_tune_ins`,
+  `searches`, `shares`, `seconds_listened_on_demand`, `seconds_listened_live`.
+- **`shows`** — one row per show key seen in the period.
+  Columns: `station`, `show_key`, `show_title`, `plays`, `seconds_listened`.
+  Ranked by seconds, like the dashboard. `show_title` falls back through
+  `episodeRecords()` → catalog directory → empty string, **never the key** (the
+  2026-09-15 bug; an empty cell is honest, a key masquerading as a title is not).
+- **`reach`** — one row per timezone bucket: `station`, `bucket`, `label`, `page_views`.
+  Labels come from the server, as they do today, so a file cannot describe a zone as
+  a city.
+- **`manifest`** — `station`, `station_timezone` (`America/Los_Angeles`),
+  `schema_version` (`1`), `generated_at`, `period` (`2026-09` or `all`),
+  `days_covered`, `bucketing: "UTC calendar day"`, the no-identifier statement in
+  plain words, and one line per column explaining it.
+
+*Done when:* for any month, the function's totals equal `usageReport()`'s totals for
+the same days — the export and the dashboard can never disagree.
+
+**3. `GET /api/studio/exports`** — what the picker needs: available months (from
+`listStatsMonths()`, newest first, with a row count each), plus the datasets and
+formats this build supports. Lets the UI offer only periods that exist.
+
+**4. `GET /api/studio/export?dataset=listening&period=2026-09&format=csv|json`**
+- `studioAuthed` first, like every other studio read; 401 signed out.
+- `period` validated against the months actually on disk plus `all` — an arbitrary
+  string never reaches the file layer.
+- CSV: `?table=daily|shows|reach` picks one of the three (CSV holds one table).
+  Omitted → `daily`. JSON: all three plus the manifest in one file.
+- Headers: `Content-Type` (`text/csv; charset=utf-8` / `application/json`),
+  `Content-Disposition: attachment; filename="kpfk-listening-daily-2026-09.csv"`,
+  `Cache-Control: private, no-store`, `Vary: Cookie`, plus `securityHeaders()`.
+- A GET and idempotent — CSRF and cooldowns are for actions, and this only reads.
+
+**5. Studio UI — a "Downloads" section** in `admin/studio.html` + `public/studio.js`.
+Month `<select>` (+ "All time") populated from step 3, then plain `<a download>`
+links for: Daily CSV, Shows CSV, Reach CSV, Everything (JSON). Anchors, not
+`fetch()` — the browser's own download path needs no blob handling and no JS to go
+wrong. One sentence under the heading: what a station gets and that it contains no
+personal data. The section is hidden when the station has no stats yet.
+
+**6. Docs in the same commit:** README line (the studio can export usage data, still
+no identifiers), this file's status, HANDOFF session log.
+
+### Acceptance criteria
+
+1. Signed out, every export URL answers **401**.
+2. September's Daily CSV opens in Excel and Sheets with `Español` intact and columns
+   aligned.
+3. The CSV's summed `episode_plays` **equals** the dashboard's plays for the same
+   month — checked in a test, not by eye.
+4. A show that has left the schedule still exports with its title; a show nothing can
+   name exports with an **empty** title cell, never a key.
+5. A month with no activity exports headers and zero-filled days, not an error.
+6. Filenames identify station, dataset, table and period without being opened.
+7. `npm test` green, including the new suites; the no-identifier test has been **seen
+   to fail** with a planted column.
+8. Verified on the live deploy after redeploy, with a real download opened.
+
+### Tests (`test/pacifica/export.test.js`, registered in `tools/run-tests.js:14`)
+
+Carrying the six from the test plan above, made concrete:
+
+| Test | Shown to fail by |
+| --- | --- |
+| CSV totals equal `usageReport()` totals | perturbing one day's counter |
+| Every show row has a title, never a key | the pre-fix title lookup |
+| Column allow-list — no field outside the documented set | planting an `ip` column |
+| Quoting: comma, quote, newline, `Español`, empty | removing the quote escape |
+| 401 signed out on every export route | — |
+| Empty month → headers + zero rows, not an error | — |
+| `period` rejects anything not on disk (`../`, `2026-99`) | — |
+
+### Verification ritual (CLAUDE.md §1, §2)
+
+`node --check` → restart **8081 only** → `npm test` → headless studio render to prove
+the browser ran the new bundle (the pattern used on 2026-09-15: compare
+`/studio.js?v=` against `/healthz` `studioVersion`) → commit → push → Coolify
+redeploy → live audit with a real file downloaded and opened.
+
+### Rough shape of the work
+
+Steps 1–2 are the substance (a writer plus one pure builder). Steps 3–4 are small
+once 2 exists. Step 5 is markup and a select. The tests are comparable in size to
+the builder. Half a focused day, and phases 2–4 inherit the writer, the manifest,
+the route and the download UI — each later dataset is then mostly its column list.
+
+## Later phases
+
+2. `inventory` and `coverage` — new column lists on the phase 1 machinery.
+3. Printable report (`/studio/report`, print stylesheet, browser Save as PDF).
 4. `profile`, and the cross-station notes for Pacifica.
