@@ -130,7 +130,18 @@ and the host's outbound network. Those are what steps 6–7 verify.
 
 ## Backups
 
-Neither Coolify nor the app backs anything up. On the VPS:
+**The VPS already has snapshots and full backups on a 10-day rolling window**
+(Paul, 2026-09-15), so disaster recovery is covered and the script below is
+optional. Neither Coolify nor the app backs anything up by itself.
+
+Two things snapshots do *not* do, and which to reach for instead:
+
+- **Restore one app without touching the others.** The script below pulls just this
+  container's `/app/data`, so you are not rolling the whole host back.
+- **Give anyone a readable copy, or one older than 10 days.** That is a reporting
+  need, not a backup need — see [exports.md](exports.md).
+
+On the VPS:
 
 ```sh
 CONTAINER=<coolify-container-name> ./tools/backup-data.sh /backups

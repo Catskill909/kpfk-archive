@@ -13,6 +13,7 @@ Current state and working rules live at the repo root: [HANDOFF.md](../HANDOFF.m
 | Doc | What it covers |
 | --- | --- |
 | [DEPLOYMENT.md](DEPLOYMENT.md) | Coolify setup, the `/app/data` volume, `/healthz` checks, backups |
+| [exports.md](exports.md) | **Specified, not built.** Station/Pacifica data exports from `/studio` — datasets, formats, routes, test plan |
 | [kpfk/architecture.md](kpfk/architecture.md) | JSON provider contracts and decision record |
 | [kpfk/implementation.md](kpfk/implementation.md) | Phase plan and implementation checkpoints |
 | [kpfk/verification.md](kpfk/verification.md) | Contract, service and browser test matrices; release checklist |

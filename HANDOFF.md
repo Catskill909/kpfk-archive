@@ -41,6 +41,37 @@ KPFK's on-demand archive, read entirely from Pacifica's public JSON feeds
 - **App is JSON-only.** Feed problems go to Otis (Pacifica feed developer), not to
   scraping. Paul has discussed the known feed bugs with him.
 
+## What `stats/` is
+
+It comes up constantly, so: `stats/` is a folder **inside the storage volume**
+(`/app/data/stats/`) holding **one small JSON file per calendar month**
+(`2026-09.json` — hundreds of bytes to a few KB). It has no URL; it is not served.
+That file is the entire usage database. There is no database server and no log files.
+
+Each file is daily counters and nothing else:
+
+```json
+"2026-09-15": { "pageviews": 22, "plays": 1, "live": 2, "searches": 2, "shares": 0,
+  "listenSeconds": 265, "liveSeconds": 264,
+  "byShow": { "kpfk.kpfk.somethihappenihour": 1 },
+  "secondsByShow": { "kpfk.kpfk.somethihappenihour": 1 },
+  "byZone": { "national": 22 } }
+```
+
+- **No identifier of any kind** — no IP, cookie, session, device, user agent, and
+  never the words typed into search (only that a search happened). The visitor IP is
+  used once in memory for a rate limit, HMAC'd with a salt regenerated each boot and
+  never written. `byZone` is the browser's own clock reduced to three buckets; the
+  real timezone is discarded on arrival. The README states this publicly — change the
+  README in the same commit if collection ever changes.
+- **Why it is called irreplaceable:** it is the only thing this app *creates*.
+  `pacifica/` is a copy of feeds Pacifica will hand back; `stats/` cannot be
+  reconstructed from anywhere if it is lost.
+- **Who reads it:** the studio's Listening section, Most listened shows and Reach.
+  Monthly rollups are kept forever (they are tiny); "All time" means "since the
+  oldest file". Counters are flushed to disk every 5s (`STATS_FLUSH_MS`) — the
+  comment above it explains why 60s lost plays in production.
+
 ## Open items, in order
 
 0. **Paul — rotate `STUDIO_PASSWORD` in Coolify.** The live password was pasted
@@ -49,22 +80,30 @@ KPFK's on-demand archive, read entirely from Pacifica's public JSON feeds
    repo or on the Mac reads it.
 1. **Paul:** save the studio password in a password manager, then delete
    `.env.coolify.local` (still present on the Mac; git- and docker-ignored).
-2. **Backups:** on the VPS, `CONTAINER=<coolify container> tools/backup-data.sh /backups`
-   plus the weekly cron line in the script. Not set up yet; `stats/` is irreplaceable.
-3. **Artwork:** 20 scheduled programs have an empty catalog `photoUrl`, and Confessor has
+2. **Exports — the next development.** Specified 2026-09-15 in
+   [docs/exports.md](docs/exports.md), no code written. Four datasets (listening,
+   inventory, coverage, profile) in CSV, JSON and a printable report, downloaded from
+   `/studio` by station staff. Built for Pacifica and every station running this
+   software, not just KPFK. Phase 1 is `listening` in CSV + JSON.
+3. **Backups — already covered, do not re-raise.** The VPS has snapshots and full
+   backups for 10 days (Paul, 2026-09-15), so `tools/backup-data.sh` is redundant for
+   disaster recovery. What snapshots do *not* give anyone is a portable, readable,
+   longer-than-10-days copy — that is what the export above is for, and it is a
+   reporting feature, not a backup feature.
+4. **Artwork:** 20 scheduled programs have an empty catalog `photoUrl`, and Confessor has
    no image for them either. Examples: Something's Happening ×6, Counterspin, Radio Maiz,
    Contacto Ancestral, Making Contact. KPFK staff need to upload it in Confessor; it then
    appears automatically. Evidence: `docs/kpfk/artwork-evidence-2026-09-15/`.
-4. **Android app link** is Google Play *closed testing*. Swap `links.androidApp` for the
+5. **Android app link** is Google Play *closed testing*. Swap `links.androidApp` for the
    public listing once it exists.
-5. **Browser test suites** (`test/live-stream` normal + `--strict`, `test/ui`,
+6. **Browser test suites** (`test/live-stream` normal + `--strict`, `test/ui`,
    `test/schedule`, `test/episode-rail`, `test/share`, `test/touch`, `test/motion`)
    are inherited from WBAI and not adapted. Until they are, check Listen Live and one
    archive episode on a real phone after player changes.
-6. **Docs:** WBAI-era docs in `docs/` (ARCHITECTURE, DEVELOPMENT, schedule-dev, …)
+7. **Docs:** WBAI-era docs in `docs/` (ARCHITECTURE, DEVELOPMENT, schedule-dev, …)
    describe WBAI's XML/scrape design. They're marked in `docs/README.md`; rewrite each
    when you next touch its area.
-7. From the original plan (`docs/kpfk/implementation.md`): program-only deep links,
+8. From the original plan (`docs/kpfk/implementation.md`): program-only deep links,
    studio source-health wording for JSON feeds, desktop (Tauri) KPFK build. None block
    the live web app. **Still WBAI-shaped in the studio's System panel:** "Programs 0"
    (the scraped `/programlist/` directory, which KPFK does not use) and "Records on disk
