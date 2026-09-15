@@ -151,8 +151,10 @@ Artwork is fully analysed in
 - **Export bug:** all 444 schedule slots and now-playing have `photoUrl`
   `https://confessor.kpfk.org/pix`, the prefix with no filename (403). The app
   works around it by joining the catalog image.
-- **Export gap:** two podcast uploads (Bike Talk, Scholars Circle – Podcast) have
-  RSS images the catalog exports as `""`.
+- **Export gap:** 10 uploads (`2kpfk`) have `""` while their on-air twin in the same
+  catalog has art under a different altid. Four of them have episodes: Informativo Pacifica Online,
+  Bike Talk Podcast, Politics Or Pedagogy? 3 min, Scholars Circle – Podcast.
+  Nothing in the JSON links the twins, and the app does not guess by name.
 - There is no default-image field in any feed. `confessor.kpfk.org/pix/KPFK.jpg` is only
   the Confessor page's header logo. The ask is a station-level default in
   `fe_channels.json`. If one arrives, put it in `stations/kpfk.json` (not hardcoded CSS) and

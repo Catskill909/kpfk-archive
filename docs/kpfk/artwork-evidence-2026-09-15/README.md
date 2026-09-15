@@ -42,18 +42,34 @@ Las Americas, Radio Maiz, Senderos de Oaxaca, Something's Happening A hours 1–
 Something's Happening B hours 1–3, Special Music Programming, Special
 Programming.
 
-### 2. Export gap: podcast (`2kpfk`) artwork that exists in RSS is exported as `""`
+### 2. Export gap: uploads (`2kpfk`) don't carry their on-air show's photo
 
-| altid | Show | Episodes | JSON `photoUrl` | Image in the show's RSS (loads, HTTP 200 image/jpeg) |
-| --- | --- | ---: | --- | --- |
-| `biketalk` | Bike Talk Podcast | 13 | `""` | `https://archive.kpfk.org/pix/biketalkpodcast_it_1492.jpg` |
-| `scholacirclepodast` | Scholars Circle - Podcast | 11 | `""` | `https://archive.kpfk.org/pix/scholarscircle-podcast_it_1686.jpg` |
+The catalog **already has** the artwork for these. It sits on the on-air
+(`kpfk`) entry of the same show, under a different `altid`. The upload entry is
+exported with `"photoUrl": ""`. (Found by matching names in
+[`raw/fe_catalog_kpfk.json`](raw/fe_catalog_kpfk.json); spotted by Paul via Bike Talk.)
 
-These are podcast (`_it_`) images kept by the archive, not Confessor show
-photos. The catalog doesn't read them. Other uploads with no image in any
-source: BradCast w/ Brad Friedman, Informativo Pacifica Online, Politics Or
-Pedagogy? 3 min edition, SWANA Podcast, The Out Agenda - Online, and The
-People's Game (on-air source, no schedule slot).
+| Upload entry (`2kpfk`, `photoUrl: ""`) | Episodes | Same show's on-air entry (`kpfk`) — `photoUrl` in the catalog |
+| --- | ---: | --- |
+| `informap` Informativo Pacifica Online | 41 | `infopac` Informativo Pacifica — `…/pix/infopac_med_181.jpg` |
+| `biketalk` Bike Talk Podcast | 13 | `biketalka` Bike Talk — `…/pix/biketalka_med_263.jpg` |
+| `politicorpedagog` Politics Or Pedagogy? 3 min edition | 13 | `politicorpedagoga` Politics Or Pedagogy? — `…/pix/politicorpedagoga_med_272.jpg` |
+| `scholacirclepodast` Scholars Circle - Podcast | 11 | `marmoudian` Scholars Circle — `…/pix/marmoudian_med_167.jpg` |
+| `bibliocracya` Bibliocracy | 0 | `bibliocracy` — `…/pix/bibliocracy_med_153.jpg` |
+| `goharrison` Cary Harrison Files - Podcast | 0 | `caryharrisfiles` — `…/pix/caryharrisfiles_med_374.jpg` |
+| `digitavillagpodcas` Digital Village - Podcast | 0 | `digivil` — `…/pix/digitalvillage_med_133.jpg` |
+| `feministmagazine` Feminist Magazine | 0 | `femmag` — `…/pix/femmag_med_186.jpg` |
+| `flashpointsa` Flashpoints | 0 | `flashpoints` — `…/pix/flashpoints_med_307.jpg` |
+| `poetcafewhypoet` Poet's Cafe | 0 | `poetleber` — `…/pix/poetscafewhypoetry_250.jpg` |
+
+The four with episodes currently render with no artwork in any app reading the
+JSON. Nothing in the JSON links an upload to its on-air show, so an app can
+only guess by name. We don't guess.
+
+Two uploads also have a podcast image in their RSS (`/pix/*_it_*.jpg`, loads):
+Bike Talk Podcast and Scholars Circle - Podcast. Uploads with no image in any
+source and no on-air twin: BradCast w/ Brad Friedman, SWANA Podcast, The Out
+Agenda - Online.
 
 ### 3. Export bug: schedule and now-playing never carry an image filename
 
@@ -78,9 +94,11 @@ It is the page's **header logo** and no show entry uses it as a fallback.
 1. **Schedule + now-playing `photoUrl`:** include the file name
    (`/pix/<slug>_med_<n>.jpg`), matching the catalog. All 444 slots and
    now-playing are currently affected.
-2. **Podcast uploads:** when a show has no Confessor photo but its podcast has an
-   image (`/pix/*_it_*.jpg`), export that in the catalog `photoUrl`, or add a
-   separate field (e.g. `podcastImageUrl`).
+2. **Uploads (`2kpfk`):** export the on-air show's `photoUrl` on its upload
+   entry (e.g. `biketalk` ← `biketalka_med_263.jpg`, `informap` ←
+   `infopac_med_181.jpg`), or add a field linking the upload to its on-air
+   `altid` so apps can use that entry's artwork. If neither exists, the podcast
+   image (`/pix/*_it_*.jpg`) is a reasonable fallback.
 3. **Default artwork:** add a station-level default image to `fe_channels.json`
    (or the `station` block). Apps then have an official fallback for the shows
    with no photo, instead of each app inventing its own.
