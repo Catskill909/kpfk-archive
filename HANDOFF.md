@@ -28,7 +28,7 @@ station profile and a new provider layer.
 | Branch | `main` (was `kpfk-json` locally before the first push) |
 | Commits | KPFK conversion is commit `f7f6222` on top of WBAI's full history (`f2ea8e8`). |
 | Remotes | `origin` → https://github.com/Catskill909/kpfk-archive (push here). `wbai-baseline` → the local WBAI folder — **never push to it.** |
-| Deploy | **Deployment-ready, not yet deployed** (audited 2026-09-15). Next step is Paul creating the Coolify app. See "Deployment" below and `docs/DEPLOYMENT.md`. |
+| Deploy | **Live** at https://kpfk-archive.supersoul.top (Coolify, 2026-09-15). First deploy: named volume mounted, `instanceId` `e4a9aac9-e3dd-4e9b-8c5b-17656032bd0d`, `freshVolume:true`. **Pending:** a redeploy must show the same `instanceId` with `freshVolume:false`; that is the persistence proof. Commits after `e49ee12` (branding, menu) need that redeploy to go live. |
 | WBAI | Separate folder, port 8080, own data. Do not touch it from here. |
 
 Removed in the copy only: WBAI seed/fallback data (`seed/showinfo.json`,
