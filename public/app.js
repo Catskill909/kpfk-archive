@@ -2280,10 +2280,12 @@
   // is silently dropped by the OS.
   var STATION_ARTWORK = [
     {src:'/assets/icon-256.png', sizes:'256x256', type:'image/png'},
-    {src:'/assets/app_icon_1024.png', sizes:'890x890', type:'image/png'}
+    {src:'/assets/app_icon_1024.png', sizes:'1024x1024', type:'image/png'}
   ];
   function artworkFor(photo){
-    return (photo ? [{src:photo, sizes:'any', type:'image/jpeg'}] : []).concat(STATION_ARTWORK);
+    // A show with no artwork carries the SVG placeholder; labelled image/jpeg it
+    // fails to decode on the OS side, so hand over only raster photos.
+    return (photo && !/\.svg(\?|$)/i.test(photo) ? [{src:photo, sizes:'any', type:'image/jpeg'}] : []).concat(STATION_ARTWORK);
   }
 
   // setActionHandler throws on actions a browser doesn't know, so every call is guarded.

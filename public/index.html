@@ -28,7 +28,7 @@
   <meta property="og:title" content="{{station.label}} Archive">
   <meta property="og:description"
     content="Search, stream, and browse {{station.label}}'s on-demand broadcast archive — Free Speech Radio, Pacifica Radio in {{station.city}}.">
-  <meta property="og:image" content="{{station.icon}}">
+  <meta property="og:image" content="{{station.share}}">
   <meta name="twitter:card" content="summary">
   <!-- og:end -->
   <meta name="color-scheme" content="dark light">
@@ -41,8 +41,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="{{station.name}} Archive">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="icon" type="image/svg+xml" href="{{station.icon}}">
-  <link rel="apple-touch-icon" href="{{station.icon}}">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
+  <link rel="apple-touch-icon" href="{{station.touchIcon}}">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/styles.css">
   <!-- Blocking on purpose, and last in <head> so the theme-color metas above are
@@ -56,7 +56,7 @@
 
   <header class="appbar">
     <div class="appbar-inner">
-      <a class="brand" href="#top" aria-label="{{station.name}} 99.5 archive home">
+      <a class="brand" href="#top" aria-label="{{station.name}} {{station.frequency}} archive home">
         <span class="brand-text">
           <img class="brand-logo" src="{{station.logo}}" width="800" height="180" alt="{{station.name}}">
           <span class="brand-name">{{station.frequency}} · Archive</span>

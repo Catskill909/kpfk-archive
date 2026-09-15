@@ -2126,7 +2126,10 @@ function ogTags(req, reqUrl) {
   const abs = (p) => (/^https?:/i.test(p) ? p : origin + p);
   let title = OG_DEFAULT_TITLE;
   let desc = OG_DEFAULT_DESC;
-  let image = abs(station ? station.assets.icon : '/assets/icon-512.png');
+  // The station card is a 1200×630 PNG; crawlers and iMessage ignore SVG, so an
+  // SVG placeholder photo (a show with no artwork) must not replace it.
+  let image = abs(station ? station.assets.share : '/assets/icon-512.png');
+  let large = !!station;
   let pageUrl = origin + '/';
 
   const q = reqUrl.indexOf('?');
@@ -2143,7 +2146,7 @@ function ogTags(req, reqUrl) {
       title = row.title;
       // Same precedence as the info sheet's artwork, so the card matches the
       // page the recipient lands on.
-      if (photo) image = abs(photo);
+      if (photo && !/\.svg(\?|$)/i.test(photo)) { image = abs(photo); large = false; }
       desc = (info.desc || info.shortdesc || '').replace(/\s+/g, ' ').trim();
       if (desc.length > 300) desc = desc.slice(0, 297).trimEnd() + '…';
       if (!desc) desc = (row.dateText ? row.dateText + ' · ' : '') + OG_DEFAULT_TITLE;
@@ -2151,8 +2154,8 @@ function ogTags(req, reqUrl) {
     }
   }
 
-  // summary, not summary_large_image: WBAI's artwork is square (400×400), and a
-  // wide card would letterbox it into a sliver.
+  // A show's own artwork is square, so it gets a `summary` card (a wide card would
+  // letterbox it); the station's 1200×630 share card gets `summary_large_image`.
   return [
     '<meta property="og:type" content="website">',
     `<meta property="og:site_name" content="${htmlAttr(OG_DEFAULT_TITLE)}">`,
@@ -2161,7 +2164,7 @@ function ogTags(req, reqUrl) {
     `<meta property="og:image" content="${htmlAttr(image)}">`,
     `<meta property="og:image:alt" content="${htmlAttr(title)}">`,
     `<meta property="og:url" content="${htmlAttr(pageUrl)}">`,
-    '<meta name="twitter:card" content="summary">',
+    `<meta name="twitter:card" content="${large ? 'summary_large_image' : 'summary'}">`,
     `<meta name="twitter:title" content="${htmlAttr(title)}">`,
     `<meta name="twitter:description" content="${htmlAttr(desc)}">`,
     `<meta name="twitter:image" content="${htmlAttr(image)}">`,

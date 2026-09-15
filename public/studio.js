@@ -648,7 +648,7 @@
         [c.noDescription, 'no harvested description yet',
           'Harvested only while a show is on air, so these fill in as the schedule turns.'],
         [c.noDirectory, 'no match in the program directory',
-          'The feed title and the wbai.org program name differ, or the show is not listed there.'],
+          'The feed title and the station directory name differ, or the show is not listed there.'],
       ].forEach(function (g) {
         if (!g[0].length) return;
         var d = document.createElement('details');

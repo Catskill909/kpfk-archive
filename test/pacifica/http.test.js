@@ -93,6 +93,22 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const detail = await (await fetch(url + '/api/showinfo/kpfk.kpfk.' + expected.programs[0])).json(); assert.ok(detail.info.name);
   const head = await (await fetch(url + '/api/archive/head')).json(); assert.equal(head.revision, archive.revision);
   const home = await (await fetch(url)).text(); assert.match(home, /KPFK/); assert.doesNotMatch(home, /WBAI|wbai\.org|\{\{station\./);
+  assert.doesNotMatch(home, /99\.5/, 'no WBAI frequency, including in accessible names');
+  // Link previews and home screens: every image a crawler, iOS or Android is told
+  // about must be a PNG that actually loads (they ignore SVG).
+  const attr = (html, re) => (html.match(re) || [])[1];
+  const loadsPng = async (src, what) => {
+    const r = await fetch(new URL(src, url)); assert.equal(r.status, 200, `${what} ${src}`);
+    assert.equal(r.headers.get('content-type'), 'image/png', `${what} ${src} is a PNG`);
+  };
+  await loadsPng(attr(home, /<meta property="og:image" content="([^"]+)"/), 'homepage og:image');
+  assert.match(home, /<meta name="twitter:card" content="summary_large_image">/);
+  await loadsPng(attr(home, /<link rel="apple-touch-icon" href="([^"]+)"/), 'apple-touch-icon');
+  const icons = (await (await fetch(url + '/manifest.webmanifest')).json()).icons;
+  assert.ok(icons.length >= 2); for (const icon of icons) await loadsPng(icon.src, 'manifest icon');
+  const noArt = archive.shows.find(r => !(archive.directory[r.sho] || {}).photoUrl);
+  const shared = await (await fetch(url + '/?show=' + encodeURIComponent(noArt.id))).text();
+  await loadsPng(attr(shared, /<meta property="og:image" content="([^"]+)"/), 'share preview for a show with no artwork');
   const settings = await (await fetch(url + '/api/station')).json(); assert.equal(settings.id, 'kpfk');
   assert.doesNotMatch(JSON.stringify(settings), /feeds|origins|password/);
   const manifest = await (await fetch(url + '/manifest.webmanifest')).json(); assert.match(manifest.name, /KPFK/);

@@ -30,7 +30,9 @@
   },
   "assets": {
     "logo": "/assets/kpfk-logo.png",
-    "icon": "/assets/kpfk-artwork-placeholder.svg"
+    "icon": "/assets/kpfk-artwork-placeholder.svg",
+    "share": "/assets/kpfk-share.png",
+    "touchIcon": "/assets/apple-touch-icon.png"
   },
   "categories": {
     "Arts & Entertainment": "arts",
