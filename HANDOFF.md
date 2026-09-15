@@ -12,8 +12,8 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 | --- | --- |
 | Live | **https://kpfk-archive.supersoul.top** — Coolify app "KPFK Archive", Dockerfile build, container port 8080 |
 | Repo | https://github.com/Catskill909/kpfk-archive · `main` · push to `origin` only (never `wbai-baseline`) |
-| Deploy | Manual Coolify redeploy after push. Last verified deploy includes everything through `761816b` (studio titles), audited live 2026-09-15 evening |
-| Storage | Named volume `…-kpfk-archive-data` at `/app/data`. **Persistence proven twice** 2026-09-15: `instanceId` `e4a9aac9-e3dd-4e9b-8c5b-17656032bd0d` unchanged across two redeploys, `freshVolume:false`, and the usage counters kept counting across both |
+| Deploy | Manual Coolify redeploy after push. Last verified deploy includes everything through `fb3168a` (studio cards), audited live 2026-09-15 23:03 UTC |
+| Storage | Named volume `…-kpfk-archive-data` at `/app/data`. **Persistence proven across three redeploys** 2026-09-15: `instanceId` `e4a9aac9-e3dd-4e9b-8c5b-17656032bd0d` unchanged every time, `freshVolume:false`, and the usage counters kept counting across all three |
 | Studio | `/studio`, password in Coolify env `STUDIO_PASSWORD` (runtime only — **not** on the Mac and not in the repo; read it from Coolify, never from a file) |
 | Local | `npm start` → http://localhost:8081, `./data` |
 | Tests | `npm test` green: inherited offline suites + 28 Pacifica tests |
@@ -74,36 +74,39 @@ Each file is daily counters and nothing else:
 
 ## Open items, in order
 
-0. **Paul — rotate `STUDIO_PASSWORD` in Coolify.** The live password was pasted
-   into a chat transcript on 2026-09-15 so the studio fix could be verified. Change
-   it in the Coolify env and redeploy. Nothing else needs to change: nothing in the
-   repo or on the Mac reads it.
-1. **Paul:** save the studio password in a password manager, then delete
-   `.env.coolify.local` (still present on the Mac; git- and docker-ignored).
-2. **Exports — the next development.** Specified 2026-09-15 in
+0. **Paul — rotate `STUDIO_PASSWORD` in Coolify. Still outstanding.** The live
+   password was pasted into a chat transcript on 2026-09-15 so the studio fix could be
+   verified, and it still worked at 23:05 UTC that evening. Change it in the Coolify
+   env and redeploy. Nothing else needs to change: the value exists **only** in
+   Coolify — the repo and the Mac have no copy (see below), so there is nothing else
+   to update and nothing to lose by changing it.
+   *Done 2026-09-15:* `.env.coolify.local`, the generated paste-into-Coolify scratch
+   file that held it, was deleted from the Mac. It was never committed (`.env.*` is
+   git-ignored) and nothing read it. `.env.example` remains — a template, no secrets.
+1. **Exports — the next development.** Specified 2026-09-15 in
    [docs/exports.md](docs/exports.md), no code written. Four datasets (listening,
    inventory, coverage, profile) in CSV, JSON and a printable report, downloaded from
    `/studio` by station staff. Built for Pacifica and every station running this
    software, not just KPFK. Phase 1 is `listening` in CSV + JSON.
-3. **Backups — already covered, do not re-raise.** The VPS has snapshots and full
+2. **Backups — already covered, do not re-raise.** The VPS has snapshots and full
    backups for 10 days (Paul, 2026-09-15), so `tools/backup-data.sh` is redundant for
    disaster recovery. What snapshots do *not* give anyone is a portable, readable,
    longer-than-10-days copy — that is what the export above is for, and it is a
    reporting feature, not a backup feature.
-4. **Artwork:** 20 scheduled programs have an empty catalog `photoUrl`, and Confessor has
+3. **Artwork:** 20 scheduled programs have an empty catalog `photoUrl`, and Confessor has
    no image for them either. Examples: Something's Happening ×6, Counterspin, Radio Maiz,
    Contacto Ancestral, Making Contact. KPFK staff need to upload it in Confessor; it then
    appears automatically. Evidence: `docs/kpfk/artwork-evidence-2026-09-15/`.
-5. **Android app link** is Google Play *closed testing*. Swap `links.androidApp` for the
+4. **Android app link** is Google Play *closed testing*. Swap `links.androidApp` for the
    public listing once it exists.
-6. **Browser test suites** (`test/live-stream` normal + `--strict`, `test/ui`,
+5. **Browser test suites** (`test/live-stream` normal + `--strict`, `test/ui`,
    `test/schedule`, `test/episode-rail`, `test/share`, `test/touch`, `test/motion`)
    are inherited from WBAI and not adapted. Until they are, check Listen Live and one
    archive episode on a real phone after player changes.
-7. **Docs:** WBAI-era docs in `docs/` (ARCHITECTURE, DEVELOPMENT, schedule-dev, …)
+6. **Docs:** WBAI-era docs in `docs/` (ARCHITECTURE, DEVELOPMENT, schedule-dev, …)
    describe WBAI's XML/scrape design. They're marked in `docs/README.md`; rewrite each
    when you next touch its area.
-8. From the original plan (`docs/kpfk/implementation.md`): program-only deep links,
+7. From the original plan (`docs/kpfk/implementation.md`): program-only deep links,
    studio source-health wording for JSON feeds, desktop (Tauri) KPFK build. None block
    the live web app. **Still WBAI-shaped in the studio's System panel:** "Programs 0"
    (the scraped `/programlist/` directory, which KPFK does not use) and "Records on disk
@@ -185,3 +188,16 @@ still seen, so the absence is measured, not assumed.
 - **Not an exposure:** `/data/stats/` answers 200 only because any extensionless path
   falls back to `index.html`. Real files under `/data/` 404. `stats/` is a directory
   *inside* the volume, with no URL.
+
+**Live audit of the `fb3168a` deploy** (booted 2026-09-15 23:03 UTC):
+- **Deploy is real:** live studio bundle moved `ac50-…` → `aeb1-…`; `studio.js` and
+  `app.js` served byte-identical to the repo.
+- **Payload:** `totals.bytes` null, `coverage.directoryPrograms` and `noDirectory`
+  absent, `withDescription` 99/99 kept, measurable totals still real (1,005 episodes,
+  990h, 8 categories), zero slug-shaped titles in usage, table or thinnest.
+- **Browser proof** against `/studio.js?v=aeb1-mu3a29kd`, the bundle the live page
+  loaded: tiles `Shows · Episodes · Audio held · Categories · Window` (no size tile),
+  Coverage `99 / 99 · 100%`, no empty gap lists, no page errors.
+- **Storage:** same `instanceId`, `freshVolume:false` — third redeploy running, and
+  the counters kept counting (7 plays, 3,271s listened by then).
+- **Feeds:** all ready, none stale, no errors; catalog grew to 1,147 episodes.
