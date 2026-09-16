@@ -278,6 +278,7 @@ Paul: dark-edged artwork made the gallery cards look ragged on the cream page. B
 | `e0b35c7` | Mat `#f4eee6` — deployed, but invisible at normal distance against the white listing panel |
 | `f9d0abf` | Mat `var(--surface-3)`, outline 16% / 18% hover — chosen from four tints rendered side by side |
 | `a85deb9` | Shadows are the header pills' `--elev-1` / `--elev-2`; darker, taller title scrim so artwork lettering stops competing with the card title |
+| `9ea69da` | List view: `.show-thumb` gets the same container at 60px — 3px `--surface-3` mat as an inset spread shadow, placeholder background clipped to the content box (no station asset path in the block), image inset by the mat |
 
 - **Scoping:** every rule is written twice — `:root[data-theme="light"]` and, inside
   `@media (prefers-color-scheme: light)`, `:root:not([data-theme])` — because
