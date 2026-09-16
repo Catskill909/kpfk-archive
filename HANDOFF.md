@@ -293,9 +293,19 @@ Paul: dark-edged artwork made the gallery cards look ragged on the cream page. B
   `X-App-Version` = `/healthz`; `instanceId` `e4a9aac9…` unchanged, `freshVolume:false`;
   all feeds ready, filter `schedule`.
 - Ported to WBAI the same day as one block (same tokens, same theme logic).
-- *Noticed, not touched (it is dark-mode behaviour):* with reduced motion, a dark-mode card
-  still lifts on hover — `.card-wrap:hover .card.card-art.play-btn` outranks the
-  reduced-motion `transform:none`.
+
+**Loose ends tied up the same evening (Paul: "so they don't get lost"):**
+
+| Commit | Change |
+| --- | --- |
+| `854bc06` | **`/healthz` false "stale".** Feeds refresh lazily (no timer), but `health()` called "older than TTL" stale, so now-playing (15s TTL) read stale most of every minute and the catalog/schedule did whenever the site was quiet. `isStale(s)` = last refresh failed. Test `health: idle past TTL is not stale; a failed refresh is` failed on the old code. WBAI has no Pacifica layer — not affected |
+| `f469381` | **Reduced motion still lifted dark-mode cards.** The override `.card-art.play-btn:hover` (0,3,0) lost to the lift `.card-wrap:hover .card.card-art.play-btn` (0,5,0); it now names the lift's selector. Paul approved touching dark mode for this. New suite `test/motion/reduced-motion-hover-tests.js` (wired into `test/motion/run.sh`, `APP_URL` for :8081) hovers every `:hover` rule that sets a transform and fails if the element's position changes; it failed on the old CSS and found no other instance. It lists what it can't reach (live-player controls, pseudo-elements) |
+| `8bcb524` | Light-mode container for the last three artworks: player bar, the sheet's docked mini player, the past-episodes header (3px mat; image is in flow, so the mat is padding) |
+
+Probe lessons from this round: **pin a probe to a show by title** — "first row" changed
+*mid-run* when a new episode arrived and made dark mode look changed; and a desktop
+sheet screenshot needs ~3s to settle. The scratch probes live only in the session
+scratchpad; the reduced-motion suite is the one that became a real test.
 
 ## Next: port the exports to WBAI (Paul, 2026-09-16)
 
