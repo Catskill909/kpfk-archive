@@ -966,6 +966,47 @@
         .catch(function () { /* the health panel below reports the outage */ });
     }
 
+    /* ---------------- downloads ----------------
+       Periods come from the server — only months that exist on disk, newest
+       first, plus all time — so the picker can never offer a file that would
+       be refused. Loaded once: a new month appears on the next page load. */
+    function monthName(m) {
+      var d = new Date(Date.UTC(+m.slice(0, 4), +m.slice(5, 7) - 1, 1));
+      return d.toLocaleDateString(undefined, { month: 'long', year: 'numeric', timeZone: 'UTC' });
+    }
+    function loadExports() {
+      var section = document.getElementById('downloads');
+      var select = document.getElementById('exportPeriod');
+      if (!section || !select) return;
+      function relink() {
+        [].forEach.call(document.querySelectorAll('#exportLinks a'), function (a) {
+          var q = 'dataset=listening&period=' + encodeURIComponent(select.value)
+            + '&format=' + a.getAttribute('data-format');
+          if (a.getAttribute('data-table')) q += '&table=' + a.getAttribute('data-table');
+          a.href = '/api/studio/export?' + q;
+        });
+      }
+      fetch('/api/studio/exports', { headers: { 'Accept': 'application/json' } })
+        .then(function (res) { return res.ok ? res.json() : null; })
+        .then(function (x) {
+          if (!x || !x.hasData) return;
+          select.textContent = '';
+          x.months.forEach(function (m) {
+            var o = el('option', '', monthName(m.month));
+            o.value = m.month;
+            select.appendChild(o);
+          });
+          var all = el('option', '', 'All time');
+          all.value = 'all';
+          select.appendChild(all);
+          select.addEventListener('change', relink);
+          relink();
+          section.hidden = false;
+        })
+        .catch(function (e) { console.error('[studio] exports index failed:', e); });
+    }
+    loadExports();
+
     function load() {
       loadUsage();
 

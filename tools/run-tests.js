@@ -12,5 +12,5 @@ for (const file of legacy) {
   if (result.status !== 0) process.exit(result.status || 1);
 }
 const result = spawnSync(process.execPath, ['--test', 'test/pacifica/normalize.test.js', 'test/pacifica/service.test.js',
-  'test/pacifica/http.test.js', 'test/pacifica/branding.test.js', 'test/pacifica/menu.test.js'], { cwd: root, env, stdio: 'inherit' });
+  'test/pacifica/http.test.js', 'test/pacifica/branding.test.js', 'test/pacifica/menu.test.js', 'test/pacifica/export.test.js'], { cwd: root, env, stdio: 'inherit' });
 process.exit(result.status || (result.error ? 1 : 0));

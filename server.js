@@ -20,6 +20,8 @@ const path = require('path');
 const crypto = require('crypto');
 const { loadProfile, publicProfile } = require('./lib/station-config');
 const stationView = require('./lib/station-view');
+const { toCsv } = require('./lib/export/csv');
+const listeningExport = require('./lib/export/listening');
 const station = process.env.STATION_PROFILE
   ? loadProfile(process.env.STATION_PROFILE, { root: __dirname, allowLocal: process.env.PACIFICA_TEST_LOCAL === '1' }) : null;
 if (require.main === module && !station && process.env.STATION_PROVIDER !== 'legacy-xml') {
@@ -2633,22 +2635,21 @@ function usageWindowFromUrl(url) {
   return USAGE_WINDOWS.has(n) ? n : 30;
 }
 
+/** The words a reach bucket is shown as — here and in exports alike. */
+function zoneLabel(b) {
+  return b === 'local' ? STATION_TZ
+    : b === 'national' ? 'Elsewhere in the US'
+    : b === 'intl' ? 'International'
+    : 'Not reported';
+}
+
 /** Recent days, newest last, plus the totals the dashboard leads with. */
 function usageReport(days = 30) {
   const out = [];
   const window = recentDays(days);
-  for (const { day: d, rec } of window) {
-    out.push({
-      day: d,
-      pageviews: rec ? rec.pageviews : 0,
-      plays: rec ? rec.plays : 0,
-      live: rec ? rec.live : 0,
-      searches: rec ? rec.searches : 0,
-      shares: rec ? rec.shares : 0,
-      listenSeconds: (rec && rec.listenSeconds) || 0,
-      liveSeconds: (rec && rec.liveSeconds) || 0,
-    });
-  }
+  // dayCounters is shared with the listening export, so the dashboard and a
+  // downloaded file read a day record the same way.
+  for (const { day: d, rec } of window) out.push({ day: d, ...listeningExport.dayCounters(rec) });
   const byShow = sumBySlug(window, 'byShow');
   const secsByShow = sumBySlug(window, 'secondsByShow');
   // Reach. Goes through sumBySlug for the same reason every other total does —
@@ -2677,10 +2678,7 @@ function usageReport(days = 30) {
       total: zoneTotal,
       buckets: ZONE_BUCKETS.map((b) => ({
         key: b,
-        label: b === 'local' ? STATION_TZ
-          : b === 'national' ? 'Elsewhere in the US'
-          : b === 'intl' ? 'International'
-          : 'Not reported',
+        label: zoneLabel(b),
         count: byZone.get(b) || 0,
         pct: zoneTotal ? Math.round(((byZone.get(b) || 0) / zoneTotal) * 1000) / 10 : 0,
       })),
@@ -2741,6 +2739,95 @@ function showHistory(slug) {
     title: (rec && rec.channel && rec.channel.title) || slug,
     months,
   };
+}
+
+// ------------------------------------------------------------- exports
+/**
+ * Downloads for the studio — phase 1 is the `listening` dataset only. The
+ * shape and every decision behind it are in docs/exports.md; the data work is
+ * the pure builder in lib/export/listening.js, and this is only the plumbing.
+ */
+
+/**
+ * A show title for a file that leaves the building, or '' — never an id.
+ *
+ * The archive first, then the untouched catalog mirror, which still names a
+ * show that has left the published schedule. Both sources fill a missing name
+ * with the bare altid (normalizeCatalog: `name || altid`), which is right for
+ * a screen that must print something and wrong for a spreadsheet, where it
+ * reads as a real title. An empty cell is honest; the 2026-09-15 slug bug was
+ * the dishonest version.
+ */
+function exportShowTitle(key) {
+  const named = (t) => {
+    const title = String(t || '').trim();
+    return title && title !== key && title !== key.split('.').pop() ? title : '';
+  };
+  const rec = episodeRecords()[key];
+  const fromArchive = named(rec && rec.channel && rec.channel.title);
+  if (fromArchive) return fromArchive;
+  const catalog = pacifica && pacifica.peekCatalog();
+  return named(catalog && catalog.directory[key] && catalog.directory[key].name);
+}
+
+const EXPORT_TABLES = Object.keys(listeningExport.COLUMNS);
+
+/** What the studio's download picker may offer: only periods that exist. */
+function exportsIndex() {
+  const months = listStatsMonths().reverse().map((m) => ({
+    month: m,
+    daysWithData: Object.values(statsMonthDays(m) || {}).filter(Boolean).length,
+  }));
+  return {
+    station: STATION_ID,
+    schemaVersion: listeningExport.SCHEMA_VERSION,
+    hasData: months.some((m) => m.daysWithData > 0),
+    months,
+    datasets: [{ name: 'listening', tables: EXPORT_TABLES, formats: ['csv', 'json', 'readme'] }],
+  };
+}
+
+/** `GET /api/studio/export` — one dataset, one period, one format. */
+function sendExport(req, res) {
+  const q = new URL(req.url, 'http://localhost').searchParams;
+  const dataset = q.get('dataset'), period = q.get('period') || '', format = q.get('format');
+  const table = q.get('table') || 'daily';
+  if (dataset !== 'listening') return sendStudioJson(res, { error: 'unknown dataset' }, 400);
+  if (!['csv', 'json', 'readme'].includes(format)) return sendStudioJson(res, { error: 'unknown format' }, 400);
+  if (format === 'csv' && !EXPORT_TABLES.includes(table)) return sendStudioJson(res, { error: 'unknown table' }, 400);
+  // Validated against the months that exist, never parsed into a path: a
+  // period string does not reach the file layer unless it names a real month.
+  const months = listStatsMonths();
+  if (period !== 'all' && !months.includes(period)) return sendStudioJson(res, { error: 'unknown period' }, 400);
+
+  const data = listeningExport.buildListeningExport({
+    station: STATION_ID, stationTimezone: STATION_TZ, period, months,
+    monthDays: statsMonthDays, today: today(), titleFor: exportShowTitle,
+    zones: ZONE_BUCKETS.map((b) => ({ key: b, label: zoneLabel(b) })),
+    generatedAt: new Date().toISOString(),
+  });
+  let body, type, name;
+  if (format === 'csv') {
+    body = toCsv(listeningExport.COLUMNS[table], data[table]);
+    type = 'text/csv; charset=utf-8'; name = `${STATION_ID}-listening-${table}-${period}.csv`;
+  } else if (format === 'json') {
+    body = JSON.stringify(data, null, 2) + '\n';
+    type = 'application/json; charset=utf-8'; name = `${STATION_ID}-listening-${period}.json`;
+  } else {
+    body = listeningExport.manifestText(data.manifest);
+    type = 'text/plain; charset=utf-8'; name = `${STATION_ID}-listening-${period}-README.txt`;
+  }
+  const buf = Buffer.from(body, 'utf8');
+  res.writeHead(200, {
+    'Content-Type': type,
+    'Content-Length': buf.length,
+    // The filename is built only from the station id and validated tokens.
+    'Content-Disposition': `attachment; filename="${name}"`,
+    'Cache-Control': 'private, no-store',
+    'Vary': 'Cookie',
+    ...securityHeaders(),
+  });
+  res.end(req.method === 'HEAD' ? undefined : buf);
 }
 
 // -------------------------------------------------------------- the studio
@@ -3291,6 +3378,8 @@ function studioApi(req, res, pathOnly) {
   if (pathOnly === '/api/studio/usage') {
     return sendStudioJson(res, usageReport(usageWindowFromUrl(req.url)));
   }
+  if (pathOnly === '/api/studio/exports') return sendStudioJson(res, exportsIndex());
+  if (pathOnly === '/api/studio/export') return sendExport(req, res);
   if (pathOnly === '/api/studio/stats') {
     refreshProgramsIfStale();
     return sendStudioJson(res, studioStats(usageWindowFromUrl(req.url)));

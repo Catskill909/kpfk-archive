@@ -1,7 +1,8 @@
-# Exports — specification (not yet built)
+# Exports — specification
 
-**Status:** specified 2026-09-15, no code written. Tracked in
-[HANDOFF.md](../HANDOFF.md) open items.
+**Status:** specified 2026-09-15. **Phase 1 (`listening`, CSV + JSON, calendar
+months) built 2026-09-16** — see "Phase 1 — as built" at the end. Phases 2–4 not
+started. Tracked in [HANDOFF.md](../HANDOFF.md) open items.
 
 **Decided by Paul, 2026-09-15:** exports cover **all four datasets** below, in
 **CSV, JSON and a printable report**, downloaded from **`/studio`** by the
@@ -315,3 +316,41 @@ the route and the download UI — each later dataset is then mostly its column l
 2. `inventory` and `coverage` — new column lists on the phase 1 machinery.
 3. Printable report (`/studio/report`, print stylesheet, browser Save as PDF).
 4. `profile`, and the cross-station notes for Pacifica.
+
+## Phase 1 — as built (2026-09-16)
+
+Where the build differs from the plan above, and why:
+
+- **The builder lives in `lib/export/listening.js`, not `server.js`.** `server.js`
+  cannot be `require`d on a station build without booting, so a pure function in it
+  could only be tested over HTTP. The server passes in the day records
+  (`statsMonthDays`), a title lookup and the zone labels; the module does the rest.
+  `lib/export/csv.js` is the writer.
+- **The dashboard and the export share code, not just numbers.** `dayCounters()`
+  (one day record → seven finite counters) and `zoneLabel()` are used by both
+  `usageReport()` and the export, so the two cannot drift apart.
+- **Formula-looking text cells are neutralised** (`=`, `+`, `-`, `@`, tab, CR →
+  prefixed `'`), matching the studio's existing client-side table CSV. Show titles
+  are upstream data; Excel executes such cells. Numbers are never touched.
+- **Titles: an altid is not a title.** Pacifica's normalizer fills an empty show name
+  with the bare altid (`name || altid`), which is right on screen and wrong in a
+  spreadsheet. `exportShowTitle()` treats a title equal to the key or its altid as no
+  title and writes an empty cell. Lookup order: archive → catalog mirror → empty.
+- **The current month stops at today.** Future days are not "no activity", so they
+  are not zero-filled.
+- **A README, not a zip.** `format=readme` downloads the manifest as plain text
+  (all three tables' columns in one file), offered as a "Read me" link beside the
+  CSVs. No bundling, per the plan's out-of-scope list.
+- **Routes:** `GET /api/studio/exports` (index: months newest first with
+  `daysWithData`, `hasData`, datasets) and `GET /api/studio/export` (400 for an
+  unknown dataset, format, table or period; `period` must be a month on disk or `all`).
+
+**Tests** (`test/pacifica/export.test.js`, 4 tests, in `npm test`): writer quoting/
+BOM/CRLF/formula cells; builder totals, zero-filled days, older-build records, the
+current month stopping at today, the column allow-list; empty station; and a
+real-server test on the pinned fixtures with a seeded past month and a patched
+catalog (a quote + comma + `Español` title, an emptied name, a show off the
+schedule, a key nothing names). Each of seven planted bugs was run and **seen to
+fail** the suite: a planted `ip` column, the quote escape removed, key-as-title, a
+perturbed day counter, no BOM, the auth gate bypassed, period validation removed.
+

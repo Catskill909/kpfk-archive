@@ -1,6 +1,6 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-15, end of session. **This folder is the active project.**
+**Updated:** 2026-09-16 (exports phase 1). **This folder is the active project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
@@ -16,7 +16,7 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 | Storage | Named volume `…-kpfk-archive-data` at `/app/data`. **Persistence proven across three redeploys** 2026-09-15: `instanceId` `e4a9aac9-e3dd-4e9b-8c5b-17656032bd0d` unchanged every time, `freshVolume:false`, and the usage counters kept counting across all three |
 | Studio | `/studio`, password in Coolify env `STUDIO_PASSWORD` (runtime only — **not** on the Mac and not in the repo; read it from Coolify, never from a file) |
 | Local | `npm start` → http://localhost:8081, `./data` |
-| Tests | `npm test` green: inherited offline suites + 28 Pacifica tests |
+| Tests | `npm test` green: inherited offline suites + 32 Pacifica tests |
 
 ## What the app is now
 
@@ -84,18 +84,19 @@ Each file is daily counters and nothing else:
    scratch file that held it, was deleted from the Mac. It was never committed
    (`.env.*` is git-ignored) and nothing read it, so the value now exists **only** in
    Coolify's env. `.env.example` remains — a template, no secrets.
-1. **Exports — next build, planned and ready to implement.**
-   [docs/exports.md](docs/exports.md) holds the product spec *and* a phase 1 build
-   plan: six ordered steps with file anchors, eight acceptance criteria, seven tests
-   with how each is shown to fail, and the verification ritual. Decisions locked with
-   Paul 2026-09-15: **calendar months + all time** (not rolling windows — a board asks
-   for "September"), **UTC day buckets left alone and labelled `date_utc`** (they
-   cannot be re-split after the fact; the manifest also states the station timezone,
-   `America/Los_Angeles`), and **phase 1 only** — `listening` as CSV + JSON with a
-   download section in `/studio`. Four datasets eventually (listening, inventory,
-   coverage, profile), CSV + JSON + a printable report, built for every Pacifica
-   station, not just KPFK. **No new persisted state is needed:** titles for shows that
-   have left the schedule come from `peekCatalog().directory`, the untouched mirror.
+1. **Exports — phase 1 built 2026-09-16, not yet deployed.** The studio has a
+   **Downloads** section: a calendar month (or all time) of the `listening` counters
+   as Daily / Shows / Reach CSV, one JSON file, and a Read me. Spec, decisions and
+   what changed from the plan: [docs/exports.md](docs/exports.md) ("Phase 1 — as
+   built"). **Next:** Coolify redeploy, then the live audit (acceptance criterion 8:
+   download September's Daily CSV on the live site and open it in Excel/Sheets).
+   Phases 2–4 (inventory, coverage, printable report, profile) not started.
+   *Found while building it, not fixed:* the dashboard's **Most listened shows**
+   (`usageReport().topShows`) and **show history** (`showHistory()`) still fall back
+   to the slug for a show that has left the schedule — they read only
+   `episodeRecords()`. The export reads the catalog mirror as well
+   (`exportShowTitle()`). Routing those two through the same lookup is a small
+   change; it was left out to keep this commit to the export.
 2. **Station settings in the studio — spec not yet written.** Paul, 2026-09-15: the
    **station timezone should be settable in the admin panel** rather than only in
    `stations/kpfk.json`. This would be the studio's first setting that *writes station
@@ -216,3 +217,25 @@ still seen, so the absence is measured, not assumed.
 - **Storage:** same `instanceId`, `freshVolume:false` — third redeploy running, and
   the counters kept counting (7 plays, 3,271s listened by then).
 - **Feeds:** all ready, none stale, no errors; catalog grew to 1,147 episodes.
+
+## Session log — 2026-09-16 (exports, phase 1)
+
+Built phase 1 of [docs/exports.md](docs/exports.md): the `listening` dataset.
+
+- `lib/export/csv.js` (RFC 4180, BOM, CRLF, formula-cell guard) and
+  `lib/export/listening.js` (pure builder, column allow-list, manifest).
+- `server.js`: `GET /api/studio/exports`, `GET /api/studio/export`,
+  `exportShowTitle()`; `usageReport()` now shares `dayCounters()` and `zoneLabel()`
+  with the export.
+- Studio: Downloads section after Listening (`admin/studio.html`, `public/studio.js`,
+  `public/studio.css`).
+
+**Evidence:** `npm test` green (32 Pacifica tests + inherited suites). Seven planted
+bugs each seen to fail `test/pacifica/export.test.js`. Local 8081 restarted and
+checked over HTTP (401 signed out, index, CSV headers). Headless Chrome ran
+`/studio.js?v=b5fa-mu456ujp`, matching `/healthz` `studioVersion`: Downloads was
+visible with *September 2026 / All time*, and all five links answered 200 with the
+right filenames and a BOM on each CSV. `test/studio/run.sh` layout and sort suites
+passed against 8081 at every width from 1280 to 360px.
+**Not yet done:** deploy and live audit.
+

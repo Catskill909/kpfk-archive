@@ -770,6 +770,22 @@
   font-weight: 600;
 }
 
+/* ------------------------------------------------------------ downloads */
+
+.export-period .studio-field--inline { margin-bottom: 0.75rem; }
+.export-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+/* Anchors dressed as buttons: a real link is what makes the browser download
+   the file itself, with no blob handling in script. */
+.export-links .studio-btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
 /* ----------------------------------------------------------- table */
 
 .studio-field--inline { max-width: 18rem; margin-bottom: 0.85rem; }
