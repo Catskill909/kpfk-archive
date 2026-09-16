@@ -267,6 +267,34 @@ right filenames and a BOM on each CSV. `test/studio/run.sh` layout and sort suit
 passed against 8081 at every width from 1280 to 360px.
 **Not yet done:** deploy and live audit.
 
+## Session log — 2026-09-16, afternoon (light-mode card container)
+
+Paul: dark-edged artwork made the gallery cards look ragged on the cream page. Built a
+**light-mode-only** card container; **dark mode must not change** (Paul's rule).
+
+| Commit | Change |
+| --- | --- |
+| `22a0af7` | `.card-wrap` becomes a padded, rounded container (6px mat, 4px on phones); title, More link move in by the mat |
+| `e0b35c7` | Mat `#f4eee6` — deployed, but invisible at normal distance against the white listing panel |
+| `f9d0abf` | Mat `var(--surface-3)`, outline 16% / 18% hover — chosen from four tints rendered side by side |
+| `a85deb9` | Shadows are the header pills' `--elev-1` / `--elev-2`; darker, taller title scrim so artwork lettering stops competing with the card title |
+
+- **Scoping:** every rule is written twice — `:root[data-theme="light"]` and, inside
+  `@media (prefers-color-scheme: light)`, `:root:not([data-theme])` — because
+  `theme-boot.js` only sets the attribute on an explicit pick. The block sits after `.card-date`.
+- **Proof dark is untouched:** headless Chrome, all four theme states (OS dark/light ×
+  no pick/opposite pick) at 1280 and 390px, committed CSS vs edited CSS **on the same feed
+  data** — pixel-identical. Two traps: a new episode between runs changes every screenshot
+  (re-baseline, don't compare to a morning shot), and the first load in a fresh Chrome
+  renders differently (warm up with one unmeasured load).
+- **Live audit (`a85deb9`):** `styles.css`, `app.js`, `theme-boot.js` byte-identical to repo;
+  `X-App-Version` = `/healthz`; `instanceId` `e4a9aac9…` unchanged, `freshVolume:false`;
+  all feeds ready, filter `schedule`.
+- Ported to WBAI the same day as one block (same tokens, same theme logic).
+- *Noticed, not touched (it is dark-mode behaviour):* with reduced motion, a dark-mode card
+  still lifts on hover — `.card-wrap:hover .card.card-art.play-btn` outranks the
+  reduced-motion `transform:none`.
+
 ## Next: port the exports to WBAI (Paul, 2026-09-16)
 
 A **separate job in the WBAI folder** (`/Users/paulhenshaw/Desktop/wbai-archive`), its own
