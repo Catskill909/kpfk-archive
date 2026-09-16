@@ -3473,9 +3473,10 @@
      square with a 10%-alpha hairline reads as a hard, ragged cut. In light mode
      the wrapper becomes an elevated card and the artwork a slightly smaller
      rounded panel inside it, so every edge the eye meets is the same clean one.
-     The mat is warm off-white (between --surface-1 and --surface-0), not white:
+     The mat is the warm --surface-3, not white:
      the listing panel behind it IS white, so a white mat had no edge of its own
-     and read as a glaring ring against dark artwork. Dark mode is deliberately untouched: every rule below is
+     and read as a glaring ring against dark artwork (a near-white #f4eee6 was
+     still too faint to see live). Dark mode is deliberately untouched: every rule below is
      scoped to the two ways light mode is in force — an explicit
      data-theme="light", or no choice made and the OS asking for light — and
      never reaches the dark palette. The title block and More link are
@@ -3484,8 +3485,8 @@
   @media (max-width:560px){ .card-wrap{ --card-mat:4px; } }
   :root[data-theme="light"] .card-wrap{
     padding:var(--card-mat); border-radius:calc(12px + var(--card-mat));
-    background:#f4eee6;
-    box-shadow:0 0 0 1px rgba(30,20,15,.12), 0 1px 2px rgba(30,20,10,.08), 0 4px 14px -4px rgba(30,20,10,.14);
+    background:var(--surface-3);
+    box-shadow:0 0 0 1px rgba(30,20,15,.16), 0 1px 2px rgba(30,20,10,.08), 0 4px 14px -4px rgba(30,20,10,.14);
     transition:transform .18s ease, box-shadow .18s ease;
   }
   :root[data-theme="light"] .card.card-art.play-btn{
@@ -3497,7 +3498,7 @@
     /* the whole container lifts, not the artwork inside it */
     :root[data-theme="light"] .card-wrap:hover{
       transform:translateY(-2px);
-      box-shadow:0 0 0 1px rgba(30,20,15,.14), 0 2px 4px rgba(30,20,10,.10), 0 12px 28px -8px rgba(30,20,10,.24);
+      box-shadow:0 0 0 1px rgba(30,20,15,.18), 0 2px 4px rgba(30,20,10,.10), 0 12px 28px -8px rgba(30,20,10,.24);
     }
     :root[data-theme="light"] .card-wrap:hover .card.card-art.play-btn{
       transform:none; border-color:rgba(30,20,15,.07); box-shadow:none;
@@ -3506,8 +3507,8 @@
   @media (prefers-color-scheme: light){
     :root:not([data-theme]) .card-wrap{
       padding:var(--card-mat); border-radius:calc(12px + var(--card-mat));
-      background:#f4eee6;
-      box-shadow:0 0 0 1px rgba(30,20,15,.12), 0 1px 2px rgba(30,20,10,.08), 0 4px 14px -4px rgba(30,20,10,.14);
+      background:var(--surface-3);
+      box-shadow:0 0 0 1px rgba(30,20,15,.16), 0 1px 2px rgba(30,20,10,.08), 0 4px 14px -4px rgba(30,20,10,.14);
       transition:transform .18s ease, box-shadow .18s ease;
     }
     :root:not([data-theme]) .card.card-art.play-btn{
@@ -3518,7 +3519,7 @@
     @media (hover:hover) and (pointer:fine){
       :root:not([data-theme]) .card-wrap:hover{
         transform:translateY(-2px);
-        box-shadow:0 0 0 1px rgba(30,20,15,.14), 0 2px 4px rgba(30,20,10,.10), 0 12px 28px -8px rgba(30,20,10,.24);
+        box-shadow:0 0 0 1px rgba(30,20,15,.18), 0 2px 4px rgba(30,20,10,.10), 0 12px 28px -8px rgba(30,20,10,.24);
       }
       :root:not([data-theme]) .card-wrap:hover .card.card-art.play-btn{
         transform:none; border-color:rgba(30,20,15,.07); box-shadow:none;
