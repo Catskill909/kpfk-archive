@@ -3480,13 +3480,17 @@
      scoped to the two ways light mode is in force — an explicit
      data-theme="light", or no choice made and the OS asking for light — and
      never reaches the dark palette. The title block and More link are
-     positioned on the wrapper, so they move in by the mat to stay on the art. */
+     positioned on the wrapper, so they move in by the mat to stay on the art.
+     Shadows are the shared --elev-1 / --elev-2 the header pills use, so cards
+     and buttons read as one family. The title scrim is darker and taller than
+     the base .card-fade: lettering inside the artwork itself ("THOM HARTMANN",
+     "WITH CAT BROOKS") sat right under the card title and competed with it. */
   .card-wrap{ --card-mat:6px; }
   @media (max-width:560px){ .card-wrap{ --card-mat:4px; } }
   :root[data-theme="light"] .card-wrap{
     padding:var(--card-mat); border-radius:calc(12px + var(--card-mat));
     background:var(--surface-3);
-    box-shadow:0 0 0 1px rgba(30,20,15,.16), 0 1px 2px rgba(30,20,10,.08), 0 4px 14px -4px rgba(30,20,10,.14);
+    box-shadow:0 0 0 1px rgba(30,20,15,.16), var(--elev-1);
     transition:transform .18s ease, box-shadow .18s ease;
   }
   :root[data-theme="light"] .card.card-art.play-btn{
@@ -3494,21 +3498,24 @@
   }
   :root[data-theme="light"] .card-overlay{ left:var(--card-mat); right:var(--card-mat); bottom:var(--card-mat); }
   :root[data-theme="light"] .card-more{ left:calc(.7rem + var(--card-mat)); bottom:calc(.6rem + var(--card-mat)); }
+  :root[data-theme="light"] .card-fade{ background:linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.72) 28%, rgba(0,0,0,.38) 48%, rgba(0,0,0,0) 68%); }
+  :root[data-theme="light"] .card-art.play-btn:focus-visible .card-fade,:root[data-theme="light"] .card-art.play-btn.playing .card-fade,:root[data-theme="light"] .card-art.play-btn.loading .card-fade{ background:linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.74) 30%, rgba(0,0,0,.5) 52%, rgba(0,0,0,.32) 100%); }
   @media (hover:hover) and (pointer:fine){
     /* the whole container lifts, not the artwork inside it */
     :root[data-theme="light"] .card-wrap:hover{
       transform:translateY(-2px);
-      box-shadow:0 0 0 1px rgba(30,20,15,.18), 0 2px 4px rgba(30,20,10,.10), 0 12px 28px -8px rgba(30,20,10,.24);
+      box-shadow:0 0 0 1px rgba(30,20,15,.18), var(--elev-2);
     }
     :root[data-theme="light"] .card-wrap:hover .card.card-art.play-btn{
       transform:none; border-color:rgba(30,20,15,.07); box-shadow:none;
     }
+    :root[data-theme="light"] .card-wrap:hover .card-fade{ background:linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.74) 30%, rgba(0,0,0,.5) 52%, rgba(0,0,0,.32) 100%); }
   }
   @media (prefers-color-scheme: light){
     :root:not([data-theme]) .card-wrap{
       padding:var(--card-mat); border-radius:calc(12px + var(--card-mat));
       background:var(--surface-3);
-      box-shadow:0 0 0 1px rgba(30,20,15,.16), 0 1px 2px rgba(30,20,10,.08), 0 4px 14px -4px rgba(30,20,10,.14);
+      box-shadow:0 0 0 1px rgba(30,20,15,.16), var(--elev-1);
       transition:transform .18s ease, box-shadow .18s ease;
     }
     :root:not([data-theme]) .card.card-art.play-btn{
@@ -3516,14 +3523,17 @@
     }
     :root:not([data-theme]) .card-overlay{ left:var(--card-mat); right:var(--card-mat); bottom:var(--card-mat); }
     :root:not([data-theme]) .card-more{ left:calc(.7rem + var(--card-mat)); bottom:calc(.6rem + var(--card-mat)); }
+    :root:not([data-theme]) .card-fade{ background:linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.72) 28%, rgba(0,0,0,.38) 48%, rgba(0,0,0,0) 68%); }
+    :root:not([data-theme]) .card-art.play-btn:focus-visible .card-fade,:root:not([data-theme]) .card-art.play-btn.playing .card-fade,:root:not([data-theme]) .card-art.play-btn.loading .card-fade{ background:linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.74) 30%, rgba(0,0,0,.5) 52%, rgba(0,0,0,.32) 100%); }
     @media (hover:hover) and (pointer:fine){
       :root:not([data-theme]) .card-wrap:hover{
         transform:translateY(-2px);
-        box-shadow:0 0 0 1px rgba(30,20,15,.18), 0 2px 4px rgba(30,20,10,.10), 0 12px 28px -8px rgba(30,20,10,.24);
+        box-shadow:0 0 0 1px rgba(30,20,15,.18), var(--elev-2);
       }
       :root:not([data-theme]) .card-wrap:hover .card.card-art.play-btn{
         transform:none; border-color:rgba(30,20,15,.07); box-shadow:none;
       }
+      :root:not([data-theme]) .card-wrap:hover .card-fade{ background:linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.74) 30%, rgba(0,0,0,.5) 52%, rgba(0,0,0,.32) 100%); }
     }
   }
   @media (prefers-reduced-motion:reduce) and (hover:hover) and (pointer:fine){
