@@ -37,6 +37,23 @@ test('single flight, durable restart, conditional 304 and outage preserve comple
   const restart = createService(r.options); const recovered = await restart.catalog();
   assert.equal(recovered.count, 1143); assert.equal(recovered.revision, data[0].revision);
 });
+// Feeds refresh lazily — only when a request needs them — so a quiet spell
+// longer than a TTL is normal and the next request refreshes. /healthz read
+// "past TTL" as stale and flagged healthy feeds (now-playing, 15s TTL, most of
+// every minute). Stale must mean "the last refresh failed; serving last-good".
+test('health: idle past TTL is not stale; a failed refresh is', async t => {
+  let mode = 'ok';
+  const r = rig(t, async () => { if (mode === 'fail') throw new Error('offline'); return json(raw); });
+  await r.service.catalog();
+  r.tick(); // 6 min, past the catalog's 5-min TTL, with no request in between
+  const idle = r.service.health();
+  assert.ok(Object.keys(idle).length > 0);
+  for (const [name, h] of Object.entries(idle)) assert.equal(h.stale, false, `${name} idle past its TTL reported stale`);
+  // the same probe must still see a real failure
+  mode = 'fail'; const served = await r.service.catalog();
+  assert.equal(served.stale, true); assert.equal(served.count, 1143);
+  assert.equal(r.service.health().catalog.stale, true);
+});
 test('valid catalog replacement follows omissions and even empty catalogs; malformed refresh does not', async t => {
   let response = raw;
   const r = rig(t, () => json(response)); await r.service.catalog();
