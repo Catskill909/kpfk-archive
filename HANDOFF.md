@@ -84,8 +84,8 @@ Each file is daily counters and nothing else:
    scratch file that held it, was deleted from the Mac. It was never committed
    (`.env.*` is git-ignored) and nothing read it, so the value now exists **only** in
    Coolify's env. `.env.example` remains — a template, no secrets.
-1. **Exports — phase 1 built 2026-09-16, not yet deployed.** The studio has a
-   **Downloads** section: a calendar month (or all time) of the `listening` counters
+1. **Exports — phase 1 built 2026-09-16, not yet deployed.** The studio has an
+   **Export** section at the top of the page: a calendar month (or all time) of the `listening` counters
    as Daily / Shows / Reach CSV, one JSON file, and a Read me. Spec, decisions and
    what changed from the plan: [docs/exports.md](docs/exports.md) ("Phase 1 — as
    built"). **Next:** Coolify redeploy, then the live audit (acceptance criterion 8:
@@ -227,13 +227,13 @@ Built phase 1 of [docs/exports.md](docs/exports.md): the `listening` dataset.
 - `server.js`: `GET /api/studio/exports`, `GET /api/studio/export`,
   `exportShowTitle()`; `usageReport()` now shares `dayCounters()` and `zoneLabel()`
   with the export.
-- Studio: Downloads section after Listening (`admin/studio.html`, `public/studio.js`,
+- Studio: Export section, first on the page (`admin/studio.html`, `public/studio.js`,
   `public/studio.css`).
 
 **Evidence:** `npm test` green (32 Pacifica tests + inherited suites). Seven planted
 bugs each seen to fail `test/pacifica/export.test.js`. Local 8081 restarted and
 checked over HTTP (401 signed out, index, CSV headers). Headless Chrome ran
-`/studio.js?v=b5fa-mu456ujp`, matching `/healthz` `studioVersion`: Downloads was
+`/studio.js?v=b5fa-mu456ujp`, matching `/healthz` `studioVersion`: Export was
 visible with *September 2026 / All time*, and all five links answered 200 with the
 right filenames and a BOM on each CSV. `test/studio/run.sh` layout and sort suites
 passed against 8081 at every width from 1280 to 360px.

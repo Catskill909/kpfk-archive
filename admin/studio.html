@@ -59,6 +59,34 @@
 
 <main class="studio-main" id="main" aria-busy="true">
 
+  <!-- Export — first on the page because it is where every dataset lands:
+       listening now; inventory, coverage and the printable report in later
+       phases (docs/exports.md). Calendar months, not the Listening window
+       picker: a board asks for "September", never "the last 30 days". Plain
+       <a download> links, so the browser's own download path does the work.
+       Hidden until the server reports counters exist. -->
+  <section class="studio-section studio-section--wide" id="downloads" hidden>
+    <h2 class="studio-h2">Export</h2>
+    <p class="studio-note">
+      The station&rsquo;s data for a calendar month, as files for Excel, Google Sheets
+      or Pacifica. Today: listening figures &mdash; plays, time listened, page views
+      and reach. Counters only; no personal data of any kind.
+    </p>
+    <div class="export-period">
+      <label class="studio-field studio-field--inline">
+        <span class="studio-field-label">Period</span>
+        <select class="studio-input" id="exportPeriod"></select>
+      </label>
+    </div>
+    <div class="export-links" id="exportLinks">
+      <a class="studio-btn" data-format="csv" data-table="daily" download>Daily CSV</a>
+      <a class="studio-btn" data-format="csv" data-table="shows" download>Shows CSV</a>
+      <a class="studio-btn" data-format="csv" data-table="reach" download>Reach CSV</a>
+      <a class="studio-btn" data-format="json" download>Everything (JSON)</a>
+      <a class="studio-btn studio-btn--quiet" data-format="readme" download>Read me</a>
+    </div>
+  </section>
+
   <!-- What's in the archive right now. Every number here is computed from the
        feed cache the app already holds, so it is the same data the listener
        app publishes — not a second source that can disagree with it. -->
@@ -125,31 +153,6 @@
         <h3 class="studio-h3">Most listened shows</h3>
         <div class="bars" id="usageShows"></div>
       </div>
-    </div>
-  </section>
-
-  <!-- Downloads. Calendar months, not the window picker above: a board asks for
-       "September", never "the last 30 days" (docs/exports.md). Plain <a download>
-       links, so the browser's own download path does the work. Hidden until the
-       server reports counters exist. -->
-  <section class="studio-section studio-section--wide" id="downloads" hidden>
-    <h2 class="studio-h2">Downloads</h2>
-    <p class="studio-note">
-      Listening figures for a calendar month, as files for Excel, Google Sheets or
-      Pacifica. Counters only &mdash; they contain no personal data of any kind.
-    </p>
-    <div class="export-period">
-      <label class="studio-field studio-field--inline">
-        <span class="studio-field-label">Period</span>
-        <select class="studio-input" id="exportPeriod"></select>
-      </label>
-    </div>
-    <div class="export-links" id="exportLinks">
-      <a class="studio-btn" data-format="csv" data-table="daily" download>Daily CSV</a>
-      <a class="studio-btn" data-format="csv" data-table="shows" download>Shows CSV</a>
-      <a class="studio-btn" data-format="csv" data-table="reach" download>Reach CSV</a>
-      <a class="studio-btn" data-format="json" download>Everything (JSON)</a>
-      <a class="studio-btn studio-btn--quiet" data-format="readme" download>Read me</a>
     </div>
   </section>
 

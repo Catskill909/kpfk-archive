@@ -341,6 +341,11 @@ Where the build differs from the plan above, and why:
 - **A README, not a zip.** `format=readme` downloads the manifest as plain text
   (all three tables' columns in one file), offered as a "Read me" link beside the
   CSVs. No bundling, per the plan's out-of-scope list.
+- **Section named "Export", first on the studio page** (Paul, 2026-09-16), not a
+  "Downloads" section under Listening: it is where every dataset lands as the later
+  phases add them, so it should not read as part of the listening panel. The older
+  "Export CSV" button on the Every feed table stays where it is — it exports that
+  table as filtered on screen, which is a different thing.
 - **Routes:** `GET /api/studio/exports` (index: months newest first with
   `daysWithData`, `hasData`, datasets) and `GET /api/studio/export` (400 for an
   unknown dataset, format, table or period; `period` must be a month on disk or `all`).
