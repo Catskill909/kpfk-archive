@@ -152,6 +152,31 @@ stats months and feed snapshots it captured. Restoring puts `stats/` back into
 this one container (instructions at the bottom of the script) — prefer that to a
 whole-VPS snapshot restore, which rolls back every other app on the host.
 
+## Moving the app to another server
+
+No VPS access needed — it is all in the studio (**Export → Backup & restore**).
+
+1. **On the old server:** *Download backup*. One JSON file: every usage month plus
+   studio settings, with a checksum per month. It holds counters only, no
+   identifier of any kind.
+2. **Deploy the new server** as in "Deploy on Coolify" above, with its own named
+   volume and a `STUDIO_PASSWORD`. Let it boot; it fetches the Pacifica feeds
+   itself (they are not in the backup).
+3. **On the new server:** choose the backup file under *Restore from a backup*. The
+   preview lists every month — *New*, *Replaced*, *Already the same*, *Kept* — and
+   writes nothing.
+4. Click **Restore N months**. The new server's own copies of any replaced months
+   are saved first under `stats/pre-import-<time>/`; **Undo this restore** puts them
+   back. Nothing is ever deleted.
+5. Check **Export → Reports** on both servers for the same dates: the files match.
+
+What does not move, on purpose: `.instance.json` (the new volume keeps its own
+`storage.instanceId`), and the feed snapshots in `pacifica/`. A backup from
+another station is refused.
+
+Anything counted on the old server after the backup was made is not in it — take
+the backup last, just before switching the domain over.
+
 ## Protecting the data directory
 
 `npm run hooks:install` (once per clone) runs `tools/check-storage-safety.js`

@@ -857,9 +857,90 @@
   display: grid;
   gap: 1rem;
 }
-/* `display: grid` above would otherwise override the hidden attribute used
-   for the no-data state. */
-.export-step[hidden] { display: none; }
+/* `display: grid` would otherwise override the hidden attribute used for the
+   no-data state and the inactive tab. */
+.export-step[hidden], .export-pane[hidden], .export-preview[hidden] { display: none; }
+
+.export-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: -0.75rem;
+  border-bottom: 1px solid var(--outline);
+}
+.export-tab {
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.7rem 0.9rem;
+  min-height: 2.75rem;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  background: none;
+  color: var(--ink-dim);
+  cursor: pointer;
+}
+.export-tab:hover { color: var(--ink); }
+.export-tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.export-tab:focus-visible { outline: 2px solid var(--accent-2); outline-offset: -2px; }
+
+.export-pane { display: grid; gap: 1.75rem; }
+.export-copy {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.55;
+  color: var(--ink-dim);
+  max-width: 52ch;
+}
+.export-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+
+/* The native file input is kept (it is what makes the picker open on every
+   platform, and screen readers announce it) but drawn as the studio button
+   beside the chosen file's name. */
+.export-file {
+  position: relative;
+  max-width: 100%;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+.export-file input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.export-file:focus-within .studio-btn { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.export-file:hover .studio-btn { background: var(--surface-3); }
+.export-file-name { min-width: 0; font-size: 0.9rem; color: var(--ink-dim); overflow-wrap: anywhere; }
+
+.export-preview { display: grid; gap: 1rem; }
+.export-plan .plan-muted { color: var(--ink-faint); }
+.plan-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.plan-badge--new { color: var(--good); background: var(--good-bg); }
+.plan-badge--replace { color: var(--warn); background: var(--warn-bg); }
+.plan-badge--identical, .plan-badge--kept { color: var(--ink-dim); background: var(--surface-3); }
+.export-warn {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: var(--warn-bg);
+  color: var(--ink);
+  line-height: 1.5;
+  font-size: 0.92rem;
+}
 .export-legend {
   float: left;          /* lets the legend sit inside the grid like a heading */
   width: 100%;
@@ -1007,6 +1088,43 @@
 }
 .export-go:hover { filter: brightness(1.08); background: var(--accent); }
 .export-go:disabled { filter: none; }
+
+/* The restore plan is drawn as one card per month at every width. As a table
+   its fourth column — "What happens", the one that matters — was clipped by the
+   dialog on a laptop and needed a sideways scroll on a phone. Labels come from
+   data-label (no inline style: CSP). Semantics stay a table for screen readers. */
+/* Selectors carry .studio-table as well: `.studio-table td` (nowrap, borders)
+   comes later in this file with equal weight and silently won — text would not
+   wrap and ran across the neighbouring card column. */
+.studio-table.export-plan thead { display: none; }
+.studio-table.export-plan, .studio-table.export-plan tbody, .studio-table.export-plan tr, .studio-table.export-plan td { display: block; width: auto; }
+.export-preview .table-wrap { max-height: none; overflow: visible; border-bottom: 0; }
+.studio-table.export-plan tr {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem 1.25rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.6rem;
+  border: 1px solid var(--outline);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+.studio-table.export-plan td { border: 0; padding: 0; min-width: 0; white-space: normal; }
+.studio-table.export-plan td::before {
+  content: attr(data-label);
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.studio-table.export-plan td.plan-month { font-weight: 600; font-size: 1rem; }
+.studio-table.export-plan td.plan-month::before { content: none; }
+@media (min-width: 600px) {
+  .studio-table.export-plan tr { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .studio-table.export-plan td.plan-month { grid-column: 1 / -1; }
+}
 
 @media (max-width: 480px) {
   .export-dialog { width: calc(100vw - 1rem); max-height: calc(100dvh - 1rem); border-radius: 14px; }

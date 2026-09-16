@@ -185,6 +185,105 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   ok('the dialog shows the refusal with its HTTP status', s4.cls.includes('is-bad') && /HTTP 400/.test(s4.text), JSON.stringify(s4));
   ok('and no file landed', files().length === before.length, `files now: ${files().join(', ')}`);
 
+  // ---- 4b. Backup & restore — download a backup, then preview restoring that
+  // same file. Never clicks Restore: this section must be safe to run against
+  // a live station.
+  console.log('\n4b. backup, and a restore preview that writes nothing');
+  await click('#tabBackup');
+  const panes = JSON.parse(await ev(`JSON.stringify({ reports: document.getElementById('paneReports').hidden,
+    backup: document.getElementById('paneBackup').hidden, selected: document.getElementById('tabBackup').getAttribute('aria-selected') })`));
+  ok('the Backup & restore tab shows its pane and hides Reports', panes.reports && !panes.backup && panes.selected === 'true', JSON.stringify(panes));
+  before = files();
+  await click('#backupDownload');
+  const backupName = await landed(/^[a-z0-9]+-backup-\d{4}-\d{2}-\d{2}\.json$/, before);
+  let backup = null;
+  try { backup = backupName && JSON.parse(fs.readFileSync(path.join(dir, backupName), 'utf8')); } catch (e) { backup = null; }
+  ok('Download backup saves a backup file', !!backup && backup.format === 'pacifica-archive-backup' && Object.keys(backup.stats).length > 0,
+    `files: ${files().join(', ')}`);
+  if (backupName) {
+    const doc = await c.send('DOM.getDocument', { depth: 1 });
+    const { nodeId } = await c.send('DOM.querySelector', { nodeId: doc.root.nodeId, selector: '#restoreFile' });
+    // A long file name on purpose: a name that does not wrap pushed past the
+    // dialog edge on a phone, and a short one hid it.
+    const longName = path.join(dir, 'a-very-long-backup-file-name-somebody-renamed-kpfk-2026.json');
+    fs.copyFileSync(path.join(dir, backupName), longName);
+    await c.send('DOM.setFileInputFiles', { nodeId, files: [longName] });
+    let shown = null;
+    for (let i = 0; i < 30 && !shown; i++) {
+      await wait(150);
+      shown = JSON.parse(await ev(`JSON.stringify(document.getElementById('restorePreview').hidden ? null : {
+        rows: [...document.querySelectorAll('#restorePlan tr')].map((tr) => tr.querySelector('.plan-badge').textContent),
+        apply: document.getElementById('restoreApply').textContent, disabled: document.getElementById('restoreApply').disabled,
+        name: document.getElementById('restoreFileName').textContent })`));
+    }
+    ok('choosing the file shows a month-by-month preview', !!shown && shown.rows.length === Object.keys(backup.stats).length,
+      JSON.stringify(shown) + ' ' + JSON.stringify(await status()));
+    ok('restoring this server\'s own fresh backup would add nothing', !!shown && !shown.rows.includes('New'), JSON.stringify(shown));
+
+    // The layout is judged on a preview with every kind of card and the longest
+    // text: a copy of that backup with an older month added and this month's
+    // figures changed, re-signed with the app's own checksum. Still only a
+    // preview — Restore is never clicked. (The first fit check used the plain
+    // backup, whose short "No change." text hid text overflowing on a phone.)
+    const crafted = JSON.parse(JSON.stringify(backup));
+    const cur = Object.keys(crafted.stats).sort().pop();
+    const d0 = Object.keys(crafted.stats[cur].days)[0];
+    if (d0) crafted.stats[cur].days[d0].plays += 40;
+    crafted.stats['2001-01'] = { station: crafted.station, month: '2001-01', days: { '2001-01-15': {
+      pageviews: 123456, plays: 65432, live: 1, searches: 0, shares: 0, listenSeconds: 987654, liveSeconds: 12345,
+      byShow: {}, secondsByShow: {}, byZone: {} } } };
+    for (const m of Object.keys(crafted.stats)) crafted.checksums[m] = require('../../lib/export/backup').monthChecksum(crafted.stats[m]);
+    const craftedFile = path.join(dir, 'a-very-long-backup-file-name-somebody-renamed-with-changes-2026.json');
+    fs.writeFileSync(craftedFile, JSON.stringify(crafted));
+    await c.send('DOM.setFileInputFiles', { nodeId, files: [craftedFile] });
+    let variety = null;
+    for (let i = 0; i < 30; i++) {
+      await wait(150);
+      variety = JSON.parse(await ev(`JSON.stringify([...document.querySelectorAll('#restorePlan .plan-badge')].map((b) => b.textContent))`));
+      if (variety.includes('New')) break;
+    }
+    ok('a changed backup previews New and Replaced months, and Restore names the count',
+      variety.includes('New') && (variety.includes('Replaced') || !d0)
+        && /^Restore \d+ months?$/.test(await ev("document.getElementById('restoreApply').textContent")), JSON.stringify(variety));
+    // Every element of the pane inside the dialog's box, and nothing clipped by a
+    // scroll container: the table version hid its "What happens" column on a laptop.
+    for (const w of [1200, 390]) {
+      await c.send('Emulation.setDeviceMetricsOverride', { width: w, height: 900, deviceScaleFactor: 1, mobile: w < 500 });
+      await wait(400);
+      const fitB = JSON.parse(await ev(`(() => {
+        const d = document.getElementById('exportDialog'), b = d.getBoundingClientRect();
+        const out = [...d.querySelectorAll('#paneBackup *')].filter((el) => {
+          const r = el.getBoundingClientRect(); return r.width > 0 && (r.right > b.right + 1 || r.left < b.left - 1);
+        }).map((el) => el.tagName.toLowerCase() + '.' + el.className);
+        // Content wider than its own box, in ANY overflow mode: text that will not
+        // wrap spills out of a visible-overflow cell without growing the cell's
+        // rect, so element rects alone passed a layout whose text overlapped.
+        const clipped = [...d.querySelectorAll('#paneBackup *')].filter((el) => el.tagName !== 'INPUT'
+          && el.clientWidth > 0 && el.scrollWidth > el.clientWidth + 1).map((el) => el.tagName.toLowerCase() + '.' + el.className);
+        // And each rendered line of text against the element that holds it.
+        const walker = document.createTreeWalker(d.querySelector('#paneBackup'), NodeFilter.SHOW_TEXT);
+        for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+          if (!n.textContent.trim() || !n.parentElement.getClientRects().length) continue;
+          const box = n.parentElement.getBoundingClientRect(), range = document.createRange();
+          range.selectNodeContents(n);
+          for (const r of range.getClientRects()) {
+            if (r.width && (r.right > box.right + 1 || r.left < box.left - 1)) {
+              clipped.push('text "' + n.textContent.trim().slice(0, 30) + '"'); break;
+            }
+          }
+        }
+        const whatHappens = [...document.querySelectorAll('#restorePlan .plan-badge')].every((x) => {
+          const r = x.getBoundingClientRect(); return r.width > 0 && r.right <= b.right;
+        });
+        return JSON.stringify({ out: out.slice(0, 3), clipped: clipped.slice(0, 3), whatHappens, sideways: d.scrollWidth > d.clientWidth + 1 });
+      })()`));
+      ok(`${w}px — the restore preview fits the dialog, "What happens" visible`,
+        fitB.out.length === 0 && fitB.clipped.length === 0 && fitB.whatHappens && !fitB.sideways, JSON.stringify(fitB));
+    }
+    await size(1200);
+  }
+  await click('#tabReports');
+
   // ---- 5. closing, and the phone layout
   console.log('\n5. closing and small screens');
   await c.send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });

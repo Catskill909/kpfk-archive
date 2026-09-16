@@ -22,6 +22,7 @@ const { loadProfile, publicProfile } = require('./lib/station-config');
 const stationView = require('./lib/station-view');
 const { toCsv } = require('./lib/export/csv');
 const listeningExport = require('./lib/export/listening');
+const backupLib = require('./lib/export/backup');
 const station = process.env.STATION_PROFILE
   ? loadProfile(process.env.STATION_PROFILE, { root: __dirname, allowLocal: process.env.PACIFICA_TEST_LOCAL === '1' }) : null;
 if (require.main === module && !station && process.env.STATION_PROVIDER !== 'legacy-xml') {
@@ -2847,6 +2848,217 @@ function sendExport(req, res) {
   res.end(req.method === 'HEAD' ? undefined : buf);
 }
 
+// ------------------------------------------------------- backup & import
+/**
+ * Moving a station's data to another server (docs/exports.md "1c"). A backup
+ * is every stats month plus studio settings, checksummed; lib/export/backup.js
+ * builds, validates and plans, and this is the part that touches the volume.
+ *
+ * Every write goes through writeJsonAtomic, and nothing is ever deleted:
+ *   - apply copies this server's affected months to stats/pre-import-<time>/
+ *     BEFORE writing a single imported month, then records a manifest;
+ *   - undo saves the post-import months beside those copies, writes the copies
+ *     back, and MOVES (renames) a month the import added into the same folder.
+ * listStatsMonths() only reads `YYYY-MM.json` at the top of stats/, so these
+ * folders are never mistaken for data.
+ */
+const IMPORT_BODY_LIMIT = 16 * 1024 * 1024;
+const IMPORT_PREFIX = 'pre-import-';
+const IMPORT_COOLDOWN_MS = 3000;
+let importLastRun = 0;
+
+/** This server's months as they are right now, raw — memory for the current
+ *  month (counters not yet flushed included), files for the rest. */
+function currentStatsMonths() {
+  const out = {};
+  for (const m of listStatsMonths()) {
+    if (m === statsMonth) {
+      if (Object.keys(statsStore.days || {}).length) out[m] = statsStore;
+      continue;
+    }
+    const mo = readJsonFile(statsMonthPath(m), null);
+    if (mo) out[m] = mo;
+  }
+  return out;
+}
+function backupShaped(months) {
+  const out = {};
+  for (const [m, mo] of Object.entries(months)) out[m] = backupLib.backupMonth(mo, STATION_ID, m);
+  return out;
+}
+
+function sendBackup(req, res) {
+  const backup = backupLib.buildBackup({
+    station: STATION_ID,
+    createdAt: new Date().toISOString(),
+    appVersion: appVersion(),
+    sourceInstanceId: storageDiag.instanceId,
+    months: backupShaped(currentStatsMonths()),
+    settings: {},
+  });
+  const buf = Buffer.from(JSON.stringify(backup, null, 2) + '\n', 'utf8');
+  res.writeHead(200, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Content-Length': buf.length,
+    'Content-Disposition': `attachment; filename="${STATION_ID}-backup-${today()}.json"`,
+    'Cache-Control': 'private, no-store',
+    'Vary': 'Cookie',
+    ...securityHeaders(),
+  });
+  res.end(req.method === 'HEAD' ? undefined : buf);
+}
+
+/** Binds an apply to the exact bytes that were previewed, for this session. */
+function importToken(req, body) {
+  const raw = parseCookies(req.headers.cookie)[STUDIO_COOKIE] || '';
+  const hash = crypto.createHash('sha256').update(body).digest('hex');
+  return crypto.createHmac('sha256', studioKey).update('import\0' + raw + '\0' + hash).digest('base64url');
+}
+
+function importDirs() {
+  let names = [];
+  try { names = fs.readdirSync(STATS_DIR); } catch (e) { /* no stats yet */ }
+  return names.filter((n) => n.startsWith(IMPORT_PREFIX)).sort().reverse();
+}
+/** The most recent import, if any, with whether it can still be undone. */
+function lastImport() {
+  for (const name of importDirs()) {
+    const manifest = readJsonFile(path.join(STATS_DIR, name, 'manifest.json'), null);
+    if (manifest) return { name, ...manifest, undoable: !manifest.undoneAt };
+  }
+  return null;
+}
+
+/** Parse + validate an uploaded backup, or answer the request with why not. */
+function readBackupBody(res, body) {
+  let parsed;
+  try { parsed = JSON.parse(body); } catch (e) {
+    sendStudioJson(res, { ok: false, errors: ['This file is not valid JSON, so it is not a backup made by this app.'] }, 422);
+    return null;
+  }
+  const v = backupLib.validateBackup(parsed, { station: STATION_ID, thisMonth: thisMonth() });
+  if (!v.ok) { sendStudioJson(res, { ok: false, errors: v.errors }, 422); return null; }
+  return { parsed, v };
+}
+
+function applyImport(plan, months, parsed) {
+  flushFile(statsMonthPath(statsMonth));
+  const raw = currentStatsMonths();
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const dir = path.join(STATS_DIR, IMPORT_PREFIX + stamp);
+  const replaced = plan.filter((p) => p.action === 'replace').map((p) => p.month);
+  const added = plan.filter((p) => p.action === 'new').map((p) => p.month);
+  // 1. The copies, and the manifest that says what they are — before any change.
+  for (const m of replaced) writeJsonAtomic(path.join(dir, `${m}.json`), raw[m]);
+  writeJsonAtomic(path.join(dir, 'manifest.json'), {
+    station: STATION_ID, importedAt: new Date().toISOString(), replaced, added,
+    backup: { createdAt: parsed.createdAt || null, sourceInstanceId: parsed.sourceInstanceId || null },
+    undoneAt: null,
+  });
+  // 2. The imported months. The current month is also swapped in memory, so
+  // the next beacon lands on the imported counters rather than on stale ones.
+  for (const m of [...replaced, ...added].sort()) {
+    const mo = JSON.parse(JSON.stringify(months[m]));
+    writeJsonAtomic(statsMonthPath(m), mo);
+    if (m === statsMonth) statsStore = mo;
+  }
+  console.log(`[studio] import: replaced ${replaced.length} month(s) [${replaced.join(', ')}], added ${added.length} [${added.join(', ')}]; copies in ${path.basename(dir)}`);
+  return { folder: path.basename(dir), replaced, added };
+}
+
+function undoImport(last) {
+  const dir = path.join(STATS_DIR, last.name);
+  // Check every copy is readable before changing anything.
+  const copies = {};
+  for (const m of last.replaced) {
+    copies[m] = readJsonFile(path.join(dir, `${m}.json`), null);
+    if (!copies[m]) throw new Error(`the saved copy of ${m} is missing or unreadable in ${last.name}`);
+  }
+  flushFile(statsMonthPath(statsMonth));
+  const now = currentStatsMonths();
+  for (const m of last.replaced) {
+    // What the import put there (plus anything counted since) is kept too.
+    if (now[m]) writeJsonAtomic(path.join(dir, `undone-${m}.json`), now[m]);
+    writeJsonAtomic(statsMonthPath(m), copies[m]);
+    if (m === statsMonth) statsStore = copies[m];
+  }
+  for (const m of last.added) {
+    if (m === statsMonth) {
+      writeJsonAtomic(path.join(dir, `undone-${m}.json`), statsStore);
+      statsStore = { station: STATION_ID, month: m, days: {} };
+    }
+    // Moved, not deleted: the month leaves the live set and stays recoverable.
+    if (fs.existsSync(statsMonthPath(m))) fs.renameSync(statsMonthPath(m), path.join(dir, `imported-${m}.json`));
+  }
+  const manifest = readJsonFile(path.join(dir, 'manifest.json'), {});
+  writeJsonAtomic(path.join(dir, 'manifest.json'), { ...manifest, undoneAt: new Date().toISOString() });
+  console.log(`[studio] import undone: restored ${last.replaced.length}, moved aside ${last.added.length} (${last.name})`);
+  return { restored: last.replaced, removed: last.added };
+}
+
+/** POST /api/studio/import/{preview,apply,undo} — auth, CSRF, then the step. */
+async function studioImport(req, res, pathOnly) {
+  if (!studioAuthed(req)) return sendStudioJson(res, { error: 'unauthorized' }, 401);
+  if (!secretEquals(req.headers['x-studio-csrf'] || '', studioCsrf(req))) {
+    return sendStudioJson(res, { error: 'bad token' }, 403);
+  }
+  // The cooldown guards against a double-click writing twice, so it is checked
+  // for the writing steps and started only when one of them actually writes —
+  // a request refused for a missing preview must not lock out the retry.
+  if (pathOnly !== '/api/studio/import/preview') {
+    const wait = IMPORT_COOLDOWN_MS - (Date.now() - importLastRun);
+    if (wait > 0) return sendStudioJson(res, { error: 'cooling down', retryInSec: Math.ceil(wait / 1000) }, 429);
+  }
+  if (pathOnly === '/api/studio/import/undo') {
+    const last = lastImport();
+    if (!last || !last.undoable) return sendStudioJson(res, { ok: false, error: 'There is no restore to undo.' }, 409);
+    importLastRun = Date.now();
+    try { return sendStudioJson(res, { ok: true, ...undoImport(last), lastImport: lastImport() }); }
+    catch (e) {
+      console.error('[studio] import undo failed:', e.message);
+      return sendStudioJson(res, { ok: false, error: 'Undo failed: ' + e.message }, 500);
+    }
+  }
+
+  const body = await readBody(req, IMPORT_BODY_LIMIT);
+  // Token before validation on apply: a file that differs from the previewed
+  // one is refused for THAT reason, whatever else may be wrong with it.
+  if (pathOnly === '/api/studio/import/apply'
+    && !secretEquals(req.headers['x-import-token'] || '', importToken(req, body))) {
+    return sendStudioJson(res, { ok: false, error: 'Preview this file before restoring it.' }, 409);
+  }
+  const got = readBackupBody(res, body);
+  if (!got) return;
+  const plan = backupLib.planImport(got.v.months, backupShaped(currentStatsMonths()));
+  const changes = plan.filter((p) => p.action === 'new' || p.action === 'replace').length;
+
+  if (pathOnly === '/api/studio/import/preview') {
+    return sendStudioJson(res, {
+      ok: true,
+      backup: {
+        station: got.parsed.station,
+        createdAt: got.parsed.createdAt || null,
+        months: Object.keys(got.v.months).length,
+        sameServer: !!got.parsed.sourceInstanceId && got.parsed.sourceInstanceId === storageDiag.instanceId,
+      },
+      plan,
+      changes,
+      token: importToken(req, body),
+    });
+  }
+  if (pathOnly === '/api/studio/import/apply') {
+    if (!changes) return sendStudioJson(res, { ok: true, replaced: [], added: [], lastImport: lastImport() });
+    importLastRun = Date.now();
+    try { return sendStudioJson(res, { ok: true, ...applyImport(plan, got.v.months, got.parsed), lastImport: lastImport() }); }
+    catch (e) {
+      console.error('[studio] import failed:', e.message);
+      return sendStudioJson(res, { ok: false, error: 'The restore failed part-way: ' + e.message
+        + '. The months it had not reached are unchanged; Undo restores the rest.', lastImport: lastImport() }, 500);
+    }
+  }
+  return sendStudioJson(res, { error: 'not found' }, 404);
+}
+
 // -------------------------------------------------------------- the studio
 /**
  * A password-gated area at /studio for the people who run the station. See
@@ -3397,6 +3609,8 @@ function studioApi(req, res, pathOnly) {
   }
   if (pathOnly === '/api/studio/exports') return sendStudioJson(res, exportsIndex());
   if (pathOnly === '/api/studio/export') return sendExport(req, res);
+  if (pathOnly === '/api/studio/backup') return sendBackup(req, res);
+  if (pathOnly === '/api/studio/import/status') return sendStudioJson(res, { lastImport: lastImport() });
   if (pathOnly === '/api/studio/stats') {
     refreshProgramsIfStale();
     return sendStudioJson(res, studioStats(usageWindowFromUrl(req.url)));
@@ -3482,6 +3696,15 @@ const server = http.createServer(async (req, res) => {
     if (USAGE_TRACKING && pathOnly === '/api/ev') {
       try { return await ingestEvent(req, res); }
       catch (e) { res.writeHead(204, securityHeaders()); return res.end(); }
+    }
+    if (STUDIO_ENABLED && pathOnly.startsWith('/api/studio/import/')) {
+      try { return await studioImport(req, res, pathOnly); }
+      catch (e) {
+        // readBody rejects an over-limit upload by destroying the request;
+        // anything else here is a bug worth seeing in the log.
+        console.warn('[studio] import request failed:', e.message);
+        return sendStudioJson(res, { ok: false, errors: ['The upload could not be read: ' + e.message] }, 400);
+      }
     }
     if (STUDIO_ENABLED && pathOnly === '/api/studio/action') {
       try { return await studioAction(req, res); }

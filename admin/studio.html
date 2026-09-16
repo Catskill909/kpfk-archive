@@ -361,8 +361,9 @@
       <div>
         <h2 class="export-title" id="exportTitle">Export data</h2>
         <p class="export-lede">
-          Files for Excel, Google Sheets or Pacifica. Counters only &mdash; they
-          contain no personal data of any kind.
+          Reports for Excel, Google Sheets or Pacifica, and a backup for moving
+          this app to another server. Counters only &mdash; no personal data of
+          any kind.
         </p>
       </div>
       <button class="export-close" id="exportClose" type="button" aria-label="Close">
@@ -372,6 +373,12 @@
       </button>
     </header>
 
+    <div class="export-tabs" role="tablist" aria-label="Export">
+      <button class="export-tab" id="tabReports" type="button" role="tab" aria-selected="true" aria-controls="paneReports">Reports</button>
+      <button class="export-tab" id="tabBackup" type="button" role="tab" aria-selected="false" aria-controls="paneBackup" tabindex="-1">Backup &amp; restore</button>
+    </div>
+
+    <div class="export-pane" id="paneReports" role="tabpanel" aria-labelledby="tabReports">
     <p class="export-empty" id="exportEmpty" hidden>
       Nothing has been counted yet, so there is nothing to export. Counting began
       when this app was deployed &mdash; it does not backfill.
@@ -443,6 +450,65 @@
         <button class="studio-btn export-go" id="exportGo" type="submit">Download</button>
       </div>
     </footer>
+    </div>
+
+    <!-- Backup & restore: moving the station's figures to another server
+         (docs/exports.md "1c"). Restore always previews first and writes
+         nothing until the button that names what it will change. -->
+    <div class="export-pane" id="paneBackup" role="tabpanel" aria-labelledby="tabBackup" hidden>
+      <section class="export-step">
+        <h3 class="export-legend"><span class="export-num">1</span> Download a backup</h3>
+        <p class="export-copy">
+          Every month this app has counted, in one file. Keep it somewhere safe, or
+          restore it on a new server to move the station&rsquo;s figures there. The
+          Pacifica feeds are not included &mdash; a new server fetches them itself.
+        </p>
+        <div class="export-row">
+          <button class="studio-btn export-go" id="backupDownload" type="button">Download backup</button>
+        </div>
+        <p class="export-status" id="backupStatus" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="export-step">
+        <h3 class="export-legend"><span class="export-num">2</span> Restore from a backup</h3>
+        <p class="export-copy">
+          Choose a backup file made by this app for this station. You will see
+          exactly what would change before anything is written.
+        </p>
+        <div class="export-row">
+          <label class="export-file">
+            <input id="restoreFile" type="file" accept=".json,application/json">
+            <span class="studio-btn" aria-hidden="true">Choose backup file&hellip;</span>
+            <span class="export-file-name" id="restoreFileName">No file chosen</span>
+          </label>
+        </div>
+        <div class="export-preview" id="restorePreview" hidden>
+          <p class="export-copy" id="restoreSummary"></p>
+          <div class="table-wrap">
+            <table class="studio-table export-plan">
+              <thead>
+                <tr><th scope="col">Month</th><th scope="col">In the backup</th><th scope="col">On this server</th><th scope="col">What happens</th></tr>
+              </thead>
+              <tbody id="restorePlan"></tbody>
+            </table>
+          </div>
+          <p class="export-warn" id="restoreWarn" hidden></p>
+          <div class="export-row">
+            <button class="studio-btn export-go" id="restoreApply" type="button">Restore</button>
+          </div>
+        </div>
+        <p class="export-status" id="restoreStatus" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="export-step" id="undoStep" hidden>
+        <h3 class="export-legend">Last restore</h3>
+        <p class="export-copy" id="undoSummary"></p>
+        <div class="export-row">
+          <button class="studio-btn" id="restoreUndo" type="button">Undo this restore</button>
+        </div>
+        <p class="export-status" id="undoStatus" role="status" aria-live="polite"></p>
+      </section>
+    </div>
   </form>
 </dialog>
 

@@ -39,6 +39,9 @@ read the Pacifica JSON feeds through a per-station profile.
 - **Downloadable listening figures** — the studio exports any date span (this month,
   last month, this year, all time, or dates you pick) as CSV for Excel or Google Sheets, or JSON. The files hold the same counters
   the dashboard shows and nothing else: still no identifier of any kind.
+- **Move it to another server** — the studio downloads a backup of every usage month
+  and restores it on a new install, with a preview first and an undo after. Imports
+  accept counters only; a file carrying anything else is refused.
 - **Listener insights, with privacy built in** — see how long people actually
   listen, plays, searches, and how far the station's reach extends — without
   ever tracking who anyone is.
@@ -57,6 +60,8 @@ read the Pacifica JSON feeds through a per-station profile.
 | `POST /api/ev` | Usage beacon from the page — an event name, and for a play the media URL, and for a page view the browser's timezone (bucketed to one of three labels and discarded). No identifier of any kind; answers `204` to everything. Not registered at all when `USAGE_TRACKING=off` |
 | `GET /studio` | Password-gated station view. **Only exists when `STUDIO_PASSWORD` is set** — otherwise the path falls through like any other unknown one |
 | `GET /api/studio/export?dataset=listening&from=<YYYY-MM-DD>&to=<YYYY-MM-DD>&format=<csv\|json\|readme>` | Studio download (signed-in only): daily, per-show and reach counters for any span of UTC days. CSV takes `&table=daily\|shows\|reach`. See [docs/exports.md](docs/exports.md) |
+| `GET /api/studio/backup` | Studio download (signed-in only): every usage month plus settings, checksummed — see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) "Moving the app" |
+| `POST /api/studio/import/preview` · `/apply` · `/undo` | Studio restore (signed-in, CSRF). Preview writes nothing; apply requires the preview's token and saves this server's copies first; undo puts them back |
 | `GET /healthz` | Bundle version, feed state, `archiveFilter`, and storage identity (`storage.mounted`, `storage.instanceId`) |
 
 The server has **no third-party dependencies** — only the Node standard library

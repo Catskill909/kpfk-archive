@@ -1060,15 +1060,12 @@
          browser and a failure never reaches the page — which is how "the
          download starts but nothing arrives" went unexplained. Here every
          outcome is on screen: the file name and size, or the server's error
-         and HTTP status. */
-      function download(format, table) {
-        if (busy || !spanOk()) return;
-        var q = 'dataset=listening&from=' + fromEl.value + '&to=' + toEl.value + '&format=' + format;
-        if (table) q += '&table=' + table;
-        busy = true;
-        refresh();
-        status('Preparing your file…');
-        fetch('/api/studio/export?' + q, { credentials: 'same-origin' })
+         and HTTP status. `say(text, kind)` writes into the caller's own
+         status line, so reports and backups each report where they were
+         asked for. */
+      function saveFrom(url, say) {
+        say('Preparing your file…');
+        return fetch(url, { credentials: 'same-origin' })
           .then(function (res) {
             if (res.status === 401) {
               throw new Error('Your studio session has ended. Sign in again, then retry.');
@@ -1077,7 +1074,7 @@
               return res.text().then(function (body) {
                 var msg = '';
                 try { msg = JSON.parse(body).error || ''; } catch (e) { msg = body.slice(0, 120); }
-                throw new Error('The server refused this export: ' + (msg || 'no reason given')
+                throw new Error('The server refused this download: ' + (msg || 'no reason given')
                   + ' (HTTP ' + res.status + ').');
               });
             }
@@ -1096,17 +1093,27 @@
             // Revoke on a delay: revoking synchronously races the download in
             // some browsers and yields an empty file.
             setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
-            status('Saved ' + file.name + ' · ' + fileSize(file.blob.size)
+            say('Saved ' + file.name + ' · ' + fileSize(file.blob.size)
               + '. Check your Downloads folder.', 'ok');
           })
           .catch(function (e) {
-            console.error('[studio] export failed:', e);
-            status(e && e.message ? e.message : 'The export failed: ' + e, 'bad');
-          })
+            console.error('[studio] download failed:', e);
+            say(e && e.message ? e.message : 'The download failed: ' + e, 'bad');
+          });
+      }
+      function download(format, table) {
+        if (busy || !spanOk()) return;
+        var q = 'dataset=listening&from=' + fromEl.value + '&to=' + toEl.value + '&format=' + format;
+        if (table) q += '&table=' + table;
+        busy = true;
+        refresh();
+        saveFrom('/api/studio/export?' + q, status)
           .then(function () { busy = false; refresh(); });
       }
 
-      function load() {
+      // Named loadOptions, not load: the page's own load() (the dashboard
+      // refresh) lives in the enclosing scope, and a restore must call THAT.
+      function loadOptions() {
         status('');
         fetch('/api/studio/exports', { headers: { 'Accept': 'application/json' } })
           .then(function (res) {
@@ -1132,9 +1139,244 @@
           });
       }
 
+      /* ---- tabs: Reports | Backup & restore (WAI-ARIA tabs; arrow keys move) */
+      var tabs = [document.getElementById('tabReports'), document.getElementById('tabBackup')];
+      function selectTab(tab, focus) {
+        tabs.forEach(function (t) {
+          var on = t === tab;
+          t.setAttribute('aria-selected', String(on));
+          t.tabIndex = on ? 0 : -1;
+          document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+        });
+        if (focus) tab.focus();
+        if (tab.id === 'tabBackup') loadImportStatus();
+      }
+      tabs.forEach(function (t, i) {
+        t.addEventListener('click', function () { selectTab(t); });
+        t.addEventListener('keydown', function (ev) {
+          if (ev.key !== 'ArrowRight' && ev.key !== 'ArrowLeft') return;
+          ev.preventDefault();
+          selectTab(tabs[(i + (ev.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length], true);
+        });
+      });
+
+      /* ---- backup & restore (docs/exports.md "1c")
+         The chosen file is read in the browser and sent as-is: the server
+         validates it and the preview writes nothing. Restore sends the same
+         bytes with the token the preview returned, so what is written is
+         exactly what was previewed. */
+      var backupStatus = document.getElementById('backupStatus');
+      var restoreFile = document.getElementById('restoreFile');
+      var restoreName = document.getElementById('restoreFileName');
+      var previewBox = document.getElementById('restorePreview');
+      var planBody = document.getElementById('restorePlan');
+      var summary = document.getElementById('restoreSummary');
+      var warn = document.getElementById('restoreWarn');
+      var applyBtn = document.getElementById('restoreApply');
+      var restoreStatus = document.getElementById('restoreStatus');
+      var undoStep = document.getElementById('undoStep');
+      var undoSummary = document.getElementById('undoSummary');
+      var undoBtn = document.getElementById('restoreUndo');
+      var undoStatus = document.getElementById('undoStatus');
+      var pending = null;   // { text, token, changes } from the last good preview
+      var csrf = null;
+
+      function sayInto(node) {
+        return function (text, kind) {
+          node.textContent = text;
+          node.className = 'export-status' + (kind ? ' is-' + kind : '');
+        };
+      }
+      function monthName(m) {
+        return new Date(Date.UTC(+m.slice(0, 4), +m.slice(5, 7) - 1, 1))
+          .toLocaleDateString(undefined, { month: 'long', year: 'numeric', timeZone: 'UTC' });
+      }
+      function monthFigures(t) {
+        if (!t) return '—';
+        return num(t.plays) + ' plays · ' + num(t.pageviews) + ' page views · '
+          + listenTime(t.listenSeconds) + ' listened';
+      }
+      function whenText(iso) {
+        var d = new Date(iso);
+        return isNaN(d) ? 'an unknown date' : d.toLocaleString(undefined,
+          { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+      }
+      function plural(n, one) { return n + ' ' + one + (n === 1 ? '' : 's'); }
+      // The session's CSRF token, from the same health payload the actions use.
+      function withCsrf() {
+        if (csrf) return Promise.resolve(csrf);
+        return fetch('/api/studio/health', { headers: { 'Accept': 'application/json' } })
+          .then(function (res) {
+            if (!res.ok) throw new Error('Could not start a studio request (HTTP ' + res.status + ').');
+            return res.json();
+          })
+          .then(function (d) { csrf = d.csrf; return csrf; });
+      }
+      function postImport(step, body, extra) {
+        return withCsrf().then(function (token) {
+          var headers = { 'Content-Type': 'application/json', 'X-Studio-CSRF': token };
+          Object.keys(extra || {}).forEach(function (k) { headers[k] = extra[k]; });
+          return fetch('/api/studio/import/' + step, { method: 'POST', headers: headers, body: body });
+        }).then(function (res) {
+          return res.text().then(function (t) {
+            if (res.status === 401) throw new Error('Your studio session has ended. Sign in again, then retry.');
+            var j = null;
+            try { j = JSON.parse(t); } catch (e) { j = null; }
+            if (!j) throw new Error('The server answered HTTP ' + res.status + ' with no readable reason.');
+            return { status: res.status, body: j };
+          });
+        });
+      }
+
+      document.getElementById('backupDownload').addEventListener('click', function () {
+        var b = this;
+        b.disabled = true;
+        saveFrom('/api/studio/backup', sayInto(backupStatus))
+          .then(function () { b.disabled = false; });
+      });
+
+      var BADGE = { 'new': 'New', replace: 'Replaced', identical: 'Already the same', kept: 'Kept' };
+      var WHAT = {
+        'new': 'Added from the backup.',
+        replace: 'This server’s figures are replaced by the backup’s.',
+        identical: 'No change.',
+        kept: 'Not in the backup — left as it is.',
+      };
+      function renderPlan(p) {
+        planBody.textContent = '';
+        p.plan.forEach(function (row) {
+          var tr = el('tr');
+          // data-label carries the column name for the phone layout, where each
+          // month is drawn as a card instead of a row (studio.css .export-plan).
+          var cell = function (cls, text, label) {
+            var c = el('td', cls, text);
+            c.setAttribute('data-label', label);
+            return c;
+          };
+          tr.appendChild(cell('plan-month', monthName(row.month), 'Month'));
+          tr.appendChild(cell(row.backup ? '' : 'plan-muted', monthFigures(row.backup), 'In the backup'));
+          tr.appendChild(cell(row.server ? '' : 'plan-muted', monthFigures(row.server), 'On this server'));
+          var td = cell('', undefined, 'What happens');
+          td.appendChild(el('span', 'plan-badge plan-badge--' + row.action, BADGE[row.action]));
+          td.appendChild(el('div', 'plan-muted', WHAT[row.action]));
+          tr.appendChild(td);
+          planBody.appendChild(tr);
+        });
+        summary.textContent = 'Backup of ' + String(p.backup.station).toUpperCase() + ' made '
+          + whenText(p.backup.createdAt) + ' · ' + plural(p.backup.months, 'month')
+          + (p.backup.sameServer ? ' · made on this server.' : '.');
+        var replaced = p.plan.filter(function (r) { return r.action === 'replace'; }).length;
+        warn.hidden = !replaced;
+        warn.textContent = replaced
+          ? plural(replaced, 'month') + ' on this server will be replaced by the backup’s figures, '
+            + 'including anything counted here since the backup was made. A copy of each is saved '
+            + 'first, and you can undo the restore.'
+          : '';
+        applyBtn.disabled = !p.changes;
+        applyBtn.textContent = p.changes
+          ? 'Restore ' + plural(p.changes, 'month')
+          : 'Nothing to restore — this server already matches';
+        previewBox.hidden = false;
+      }
+
+      restoreFile.addEventListener('change', function () {
+        var say = sayInto(restoreStatus);
+        var f = restoreFile.files && restoreFile.files[0];
+        pending = null;
+        previewBox.hidden = true;
+        restoreName.textContent = f ? f.name : 'No file chosen';
+        if (!f) { say(''); return; }
+        say('Checking the backup…');
+        f.text()
+          .then(function (text) {
+            return postImport('preview', text).then(function (r) { return { r: r, text: text }; });
+          })
+          .then(function (x) {
+            if (x.r.status !== 200) {
+              var errs = x.r.body.errors || [x.r.body.error || 'HTTP ' + x.r.status];
+              say('This file cannot be restored. ' + errs.join(' '), 'bad');
+              return;
+            }
+            pending = { text: x.text, token: x.r.body.token, changes: x.r.body.changes };
+            renderPlan(x.r.body);
+            say('');
+          })
+          .catch(function (e) {
+            console.error('[studio] restore preview failed:', e);
+            say(e.message, 'bad');
+          });
+      });
+
+      applyBtn.addEventListener('click', function () {
+        var say = sayInto(restoreStatus);
+        if (!pending || !pending.changes) return;
+        applyBtn.disabled = true;
+        say('Restoring…');
+        postImport('apply', pending.text, { 'X-Import-Token': pending.token })
+          .then(function (r) {
+            if (r.status !== 200) {
+              throw new Error(r.body.error || (r.body.errors || []).join(' ')
+                || 'The restore was refused (HTTP ' + r.status + ').');
+            }
+            say('Restored ' + plural(r.body.replaced.length + r.body.added.length, 'month') + ' ('
+              + r.body.added.length + ' added, ' + r.body.replaced.length + ' replaced). '
+              + 'The dashboard has been refreshed.', 'ok');
+            pending = null;
+            previewBox.hidden = true;
+            restoreFile.value = '';
+            restoreName.textContent = 'No file chosen';
+            showUndo(r.body.lastImport);
+            load();
+          })
+          .catch(function (e) {
+            console.error('[studio] restore failed:', e);
+            say(e.message, 'bad');
+            applyBtn.disabled = false;
+          });
+      });
+
+      function showUndo(last) {
+        undoStep.hidden = !(last && last.undoable);
+        if (!last || !last.undoable) return;
+        undoSummary.textContent = 'Restored ' + whenText(last.importedAt) + ': '
+          + plural(last.replaced.length + last.added.length, 'month') + ' (' + last.added.length
+          + ' added, ' + last.replaced.length + ' replaced). Undo puts this server’s figures back as '
+          + 'they were before it. Nothing is deleted — the restored copy stays on the server.';
+        undoBtn.disabled = false;
+        undoStatus.textContent = '';
+        undoStatus.className = 'export-status';
+      }
+      function loadImportStatus() {
+        fetch('/api/studio/import/status', { headers: { 'Accept': 'application/json' } })
+          .then(function (res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+          })
+          .then(function (x) { showUndo(x.lastImport); })
+          .catch(function (e) { console.error('[studio] import status failed:', e); });
+      }
+      undoBtn.addEventListener('click', function () {
+        var say = sayInto(undoStatus);
+        undoBtn.disabled = true;
+        say('Undoing…');
+        postImport('undo', '')
+          .then(function (r) {
+            if (r.status !== 200) throw new Error(r.body.error || 'Undo was refused (HTTP ' + r.status + ').');
+            undoSummary.textContent = 'This restore has been undone.';
+            say('Undone: ' + plural(r.body.restored.length, 'month') + ' put back, '
+              + r.body.removed.length + ' moved aside. The dashboard has been refreshed.', 'ok');
+            load();
+          })
+          .catch(function (e) {
+            console.error('[studio] undo failed:', e);
+            say(e.message, 'bad');
+            undoBtn.disabled = false;
+          });
+      });
+
       openBtn.addEventListener('click', function () {
         dialog.showModal();
-        load();
+        loadOptions();
       });
       function close() { dialog.close(); openBtn.focus(); }
       document.getElementById('exportClose').addEventListener('click', close);

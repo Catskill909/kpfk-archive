@@ -38,7 +38,53 @@ start, outside the bounds) disables the download links and says why.
   from those, not from the browser's clock (which is not UTC).
 - Studio: two date inputs bounded by `min`/`max`, four preset buttons.
 
-### 1c — backup and import
+### 1c — backup and import — built 2026-09-16
+
+As specified below, with these details settled in the build:
+
+- **Where:** a second tab, *Backup & restore*, in the studio's Export dialog.
+- **Code:** `lib/export/backup.js` (build, allow-list validation, plan) and the
+  routes in `server.js` (`sendBackup`, `studioImport`, `applyImport`, `undoImport`).
+  Status: `GET /api/studio/import/status`.
+- **Backups carry each month as exactly `station`, `month`, `days`**, with only the
+  known counters and maps. That drops only what the app's own policy already
+  deletes (legacy search terms), so a backup always passes its own import.
+- **Validation refuses, never trims:** unknown fields anywhere, whole-number
+  counters only, zone keys from the four buckets, show keys by shape, dates inside
+  their month, no future months, checksums, same station, known settings only.
+- **Apply checks the preview token before anything else** (409), so a file that
+  differs from the previewed one is refused for that reason. The 3 s cooldown starts
+  only when a write actually happens.
+- **Undo never deletes:** it saves the post-import months as `undone-<m>.json`,
+  writes the copies back, and *renames* a month the import added to
+  `imported-<m>.json` — all inside the import's own folder. An import is undone once.
+- **Moving guide:** [DEPLOYMENT.md](DEPLOYMENT.md) "Moving the app to another server".
+
+**Tests:** `test/pacifica/backup.test.js` — the validator's 17 refusals; two real
+servers where B's exports after restore are **byte-identical** to A's, the preview
+leaves B's data directory byte-identical, B keeps its identity, the next beacon lands
+on the imported counters, re-import is identical, undo restores B's own figures
+exactly and moves rather than deletes. Eight planted bugs each seen to fail it
+(unknown field accepted, checksum skipped, no copy before writing, memory not
+swapped, undo leaves the added month, preview writes, station unchecked, token
+unchecked). Browser: `test/studio/export-tests.js` section 4b downloads a backup and
+previews restoring it — the plain backup, then a changed copy re-signed with the
+app's checksum so New and Replaced cards appear (never applies — safe against a live
+station).
+
+**The preview is one card per month at every width,** not a table. As a table its
+"What happens" column was clipped by the dialog on a laptop, and on a phone it needed
+a sideways scroll. Two lessons from getting there, both now in the suite:
+- **A same-weight rule later in the file wins.** `.studio-table td { white-space:
+  nowrap }` silently overrode `.export-plan td`, so card text did not wrap and ran
+  across the next column. The plan rules are `.studio-table.export-plan …`.
+- **Element rectangles cannot see overflowing text.** A visible-overflow cell does
+  not grow when its text spills out, so the first fit check passed an overlapping
+  layout. It now also compares `scrollWidth` to `clientWidth` in any overflow mode
+  and each rendered text line to its container, and it judges the preview with the
+  longest text (a changed backup), not the short "No change." one. With wrapping
+  removed it fails at 1200 and 390px.
+
 
 **The backup file** — `GET /api/studio/backup` →
 `kpfk-backup-2026-09-16.json`, one JSON file (a few KB per month; no zip, no
