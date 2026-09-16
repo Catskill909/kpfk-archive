@@ -160,6 +160,53 @@ run against it (UTC instead of local dates, listener archive instead of catalog,
 guessed schedule, id as title, broken show count). Browser: `export-tests.js` 2b
 picks Archive and Coverage with real clicks and asserts their files land.
 
+### 3 — printable report — built 2026-09-16
+
+`GET /studio/report?from=&to=` (signed in; signed out redirects to `/studio`), opened
+from the Export dialog's fourth choice, **Printable report** → **Open report** (new
+tab). The page has a **Print or save as PDF** button; the browser makes the PDF, as
+planned — no PDF library.
+
+- **Server-rendered** by `lib/export/report.js` from the **same objects** the
+  listening, inventory and coverage downloads are built from, so the report and the
+  CSVs for the same dates cannot disagree. Printing never waits on script.
+- **Sections:** listening at a glance (7 figures), minutes listened per day (SVG),
+  most listened shows (top 15), reach, what the archive aired (episodes, shows,
+  audio, by category), program data gaps for scheduled programs (no artwork, no
+  description, no episodes, none in 30 days — with names), and *About these figures*
+  (counters only, which clock each part uses).
+- **CSP-clean:** every text value escaped; the chart is SVG drawn with attributes;
+  styles in `public/report.css` (always light — it is a document), the Print handler
+  in `public/report.js`. Both are version-stamped and counted in `/healthz`
+  `studioVersion`.
+- **Print rules:** `@page` margins, toolbar hidden, no row, tile or chart split
+  across pages, colours kept.
+- **Dates:** listening by UTC day and the archive by local air date over one span
+  (the dialog says both); bounds from the earlier of the oldest stats month and
+  oldest air date, to today.
+
+**Tests:** HTTP — 302 signed out; the report's totals equal the seeded month and the
+listening CSV, its Episodes and No-artwork figures equal the Archive and Coverage
+CSVs; a quoted title is escaped and never raw; untitled shows say so; no inline
+`style`/`<style>`/inline `<script>`; same-origin images; bad spans 400. Planted:
+plays from the wrong column, escaping removed, an inline style — each seen to fail.
+Browser (`export-tests.js` 6): real clicks open the report in a new tab; in print
+media the toolbar is hidden and nothing runs off the page; `Page.printToPDF` yields a
+PDF; with the print rule removed the suite fails.
+
+**Found by reading the generated PDF, not by the tests** (both now tested, each seen
+to fail without its fix):
+- **Pacifica changed how a missing show image is sent.** On 2026-09-14 (the pinned
+  fixtures) 81 shows had an empty `photoUrl`; by 2026-09-16 the live feed gave 78
+  shows the same generic station picture, `…/pix/KPFK_med.jpg`. Coverage counted
+  that as artwork and the report read "No artwork: 0" where 20 scheduled programs
+  have none. Coverage now treats an image shared by **4 or more shows** as no
+  artwork (no real image is shared by even two), lists it in the JSON summary as
+  `generic_artwork`, and the HTTP test serves the fixtures the way the live feed now
+  does.
+- **"0m" for 14 seconds** read as nobody listening; under a minute is shown in
+  seconds.
+
 ---
 
 

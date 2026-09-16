@@ -164,6 +164,19 @@ test('coverage builder: every catalog show, gaps as booleans, unknown schedule l
   const build = scheduleKeys => COV.buildCoverage({ station: 'kpfk', stationTimezone: 'America/Los_Angeles', directory, rows,
     listenerKeys: new Set(['kpfk.kpfk.a']), scheduleKeys, titleFor: k => ({ 'kpfk.kpfk.a': 'A', 'kpfk.2kpfk.c': 'C' })[k] || '',
     now: now * 1000, generatedAt: '2026-09-16T12:00:00.000Z' });
+  // The feed's generic station picture, shared by 4+ shows, is not artwork.
+  const generic = 'https://c/STATION_med.jpg';
+  const withGeneric = { ...directory };
+  for (const k of ['kpfk.kpfk.g1', 'kpfk.kpfk.g2', 'kpfk.kpfk.g3', 'kpfk.kpfk.g4']) withGeneric[k] = { archiveSource: 'kpfk', photoUrl: generic };
+  withGeneric['kpfk.kpfk.pair1'] = { archiveSource: 'kpfk', photoUrl: 'https://c/pair.jpg' };
+  withGeneric['kpfk.kpfk.pair2'] = { archiveSource: 'kpfk', photoUrl: 'https://c/pair.jpg' };
+  const g = COV.buildCoverage({ station: 'kpfk', stationTimezone: 'America/Los_Angeles', directory: withGeneric, rows: [],
+    listenerKeys: new Set(), scheduleKeys: new Set(), titleFor: () => '', now: now * 1000, generatedAt: '2026-09-16T12:00:00.000Z' });
+  const art = Object.fromEntries(g.shows.map(r => [r.show_key, r.has_artwork]));
+  assert.equal(art['kpfk.kpfk.g1'], false, 'a picture on four shows is the generic one');
+  assert.equal(art['kpfk.kpfk.pair1'], true, 'two shows sharing a real image still have artwork');
+  assert.deepEqual(g.manifest.generic_artwork, [{ url: generic, shows: 4 }]);
+
   const c = build(new Set(['kpfk.kpfk.a']));
   assert.deepEqual(c.shows.map(r => [r.show_key, r.show_title, r.in_published_schedule, r.shown_to_listeners, r.has_artwork, r.has_description, r.has_host, r.episodes_in_catalog, r.days_since_newest_episode]), [
     ['kpfk.2kpfk.c', 'C', false, false, false, true, false, 1, 40],
@@ -195,6 +208,11 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   const rename = (altid, name) => { const s = catalog.shows.kpfk.find(x => x.altid === altid); assert.ok(s, altid); s.name = name; };
   rename('buildingbridges', 'Radio "Maíz", en Español');
   rename('biketalka', '');
+  // As the live feed does since 2026-09-16: no image → the generic station picture.
+  const GENERIC = 'https://confessor.kpfk.org/pix/KPFK_med.jpg';
+  const noImage = new Set();
+  for (const [src, list] of Object.entries(catalog.shows)) for (const x of list) if (!x.photoUrl) { noImage.add(`kpfk.${src}.${x.altid}`); x.photoUrl = GENERIC; }
+  assert.ok(noImage.size > 20, 'the fixture has shows without artwork to stand in for');
   const upstream = http.createServer((req, res) => {
     const name = path.basename(req.url), file = path.join(fixtureDir, name);
     if (name === 'fe_catalog_kpfk.json') { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(catalog)); }
@@ -352,7 +370,7 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   // ---- Archive (inventory) and coverage, on the pinned fixtures
   const idx = await (await get('/api/studio/exports')).json();
   const inv = idx.datasets.find(d => d.name === 'inventory'), cov = idx.datasets.find(d => d.name === 'coverage');
-  assert.deepEqual(idx.datasets.map(d => [d.name, d.span]), [['listening', 'utc'], ['inventory', 'local'], ['coverage', null]]);
+  assert.deepEqual(idx.datasets.map(d => [d.name, d.span]), [['listening', 'utc'], ['inventory', 'local'], ['coverage', null], ['report', 'mixed']]);
   assert.equal(inv.hasData, true); assert.equal(cov.hasData, true);
   // Local air dates computed here with a separate formatter, not the app's.
   const la = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -405,8 +423,8 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
     assert.equal(byKey.get(k).in_published_schedule, String(scheduled.has(k)), `${k} schedule`);
     assert.equal(byKey.get(k).shown_to_listeners, String(scheduled.has(k)), `${k} listeners`);
   }
-  const rawShow = k => { const [, src, alt] = k.split('.'); return catalog.shows[src].find(x => x.altid === alt); };
-  assert.equal(covCsv.rows.filter(r => r.has_artwork === 'false').length, catalogKeys.filter(k => !rawShow(k).photoUrl).length, 'artwork gaps match the raw feed');
+  assert.deepEqual(covCsv.rows.filter(r => r.has_artwork === 'false').map(r => r.show_key).sort(), [...noImage].sort(),
+    'shows with only the generic station picture have no artwork');
   assert.equal(byKey.get('kpfk.kpfk.buildingbridges').show_title, 'Radio "Maíz", en Español');
   assert.equal(byKey.get('kpfk.kpfk.buildingbridges').in_published_schedule, 'false');
   assert.equal(byKey.get('kpfk.kpfk.biketalka').show_title, '', 'a show with no name has an empty title, not its id');
@@ -415,10 +433,47 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   const covJson = await (await get('/api/studio/export?dataset=coverage&format=json')).json();
   assert.equal(covJson.manifest.summary.without_episodes, catalogKeys.filter(k => rawEpisodes(k) === 0).length);
   assert.equal(covJson.manifest.schedule_known, true);
+  assert.deepEqual(covJson.manifest.generic_artwork, [{ url: GENERIC, shows: noImage.size }]);
   assert.match(await (await get('/api/studio/export?dataset=coverage&format=readme')).text(), /Without artwork: +\d+/);
   for (const p of ['/api/studio/export?dataset=coverage&format=csv', `/api/studio/export?dataset=inventory&from=${laDay}&to=${laDay}&format=csv`]) {
     assert.equal((await fetch(url + p)).status, 401, 'signed out: ' + p);
   }
+
+  // ---- Printable report: the same numbers as the downloads, CSP-clean, escaped
+  const signedOut = await fetch(url + `/studio/report?${FEB}`, { redirect: 'manual' });
+  assert.equal(signedOut.status, 302, 'report signed out'); assert.equal(signedOut.headers.get('location'), '/studio');
+  assert.doesNotMatch(await signedOut.text(), /Capitalism/);
+  const repRes = await get(`/studio/report?${FEB}`);
+  assert.equal(repRes.status, 200);
+  assert.equal(repRes.headers.get('cache-control'), 'private, no-store');
+  assert.match(repRes.headers.get('content-security-policy'), /style-src 'self'/);
+  const rep = await repRes.text();
+  const unescape = t => t.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+  const totals = JSON.parse(unescape(rep.match(/data-totals='([^']+)'/)[1]));
+  assert.equal(totals.plays, seeded('plays'), 'report plays = the seeded month = the CSV');
+  assert.equal(totals.views, seeded('pageviews')); assert.equal(totals.onDemand, seeded('listenSeconds'));
+  assert.match(rep, /Radio &quot;Maíz&quot;, en Español/, 'titles are escaped');
+  assert.doesNotMatch(rep, /Radio "Maíz"/, 'and never raw');
+  assert.match(rep, /untitled in the feed \(kpfk\.kpfk\.nosuchshowever\)/);
+  assert.doesNotMatch(rep, />0m</, 'under a minute is shown in seconds, never as "0m"');
+  assert.match(rep, />0s</);
+  assert.match(rep, /untitled in the feed \(kpfk\.kpfk\.biketalka\)/);
+  assert.doesNotMatch(rep, /\sstyle=|<style|<script(?![^>]*\ssrc=)/, 'no inline style or script: the CSP would void them');
+  for (const [, src] of rep.matchAll(/\ssrc="([^"]+)"/g)) assert.ok(src.startsWith('/'), `same-origin: ${src}`);
+  assert.match(rep, /href="\/report\.css\?v=[^"]+"/, 'the stylesheet is version-stamped');
+  assert.match(rep, /<h2>Program data gaps<\/h2>/); assert.match(rep, /<h2>What the archive aired<\/h2>/);
+  const tile = (html, label) => Number(((html.match(new RegExp(`<div class="tile-value">([\\d,]+)</div><div class="tile-label">${label}</div>`)) || [])[1] || 'NaN').replace(/,/g, ''));
+  const repAll = await (await get(`/studio/report?from=${inv.firstDate}&to=${todayUtc}`)).text();
+  const invAll = parseCsv(await bytes(await get(`/api/studio/export?dataset=inventory&from=${inv.firstDate}&to=${inv.today}&format=csv&table=episodes`)));
+  assert.equal(tile(repAll, 'Episodes'), invAll.rows.length, 'report episodes = the Archive CSV');
+  const covAll = parseCsv(await bytes(await get('/api/studio/export?dataset=coverage&format=csv')));
+  assert.equal(tile(repAll, 'No artwork'), covAll.rows.filter(r => r.in_published_schedule === 'true' && r.has_artwork === 'false').length,
+    'report artwork gaps = the Coverage CSV');
+  for (const q of [`from=2020-02-10&to=2020-02-09`, `from=2020-02-01&to=${tomorrow}`, `from=1999-01-01&to=2020-02-01`, `from=2020-02-30&to=2020-03-01`]) {
+    assert.equal((await get('/studio/report?' + q)).status, 400, 'report span ' + q);
+  }
+  const reportEntry = (await (await get('/api/studio/exports')).json()).datasets.find(d => d.name === 'report');
+  assert.equal(reportEntry.span, 'mixed'); assert.equal(reportEntry.firstDate, '2020-02-01');
 
   const readme = await get(`/api/studio/export?dataset=listening&${FEB}&format=readme`);
   assert.equal(readme.headers.get('content-disposition'), 'attachment; filename="kpfk-listening-2020-02-01_2020-02-29-README.txt"');

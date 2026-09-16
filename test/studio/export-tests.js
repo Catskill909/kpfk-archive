@@ -346,6 +346,53 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     ok(`${w}px — nothing inside it is cut off or scrolls sideways`, !fit.sideways && fit.out.length === 0, JSON.stringify(fit.out));
   }
 
+  // ---- 6. the printable report: opened from the dialog, printed to PDF
+  console.log('\n6. printable report');
+  await size(1200);
+  await go();
+  await click('#exportOpen');
+  await wait(800);
+  await click('input[name=exportDataset][value="report"]');
+  const repUi = JSON.parse(await ev(`JSON.stringify({ go: document.getElementById('exportGo').textContent,
+    readmeHidden: document.getElementById('exportReadmeRow').hidden, clock: document.getElementById('exportClock').textContent,
+    datesOff: document.getElementById('exportDates').disabled })`));
+  ok('Printable report: the button says Open report, no read-me, both clocks explained',
+    repUi.go === 'Open report' && repUi.readmeHidden && /UTC days/.test(repUi.clock) && /air dates in/.test(repUi.clock) && !repUi.datesOff,
+    JSON.stringify(repUi));
+  const targetsBefore = (await (await fetch(`http://127.0.0.1:${PORT}/json/list`)).json()).map((t) => t.id);
+  await click('#exportGo');
+  let reportTab = null;
+  for (let i = 0; i < 30 && !reportTab; i++) {
+    await wait(150);
+    reportTab = (await (await fetch(`http://127.0.0.1:${PORT}/json/list`)).json())
+      .find((t) => !targetsBefore.includes(t.id) && /\/studio\/report\?from=\d{4}-\d{2}-\d{2}&to=\d{4}-\d{2}-\d{2}/.test(t.url));
+  }
+  ok('Open report opens the report in a new tab', !!reportTab, JSON.stringify(await status()));
+  if (reportTab) await fetch(`http://127.0.0.1:${PORT}/json/close/${reportTab.id}`);
+
+  await c.send('Page.navigate', { url: BASE + '/studio/report' });
+  await wait(1500);
+  const page = JSON.parse(await ev(`JSON.stringify({ h1: (document.querySelector('h1') || {}).textContent || '',
+    sections: [...document.querySelectorAll('.section h2')].map((h) => h.textContent),
+    print: !!document.getElementById('printReport'),
+    css: [...document.styleSheets].some((s) => /report\.css/.test(s.href || '') && s.cssRules.length > 10) })`));
+  ok('the report renders with its stylesheet', /report/.test(page.h1) && page.css && page.print
+    && page.sections.includes('Listening at a glance') && page.sections.includes('About these figures'), JSON.stringify(page));
+  await c.send('Emulation.setEmulatedMedia', { media: 'print' });
+  await wait(300);
+  const printed = JSON.parse(await ev(`(() => {
+    const vw = document.documentElement.clientWidth;
+    const out = [...document.querySelectorAll('body *')].filter((el) => {
+      const r = el.getBoundingClientRect(); return r.width > 0 && r.right > vw + 1;
+    }).map((el) => el.tagName.toLowerCase() + '.' + el.className);
+    return JSON.stringify({ toolbar: getComputedStyle(document.querySelector('.toolbar')).display, out: out.slice(0, 3) });
+  })()`));
+  ok('in print, the toolbar is hidden and nothing runs off the page', printed.toolbar === 'none' && printed.out.length === 0, JSON.stringify(printed));
+  const pdf = await c.send('Page.printToPDF', { printBackground: true, preferCSSPageSize: true });
+  const pdfBytes = Buffer.from(pdf.data, 'base64');
+  ok('Print → PDF produces a PDF', pdfBytes.subarray(0, 5).toString() === '%PDF-' && pdfBytes.length > 5000, `${pdfBytes.length} bytes`);
+  await c.send('Emulation.setEmulatedMedia', { media: '' });
+
   fs.rmSync(dir, { recursive: true, force: true });
   console.log(failures ? `\n${failures} failure(s)` : '\nOK — all export checks passed');
   process.exit(failures ? 1 : 0);

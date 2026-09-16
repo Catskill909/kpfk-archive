@@ -1027,11 +1027,15 @@
         utc: 'Days are UTC calendar days — the listening counters were recorded that way.',
         local: function (tz) { return 'Episodes are chosen by air date in ' + tz + ', the station’s timezone.'; },
         none: 'Coverage is a snapshot of the catalog right now, so dates do not apply.',
+        mixed: function (tz) {
+          return 'Listening figures use UTC days; the archive section uses air dates in ' + tz + '.';
+        },
       };
       var EMPTY = {
         listening: 'Nothing has been counted yet. Counting began when this app was deployed — it does not backfill. An export now has the columns and no figures.',
         inventory: 'The archive holds no episodes right now. An export now has the columns and no rows.',
         coverage: 'The Pacifica catalog has not loaded yet, so there is nothing to describe. Try again in a minute.',
+        report: '',
       };
 
       function status(text, kind) {
@@ -1065,7 +1069,8 @@
           [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) { b.setAttribute('aria-pressed', 'false'); });
           return;
         }
-        clock.textContent = d.span === 'local' ? CLOCK.local(index.stationTimezone) : CLOCK.utc;
+        clock.textContent = d.span === 'local' ? CLOCK.local(index.stationTimezone)
+          : d.span === 'mixed' ? CLOCK.mixed(index.stationTimezone) : CLOCK.utc;
         if (ok) {
           var days = Math.round((utcMs(to) - utcMs(from)) / 86400000) + 1;
           note.textContent = longDay(from) + ' – ' + longDay(to) + ' · '
@@ -1100,9 +1105,11 @@
           g.hidden = g.getAttribute('data-dataset') !== name;
         });
         var picked = form.querySelector('input[name=exportFile]:checked');
-        if (!picked || picked.value.split(':')[0] !== name) {
-          form.querySelector('.export-choices[data-dataset="' + name + '"] input[name=exportFile]').checked = true;
-        }
+        var first = form.querySelector('.export-choices[data-dataset="' + name + '"] input[name=exportFile]');
+        if (first && (!picked || picked.value.split(':')[0] !== name)) first.checked = true;
+        // The report is a page, not a file: no read-me, and the button opens it.
+        document.getElementById('exportReadmeRow').hidden = name === 'report';
+        go.textContent = name === 'report' ? 'Open report' : 'Download';
         if (!d) return refresh();
         empty.hidden = d.hasData;
         empty.textContent = d.hasData ? '' : EMPTY[name];
@@ -1450,6 +1457,19 @@
       });
       form.addEventListener('submit', function (ev) {
         ev.preventDefault();
+        if (datasetName() === 'report') {
+          if (!spanOk()) return;
+          var url = '/studio/report?from=' + fromEl.value + '&to=' + toEl.value;
+          var tab = window.open(url, '_blank');
+          // A blocked pop-up returns null: say so and offer the link, rather
+          // than leaving the click looking like it did nothing.
+          if (tab) {
+            status('Opened the report in a new tab. Use Print or save as PDF there.', 'ok');
+          } else {
+            status('Your browser blocked the new tab. Open the report here: ' + location.origin + url, 'bad');
+          }
+          return;
+        }
         // value is dataset:format[:table]; the dataset is already the checked one.
         var pick = form.querySelector('input[name=exportFile]:checked').value.split(':');
         download(pick[1], pick[2]);

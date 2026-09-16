@@ -397,6 +397,11 @@
           <span class="export-dataset-name">Coverage</span>
           <span class="export-dataset-desc">Where program data is thin</span>
         </label>
+        <label class="export-dataset">
+          <input type="radio" name="exportDataset" value="report">
+          <span class="export-dataset-name">Printable report</span>
+          <span class="export-dataset-desc">For a board or funder, as PDF</span>
+        </label>
       </div>
 
       <p class="export-empty" id="exportEmpty" hidden></p>
@@ -470,7 +475,15 @@
             </span>
           </label>
       </div>
-      <p class="export-readme">
+      <div class="export-choices" data-dataset="report" hidden>
+        <p class="export-copy">
+          One page with everything for the dates you pick: listening at a glance,
+          minutes per day, most listened shows, reach, what the archive aired, and
+          the program data gaps to fix in Confessor. It opens in a new tab; use
+          <strong>Print or save as PDF</strong> there.
+        </p>
+      </div>
+      <p class="export-readme" id="exportReadmeRow">
         What do the columns mean?
         <button class="export-link" id="exportReadme" type="button">Download the read-me</button>
       </p>

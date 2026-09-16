@@ -99,7 +99,8 @@ Each file is daily counters and nothing else:
    between servers (Export → Backup & restore: preview, then replace; undo; moving
    guide in docs/DEPLOYMENT.md). **Phase 2 built too:** *Archive* (inventory, by
    local air date) and *Coverage* (every catalog show and its gaps) in the Reports
-   tab. **Next:** printable report, then profile. Paul is testing everything together
+   tab. **Phase 3 built:** the printable report (`/studio/report`, Export → Printable
+   report → Open report, then Print or save as PDF). **Next:** profile. Paul is testing everything together
    after the build (2026-09-16), so nothing from 1c onward has been tried live yet. Spec: "Revised plan" in docs/exports.md.
    *Found while building it, not fixed:* the dashboard's **Most listened shows**
    (`usageReport().topShows`) and **show history** (`showHistory()`) still fall back
@@ -120,8 +121,14 @@ Each file is daily counters and nothing else:
    disaster recovery. What snapshots do *not* give anyone is a portable, readable,
    longer-than-10-days copy — that is what the export above is for, and it is a
    reporting feature, not a backup feature.
-4. **Artwork:** 20 scheduled programs have an empty catalog `photoUrl`, and Confessor has
-   no image for them either. Examples: Something's Happening ×6, Counterspin, Radio Maiz,
+4. **Artwork:** 20 scheduled programs have no image of their own, and Confessor has
+   no image for them either. **Changed upstream by 2026-09-16:** the catalog no longer
+   sends an empty `photoUrl` for them — it sends Pacifica's generic station picture
+   (`https://confessor.kpfk.org/pix/KPFK_med.jpg`, on 78 shows). So the **listener app
+   now shows that generic picture** for those 20 programs, not our dark waveform
+   placeholder. Undecided whether the app should detect it (an image shared by many
+   shows) and show the placeholder instead; the coverage export and report already
+   count it as "no artwork" (docs/exports.md phase 3). Examples: Something's Happening ×6, Counterspin, Radio Maiz,
    Contacto Ancestral, Making Contact. KPFK staff need to upload it in Confessor; it then
    appears automatically. Evidence: `docs/kpfk/artwork-evidence-2026-09-15/`.
 5. **Android app link** is Google Play *closed testing*. Swap `links.androidApp` for the

@@ -26,6 +26,7 @@ const backupLib = require('./lib/export/backup');
 const inventoryExport = require('./lib/export/inventory');
 const coverageExport = require('./lib/export/coverage');
 const exportCommon = require('./lib/export/common');
+const reportLib = require('./lib/export/report');
 const station = process.env.STATION_PROFILE
   ? loadProfile(process.env.STATION_PROFILE, { root: __dirname, allowLocal: process.env.PACIFICA_TEST_LOCAL === '1' }) : null;
 if (require.main === module && !station && process.env.STATION_PROVIDER !== 'legacy-xml') {
@@ -2089,7 +2090,7 @@ function appVersion() {
 // DEPLOYMENT.md) would fire falsely on every studio deploy. Keeping them apart
 // also leaves appVersion()'s meaning — the listener bundle — unchanged.
 function studioVersion() {
-  return `${fileVer('/studio.js')}.${fileVer('/studio.css')}`;
+  return `${fileVer('/studio.js')}.${fileVer('/studio.css')}.${fileVer('/report.css')}.${fileVer('/report.js')}`;
 }
 
 /**
@@ -2868,15 +2869,63 @@ function exportsIndex() {
     firstDate: exportFirstDate(),
     today: today(),
     months,
-    datasets: Object.entries(EXPORT_DATASETS).map(([name, d]) => ({
-      name,
-      tables: Object.keys(d.lib.COLUMNS),
-      formats: ['csv', 'json', 'readme'],
-      span: d.span,
-      hasData: d.hasData(),
-      ...(d.span ? d.bounds() : {}),
-    })),
+    datasets: [
+      ...Object.entries(EXPORT_DATASETS).map(([name, d]) => ({
+        name,
+        tables: Object.keys(d.lib.COLUMNS),
+        formats: ['csv', 'json', 'readme'],
+        span: d.span,
+        hasData: d.hasData(),
+        ...(d.span ? d.bounds() : {}),
+      })),
+      // The printable report is a page, not a file: listening in UTC days and
+      // the archive by local air date, over one span.
+      { name: 'report', tables: [], formats: ['html'], span: 'mixed', hasData: true, ...reportBounds() },
+    ],
   };
+}
+
+/** The dates a report may cover: from the earlier of the oldest stats month
+ *  and the oldest archive air date, to today (UTC — the later of the clocks). */
+function reportBounds() {
+  const a = EXPORT_DATASETS.listening.bounds(), b = EXPORT_DATASETS.inventory.bounds();
+  return { firstDate: a.firstDate < b.firstDate ? a.firstDate : b.firstDate, today: today() };
+}
+
+/** GET /studio/report?from=&to= — the printable report (docs/exports.md phase 3). */
+function sendReport(req, res) {
+  if (!studioAuthed(req)) {
+    res.writeHead(302, { Location: '/studio', 'Cache-Control': 'no-store', ...securityHeaders() });
+    return res.end();
+  }
+  const q = new URL(req.url, 'http://localhost').searchParams;
+  const b = reportBounds();
+  const from = q.get('from') || today().slice(0, 8) + '01';
+  const to = q.get('to') || today();
+  if (!isIsoDate(from) || !isIsoDate(to) || from > to || from < b.firstDate || to > b.today) {
+    res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', ...securityHeaders() });
+    return res.end(`Those dates cannot be reported: choose a span from ${b.firstDate} to ${b.today}.\n`);
+  }
+  const generatedAt = new Date().toISOString();
+  const html = reportLib.renderReport({
+    station: station
+      ? { name: station.name, frequency: station.frequency, city: station.city, logo: station.assets.logo }
+      : { name: 'WBAI', frequency: '99.5 FM', city: 'New York', logo: '' },
+    from, to, generatedAt,
+    listening: EXPORT_DATASETS.listening.build({ from, to, generatedAt }),
+    inventory: pacifica ? EXPORT_DATASETS.inventory.build({ from, to, generatedAt }) : null,
+    coverage: pacifica && EXPORT_DATASETS.coverage.canBuild() ? EXPORT_DATASETS.coverage.build({ generatedAt }) : null,
+  });
+  const body = Buffer.from(stampAssets(html), 'utf8');
+  res.writeHead(200, {
+    'Content-Type': MIME['.html'],
+    'Content-Length': body.length,
+    'Cache-Control': 'private, no-store',
+    'Vary': 'Cookie',
+    'X-App-Version': appVersion(),
+    ...securityHeaders(),
+  });
+  res.end(req.method === 'HEAD' ? undefined : body);
 }
 
 /** `GET /api/studio/export` — one dataset, one span, one format. */
@@ -3808,6 +3857,7 @@ const server = http.createServer(async (req, res) => {
   // the listener app (notFound() falls back to index.html for any path without
   // an extension). When the studio is disabled these ifs are skipped entirely
   // and that fallback is exactly what we want to happen.
+  if (STUDIO_ENABLED && pathOnly === '/studio/report') return sendReport(req, res);
   if (STUDIO_ENABLED && (pathOnly === '/studio' || pathOnly === '/studio/')) {
     return sendStudioHtml(req, res, studioAuthed(req) ? 'studio.html' : 'login.html');
   }
