@@ -279,6 +279,7 @@ Paul: dark-edged artwork made the gallery cards look ragged on the cream page. B
 | `f9d0abf` | Mat `var(--surface-3)`, outline 16% / 18% hover — chosen from four tints rendered side by side |
 | `a85deb9` | Shadows are the header pills' `--elev-1` / `--elev-2`; darker, taller title scrim so artwork lettering stops competing with the card title |
 | `9ea69da` | List view: `.show-thumb` gets the same container at 60px — 3px `--surface-3` mat as an inset spread shadow, placeholder background clipped to the content box (no station asset path in the block), image inset by the mat |
+| `2eb1eaa` | Info sheet: `.sheet-art` gets the same container with a 5px mat (18px frame, 13px art); the zoom badge moves in by the mat. Probe note: let the sheet's open animation settle (~3s) — a sub-pixel offset otherwise makes identical CSS screenshot two ways |
 
 - **Scoping:** every rule is written twice — `:root[data-theme="light"]` and, inside
   `@media (prefers-color-scheme: light)`, `:root:not([data-theme])` — because
