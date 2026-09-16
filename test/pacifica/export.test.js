@@ -124,6 +124,61 @@ test('builder: a station with no data exports zero-filled days, no show rows, ze
   assert.deepEqual(csv.head, DOCUMENTED.shows); assert.equal(csv.rows.length, 0);
 });
 
+const INV = require('../../lib/export/inventory');
+const COV = require('../../lib/export/coverage');
+
+test('inventory builder: air dates in the station clock decide the span, titles never ids', () => {
+  // 2026-09-01T02:30Z is 7:30 pm on 2026-08-31 in Los Angeles.
+  const lateLA = Date.UTC(2026, 8, 1, 2, 30) / 1000, noon = Date.UTC(2026, 8, 1, 19, 0) / 1000;
+  const rows = [
+    { id: 'kpfk.kpfk.1', sho: 'kpfk.kpfk.a', dt: lateLA, durationSec: 3600, episodeTitle: 'Late', categoryLabel: 'News', host: 'H', mp3: 'https://x/1.mp3', expiresAt: null },
+    { id: 'kpfk.kpfk.2', sho: 'kpfk.kpfk.a', dt: noon, durationSec: 1800, episodeTitle: 'Noon', categoryLabel: 'News', host: 'H', mp3: 'https://x/2.mp3', expiresAt: noon + 86400 * 30 },
+    { id: 'kpfk.kpfk.3', sho: 'kpfk.kpfk.nameless', dt: noon, durationSec: 60, episodeTitle: '', categoryLabel: '', host: '', mp3: '', expiresAt: null },
+  ];
+  const build = (from, to) => INV.buildInventory({ station: 'kpfk', stationTimezone: 'America/Los_Angeles', from, to, rows,
+    titleFor: k => (k === 'kpfk.kpfk.a' ? 'Show A' : ''), scheduleBasis: 'schedule', generatedAt: 'g' });
+  const aug31 = build('2026-08-31', '2026-08-31');
+  assert.deepEqual(aug31.episodes.map(e => e.episode_id), ['kpfk.kpfk.1'], 'the 7:30 pm LA episode is an August 31 episode');
+  assert.equal(aug31.episodes[0].air_time_local, '19:30'); assert.equal(aug31.episodes[0].air_datetime_utc, '2026-09-01T02:30:00.000Z');
+  assert.deepEqual(build('2026-09-01', '2026-09-01').episodes.map(e => e.episode_id), ['kpfk.kpfk.2', 'kpfk.kpfk.3'],
+    'and not a September 1 one, although that is its UTC date');
+  const all = build('2026-08-01', '2026-09-30');
+  assert.equal(all.episodes.length, 3);
+  assert.deepEqual(all.shows.map(s => [s.show_key, s.show_title, s.episodes, s.total_seconds, s.oldest_air_date_local, s.newest_air_date_local]),
+    [['kpfk.kpfk.nameless', '', 1, 60, '2026-09-01', '2026-09-01'], ['kpfk.kpfk.a', 'Show A', 2, 5400, '2026-08-31', '2026-09-01']]);
+  assert.equal(all.episodes[1].expires_utc, new Date((noon + 86400 * 30) * 1000).toISOString());
+  assert.equal(all.episodes[0].expires_utc, '');
+  for (const [t, cols] of Object.entries(INV.COLUMNS)) for (const r of all[t]) assert.deepEqual(Object.keys(r), cols);
+  assert.equal(INV.exportFilename(all.manifest, 'episodes', 'csv'), 'kpfk-archive-episodes-2026-08-01_2026-09-30.csv');
+  assert.match(INV.manifestText(all.manifest), /no listener data of any kind/);
+});
+
+test('coverage builder: every catalog show, gaps as booleans, unknown schedule left empty', () => {
+  const now = Date.UTC(2026, 8, 16, 12) / 1000;
+  const directory = {
+    'kpfk.kpfk.a': { archiveSource: 'kpfk', categoryLabel: 'News', photoUrl: 'https://c/a.jpg', desc: 'd', dj: 'H' },
+    'kpfk.kpfk.b': { archiveSource: 'kpfk', categoryLabel: '', photoUrl: '', desc: '', shortdesc: '', dj: '' },
+    'kpfk.2kpfk.c': { archiveSource: '2kpfk', photoUrl: '', desc: '', shortdesc: 'short', dj: '' },
+  };
+  const rows = [{ sho: 'kpfk.kpfk.a', dt: now - 86400 * 3 - 60 }, { sho: 'kpfk.kpfk.a', dt: now - 86400 * 10 }, { sho: 'kpfk.2kpfk.c', dt: now - 86400 * 40 }];
+  const build = scheduleKeys => COV.buildCoverage({ station: 'kpfk', stationTimezone: 'America/Los_Angeles', directory, rows,
+    listenerKeys: new Set(['kpfk.kpfk.a']), scheduleKeys, titleFor: k => ({ 'kpfk.kpfk.a': 'A', 'kpfk.2kpfk.c': 'C' })[k] || '',
+    now: now * 1000, generatedAt: '2026-09-16T12:00:00.000Z' });
+  const c = build(new Set(['kpfk.kpfk.a']));
+  assert.deepEqual(c.shows.map(r => [r.show_key, r.show_title, r.in_published_schedule, r.shown_to_listeners, r.has_artwork, r.has_description, r.has_host, r.episodes_in_catalog, r.days_since_newest_episode]), [
+    ['kpfk.2kpfk.c', 'C', false, false, false, true, false, 1, 40],
+    ['kpfk.kpfk.a', 'A', true, true, true, true, true, 2, 3],
+    ['kpfk.kpfk.b', '', false, false, false, false, false, 0, ''],
+  ]);
+  assert.deepEqual(c.manifest.summary, { in_published_schedule: 1, shown_to_listeners: 1, without_artwork: 2, without_description: 1, without_episodes: 1 });
+  const unknown = build(null);
+  assert.ok(unknown.shows.every(r => r.in_published_schedule === ''), 'no schedule, no guess');
+  assert.equal(unknown.manifest.summary.in_published_schedule, null);
+  for (const r of c.shows) assert.deepEqual(Object.keys(r), COV.COLUMNS.shows);
+  assert.equal(COV.exportFilename(c.manifest, 'shows', 'csv'), 'kpfk-coverage-shows-2026-09-16.csv');
+  assert.deepEqual(parseCsv(toCsv(COV.COLUMNS.shows, c.shows)).rows[1].has_artwork, 'true');
+});
+
 // ---------------------------------------------------------------- real HTTP
 function cleanEnv() { const env = { ...process.env }; for (const k of ['STATION_PROFILE', 'STATION_PROVIDER', 'STATION_ID', 'STATION_TZ', 'STUDIO_PASSWORD']) delete env[k]; return env; }
 async function freePort() {
@@ -230,7 +285,8 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
     const r = await get('/api/studio/export?dataset=listening&format=csv&' + q);
     assert.equal(r.status, 400, `span ${from}..${to} refused`);
   }
-  for (const q of [`dataset=inventory&${FEB}&format=csv`, `dataset=listening&${FEB}&format=xlsx`,
+  for (const q of [`dataset=nosuch&${FEB}&format=csv`, `dataset=inventory&format=csv&table=episodes`,
+    `dataset=coverage&format=csv&table=daily`, `dataset=listening&${FEB}&format=xlsx`,
     `dataset=listening&${FEB}&format=csv&table=ip`]) {
     assert.equal((await get('/api/studio/export?' + q)).status, 400, q);
   }
@@ -292,6 +348,77 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   assert.equal(json.manifest.to_date_utc, todayUtc);
   for (const [table, cols] of Object.entries(DOCUMENTED)) for (const row of json[table]) assert.deepEqual(Object.keys(row), cols);
   assert.equal(json.daily.filter(r => r.date_utc.startsWith('2020-02')).reduce((n, r) => n + r.episode_plays, 0), seeded('plays'));
+
+  // ---- Archive (inventory) and coverage, on the pinned fixtures
+  const idx = await (await get('/api/studio/exports')).json();
+  const inv = idx.datasets.find(d => d.name === 'inventory'), cov = idx.datasets.find(d => d.name === 'coverage');
+  assert.deepEqual(idx.datasets.map(d => [d.name, d.span]), [['listening', 'utc'], ['inventory', 'local'], ['coverage', null]]);
+  assert.equal(inv.hasData, true); assert.equal(cov.hasData, true);
+  // Local air dates computed here with a separate formatter, not the app's.
+  const la = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' });
+  const laDate = sec => { const p = Object.fromEntries(la.formatToParts(sec * 1000).map(x => [x.type, x.value])); return `${p.year}-${p.month}-${p.day}`; };
+  const localDates = archive.shows.map(r => laDate(r.dt)).sort();
+  assert.equal(inv.firstDate, localDates[0], 'archive span starts at the oldest local air date');
+  const episodesCsv = parseCsv(await bytes(await get(`/api/studio/export?dataset=inventory&from=${inv.firstDate}&to=${inv.today}&format=csv&table=episodes`)));
+  assert.deepEqual(episodesCsv.head, INV.COLUMNS.episodes);
+  assert.deepEqual(episodesCsv.rows.map(r => r.episode_id).sort(), archive.shows.map(r => r.id).sort(), 'every episode listeners can play, once');
+  const titleOfShow = new Map(archive.shows.map(r => [r.sho, r.title]));
+  for (const r of episodesCsv.rows) {
+    assert.equal(r.show_title, titleOfShow.get(r.show_key) === r.show_key.split('.').pop() ? '' : titleOfShow.get(r.show_key), r.show_key);
+    assert.equal(r.air_date_local, laDate(Date.parse(r.air_datetime_utc) / 1000));
+  }
+  const invShows = parseCsv(await bytes(await get(`/api/studio/export?dataset=inventory&from=${inv.firstDate}&to=${inv.today}&format=csv&table=shows`)));
+  assert.equal(invShows.rows.length, new Set(archive.shows.map(r => r.sho)).size);
+  assert.equal(invShows.rows.reduce((n, r) => n + Number(r.episodes), 0), episodesCsv.rows.length, 'show counts add up to the episode rows');
+  // The class: an evening episode is the previous day in Los Angeles.
+  const evening = archive.shows.find(r => laDate(r.dt) !== new Date(r.dt * 1000).toISOString().slice(0, 10));
+  assert.ok(evening, 'the fixture has an episode whose LA date differs from its UTC date');
+  const utcDay = new Date(evening.dt * 1000).toISOString().slice(0, 10), laDay = laDate(evening.dt);
+  const onLaDay = parseCsv(await bytes(await get(`/api/studio/export?dataset=inventory&from=${laDay}&to=${laDay}&format=csv&table=episodes`)));
+  assert.ok(onLaDay.rows.some(r => r.episode_id === evening.id), `in its LA day ${laDay}`);
+  if (utcDay <= inv.today) {
+    const onUtcDay = parseCsv(await bytes(await get(`/api/studio/export?dataset=inventory&from=${utcDay}&to=${utcDay}&format=csv&table=episodes`)));
+    assert.ok(!onUtcDay.rows.some(r => r.episode_id === evening.id), `not in its UTC day ${utcDay}`);
+  }
+  const invRes = await get(`/api/studio/export?dataset=inventory&from=${laDay}&to=${laDay}&format=json`);
+  assert.equal(invRes.headers.get('content-disposition'), `attachment; filename="kpfk-archive-${laDay}_${laDay}.json"`);
+  assert.equal((await get(`/api/studio/export?dataset=inventory&from=${localDates[0]}&to=${tomorrow}&format=csv`)).status, 400, 'archive span ends today');
+
+  // Coverage: every show in the catalog as served (after the renames above).
+  const covRes = await get('/api/studio/export?dataset=coverage&format=csv&table=shows');
+  assert.equal(covRes.status, 200);
+  assert.equal(covRes.headers.get('content-disposition'), `attachment; filename="kpfk-coverage-shows-${todayUtc}.csv"`);
+  const covCsv = parseCsv(await bytes(covRes));
+  assert.deepEqual(covCsv.head, COV.COLUMNS.shows);
+  const catalogKeys = Object.entries(catalog.shows).flatMap(([src, list]) => list.map(x => `kpfk.${src}.${x.altid}`)).sort();
+  assert.deepEqual(covCsv.rows.map(r => r.show_key), catalogKeys, 'one row per catalog show, every source');
+  // From the schedule files themselves — a scheduled program can have no
+  // episodes, so the archive's rows are not the schedule.
+  const altids = new Set();
+  const walk = n => { if (Array.isArray(n)) return n.forEach(walk); if (!n || typeof n !== 'object') return;
+    if (typeof n.altid === 'string') altids.add(n.altid); Object.values(n).forEach(walk); };
+  for (const f of fs.readdirSync(fixtureDir).filter(f => /^fe_schedule_kpfk_\d+\.json$/.test(f))) walk(JSON.parse(fs.readFileSync(path.join(fixtureDir, f), 'utf8')));
+  const scheduled = new Set(catalog.shows.kpfk.filter(x => altids.has(x.altid)).map(x => `kpfk.kpfk.${x.altid}`));
+  assert.ok([...scheduled].some(k => !archive.shows.some(r => r.sho === k)), 'the fixture has a scheduled program with no episodes');
+  const byKey = new Map(covCsv.rows.map(r => [r.show_key, r]));
+  for (const k of catalogKeys) {
+    assert.equal(byKey.get(k).in_published_schedule, String(scheduled.has(k)), `${k} schedule`);
+    assert.equal(byKey.get(k).shown_to_listeners, String(scheduled.has(k)), `${k} listeners`);
+  }
+  const rawShow = k => { const [, src, alt] = k.split('.'); return catalog.shows[src].find(x => x.altid === alt); };
+  assert.equal(covCsv.rows.filter(r => r.has_artwork === 'false').length, catalogKeys.filter(k => !rawShow(k).photoUrl).length, 'artwork gaps match the raw feed');
+  assert.equal(byKey.get('kpfk.kpfk.buildingbridges').show_title, 'Radio "Maíz", en Español');
+  assert.equal(byKey.get('kpfk.kpfk.buildingbridges').in_published_schedule, 'false');
+  assert.equal(byKey.get('kpfk.kpfk.biketalka').show_title, '', 'a show with no name has an empty title, not its id');
+  const rawEpisodes = k => { const [, src, alt] = k.split('.'); return Object.keys((catalog.episodes[src] || {})[alt] || {}).length; };
+  for (const k of catalogKeys) assert.equal(Number(byKey.get(k).episodes_in_catalog), rawEpisodes(k), `${k} episodes`);
+  const covJson = await (await get('/api/studio/export?dataset=coverage&format=json')).json();
+  assert.equal(covJson.manifest.summary.without_episodes, catalogKeys.filter(k => rawEpisodes(k) === 0).length);
+  assert.equal(covJson.manifest.schedule_known, true);
+  assert.match(await (await get('/api/studio/export?dataset=coverage&format=readme')).text(), /Without artwork: +\d+/);
+  for (const p of ['/api/studio/export?dataset=coverage&format=csv', `/api/studio/export?dataset=inventory&from=${laDay}&to=${laDay}&format=csv`]) {
+    assert.equal((await fetch(url + p)).status, 401, 'signed out: ' + p);
+  }
 
   const readme = await get(`/api/studio/export?dataset=listening&${FEB}&format=readme`);
   assert.equal(readme.headers.get('content-disposition'), 'attachment; filename="kpfk-listening-2020-02-01_2020-02-29-README.txt"');

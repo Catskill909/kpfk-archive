@@ -122,6 +122,44 @@ identical; importing twice = importing once; wrong station refused; tampered mon
 byte-identical; the pre-import copy exists and undo restores it; 401 signed out,
 403 without CSRF.
 
+### 2 — inventory and coverage — built 2026-09-16
+
+In the Export dialog's Reports tab, step 1 is now **What to export: Listening |
+Archive | Coverage**, then the files for that dataset; step 2 is **Dates**, which says
+what its dates mean and switches off for Coverage. One route serves all three
+(`EXPORT_DATASETS` in `server.js`); the index reports each dataset's tables, span kind
+and bounds, so the page cannot offer what the route refuses.
+
+- **`inventory`** (`lib/export/inventory.js`, shown as *Archive*) — the episodes
+  listeners can play. Tables `episodes` (show, episode id and title, local air date
+  and time, UTC moment, duration seconds, category, host, audio URL, expiry) and
+  `shows` (episodes, oldest/newest air date, total seconds). **Selected by air date in
+  the station's timezone**, not UTC: an evening show is the previous day in Los
+  Angeles, and a board asks what aired in *its* September. Listening stays on UTC days
+  because its counters were bucketed that way when recorded. Files:
+  `kpfk-archive-episodes-<from>_<to>.csv`.
+- **`coverage`** (`lib/export/coverage.js`) — one row per show in Pacifica's **whole
+  catalog**, every source: in the published schedule, shown to listeners, has
+  artwork / description / host, episodes in catalog, newest air date, days since it.
+  A snapshot, so no dates. `in_published_schedule` is **left empty** when the archive
+  filter is not schedule-based (an outage or before warm-up) rather than guessed; the
+  manifest says `schedule_known`. JSON adds a summary of the gaps. This is the
+  2026-09-15 evidence for Pacifica's feed developer, as a download.
+- **Empty is not an error** for listening and archive (columns, no rows); only
+  coverage, which *is* the catalog, answers 409 before the catalog has loaded.
+- Titles use the same rule as listening: archive → catalog mirror → empty, never an id.
+
+**Tests** (`test/pacifica/export.test.js`): unit tests for both builders (an episode
+at 02:30 UTC is August 31 in Los Angeles; unknown schedule stays empty); on the pinned
+fixtures, the Episodes file holds exactly the archive's episode ids, show counts add
+up, the evening-episode class is checked against a separately built LA formatter,
+coverage has one row per catalog show with schedule membership taken from the
+schedule files themselves (the fixture includes a scheduled program with no
+episodes), artwork gaps and episode counts match the raw feed. Five planted bugs were
+run against it (UTC instead of local dates, listener archive instead of catalog,
+guessed schedule, id as title, broken show count). Browser: `export-tests.js` 2b
+picks Archive and Coverage with real clicks and asserts their files land.
+
 ---
 
 

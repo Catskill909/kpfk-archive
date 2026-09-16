@@ -141,13 +141,13 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   ok('the dialog says what was saved', s1.cls.includes('is-ok') && daily && s1.text.includes(daily), JSON.stringify(s1));
 
   before = files();
-  await click('input[name=exportFile][value="csv:shows"]');
+  await click('input[name=exportFile][value="listening:csv:shows"]');
   await click('#exportGo');
   const shows = await landed(/-listening-shows-.*\.csv$/, before);
   ok('Per show: choosing the card changes the file', !!shows && fs.readFileSync(path.join(dir, shows), 'utf8').slice(1).startsWith('station,show_key,show_title,'));
 
   before = files();
-  await click('input[name=exportFile][value="json"]');
+  await click('input[name=exportFile][value="listening:json"]');
   await click('#exportGo');
   const json = await landed(/-listening-.*\.json$/, before);
   let parsed = null;
@@ -158,6 +158,41 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   await click('#exportReadme');
   const readme = await landed(/-README\.txt$/, before);
   ok('the read-me link saves the column explanations', !!readme && /Personal data/.test(fs.readFileSync(path.join(dir, readme), 'utf8')));
+
+  // ---- 2b. the other datasets: pick one, and its cards, dates and file follow
+  console.log('\n2b. Archive and Coverage');
+  await click('input[name=exportDataset][value="inventory"]');
+  const invState = JSON.parse(await ev(`JSON.stringify({
+    cards: [...document.querySelectorAll('.export-choices:not([hidden]) input[name=exportFile]')].map((i) => i.value),
+    checked: document.querySelector('input[name=exportFile]:checked').value,
+    datesOff: document.getElementById('exportDates').disabled,
+    clock: document.getElementById('exportClock').textContent, min: exportFrom.min })`));
+  ok('Archive shows its own cards and checks the first', invState.cards.join() === 'inventory:csv:episodes,inventory:csv:shows,inventory:json'
+    && invState.checked === 'inventory:csv:episodes', JSON.stringify(invState));
+  ok('its dates are air dates in the station timezone', !invState.datesOff && /air date in /.test(invState.clock), JSON.stringify(invState));
+  await click('[data-preset=all]');
+  before = files();
+  await click('#exportGo');
+  const episodes = await landed(/-archive-episodes-\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}\.csv$/, before);
+  const epText = episodes ? fs.readFileSync(path.join(dir, episodes), 'utf8') : '';
+  ok('Episodes: a CSV of the archive lands', !!episodes && epText.slice(1).startsWith('station,show_key,show_title,episode_id,')
+    && epText.trim().split('\r\n').length > 1, `files: ${files().join(', ')}`);
+
+  await click('input[name=exportDataset][value="coverage"]');
+  const covState = JSON.parse(await ev(`JSON.stringify({ datesOff: document.getElementById('exportDates').disabled,
+    clock: document.getElementById('exportClock').textContent, go: document.getElementById('exportGo').disabled })`));
+  ok('Coverage switches the dates off and says why', covState.datesOff && /snapshot/.test(covState.clock) && !covState.go, JSON.stringify(covState));
+  before = files();
+  await click('#exportGo');
+  const coverage = await landed(/-coverage-shows-\d{4}-\d{2}-\d{2}\.csv$/, before);
+  const covText = coverage ? fs.readFileSync(path.join(dir, coverage), 'utf8') : '';
+  ok('Coverage: a CSV of every catalog show lands', !!coverage && covText.slice(1).startsWith('station,show_key,show_title,source,')
+    && covText.trim().split('\r\n').length > 1, `files: ${files().join(', ')}`);
+
+  await click('input[name=exportDataset][value="listening"]');
+  const back = JSON.parse(await ev(`JSON.stringify({ checked: document.querySelector('input[name=exportFile]:checked').value,
+    datesOff: document.getElementById('exportDates').disabled, go: document.getElementById('exportGo').disabled })`));
+  ok('back on Listening, its cards and dates return', back.checked.startsWith('listening:') && !back.datesOff && !back.go, JSON.stringify(back));
 
   // ---- 3. presets move the dates
   console.log('\n3. presets and dates');

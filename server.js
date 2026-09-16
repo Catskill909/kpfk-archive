@@ -23,6 +23,9 @@ const stationView = require('./lib/station-view');
 const { toCsv } = require('./lib/export/csv');
 const listeningExport = require('./lib/export/listening');
 const backupLib = require('./lib/export/backup');
+const inventoryExport = require('./lib/export/inventory');
+const coverageExport = require('./lib/export/coverage');
+const exportCommon = require('./lib/export/common');
 const station = process.env.STATION_PROFILE
   ? loadProfile(process.env.STATION_PROFILE, { root: __dirname, allowLocal: process.env.PACIFICA_TEST_LOCAL === '1' }) : null;
 if (require.main === module && !station && process.env.STATION_PROVIDER !== 'legacy-xml') {
@@ -2771,8 +2774,6 @@ function exportShowTitle(key) {
   return named(catalog && catalog.directory[key] && catalog.directory[key].name);
 }
 
-const EXPORT_TABLES = Object.keys(listeningExport.COLUMNS);
-
 /** A real calendar date in YYYY-MM-DD form — `2026-02-30` is not one. */
 function isIsoDate(v) {
   return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
@@ -2780,12 +2781,80 @@ function isIsoDate(v) {
     && new Date(v + 'T00:00:00Z').toISOString().slice(0, 10) === v;
 }
 
-/** The earliest date an export may start: the 1st of the oldest stats month. */
+/** The earliest date a listening export may start: the 1st of the oldest stats month. */
 function exportFirstDate() { return listStatsMonths()[0] + '-01'; }
 
-/** What the studio's export picker needs: the span that holds data. The
- *  presets are computed from `today` here, not the browser's clock, which is
- *  not UTC. */
+/**
+ * The export datasets. Each names its tables, how its dates work, and how to
+ * build it; the route, the index and the studio all read this one table, so a
+ * dataset cannot be offered by one and refused by another.
+ *
+ *   span 'utc'   — listening: counters were bucketed per UTC day when recorded.
+ *   span 'local' — inventory: episodes selected by air date in the station's timezone.
+ *   span null    — coverage: a snapshot of right now; dates do not apply.
+ */
+const EXPORT_DATASETS = {
+  listening: {
+    lib: listeningExport,
+    span: 'utc',
+    bounds() { return { firstDate: exportFirstDate(), today: today() }; },
+    hasData() { return listStatsMonths().some((m) => Object.keys(statsMonthDays(m) || {}).length > 0); },
+    build({ from, to, generatedAt }) {
+      const months = listStatsMonths();
+      return listeningExport.buildListeningExport({
+        station: STATION_ID, stationTimezone: STATION_TZ, from, to,
+        monthDays: (m) => (months.includes(m) ? statsMonthDays(m) : {}), titleFor: exportShowTitle,
+        zones: ZONE_BUCKETS.map((b) => ({ key: b, label: zoneLabel(b) })),
+        generatedAt,
+      });
+    },
+  },
+  inventory: {
+    lib: inventoryExport,
+    span: 'local',
+    rows() { const a = pacifica && pacifica.peekArchive(); return a ? a.shows : []; },
+    bounds() {
+      const rows = this.rows();
+      const todayLocal = exportCommon.localDateTime(Date.now() / 1000, STATION_TZ).date;
+      const oldest = rows.reduce((min, r) => (r.dt && r.dt < min ? r.dt : min), Infinity);
+      return { firstDate: oldest === Infinity ? todayLocal : exportCommon.localDateTime(oldest, STATION_TZ).date, today: todayLocal };
+    },
+    hasData() { return this.rows().length > 0; },
+    build({ from, to, generatedAt }) {
+      const archive = pacifica && pacifica.peekArchive();
+      return inventoryExport.buildInventory({
+        station: STATION_ID, stationTimezone: STATION_TZ, from, to, rows: this.rows(),
+        titleFor: exportShowTitle, scheduleBasis: archive ? archive.filter.basis : 'unavailable', generatedAt,
+      });
+    },
+  },
+  coverage: {
+    lib: coverageExport,
+    span: null,
+    bounds() { return null; },
+    hasData() { const c = pacifica && pacifica.peekCatalog(); return !!c && Object.keys(c.directory).length > 0; },
+    // The only dataset that cannot be built empty: it IS the catalog.
+    canBuild() { return this.hasData(); },
+    build({ generatedAt }) {
+      const catalog = pacifica.peekCatalog();
+      const archive = pacifica.peekArchive();
+      const listenerKeys = new Set(Object.keys((archive && archive.directory) || {}));
+      // Only a schedule-based filter says which shows are IN the schedule; the
+      // outage fallback and the pre-warm-up state do not, so the column is left
+      // empty rather than guessed.
+      const scheduleKeys = archive && archive.filter.basis === 'schedule' ? listenerKeys : null;
+      return coverageExport.buildCoverage({
+        station: STATION_ID, stationTimezone: STATION_TZ, directory: catalog.directory, rows: catalog.shows,
+        listenerKeys, scheduleKeys, titleFor: exportShowTitle, now: Date.now(), generatedAt,
+      });
+    },
+  },
+};
+
+/** What the studio's export picker needs, per dataset: its tables, whether it
+ *  holds anything, and the span it can cover. Presets are computed from
+ *  `today` here, never from the browser's clock. The top-level listening
+ *  fields are kept for the listening picker and its tests. */
 function exportsIndex() {
   const months = listStatsMonths().reverse().map((m) => ({
     month: m,
@@ -2793,54 +2862,64 @@ function exportsIndex() {
   }));
   return {
     station: STATION_ID,
+    stationTimezone: STATION_TZ,
     schemaVersion: listeningExport.SCHEMA_VERSION,
     hasData: months.some((m) => m.daysWithData > 0),
     firstDate: exportFirstDate(),
     today: today(),
     months,
-    datasets: [{ name: 'listening', tables: EXPORT_TABLES, formats: ['csv', 'json', 'readme'] }],
+    datasets: Object.entries(EXPORT_DATASETS).map(([name, d]) => ({
+      name,
+      tables: Object.keys(d.lib.COLUMNS),
+      formats: ['csv', 'json', 'readme'],
+      span: d.span,
+      hasData: d.hasData(),
+      ...(d.span ? d.bounds() : {}),
+    })),
   };
 }
 
-/** `GET /api/studio/export` — one dataset, one period, one format. */
+/** `GET /api/studio/export` — one dataset, one span, one format. */
 function sendExport(req, res) {
   const q = new URL(req.url, 'http://localhost').searchParams;
-  const dataset = q.get('dataset'), from = q.get('from'), to = q.get('to'), format = q.get('format');
-  const table = q.get('table') || 'daily';
-  if (dataset !== 'listening') return sendStudioJson(res, { error: 'unknown dataset' }, 400);
+  const name = q.get('dataset'), from = q.get('from'), to = q.get('to'), format = q.get('format');
+  if (!Object.hasOwn(EXPORT_DATASETS, name)) return sendStudioJson(res, { error: 'unknown dataset' }, 400);
+  const d = EXPORT_DATASETS[name];
+  const tables = Object.keys(d.lib.COLUMNS);
+  const table = q.get('table') || tables[0];
   if (!['csv', 'json', 'readme'].includes(format)) return sendStudioJson(res, { error: 'unknown format' }, 400);
-  if (format === 'csv' && !EXPORT_TABLES.includes(table)) return sendStudioJson(res, { error: 'unknown table' }, 400);
-  // Bounded by the data that can exist: nothing before the oldest month file,
-  // nothing after today. A months list gates the file reads as well, so a
-  // query string never becomes a path.
-  if (!isIsoDate(from) || !isIsoDate(to) || from > to || from < exportFirstDate() || to > today()) {
-    return sendStudioJson(res, { error: 'bad date span', firstDate: exportFirstDate(), today: today() }, 400);
+  if (format === 'csv' && !tables.includes(table)) return sendStudioJson(res, { error: 'unknown table' }, 400);
+  // An empty listening or archive export is headers and zero rows, not an
+  // error (docs/exports.md test plan); only a dataset with nothing to build
+  // from at all is refused.
+  if (d.canBuild && !d.canBuild()) return sendStudioJson(res, { error: 'the Pacifica catalog has not loaded yet' }, 409);
+  // Bounded by the data that can exist. For listening that also gates the
+  // file reads, so a query string never becomes a path.
+  if (d.span) {
+    const b = d.bounds();
+    if (!isIsoDate(from) || !isIsoDate(to) || from > to || from < b.firstDate || to > b.today) {
+      return sendStudioJson(res, { error: 'bad date span', ...b }, 400);
+    }
   }
-  const months = listStatsMonths();
 
-  const data = listeningExport.buildListeningExport({
-    station: STATION_ID, stationTimezone: STATION_TZ, from, to,
-    monthDays: (m) => (months.includes(m) ? statsMonthDays(m) : {}), titleFor: exportShowTitle,
-    zones: ZONE_BUCKETS.map((b) => ({ key: b, label: zoneLabel(b) })),
-    generatedAt: new Date().toISOString(),
-  });
-  let body, type, name;
+  const data = d.build({ from, to, generatedAt: new Date().toISOString() });
+  let body, type, file;
   if (format === 'csv') {
-    body = toCsv(listeningExport.COLUMNS[table], data[table]);
-    type = 'text/csv; charset=utf-8'; name = listeningExport.exportFilename(data.manifest, table, 'csv');
+    body = toCsv(d.lib.COLUMNS[table], data[table]);
+    type = 'text/csv; charset=utf-8'; file = d.lib.exportFilename(data.manifest, table, 'csv');
   } else if (format === 'json') {
     body = JSON.stringify(data, null, 2) + '\n';
-    type = 'application/json; charset=utf-8'; name = listeningExport.exportFilename(data.manifest, null, 'json');
+    type = 'application/json; charset=utf-8'; file = d.lib.exportFilename(data.manifest, null, 'json');
   } else {
-    body = listeningExport.manifestText(data.manifest);
-    type = 'text/plain; charset=utf-8'; name = listeningExport.exportFilename(data.manifest, null, 'readme');
+    body = d.lib.manifestText(data.manifest);
+    type = 'text/plain; charset=utf-8'; file = d.lib.exportFilename(data.manifest, null, 'readme');
   }
   const buf = Buffer.from(body, 'utf8');
   res.writeHead(200, {
     'Content-Type': type,
     'Content-Length': buf.length,
     // The filename is built only from the station id and validated tokens.
-    'Content-Disposition': `attachment; filename="${name}"`,
+    'Content-Disposition': `attachment; filename="${file}"`,
     'Cache-Control': 'private, no-store',
     'Vary': 'Cookie',
     ...securityHeaders(),

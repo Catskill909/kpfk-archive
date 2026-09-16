@@ -362,8 +362,8 @@
         <h2 class="export-title" id="exportTitle">Export data</h2>
         <p class="export-lede">
           Reports for Excel, Google Sheets or Pacifica, and a backup for moving
-          this app to another server. Counters only &mdash; no personal data of
-          any kind.
+          this app to another server. Nothing in any of these files identifies a
+          listener.
         </p>
       </div>
       <button class="export-close" id="exportClose" type="button" aria-label="Close">
@@ -379,13 +379,106 @@
     </div>
 
     <div class="export-pane" id="paneReports" role="tabpanel" aria-labelledby="tabReports">
-    <p class="export-empty" id="exportEmpty" hidden>
-      Nothing has been counted yet, so there is nothing to export. Counting began
-      when this app was deployed &mdash; it does not backfill.
-    </p>
+    <fieldset class="export-step" id="exportWhat">
+      <legend class="export-legend"><span class="export-num">1</span> What to export</legend>
+      <div class="export-datasets" role="radiogroup" aria-label="Dataset">
+        <label class="export-dataset">
+          <input type="radio" name="exportDataset" value="listening" checked>
+          <span class="export-dataset-name">Listening</span>
+          <span class="export-dataset-desc">Plays, time listened, page views, reach</span>
+        </label>
+        <label class="export-dataset">
+          <input type="radio" name="exportDataset" value="inventory">
+          <span class="export-dataset-name">Archive</span>
+          <span class="export-dataset-desc">Every episode listeners can play</span>
+        </label>
+        <label class="export-dataset">
+          <input type="radio" name="exportDataset" value="coverage">
+          <span class="export-dataset-name">Coverage</span>
+          <span class="export-dataset-desc">Where program data is thin</span>
+        </label>
+      </div>
+
+      <p class="export-empty" id="exportEmpty" hidden></p>
+
+      <div class="export-choices" data-dataset="listening">
+          <label class="export-choice">
+            <input type="radio" name="exportFile" value="listening:csv:daily" checked>
+            <span class="export-choice-body">
+              <span class="export-choice-title">Daily totals <span class="export-tag">CSV</span></span>
+              <span class="export-choice-desc">One row per day: page views, episode plays, live tune-ins, searches, shares and time listened.</span>
+            </span>
+          </label>
+          <label class="export-choice">
+            <input type="radio" name="exportFile" value="listening:csv:shows">
+            <span class="export-choice-body">
+              <span class="export-choice-title">Per show <span class="export-tag">CSV</span></span>
+              <span class="export-choice-desc">Plays and time listened for every show, most listened first.</span>
+            </span>
+          </label>
+          <label class="export-choice">
+            <input type="radio" name="exportFile" value="listening:csv:reach">
+            <span class="export-choice-body">
+              <span class="export-choice-title">Reach <span class="export-tag">CSV</span></span>
+              <span class="export-choice-desc">Page views grouped by the timezone listeners&rsquo; browsers report.</span>
+            </span>
+          </label>
+          <label class="export-choice">
+            <input type="radio" name="exportFile" value="listening:json">
+            <span class="export-choice-body">
+              <span class="export-choice-title">Everything <span class="export-tag">JSON</span></span>
+              <span class="export-choice-desc">All three tables in one file, with an explanation of every column. For Pacifica and other tools.</span>
+            </span>
+          </label>
+      </div>
+      <div class="export-choices" data-dataset="inventory" hidden>
+          <label class="export-choice">
+            <input type="radio" name="exportFile" value="inventory:csv:episodes">
+            <span class="export-choice-body">
+              <span class="export-choice-title">Episodes <span class="export-tag">CSV</span></span>
+              <span class="export-choice-desc">One row per episode: show, title, air date and time, length, category, host and audio link.</span>
+            </span>
+          </label>
+          <label class="export-choice">
+            <input type="radio" name="exportFile" value="inventory:csv:shows">
+            <span class="export-choice-body">
+              <span class="export-choice-title">Shows <span class="export-tag">CSV</span></span>
+              <span class="export-choice-desc">One row per show: episodes held, oldest and newest air date, total length.</span>
+            </span>
+          </label>
+          <label class="export-choice">
+            <input type="radio" name="exportFile" value="inventory:json">
+            <span class="export-choice-body">
+              <span class="export-choice-title">Everything <span class="export-tag">JSON</span></span>
+              <span class="export-choice-desc">Both tables in one file, with an explanation of every column.</span>
+            </span>
+          </label>
+      </div>
+      <div class="export-choices" data-dataset="coverage" hidden>
+          <label class="export-choice">
+            <input type="radio" name="exportFile" value="coverage:csv:shows">
+            <span class="export-choice-body">
+              <span class="export-choice-title">Every show in the catalog <span class="export-tag">CSV</span></span>
+              <span class="export-choice-desc">In the schedule or not, shown to listeners or not, artwork, description, host, episodes and how recent the newest is.</span>
+            </span>
+          </label>
+          <label class="export-choice">
+            <input type="radio" name="exportFile" value="coverage:json">
+            <span class="export-choice-body">
+              <span class="export-choice-title">Everything <span class="export-tag">JSON</span></span>
+              <span class="export-choice-desc">The same rows plus a summary of the gaps, with an explanation of every column.</span>
+            </span>
+          </label>
+      </div>
+      <p class="export-readme">
+        What do the columns mean?
+        <button class="export-link" id="exportReadme" type="button">Download the read-me</button>
+      </p>
+    </fieldset>
 
     <fieldset class="export-step" id="exportDates">
-      <legend class="export-legend"><span class="export-num">1</span> Dates</legend>
+      <legend class="export-legend"><span class="export-num">2</span> Dates</legend>
+      <p class="export-copy" id="exportClock"></p>
       <div class="export-presets" id="exportPresets" role="group" aria-label="Quick dates">
         <button class="win-btn" type="button" data-preset="thisMonth">This month</button>
         <button class="win-btn" type="button" data-preset="lastMonth">Last month</button>
@@ -403,44 +496,6 @@
         </label>
       </div>
       <p class="export-summary" id="exportSpanNote" aria-live="polite"></p>
-    </fieldset>
-
-    <fieldset class="export-step" id="exportWhat">
-      <legend class="export-legend"><span class="export-num">2</span> What to download</legend>
-      <div class="export-choices">
-        <label class="export-choice">
-          <input type="radio" name="exportFile" value="csv:daily" checked>
-          <span class="export-choice-body">
-            <span class="export-choice-title">Daily totals <span class="export-tag">CSV</span></span>
-            <span class="export-choice-desc">One row per day: page views, episode plays, live tune-ins, searches, shares and time listened.</span>
-          </span>
-        </label>
-        <label class="export-choice">
-          <input type="radio" name="exportFile" value="csv:shows">
-          <span class="export-choice-body">
-            <span class="export-choice-title">Per show <span class="export-tag">CSV</span></span>
-            <span class="export-choice-desc">Plays and time listened for every show, most listened first.</span>
-          </span>
-        </label>
-        <label class="export-choice">
-          <input type="radio" name="exportFile" value="csv:reach">
-          <span class="export-choice-body">
-            <span class="export-choice-title">Reach <span class="export-tag">CSV</span></span>
-            <span class="export-choice-desc">Page views grouped by the timezone listeners&rsquo; browsers report.</span>
-          </span>
-        </label>
-        <label class="export-choice">
-          <input type="radio" name="exportFile" value="json">
-          <span class="export-choice-body">
-            <span class="export-choice-title">Everything <span class="export-tag">JSON</span></span>
-            <span class="export-choice-desc">All three tables in one file, with an explanation of every column. For Pacifica and other tools.</span>
-          </span>
-        </label>
-      </div>
-      <p class="export-readme">
-        What do the columns mean?
-        <button class="export-link" id="exportReadme" type="button">Download the read-me</button>
-      </p>
     </fieldset>
 
     <footer class="export-foot">

@@ -97,8 +97,10 @@ Each file is daily counters and nothing else:
    **Re-planned 2026-09-16 (Paul)**, and built the same day: **1b date spans**
    (from/to + presets) and **1c backup + import**, so the app and its data can move
    between servers (Export → Backup & restore: preview, then replace; undo; moving
-   guide in docs/DEPLOYMENT.md). **Next:** inventory, coverage, printable report,
-   profile. Spec: "Revised plan" in docs/exports.md.
+   guide in docs/DEPLOYMENT.md). **Phase 2 built too:** *Archive* (inventory, by
+   local air date) and *Coverage* (every catalog show and its gaps) in the Reports
+   tab. **Next:** printable report, then profile. Paul is testing everything together
+   after the build (2026-09-16), so nothing from 1c onward has been tried live yet. Spec: "Revised plan" in docs/exports.md.
    *Found while building it, not fixed:* the dashboard's **Most listened shows**
    (`usageReport().topShows`) and **show history** (`showHistory()`) still fall back
    to the slug for a show that has left the schedule — they read only

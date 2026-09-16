@@ -1012,24 +1012,60 @@
       var go = document.getElementById('exportGo');
       var readme = document.getElementById('exportReadme');
       var empty = document.getElementById('exportEmpty');
-      var steps = [document.getElementById('exportDates'), document.getElementById('exportWhat')];
+      var datesStep = document.getElementById('exportDates');
+      var clock = document.getElementById('exportClock');
+      var index = null;     // the last /api/studio/exports answer
       var presets = {};
       // The preset last chosen, while the dates still equal it. Matching by
       // dates alone lit three buttons at once whenever the data is younger
       // than a year — This month, This year and All time are then one span.
-      var chosen = null;
+      var chosen = 'thisMonth';
       var busy = false;
+
+      // What each dataset's dates mean, and what "nothing yet" means for it.
+      var CLOCK = {
+        utc: 'Days are UTC calendar days — the listening counters were recorded that way.',
+        local: function (tz) { return 'Episodes are chosen by air date in ' + tz + ', the station’s timezone.'; },
+        none: 'Coverage is a snapshot of the catalog right now, so dates do not apply.',
+      };
+      var EMPTY = {
+        listening: 'Nothing has been counted yet. Counting began when this app was deployed — it does not backfill. An export now has the columns and no figures.',
+        inventory: 'The archive holds no episodes right now. An export now has the columns and no rows.',
+        coverage: 'The Pacifica catalog has not loaded yet, so there is nothing to describe. Try again in a minute.',
+      };
 
       function status(text, kind) {
         statusEl.textContent = text;
         statusEl.className = 'export-status' + (kind ? ' is-' + kind : '');
       }
+      function datasetName() { return form.querySelector('input[name=exportDataset]:checked').value; }
+      function dataset() {
+        var name = datasetName();
+        return index ? index.datasets.filter(function (d) { return d.name === name; })[0] : null;
+      }
       function spanOk() {
+        var d = dataset();
+        if (d && !d.span) return true;
         var from = fromEl.value, to = toEl.value;
         return !!(from && to && from <= to && from >= fromEl.min && to <= toEl.max);
       }
       function refresh() {
+        var d = dataset();
+        if (!d) { go.disabled = true; readme.disabled = true; return; }
         var from = fromEl.value, to = toEl.value, ok = spanOk();
+        // Coverage cannot be built at all without a catalog; the others export
+        // their columns with no rows.
+        var blocked = d.name === 'coverage' && !d.hasData;
+        go.disabled = busy || !ok || blocked;
+        readme.disabled = busy || !ok || blocked;
+        datesStep.disabled = !d.span;
+        if (!d.span) {
+          clock.textContent = CLOCK.none;
+          note.textContent = '';
+          [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) { b.setAttribute('aria-pressed', 'false'); });
+          return;
+        }
+        clock.textContent = d.span === 'local' ? CLOCK.local(index.stationTimezone) : CLOCK.utc;
         if (ok) {
           var days = Math.round((utcMs(to) - utcMs(from)) / 86400000) + 1;
           note.textContent = longDay(from) + ' – ' + longDay(to) + ' · '
@@ -1039,8 +1075,6 @@
             + longDay(fromEl.min) + ' and ' + longDay(toEl.max) + '.';
         }
         note.className = 'export-summary' + (ok ? '' : ' is-bad');
-        go.disabled = busy || !ok;
-        readme.disabled = busy || !ok;
         var cp = chosen && presets[chosen];
         if (!cp || cp.from !== from || cp.to !== to) chosen = null;
         [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) {
@@ -1053,6 +1087,34 @@
         chosen = name;
         fromEl.value = p.from;
         toEl.value = p.to;
+        refresh();
+      }
+
+      /* Switching dataset changes the cards, the date bounds and what the dates
+         mean. A chosen preset is re-applied inside the new bounds ("This
+         month" of listening and of the archive are different spans); dates
+         typed by hand are kept and re-checked. */
+      function applyDataset() {
+        var name = datasetName(), d = dataset();
+        [].forEach.call(form.querySelectorAll('.export-choices'), function (g) {
+          g.hidden = g.getAttribute('data-dataset') !== name;
+        });
+        var picked = form.querySelector('input[name=exportFile]:checked');
+        if (!picked || picked.value.split(':')[0] !== name) {
+          form.querySelector('.export-choices[data-dataset="' + name + '"] input[name=exportFile]').checked = true;
+        }
+        if (!d) return refresh();
+        empty.hidden = d.hasData;
+        empty.textContent = d.hasData ? '' : EMPTY[name];
+        if (d.span) {
+          presets = exportPresets(d.today, d.firstDate);
+          [fromEl, toEl].forEach(function (i) { i.min = d.firstDate; i.max = d.today; });
+          [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) {
+            b.disabled = !presets[b.getAttribute('data-preset')];
+          });
+          if (chosen && presets[chosen]) return setSpan(chosen);
+          if (!fromEl.value || !toEl.value || !spanOk()) return setSpan(presets.thisMonth ? 'thisMonth' : 'all');
+        }
         refresh();
       }
 
@@ -1102,8 +1164,10 @@
           });
       }
       function download(format, table) {
-        if (busy || !spanOk()) return;
-        var q = 'dataset=listening&from=' + fromEl.value + '&to=' + toEl.value + '&format=' + format;
+        var d = dataset();
+        if (busy || !d || !spanOk()) return;
+        var q = 'dataset=' + d.name + '&format=' + format;
+        if (d.span) q += '&from=' + fromEl.value + '&to=' + toEl.value;
         if (table) q += '&table=' + table;
         busy = true;
         refresh();
@@ -1121,16 +1185,8 @@
             return res.json();
           })
           .then(function (x) {
-            empty.hidden = !!x.hasData;
-            steps.forEach(function (st) { st.hidden = !x.hasData; });
-            if (!x.hasData) { go.disabled = true; return; }
-            var keep = fromEl.value && toEl.value;
-            presets = exportPresets(x.today, x.firstDate);
-            [fromEl, toEl].forEach(function (i) { i.min = x.firstDate; i.max = x.today; });
-            [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) {
-              b.disabled = !presets[b.getAttribute('data-preset')];
-            });
-            if (keep) refresh(); else setSpan(presets.thisMonth ? 'thisMonth' : 'all');
+            index = x;
+            applyDataset();
           })
           .catch(function (e) {
             console.error('[studio] export options failed:', e);
@@ -1389,10 +1445,14 @@
       });
       fromEl.addEventListener('input', refresh);
       toEl.addEventListener('input', refresh);
+      [].forEach.call(form.querySelectorAll('input[name=exportDataset]'), function (r) {
+        r.addEventListener('change', applyDataset);
+      });
       form.addEventListener('submit', function (ev) {
         ev.preventDefault();
+        // value is dataset:format[:table]; the dataset is already the checked one.
         var pick = form.querySelector('input[name=exportFile]:checked').value.split(':');
-        download(pick[0], pick[1]);
+        download(pick[1], pick[2]);
       });
       readme.addEventListener('click', function () { download('readme'); });
     })();
