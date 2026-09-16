@@ -370,7 +370,7 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   // ---- Archive (inventory) and coverage, on the pinned fixtures
   const idx = await (await get('/api/studio/exports')).json();
   const inv = idx.datasets.find(d => d.name === 'inventory'), cov = idx.datasets.find(d => d.name === 'coverage');
-  assert.deepEqual(idx.datasets.map(d => [d.name, d.span]), [['listening', 'utc'], ['inventory', 'local'], ['coverage', null], ['report', 'mixed']]);
+  assert.deepEqual(idx.datasets.map(d => [d.name, d.span]), [['listening', 'utc'], ['inventory', 'local'], ['coverage', null], ['profile', null], ['report', 'mixed']]);
   assert.equal(inv.hasData, true); assert.equal(cov.hasData, true);
   // Local air dates computed here with a separate formatter, not the app's.
   const la = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -438,6 +438,23 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   for (const p of ['/api/studio/export?dataset=coverage&format=csv', `/api/studio/export?dataset=inventory&from=${laDay}&to=${laDay}&format=csv`]) {
     assert.equal((await fetch(url + p)).status, 401, 'signed out: ' + p);
   }
+
+  // ---- Station profile: exactly the public projection, plus the category map
+  const profRes = await get('/api/studio/export?dataset=profile&format=json');
+  assert.equal(profRes.status, 200);
+  assert.equal(profRes.headers.get('content-disposition'), `attachment; filename="kpfk-profile-${todayUtc}.json"`);
+  const profText = await profRes.text(), prof = JSON.parse(profText);
+  const publicStation = await (await fetch(url + '/api/station')).json();
+  assert.deepEqual(prof.profile, { ...publicStation, categories: profile.categories }, 'the profile is /api/station plus the category map');
+  // Nothing the public projection refuses — checked against the values, not just the key names.
+  for (const secret of [profile.feeds.catalog, profile.feeds.channels, base, 'test-studio']) {
+    assert.ok(!profText.includes(secret), `the profile file does not contain ${secret}`);
+  }
+  assert.doesNotMatch(profText, /"(feeds|origins|password|STUDIO_PASSWORD)"/);
+  assert.deepEqual(prof.manifest.exports_available.map(d => d.name), ['listening', 'inventory', 'coverage', 'profile']);
+  assert.equal((await get('/api/studio/export?dataset=profile&format=csv')).status, 400, 'no CSV for a nested profile');
+  assert.match(await (await get('/api/studio/export?dataset=profile&format=readme')).text(), /no password, no feed address/);
+  assert.equal((await fetch(url + '/api/studio/export?dataset=profile&format=json')).status, 401);
 
   // ---- Printable report: the same numbers as the downloads, CSP-clean, escaped
   const signedOut = await fetch(url + `/studio/report?${FEB}`, { redirect: 'manual' });

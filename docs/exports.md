@@ -1,9 +1,11 @@
 # Exports — specification
 
-**Status:** specified 2026-09-15. **Phase 1 (`listening`, CSV + JSON) built
-2026-09-16** — see "Phase 1 — as built". **Re-planned 2026-09-16:** date spans and
-a backup/import for moving the app come next — see "Revised plan" directly below,
-which overrides the phase order and the calendar-months decision further down.
+**Status: every phase built, 2026-09-16; not yet tried live from 1c onward** (Paul
+is testing all of it together). Listening (1), date spans (1b), backup and restore
+(1c), archive and coverage (2), printable report (3), station profile and the
+cross-station guide (4). Each has an "as built" section below; the "Revised plan"
+directly below overrides the phase order and the calendar-months decision further
+down. Pacifica's guide to combining stations: [exports-for-pacifica.md](exports-for-pacifica.md).
 Tracked in [HANDOFF.md](../HANDOFF.md) open items.
 
 ## Revised plan — 2026-09-16 (Paul)
@@ -206,6 +208,25 @@ to fail without its fix):
   does.
 - **"0m" for 14 seconds** read as nobody listening; under a minute is shown in
   seconds.
+
+### 4 — station profile and the cross-station guide — built 2026-09-16
+
+- **`profile`** (`lib/export/profile.js`, *Station profile* in the dialog; JSON and
+  read-me, no CSV — it is nested). It is **`publicProfile(station)` — exactly what
+  `/api/station` serves — plus the category map**, built by adding to the public
+  projection rather than trimming the raw profile, so a secret added to
+  `stations/<id>.json` later cannot leak by being forgotten. The manifest lists every
+  export and its schema version (`exports_available`).
+- **[exports-for-pacifica.md](exports-for-pacifica.md)** — how to stack several
+  stations' files: identical columns, the `station` column, what can and cannot be
+  summed (no "listeners"; add reach counts, not percentages), the two clocks,
+  `schema_version`, the coverage caveats, and privacy.
+
+**Tests:** the profile equals `/api/station` plus the categories; the file contains
+none of the test server's feed URLs, its upstream origin or the studio password, and
+no `feeds`/`origins` keys; CSV is refused; 401 signed out. Building it from the raw
+station profile instead was planted and seen to fail. Browser: `export-tests.js` 2b
+picks Station profile and asserts a JSON lands.
 
 ---
 

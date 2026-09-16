@@ -1027,6 +1027,7 @@
         utc: 'Days are UTC calendar days — the listening counters were recorded that way.',
         local: function (tz) { return 'Episodes are chosen by air date in ' + tz + ', the station’s timezone.'; },
         none: 'Coverage is a snapshot of the catalog right now, so dates do not apply.',
+        profile: 'The profile is the station\u2019s settings as they are now, so dates do not apply.',
         mixed: function (tz) {
           return 'Listening figures use UTC days; the archive section uses air dates in ' + tz + '.';
         },
@@ -1036,6 +1037,7 @@
         inventory: 'The archive holds no episodes right now. An export now has the columns and no rows.',
         coverage: 'The Pacifica catalog has not loaded yet, so there is nothing to describe. Try again in a minute.',
         report: '',
+        profile: 'This build has no station profile to export.',
       };
 
       function status(text, kind) {
@@ -1059,12 +1061,12 @@
         var from = fromEl.value, to = toEl.value, ok = spanOk();
         // Coverage cannot be built at all without a catalog; the others export
         // their columns with no rows.
-        var blocked = d.name === 'coverage' && !d.hasData;
+        var blocked = (d.name === 'coverage' || d.name === 'profile') && !d.hasData;
         go.disabled = busy || !ok || blocked;
         readme.disabled = busy || !ok || blocked;
         datesStep.disabled = !d.span;
         if (!d.span) {
-          clock.textContent = CLOCK.none;
+          clock.textContent = d.name === 'profile' ? CLOCK.profile : CLOCK.none;
           note.textContent = '';
           [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) { b.setAttribute('aria-pressed', 'false'); });
           return;

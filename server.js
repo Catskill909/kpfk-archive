@@ -27,6 +27,7 @@ const inventoryExport = require('./lib/export/inventory');
 const coverageExport = require('./lib/export/coverage');
 const exportCommon = require('./lib/export/common');
 const reportLib = require('./lib/export/report');
+const profileExport = require('./lib/export/profile');
 const station = process.env.STATION_PROFILE
   ? loadProfile(process.env.STATION_PROFILE, { root: __dirname, allowLocal: process.env.PACIFICA_TEST_LOCAL === '1' }) : null;
 if (require.main === module && !station && process.env.STATION_PROVIDER !== 'legacy-xml') {
@@ -2850,6 +2851,24 @@ const EXPORT_DATASETS = {
       });
     },
   },
+  profile: {
+    lib: profileExport,
+    span: null,
+    formats: ['json', 'readme'],
+    bounds() { return null; },
+    hasData() { return !!station; },
+    // A legacy (non-profile) build has no station profile to export.
+    canBuild() { return !!station; },
+    build({ generatedAt }) {
+      return profileExport.buildProfile({
+        publicProfile: publicProfile(station),
+        categories: station.categories,
+        datasets: Object.entries(EXPORT_DATASETS).map(([name, d]) => ({ name, schemaVersion: d.lib.SCHEMA_VERSION })),
+        appVersion: appVersion(),
+        generatedAt,
+      });
+    },
+  },
 };
 
 /** What the studio's export picker needs, per dataset: its tables, whether it
@@ -2873,7 +2892,7 @@ function exportsIndex() {
       ...Object.entries(EXPORT_DATASETS).map(([name, d]) => ({
         name,
         tables: Object.keys(d.lib.COLUMNS),
-        formats: ['csv', 'json', 'readme'],
+        formats: d.formats || ['csv', 'json', 'readme'],
         span: d.span,
         hasData: d.hasData(),
         ...(d.span ? d.bounds() : {}),
@@ -2936,12 +2955,14 @@ function sendExport(req, res) {
   const d = EXPORT_DATASETS[name];
   const tables = Object.keys(d.lib.COLUMNS);
   const table = q.get('table') || tables[0];
-  if (!['csv', 'json', 'readme'].includes(format)) return sendStudioJson(res, { error: 'unknown format' }, 400);
+  if (!(d.formats || ['csv', 'json', 'readme']).includes(format)) return sendStudioJson(res, { error: 'unknown format' }, 400);
   if (format === 'csv' && !tables.includes(table)) return sendStudioJson(res, { error: 'unknown table' }, 400);
   // An empty listening or archive export is headers and zero rows, not an
   // error (docs/exports.md test plan); only a dataset with nothing to build
   // from at all is refused.
-  if (d.canBuild && !d.canBuild()) return sendStudioJson(res, { error: 'the Pacifica catalog has not loaded yet' }, 409);
+  if (d.canBuild && !d.canBuild()) {
+    return sendStudioJson(res, { error: name === 'profile' ? 'this build has no station profile' : 'the Pacifica catalog has not loaded yet' }, 409);
+  }
   // Bounded by the data that can exist. For listening that also gates the
   // file reads, so a query string never becomes a path.
   if (d.span) {

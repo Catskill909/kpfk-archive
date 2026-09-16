@@ -189,6 +189,18 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   ok('Coverage: a CSV of every catalog show lands', !!coverage && covText.slice(1).startsWith('station,show_key,show_title,source,')
     && covText.trim().split('\r\n').length > 1, `files: ${files().join(', ')}`);
 
+  await click('input[name=exportDataset][value="profile"]');
+  const profState = JSON.parse(await ev(`JSON.stringify({ datesOff: document.getElementById('exportDates').disabled,
+    checked: document.querySelector('input[name=exportFile]:checked').value, go: document.getElementById('exportGo').disabled })`));
+  ok('Station profile: JSON only, dates off', profState.datesOff && profState.checked === 'profile:json' && !profState.go, JSON.stringify(profState));
+  before = files();
+  await click('#exportGo');
+  const profileFile = await landed(/-profile-\d{4}-\d{2}-\d{2}\.json$/, before);
+  let profileJson = null;
+  try { profileJson = profileFile && JSON.parse(fs.readFileSync(path.join(dir, profileFile), 'utf8')); } catch (e) { profileJson = null; }
+  ok('a station profile JSON lands, with no feed addresses', !!profileJson && !!profileJson.profile.name
+    && !/"feeds"|"origins"|fe_feed/.test(JSON.stringify(profileJson)), `files: ${files().join(', ')}`);
+
   await click('input[name=exportDataset][value="listening"]');
   const back = JSON.parse(await ev(`JSON.stringify({ checked: document.querySelector('input[name=exportFile]:checked').value,
     datesOff: document.getElementById('exportDates').disabled, go: document.getElementById('exportGo').disabled })`));

@@ -1,6 +1,6 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-16 (exports phase 1). **This folder is the active project.**
+**Updated:** 2026-09-16 (exports, all phases built). **This folder is the active project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
@@ -100,7 +100,11 @@ Each file is daily counters and nothing else:
    guide in docs/DEPLOYMENT.md). **Phase 2 built too:** *Archive* (inventory, by
    local air date) and *Coverage* (every catalog show and its gaps) in the Reports
    tab. **Phase 3 built:** the printable report (`/studio/report`, Export → Printable
-   report → Open report, then Print or save as PDF). **Next:** profile. Paul is testing everything together
+   report → Open report, then Print or save as PDF). **Phase 4 built:** station
+   profile export and [docs/exports-for-pacifica.md](docs/exports-for-pacifica.md).
+   **Every export phase is now built.** Next: Paul's live test of all of it after a
+   Coolify redeploy — backup download, a restore preview (and, if wanted, a restore
+   and undo), each dataset, the printable report as PDF. Paul is testing everything together
    after the build (2026-09-16), so nothing from 1c onward has been tried live yet. Spec: "Revised plan" in docs/exports.md.
    *Found while building it, not fixed:* the dashboard's **Most listened shows**
    (`usageReport().topShows`) and **show history** (`showHistory()`) still fall back

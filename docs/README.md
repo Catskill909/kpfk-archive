@@ -13,7 +13,8 @@ Current state and working rules live at the repo root: [HANDOFF.md](../HANDOFF.m
 | Doc | What it covers |
 | --- | --- |
 | [DEPLOYMENT.md](DEPLOYMENT.md) | Coolify setup, the `/app/data` volume, `/healthz` checks, backups |
-| [exports.md](exports.md) | **Specified, not built.** Station/Pacifica data exports from `/studio` — datasets, formats, routes, test plan |
+| [exports.md](exports.md) | **Built 2026-09-16.** Studio Export dialog: listening, archive, coverage, station profile, printable report, backup and restore — spec, decisions and as-built notes per phase |
+| [exports-for-pacifica.md](exports-for-pacifica.md) | **Current.** For Pacifica: combining several stations' export files — columns, sums, clocks, versions |
 | [kpfk/architecture.md](kpfk/architecture.md) | JSON provider contracts and decision record |
 | [kpfk/implementation.md](kpfk/implementation.md) | Phase plan and implementation checkpoints |
 | [kpfk/verification.md](kpfk/verification.md) | Contract, service and browser test matrices; release checklist |

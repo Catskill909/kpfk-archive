@@ -402,6 +402,11 @@
           <span class="export-dataset-name">Printable report</span>
           <span class="export-dataset-desc">For a board or funder, as PDF</span>
         </label>
+        <label class="export-dataset">
+          <input type="radio" name="exportDataset" value="profile">
+          <span class="export-dataset-name">Station profile</span>
+          <span class="export-dataset-desc">The station&rsquo;s public settings</span>
+        </label>
       </div>
 
       <p class="export-empty" id="exportEmpty" hidden></p>
@@ -472,6 +477,15 @@
             <span class="export-choice-body">
               <span class="export-choice-title">Everything <span class="export-tag">JSON</span></span>
               <span class="export-choice-desc">The same rows plus a summary of the gaps, with an explanation of every column.</span>
+            </span>
+          </label>
+      </div>
+      <div class="export-choices" data-dataset="profile" hidden>
+          <label class="export-choice">
+            <input type="radio" name="exportFile" value="profile:json">
+            <span class="export-choice-body">
+              <span class="export-choice-title">Station profile <span class="export-tag">JSON</span></span>
+              <span class="export-choice-desc">Name, frequency, city, timezone, live stream, links, socials, artwork files and category map &mdash; what the listener app already publishes. Never passwords or feed addresses.</span>
             </span>
           </label>
       </div>
