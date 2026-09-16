@@ -30,6 +30,14 @@
       </a>
     </h1>
     <div class="studio-bar-actions">
+      <!-- Export opens a dialog rather than living on the page: it will hold
+           every dataset (docs/exports.md), and it is an action, not a report. -->
+      <button class="studio-btn studio-btn--export" id="exportOpen" type="button" aria-haspopup="dialog">
+        <svg class="export-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+          <path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Export
+      </button>
       <!-- Same markup and behaviour as the listener app's toggle: the icon is
            driven entirely by the --sun token in styles.css, so it is already
            correct on the first paint, before studio.js has run. -->
@@ -58,46 +66,6 @@
 </header>
 
 <main class="studio-main" id="main" aria-busy="true">
-
-  <!-- Export — first on the page because it is where every dataset lands:
-       listening now; inventory, coverage and the printable report in later
-       phases (docs/exports.md). Its own from/to dates, not the Listening window
-       picker: a file needs exact dates on it, and a board asks for "September",
-       not "the last 30 days". Plain <a download> links, so the browser's own download path does the work.
-       Hidden until the server reports counters exist. -->
-  <section class="studio-section studio-section--wide" id="downloads" hidden>
-    <h2 class="studio-h2">Export</h2>
-    <p class="studio-note">
-      The station&rsquo;s data for any dates you pick, as files for Excel, Google Sheets
-      or Pacifica. Today: listening figures &mdash; plays, time listened, page views
-      and reach. Counters only; no personal data of any kind.
-    </p>
-    <div class="win-picker" id="exportPresets" role="group" aria-label="Export dates">
-      <span class="studio-field-label">Dates</span>
-      <button class="win-btn" type="button" data-preset="thisMonth">This month</button>
-      <button class="win-btn" type="button" data-preset="lastMonth">Last month</button>
-      <button class="win-btn" type="button" data-preset="thisYear">This year</button>
-      <button class="win-btn" type="button" data-preset="all">All time</button>
-    </div>
-    <div class="export-span">
-      <label class="studio-field">
-        <span class="studio-field-label">From</span>
-        <input class="studio-input" id="exportFrom" type="date" required>
-      </label>
-      <label class="studio-field">
-        <span class="studio-field-label">To</span>
-        <input class="studio-input" id="exportTo" type="date" required>
-      </label>
-    </div>
-    <p class="studio-note" id="exportSpanNote" aria-live="polite"></p>
-    <div class="export-links" id="exportLinks">
-      <a class="studio-btn" data-format="csv" data-table="daily" download>Daily CSV</a>
-      <a class="studio-btn" data-format="csv" data-table="shows" download>Shows CSV</a>
-      <a class="studio-btn" data-format="csv" data-table="reach" download>Reach CSV</a>
-      <a class="studio-btn" data-format="json" download>Everything (JSON)</a>
-      <a class="studio-btn studio-btn--quiet" data-format="readme" download>Read me</a>
-    </div>
-  </section>
 
   <!-- What's in the archive right now. Every number here is computed from the
        feed cache the app already holds, so it is the same data the listener
@@ -382,6 +350,101 @@
        interrupt whatever a screen-reader user is currently reading. -->
   <p class="studio-error" id="loadError" role="alert" aria-live="polite" hidden></p>
 </main>
+
+<!-- Export. A native <dialog>: focus is trapped, Esc closes, the page behind
+     is inert — no library, nothing to keep in sync. Download fetches the file,
+     saves it, and SAYS what happened: a plain <a download> link handed failures
+     to the browser, where they were invisible (2026-09-16). -->
+<dialog class="export-dialog" id="exportDialog" aria-labelledby="exportTitle">
+  <form class="export-form" id="exportForm" novalidate>
+    <header class="export-head">
+      <div>
+        <h2 class="export-title" id="exportTitle">Export data</h2>
+        <p class="export-lede">
+          Files for Excel, Google Sheets or Pacifica. Counters only &mdash; they
+          contain no personal data of any kind.
+        </p>
+      </div>
+      <button class="export-close" id="exportClose" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <p class="export-empty" id="exportEmpty" hidden>
+      Nothing has been counted yet, so there is nothing to export. Counting began
+      when this app was deployed &mdash; it does not backfill.
+    </p>
+
+    <fieldset class="export-step" id="exportDates">
+      <legend class="export-legend"><span class="export-num">1</span> Dates</legend>
+      <div class="export-presets" id="exportPresets" role="group" aria-label="Quick dates">
+        <button class="win-btn" type="button" data-preset="thisMonth">This month</button>
+        <button class="win-btn" type="button" data-preset="lastMonth">Last month</button>
+        <button class="win-btn" type="button" data-preset="thisYear">This year</button>
+        <button class="win-btn" type="button" data-preset="all">All time</button>
+      </div>
+      <div class="export-span">
+        <label class="studio-field">
+          <span class="studio-field-label">From</span>
+          <input class="studio-input" id="exportFrom" type="date" required>
+        </label>
+        <label class="studio-field">
+          <span class="studio-field-label">To</span>
+          <input class="studio-input" id="exportTo" type="date" required>
+        </label>
+      </div>
+      <p class="export-summary" id="exportSpanNote" aria-live="polite"></p>
+    </fieldset>
+
+    <fieldset class="export-step" id="exportWhat">
+      <legend class="export-legend"><span class="export-num">2</span> What to download</legend>
+      <div class="export-choices">
+        <label class="export-choice">
+          <input type="radio" name="exportFile" value="csv:daily" checked>
+          <span class="export-choice-body">
+            <span class="export-choice-title">Daily totals <span class="export-tag">CSV</span></span>
+            <span class="export-choice-desc">One row per day: page views, episode plays, live tune-ins, searches, shares and time listened.</span>
+          </span>
+        </label>
+        <label class="export-choice">
+          <input type="radio" name="exportFile" value="csv:shows">
+          <span class="export-choice-body">
+            <span class="export-choice-title">Per show <span class="export-tag">CSV</span></span>
+            <span class="export-choice-desc">Plays and time listened for every show, most listened first.</span>
+          </span>
+        </label>
+        <label class="export-choice">
+          <input type="radio" name="exportFile" value="csv:reach">
+          <span class="export-choice-body">
+            <span class="export-choice-title">Reach <span class="export-tag">CSV</span></span>
+            <span class="export-choice-desc">Page views grouped by the timezone listeners&rsquo; browsers report.</span>
+          </span>
+        </label>
+        <label class="export-choice">
+          <input type="radio" name="exportFile" value="json">
+          <span class="export-choice-body">
+            <span class="export-choice-title">Everything <span class="export-tag">JSON</span></span>
+            <span class="export-choice-desc">All three tables in one file, with an explanation of every column. For Pacifica and other tools.</span>
+          </span>
+        </label>
+      </div>
+      <p class="export-readme">
+        What do the columns mean?
+        <button class="export-link" id="exportReadme" type="button">Download the read-me</button>
+      </p>
+    </fieldset>
+
+    <footer class="export-foot">
+      <p class="export-status" id="exportStatus" role="status" aria-live="polite"></p>
+      <div class="export-actions">
+        <button class="studio-btn studio-btn--quiet" id="exportCancel" type="button">Close</button>
+        <button class="studio-btn export-go" id="exportGo" type="submit">Download</button>
+      </div>
+    </footer>
+  </form>
+</dialog>
 
 <!-- One shared tooltip for every chart. Positioned by studio.js through the
      CSSOM, which CSP permits — only style attributes parsed from markup are

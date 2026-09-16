@@ -416,11 +416,28 @@ Where the build differs from the plan above, and why:
 - **A README, not a zip.** `format=readme` downloads the manifest as plain text
   (all three tables' columns in one file), offered as a "Read me" link beside the
   CSVs. No bundling, per the plan's out-of-scope list.
-- **Section named "Export", first on the studio page** (Paul, 2026-09-16), not a
-  "Downloads" section under Listening: it is where every dataset lands as the later
-  phases add them, so it should not read as part of the listening panel. The older
-  "Export CSV" button on the Every feed table stays where it is — it exports that
-  table as filtered on screen, which is a different thing.
+- **An Export button in the studio header opens a dialog** (Paul, 2026-09-16) —
+  replacing first a "Downloads" section under Listening, then an "Export" section at
+  the top of the page. Steps: *1 Dates* (presets, from/to), *2 What to download*
+  (four choice cards), then a pinned footer with the status line and Download. The
+  older "Export CSV" button on the Every feed table stays — it exports that table as
+  filtered on screen, which is a different thing.
+- **Download fetches, then saves** (a Blob and a temporary link), rather than a
+  plain `<a download href>`. Paul reported on the live site that the links "start
+  the download but nothing is downloaded". A real click in Chrome on localhost did
+  download the complete file, and the live proxy's headers were sound, so **the live
+  cause is not yet known**. A plain link hands failures to the browser, where the
+  page never sees them; the dialog now shows the saved file's name and size, or the
+  server's error with its HTTP status, so the next failure explains itself.
+- **The original browser check was blind to this.** It fetched each link's URL with
+  `fetch()` and saw 200, which bypasses the download path entirely.
+  `test/studio/export-tests.js` (in `test/studio/run.sh`) clicks with real mouse
+  events and asserts a finished file on disk, parsed; its self-test proves a refused
+  export shows its error and lands no file. **Seen once, not explained:** in one of
+  six local runs a file named `downloads.html` also landed in the test's download
+  folder; it did not recur in five further runs (one with the folder kept for
+  inspection). If it comes back, keep the folder and read the file before anything
+  else — an HTML file where data was expected is close to the live symptom.
 - **Routes:** `GET /api/studio/exports` (index: months newest first with
   `daysWithData`, `hasData`, datasets) and `GET /api/studio/export` (400 for an
   unknown dataset, format, table or period; `period` must be a month on disk or `all`).

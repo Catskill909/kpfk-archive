@@ -967,11 +967,12 @@
     }
 
     /* ---------------- export ----------------
-       A from/to span of UTC days, bounded by what the server reports: the 1st
-       of the oldest stats month and today. Presets are computed from the
-       server's `today`, never this browser's clock — a listener's evening in
-       Los Angeles is already tomorrow in UTC, and the counters are UTC days.
-       Loaded once; a new day shows up on the next page load. */
+       A dialog opened from the header. Dates are a from/to span of UTC days,
+       bounded by what the server reports (the 1st of the oldest stats month,
+       and today). Presets come from the server's `today`, never this browser's
+       clock: a Los Angeles evening is already tomorrow in UTC, and the counters
+       are UTC days. The index is re-read on every open, so a new day appears
+       without a reload. */
     function isoDay(ms) { return new Date(ms).toISOString().slice(0, 10); }
     function utcMs(d) { return Date.parse(d + 'T00:00:00Z'); }
     function exportPresets(today, first) {
@@ -987,72 +988,172 @@
         all: clamp(first, today),
       };
     }
-    function spanLabel(from, to) {
-      var days = Math.round((utcMs(to) - utcMs(from)) / 86400000) + 1;
-      return from + ' to ' + to + ' (UTC) \u00b7 ' + days + (days === 1 ? ' day' : ' days');
+    function longDay(d) {
+      return new Date(utcMs(d)).toLocaleDateString(undefined,
+        { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
     }
-    function loadExports() {
-      var section = document.getElementById('downloads');
+    function fileSize(n) {
+      return n < 1024 ? n + ' bytes' : (Math.round(n / 102.4) / 10) + ' KB';
+    }
+
+    (function () {
+      var dialog = document.getElementById('exportDialog');
+      var openBtn = document.getElementById('exportOpen');
+      if (!dialog || !openBtn || typeof dialog.showModal !== 'function') {
+        if (openBtn) openBtn.hidden = true;
+        return;
+      }
+      var form = document.getElementById('exportForm');
       var fromEl = document.getElementById('exportFrom');
       var toEl = document.getElementById('exportTo');
       var presetsEl = document.getElementById('exportPresets');
       var note = document.getElementById('exportSpanNote');
-      if (!section || !fromEl || !toEl) return;
+      var statusEl = document.getElementById('exportStatus');
+      var go = document.getElementById('exportGo');
+      var readme = document.getElementById('exportReadme');
+      var empty = document.getElementById('exportEmpty');
+      var steps = [document.getElementById('exportDates'), document.getElementById('exportWhat')];
       var presets = {};
       // The preset last chosen, while the dates still equal it. Matching by
       // dates alone lit three buttons at once whenever the data is younger
       // than a year — This month, This year and All time are then one span.
       var chosen = null;
-      function relink() {
+      var busy = false;
+
+      function status(text, kind) {
+        statusEl.textContent = text;
+        statusEl.className = 'export-status' + (kind ? ' is-' + kind : '');
+      }
+      function spanOk() {
         var from = fromEl.value, to = toEl.value;
-        var ok = from && to && from <= to && from >= fromEl.min && to <= toEl.max;
-        note.textContent = ok ? spanLabel(from, to)
-          : 'Pick a start date on or before the end date, between '
-            + fromEl.min + ' and ' + toEl.max + '.';
-        [].forEach.call(document.querySelectorAll('#exportLinks a'), function (a) {
-          if (!ok) { a.removeAttribute('href'); a.setAttribute('aria-disabled', 'true'); return; }
-          var q = 'dataset=listening&from=' + from + '&to=' + to
-            + '&format=' + a.getAttribute('data-format');
-          if (a.getAttribute('data-table')) q += '&table=' + a.getAttribute('data-table');
-          a.href = '/api/studio/export?' + q;
-          a.removeAttribute('aria-disabled');
-        });
+        return !!(from && to && from <= to && from >= fromEl.min && to <= toEl.max);
+      }
+      function refresh() {
+        var from = fromEl.value, to = toEl.value, ok = spanOk();
+        if (ok) {
+          var days = Math.round((utcMs(to) - utcMs(from)) / 86400000) + 1;
+          note.textContent = longDay(from) + ' – ' + longDay(to) + ' · '
+            + days + (days === 1 ? ' day' : ' days');
+        } else {
+          note.textContent = 'Choose a start date on or before the end date, between '
+            + longDay(fromEl.min) + ' and ' + longDay(toEl.max) + '.';
+        }
+        note.className = 'export-summary' + (ok ? '' : ' is-bad');
+        go.disabled = busy || !ok;
+        readme.disabled = busy || !ok;
         var cp = chosen && presets[chosen];
         if (!cp || cp.from !== from || cp.to !== to) chosen = null;
         [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) {
           b.setAttribute('aria-pressed', String(b.getAttribute('data-preset') === chosen));
         });
       }
-      fetch('/api/studio/exports', { headers: { 'Accept': 'application/json' } })
-        .then(function (res) { return res.ok ? res.json() : null; })
-        .then(function (x) {
-          if (!x || !x.hasData) return;
-          presets = exportPresets(x.today, x.firstDate);
-          [fromEl, toEl].forEach(function (i) { i.min = x.firstDate; i.max = x.today; });
-          [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) {
-            b.disabled = !presets[b.getAttribute('data-preset')];
+      function setSpan(name) {
+        var p = presets[name];
+        if (!p) return;
+        chosen = name;
+        fromEl.value = p.from;
+        toEl.value = p.to;
+        refresh();
+      }
+
+      /* Fetch, then save. A plain <a download> hands the request to the
+         browser and a failure never reaches the page — which is how "the
+         download starts but nothing arrives" went unexplained. Here every
+         outcome is on screen: the file name and size, or the server's error
+         and HTTP status. */
+      function download(format, table) {
+        if (busy || !spanOk()) return;
+        var q = 'dataset=listening&from=' + fromEl.value + '&to=' + toEl.value + '&format=' + format;
+        if (table) q += '&table=' + table;
+        busy = true;
+        refresh();
+        status('Preparing your file…');
+        fetch('/api/studio/export?' + q, { credentials: 'same-origin' })
+          .then(function (res) {
+            if (res.status === 401) {
+              throw new Error('Your studio session has ended. Sign in again, then retry.');
+            }
+            if (!res.ok) {
+              return res.text().then(function (body) {
+                var msg = '';
+                try { msg = JSON.parse(body).error || ''; } catch (e) { msg = body.slice(0, 120); }
+                throw new Error('The server refused this export: ' + (msg || 'no reason given')
+                  + ' (HTTP ' + res.status + ').');
+              });
+            }
+            var cd = res.headers.get('Content-Disposition') || '';
+            var name = (/filename="([^"]+)"/.exec(cd) || [])[1];
+            if (!name) throw new Error('The server sent no file name (HTTP ' + res.status + ').');
+            return res.blob().then(function (blob) { return { name: name, blob: blob }; });
+          })
+          .then(function (file) {
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(file.blob);
+            a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            // Revoke on a delay: revoking synchronously races the download in
+            // some browsers and yields an empty file.
+            setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+            status('Saved ' + file.name + ' · ' + fileSize(file.blob.size)
+              + '. Check your Downloads folder.', 'ok');
+          })
+          .catch(function (e) {
+            console.error('[studio] export failed:', e);
+            status(e && e.message ? e.message : 'The export failed: ' + e, 'bad');
+          })
+          .then(function () { busy = false; refresh(); });
+      }
+
+      function load() {
+        status('');
+        fetch('/api/studio/exports', { headers: { 'Accept': 'application/json' } })
+          .then(function (res) {
+            if (!res.ok) throw new Error('Could not load export options (HTTP ' + res.status + ').');
+            return res.json();
+          })
+          .then(function (x) {
+            empty.hidden = !!x.hasData;
+            steps.forEach(function (st) { st.hidden = !x.hasData; });
+            if (!x.hasData) { go.disabled = true; return; }
+            var keep = fromEl.value && toEl.value;
+            presets = exportPresets(x.today, x.firstDate);
+            [fromEl, toEl].forEach(function (i) { i.min = x.firstDate; i.max = x.today; });
+            [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) {
+              b.disabled = !presets[b.getAttribute('data-preset')];
+            });
+            if (keep) refresh(); else setSpan(presets.thisMonth ? 'thisMonth' : 'all');
+          })
+          .catch(function (e) {
+            console.error('[studio] export options failed:', e);
+            go.disabled = true;
+            status(e.message, 'bad');
           });
-          presetsEl.addEventListener('click', function (ev) {
-            var b = ev.target.closest('.win-btn');
-            var p = b && presets[b.getAttribute('data-preset')];
-            if (!p) return;
-            chosen = b.getAttribute('data-preset');
-            fromEl.value = p.from;
-            toEl.value = p.to;
-            relink();
-          });
-          fromEl.addEventListener('input', relink);
-          toEl.addEventListener('input', relink);
-          chosen = presets.thisMonth ? 'thisMonth' : 'all';
-          var start = presets[chosen];
-          fromEl.value = start.from;
-          toEl.value = start.to;
-          relink();
-          section.hidden = false;
-        })
-        .catch(function (e) { console.error('[studio] exports index failed:', e); });
-    }
-    loadExports();
+      }
+
+      openBtn.addEventListener('click', function () {
+        dialog.showModal();
+        load();
+      });
+      function close() { dialog.close(); openBtn.focus(); }
+      document.getElementById('exportClose').addEventListener('click', close);
+      document.getElementById('exportCancel').addEventListener('click', close);
+      // A click on the backdrop lands on the <dialog> itself.
+      dialog.addEventListener('click', function (ev) { if (ev.target === dialog) close(); });
+      presetsEl.addEventListener('click', function (ev) {
+        var b = ev.target.closest('.win-btn');
+        if (b) setSpan(b.getAttribute('data-preset'));
+      });
+      fromEl.addEventListener('input', refresh);
+      toEl.addEventListener('input', refresh);
+      form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var pick = form.querySelector('input[name=exportFile]:checked').value.split(':');
+        download(pick[0], pick[1]);
+      });
+      readme.addEventListener('click', function () { download('readme'); });
+    })();
 
     function load() {
       loadUsage();
