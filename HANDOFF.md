@@ -102,9 +102,12 @@ Each file is daily counters and nothing else:
    tab. **Phase 3 built:** the printable report (`/studio/report`, Export → Printable
    report → Open report, then Print or save as PDF). **Phase 4 built:** station
    profile export and [docs/exports-for-pacifica.md](docs/exports-for-pacifica.md).
-   **Every export phase is now built.** Next: Paul's live test of all of it after a
-   Coolify redeploy — backup download, a restore preview (and, if wanted, a restore
-   and undo), each dataset, the printable report as PDF. Paul is testing everything together
+   **Every export phase is built, deployed and verified live** (Paul, 2026-09-16:
+   "everything works"). Live HTTP audit of that deploy: `studioVersion` 4-part and all
+   six studio/app assets byte-identical to the repo; `instanceId` `e4a9aac9…`
+   unchanged, `freshVolume:false`; feeds ready, filter `schedule`; every export,
+   backup and import route 401 signed out, `/studio/report` 302 to `/studio`; CSP
+   intact; `/api/station` still without feeds. **The phased export plan is complete.** Paul is testing everything together
    after the build (2026-09-16), so nothing from 1c onward has been tried live yet. Spec: "Revised plan" in docs/exports.md.
    *Found while building it, not fixed:* the dashboard's **Most listened shows**
    (`usageReport().topShows`) and **show history** (`showHistory()`) still fall back

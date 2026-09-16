@@ -1,7 +1,7 @@
 # Exports — specification
 
-**Status: every phase built, 2026-09-16; not yet tried live from 1c onward** (Paul
-is testing all of it together). Listening (1), date spans (1b), backup and restore
+**Status: every phase built and verified live, 2026-09-16** (Paul tested the deployed
+studio; the HTTP audit of that deploy is in HANDOFF). Listening (1), date spans (1b), backup and restore
 (1c), archive and coverage (2), printable report (3), station profile and the
 cross-station guide (4). Each has an "as built" section below; the "Revised plan"
 directly below overrides the phase order and the calendar-months decision further
