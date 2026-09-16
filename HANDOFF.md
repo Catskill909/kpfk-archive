@@ -130,9 +130,12 @@ Each file is daily counters and nothing else:
    sends an empty `photoUrl` for them — it sends Pacifica's generic station picture
    (`https://confessor.kpfk.org/pix/KPFK_med.jpg`, on 78 shows). So the **listener app
    now shows that generic picture** for those 20 programs, not our dark waveform
-   placeholder. Undecided whether the app should detect it (an image shared by many
-   shows) and show the placeholder instead; the coverage export and report already
-   count it as "no artwork" (docs/exports.md phase 3). Examples: Something's Happening ×6, Counterspin, Radio Maiz,
+   placeholder. **Decided (Paul, 2026-09-16): use it.** If the feed sends an image,
+   the app shows it; the waveform placeholder is only for a blank field. No code
+   change — that is already the behaviour. The coverage export and printable report
+   still count the generic picture as "no artwork of their own" on purpose: they are
+   the list of programs whose real artwork still needs uploading in Confessor
+   (docs/exports.md phase 3). Examples: Something's Happening ×6, Counterspin, Radio Maiz,
    Contacto Ancestral, Making Contact. KPFK staff need to upload it in Confessor; it then
    appears automatically. Evidence: `docs/kpfk/artwork-evidence-2026-09-15/`.
 5. **Android app link** is Google Play *closed testing*. Swap `links.androidApp` for the
