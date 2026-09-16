@@ -105,6 +105,19 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     await wait(1800);
     await go();
   }
+  // (Dashboard, not export — but this suite already signs in to the real page.)
+  // On a Pacifica JSON station the System panel counts what the provider holds;
+  // the XML-era "Programs"/"Feeds" rows read 0 there and are not drawn.
+  const provider = await ev(`fetch('/api/studio/health').then((r) => r.json()).then((h) => h.provider)`);
+  if (provider === 'pacifica-json') {
+    await wait(800);
+    const panel = JSON.parse(await ev(`JSON.stringify({ counts: document.getElementById('countFacts').textContent,
+      storage: document.getElementById('storageFacts').textContent })`));
+    console.log('\n0. System panel on a JSON station');
+    ok('content counts are the archive and catalog, not XML-era zeros',
+      /Episodes in the archive/.test(panel.counts) && /catalog/.test(panel.counts) && !/Programs/.test(panel.counts), panel.counts);
+    ok('storage names the Pacifica snapshots', /Pacifica snapshots on disk/.test(panel.storage) && !/Records on disk at boot/.test(panel.storage), panel.storage);
+  }
   console.log('\n1. the Export button opens the dialog');
   ok('signed in', await ev("!!document.getElementById('exportOpen')"));
   ok('dialog starts closed', await ev("!document.getElementById('exportDialog').open"));

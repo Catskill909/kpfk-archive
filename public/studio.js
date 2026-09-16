@@ -417,10 +417,19 @@
         ['Instance id', d.storage.instanceId || '—'],
         ['Persisting since', d.storage.persistedSince
           ? new Date(d.storage.persistedSince).toLocaleString() : '—'],
-        ['Records on disk at boot', d.storage.showinfoOnDisk + ' shows, ' + d.storage.feedsOnDisk + ' feeds'],
+        // A Pacifica JSON station keeps feed snapshots, not the XML store and
+        // scraped directory this row described — those are 0 by design there.
+        d.storage.pacificaSnapshots !== undefined
+          ? ['Pacifica snapshots on disk', d.storage.pacificaSnapshots + ' files']
+          : ['Records on disk at boot', d.storage.showinfoOnDisk + ' shows, ' + d.storage.feedsOnDisk + ' feeds'],
       ]);
 
-      facts('countFacts', [
+      facts('countFacts', d.counts.archiveEpisodes !== undefined ? [
+        ['Shows in the archive', num(d.counts.archiveShows)],
+        ['Episodes in the archive', num(d.counts.archiveEpisodes)],
+        ['Shows in Pacifica\u2019s catalog', num(d.counts.catalogShows)],
+        ['Show records', num(d.counts.showinfo)],
+      ] : [
         ['Feeds', d.counts.feeds],
         ['Programs', d.counts.programs],
         ['Show records', d.counts.showinfo],

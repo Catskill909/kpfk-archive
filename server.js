@@ -1467,6 +1467,15 @@ const INSTANCE_PATH = path.join(DATA_DIR, '.instance.json');
  * exist, and a missing field is simply absent from JSON); a screenshot of the
  * rendered page caught it in a second. Hence one function.
  */
+/** Last-good Pacifica feed snapshots on the volume (not the `.previous` copies). */
+function pacificaSnapshotCount() {
+  try {
+    return fs.readdirSync(path.join(DATA_DIR, 'pacifica')).filter((f) => f.endsWith('.json')).length;
+  } catch (e) {
+    return 0;   // no snapshot directory yet: nothing has been fetched
+  }
+}
+
 function storageReport() {
   return {
     dataDir: storageDiag.dataDir,
@@ -1481,6 +1490,10 @@ function storageReport() {
     showinfoOnDisk: storageDiag.showinfoOnDisk,
     showinfoNow: Object.keys(showInfo).length,
     feedsOnDisk: feedsDiag.onDisk,
+    // On a Pacifica JSON station the XML feed store and scraped directory above
+    // are empty by design; what is actually on the volume is the feed
+    // snapshots. The studio shows this instead of drawing "0 shows, 0 feeds".
+    pacificaSnapshots: pacifica ? pacificaSnapshotCount() : undefined,
     // Normally []. A non-empty list means a file on the volume would not parse
     // at boot and its bytes were moved aside — the app is running on an empty
     // store for that file, so anything it accumulated is in the quarantined copy
@@ -2662,9 +2675,6 @@ function usageReport(days = 30) {
   // reading statsStore.days directly falls off the cliff at the month rollover.
   const byZone = sumBySlug(window, 'byZone');
   const zoneTotal = ZONE_BUCKETS.reduce((n, b) => n + (byZone.get(b) || 0), 0);
-  // episodeRecords(), not feedStore: on a station build feedStore is always
-  // empty, and every title fell back to the slug.
-  const titles = episodeRecords();
   const firstWithData = window.find((w) => w.rec);
   return {
     since: (firstWithData && firstWithData.day) || today(),
@@ -2705,7 +2715,7 @@ function usageReport(days = 30) {
     topShows: [...new Set([...byShow.keys(), ...secsByShow.keys()])]
       .map((slug) => ({
         slug,
-        title: (titles[slug] && titles[slug].channel && titles[slug].channel.title) || slug,
+        title: studioShowTitle(slug),
         plays: byShow.get(slug) || 0,
         seconds: secsByShow.get(slug) || 0,
       }))
@@ -2742,7 +2752,7 @@ function showHistory(slug) {
   const rec = episodeRecords()[slug];
   return {
     slug,
-    title: (rec && rec.channel && rec.channel.title) || slug,
+    title: studioShowTitle(slug),
     months,
   };
 }
@@ -2753,6 +2763,15 @@ function showHistory(slug) {
  * shape and every decision behind it are in docs/exports.md; the data work is
  * the pure builder in lib/export/listening.js, and this is only the plumbing.
  */
+
+/**
+ * A show title for the studio's own screens: the export lookup (archive, then
+ * the catalog mirror), and the slug only when nothing names the show — a chart
+ * row has to print something. Reading episodeRecords() alone printed the slug
+ * for every show that had left the published schedule, in "Most listened shows"
+ * and show history, although the catalog still named it.
+ */
+function studioShowTitle(slug) { return exportShowTitle(slug) || slug; }
 
 /**
  * A show title for a file that leaves the building, or '' — never an id.
@@ -3510,7 +3529,7 @@ function studioStats(usageDays = 30) {
     }
     shows.push({
       slug,
-      title: (rec && rec.channel && rec.channel.title) || slug,
+      title: studioShowTitle(slug),
       episodes: items.length,
       seconds: showSeconds,
       bytes: showBytes,
@@ -3820,7 +3839,15 @@ function studioApi(req, res, pathOnly) {
           nowplaying: nowCache.stats(),
         },
       },
-      counts: {
+      // What this provider can actually count. A JSON station has no XML feed
+      // store or scraped program directory, and "Feeds 0 · Programs 0" read as an
+      // empty archive (the 2026-09-15 class: omit, never draw a zero).
+      counts: pacifica ? {
+        showinfo: Object.keys(showInfo).length,
+        archiveShows: Object.keys((pacifica.peekArchive() || { directory: {} }).directory).length,
+        archiveEpisodes: (pacifica.peekArchive() || { count: 0 }).count,
+        catalogShows: Object.keys((pacifica.peekCatalog() || { directory: {} }).directory).length,
+      } : {
         showinfo: Object.keys(showInfo).length,
         programs: Object.keys(programCache.programs || {}).length,
         feeds: Object.keys(feedStore).length,

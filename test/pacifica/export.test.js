@@ -439,6 +439,16 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
     assert.equal((await fetch(url + p)).status, 401, 'signed out: ' + p);
   }
 
+  // ---- The studio's own screens name shows the same way: a show that has left
+  // the schedule is named from the catalog, not printed as its slug.
+  const allUsage = await (await get('/api/studio/usage?days=all')).json();
+  const usageTitle = k => (allUsage.topShows.find(x => x.slug === k) || {}).title;
+  assert.equal(usageTitle('kpfk.kpfk.buildingbridges'), 'Radio "Maíz", en Español', 'Most listened shows: off-schedule show by its catalog title');
+  assert.equal(usageTitle('kpfk.kpfk.covidraceanddemocr'), 'Capitalism, Race and Democracy');
+  assert.equal(usageTitle('kpfk.kpfk.nosuchshowever'), 'kpfk.kpfk.nosuchshowever', 'a show nothing names still prints its slug on screen');
+  const history = await (await get('/api/studio/showhistory?slug=kpfk.kpfk.buildingbridges')).json();
+  assert.equal(history.title, 'Radio "Maíz", en Español', 'show history: catalog title');
+
   // ---- Station profile: exactly the public projection, plus the category map
   const profRes = await get('/api/studio/export?dataset=profile&format=json');
   assert.equal(profRes.status, 200);

@@ -110,12 +110,13 @@ Each file is daily counters and nothing else:
    intact; `/api/station` still without feeds. **The phased export plan is complete.** Paul is testing everything together
    after the build (2026-09-16), so nothing from 1c onward has been tried live yet. Spec: "Revised plan" in docs/exports.md.
    *Found while building it, not fixed:* the dashboard's **Most listened shows**
-   (`usageReport().topShows`) and **show history** (`showHistory()`) still fall back
-   to the slug for a show that has left the schedule — they read only
+   (`usageReport().topShows`) and **show history** (`showHistory()`) fell back
+   to the slug for a show that has left the schedule — **fixed 2026-09-16** — they read only
    `episodeRecords()`. The export reads the catalog mirror as well
    (`exportShowTitle()`). Routing those two through the same lookup is a small
    change; it was left out to keep this commit to the export.
-2. **Station settings in the studio — spec not yet written.** Paul, 2026-09-15: the
+2. **Station settings in the studio — ON HOLD (Paul, 2026-09-16).** Kept for the next
+   station clone; KPFK is the template and still in beta. Spec not yet written. Paul, 2026-09-15: the
    **station timezone should be settable in the admin panel** rather than only in
    `stations/kpfk.json`. This would be the studio's first setting that *writes station
    configuration*, so it needs an override file on the data volume, precedence rules
@@ -141,8 +142,7 @@ Each file is daily counters and nothing else:
    (docs/exports.md phase 3). Examples: Something's Happening ×6, Counterspin, Radio Maiz,
    Contacto Ancestral, Making Contact. KPFK staff need to upload it in Confessor; it then
    appears automatically. Evidence: `docs/kpfk/artwork-evidence-2026-09-15/`.
-5. **Android app link** is Google Play *closed testing*. Swap `links.androidApp` for the
-   public listing once it exists.
+5. **Android app link — done.** `links.androidApp` is the public Play listing (`1734883`).
 6. **Browser test suites** (`test/live-stream` normal + `--strict`, `test/ui`,
    `test/schedule`, `test/episode-rail`, `test/share`, `test/touch`, `test/motion`)
    are inherited from WBAI and not adapted. Until they are, check Listen Live and one
@@ -152,7 +152,7 @@ Each file is daily counters and nothing else:
    when you next touch its area.
 8. From the original plan (`docs/kpfk/implementation.md`): program-only deep links,
    studio source-health wording for JSON feeds, desktop (Tauri) KPFK build. None block
-   the live web app. **Still WBAI-shaped in the studio's System panel:** "Programs 0"
+   the live web app. **Fixed 2026-09-16 — was WBAI-shaped in the studio's System panel:** "Programs 0"
    (the scraped `/programlist/` directory, which KPFK does not use) and "Records on disk
    at boot: 0 shows, 0 feeds" (the XML feed store, empty by design here — the Pacifica
    snapshots live in `data/pacifica/`). Both are labels, not wrong data; the two
@@ -266,4 +266,15 @@ visible with *September 2026 / All time*, and all five links answered 200 with t
 right filenames and a BOM on each CSV. `test/studio/run.sh` layout and sort suites
 passed against 8081 at every width from 1280 to 360px.
 **Not yet done:** deploy and live audit.
+
+## Next: port the exports to WBAI (Paul, 2026-09-16)
+
+A **separate job in the WBAI folder** (`/Users/paulhenshaw/Desktop/wbai-archive`), its own
+commits and deploy. Nothing is shared between the two apps' code or data. Decided:
+- A WBAI backup holds usage months **and `data/feeds.json`** (WBAI's accumulated episode
+  history, which upstream cannot re-send).
+- Restoring a WBAI backup onto a WBAI server **merges episodes per show** (WBAI's own
+  `mergeFeedItems`: keep every episode, no duplicates); usage months preview-then-replace.
+- No published schedule and no station profile on WBAI: coverage drops that column, the
+  profile export is not offered.
 

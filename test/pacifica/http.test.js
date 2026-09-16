@@ -151,6 +151,15 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   assert.equal(stats.coverage.noDirectory, undefined);
   assert.equal(stats.coverage.withDescription, stats.coverage.feeds, 'every show has a Pacifica description');
   assert.ok(stats.coverage.feeds > 0);
+  // The System panel's counts: what a JSON provider holds, and nothing it does
+  // not ("Feeds 0 · Programs 0" read as an empty archive).
+  const studioHealth = await studio('/api/studio/health');
+  assert.equal(studioHealth.counts.programs, undefined, 'no scraped-directory count on a JSON station');
+  assert.equal(studioHealth.counts.feeds, undefined, 'no XML feed-store count on a JSON station');
+  assert.equal(studioHealth.counts.archiveEpisodes, expected.episodes);
+  assert.equal(studioHealth.counts.archiveShows, expected.programs.length);
+  assert.ok(studioHealth.counts.catalogShows > studioHealth.counts.archiveShows, 'the catalog holds more shows than the schedule');
+  assert.ok(studioHealth.storage.pacificaSnapshots > 0, 'the snapshots on disk are counted');
   // Prove the sweep can see the played show in each report, not an empty list.
   for (const where of ['usage.topShows', 'stats.shows', 'showhistory']) {
     assert.ok(named.some(([w, s]) => w === where && s.slug === played.sho), `${where} includes the played show`);
