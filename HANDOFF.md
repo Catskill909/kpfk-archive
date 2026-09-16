@@ -90,7 +90,10 @@ Each file is daily counters and nothing else:
    what changed from the plan: [docs/exports.md](docs/exports.md) ("Phase 1 — as
    built"). **Next:** Coolify redeploy, then the live audit (acceptance criterion 8:
    download September's Daily CSV on the live site and open it in Excel/Sheets).
-   Phases 2–4 (inventory, coverage, printable report, profile) not started.
+   **Re-planned 2026-09-16 (Paul):** next is **1b date spans** (from/to + presets),
+   then **1c backup + import** so the app and its data can move between servers
+   (preview, then replace; usage data + settings; undo). Inventory, coverage,
+   printable report and profile come after. Spec: "Revised plan" in docs/exports.md.
    *Found while building it, not fixed:* the dashboard's **Most listened shows**
    (`usageReport().topShows`) and **show history** (`showHistory()`) still fall back
    to the slug for a show that has left the schedule — they read only
@@ -104,7 +107,8 @@ Each file is daily counters and nothing else:
    against the profile, validation, and it moves schedule rendering as well as
    reporting. Deliberately kept separate from the export build. Exports do not depend
    on it — they report whatever timezone is in force when they run.
-3. **Backups — already covered, do not re-raise.** The VPS has snapshots and full
+3. **Backups — disaster recovery is covered, do not re-raise *that*.** (Moving the app
+   between servers is a different need and is now planned: item 1, step 1c.) The VPS has snapshots and full
    backups for 10 days (Paul, 2026-09-15), so `tools/backup-data.sh` is redundant for
    disaster recovery. What snapshots do *not* give anyone is a portable, readable,
    longer-than-10-days copy — that is what the export above is for, and it is a

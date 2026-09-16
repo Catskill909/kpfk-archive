@@ -1,8 +1,78 @@
 # Exports — specification
 
-**Status:** specified 2026-09-15. **Phase 1 (`listening`, CSV + JSON, calendar
-months) built 2026-09-16** — see "Phase 1 — as built" at the end. Phases 2–4 not
-started. Tracked in [HANDOFF.md](../HANDOFF.md) open items.
+**Status:** specified 2026-09-15. **Phase 1 (`listening`, CSV + JSON) built
+2026-09-16** — see "Phase 1 — as built". **Re-planned 2026-09-16:** date spans and
+a backup/import for moving the app come next — see "Revised plan" directly below,
+which overrides the phase order and the calendar-months decision further down.
+Tracked in [HANDOFF.md](../HANDOFF.md) open items.
+
+## Revised plan — 2026-09-16 (Paul)
+
+**Why it changed.** The app has to be easy to move between servers, with its data
+going along cleanly. The original spec said exports were "about portability and
+reporting, not backup" — that framing is replaced: a station also needs a
+**lossless backup file it can import** on a new install. Reports and backups are
+different files for different jobs and are kept separate.
+
+| Decision | Choice |
+| --- | --- |
+| Report periods | **From/to dates** (UTC days) with presets *This month, Last month, This year, All time*. Replaces "calendar months + all time". |
+| What a backup holds | **Usage data + studio settings.** The `stats/` month files verbatim, plus a `settings` object (empty until the studio timezone setting exists). Feed snapshots (`pacifica/`) are left out — a new install re-fetches them. `.instance.json` is never moved: a new server keeps its own identity. |
+| Import into a server that already has data | **Preview, then replace.** A month-by-month comparison (backup vs this server) first; on confirm, the backup's months replace the matching months here and other months are untouched. The server's current copies are saved aside first, so an import can be undone. Importing the same file twice gives the same result. |
+| Order | **1b** date spans → **1c** backup + import → then inventory, coverage, printable report, profile. |
+
+### 1b — date spans (on the phase 1 export)
+
+- `GET /api/studio/export?dataset=listening&from=YYYY-MM-DD&to=YYYY-MM-DD&format=…`
+  replaces `period`. Validated: real calendar dates, `from ≤ to`, `from` no earlier
+  than the 1st of the oldest stats month, `to` no later than today (UTC).
+- Filenames carry the span: `kpfk-listening-daily-2026-09-01_2026-09-16.csv`.
+- Manifest: `from_date_utc`, `to_date_utc`, `days_covered` (replaces `period`).
+  Not yet deployed, so `schema_version` stays `1`.
+- `GET /api/studio/exports` returns `firstDate` and `today`; presets are computed
+  from those, not from the browser's clock (which is not UTC).
+- Studio: two date inputs bounded by `min`/`max`, four preset buttons.
+
+### 1c — backup and import
+
+**The backup file** — `GET /api/studio/backup` →
+`kpfk-backup-2026-09-16.json`, one JSON file (a few KB per month; no zip, no
+dependency):
+
+```json
+{ "format": "pacifica-archive-backup", "formatVersion": 1,
+  "station": "kpfk", "createdAt": "…", "appVersion": "…", "sourceInstanceId": "…",
+  "stats": { "2026-08": { …month file, verbatim… }, "2026-09": { … } },
+  "settings": {},
+  "checksums": { "2026-08": "sha256 of that month's JSON", … } }
+```
+
+The current month is read from memory, so counters not yet flushed are included.
+
+**Import** — two steps in the studio, both `POST`, CSRF-guarded like the actions:
+
+1. `POST /api/studio/import/preview` (the file as the body) — **writes nothing.**
+   Refuses: wrong `format`/`formatVersion`, a different `station`, a checksum that
+   does not match, a month key that is not `YYYY-MM`, a day outside its month, a
+   counter that is not a finite non-negative number, a malformed map, a body over
+   the size limit. Returns per month: backup totals, this server's totals, and
+   the action (`new`, `replace`, `identical`), plus a token bound to the file's hash.
+2. `POST /api/studio/import/apply` (same file + that token) — copies this server's
+   affected month files to `stats/pre-import-<timestamp>/`, writes each backup
+   month with `writeJsonAtomic`, and swaps the in-memory current month if it is one
+   of them. Logged. Any beacons since the preview on a replaced month are replaced
+   too — the preview says so.
+
+**Undo:** "Undo last import" restores the `pre-import-*` copies (also atomic).
+
+**Tests (each shown to fail):** backup → import on a fresh server → every export
+identical; importing twice = importing once; wrong station refused; tampered month
+(checksum) refused; `../` month key refused; preview leaves the data directory
+byte-identical; the pre-import copy exists and undo restores it; 401 signed out,
+403 without CSRF.
+
+---
+
 
 **Decided by Paul, 2026-09-15:** exports cover **all four datasets** below, in
 **CSV, JSON and a printable report**, downloaded from **`/studio`** by the
