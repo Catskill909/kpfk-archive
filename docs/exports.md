@@ -21,7 +21,12 @@ different files for different jobs and are kept separate.
 | Import into a server that already has data | **Preview, then replace.** A month-by-month comparison (backup vs this server) first; on confirm, the backup's months replace the matching months here and other months are untouched. The server's current copies are saved aside first, so an import can be undone. Importing the same file twice gives the same result. |
 | Order | **1b** date spans → **1c** backup + import → then inventory, coverage, printable report, profile. |
 
-### 1b — date spans (on the phase 1 export)
+### 1b — date spans (on the phase 1 export) — built 2026-09-16
+
+As specified below. Presets that fall wholly before the oldest data are disabled;
+one that starts before it is clamped to the first date. An invalid span (end before
+start, outside the bounds) disables the download links and says why.
+
 
 - `GET /api/studio/export?dataset=listening&from=YYYY-MM-DD&to=YYYY-MM-DD&format=…`
   replaces `period`. Validated: real calendar dates, `from ≤ to`, `from` no earlier

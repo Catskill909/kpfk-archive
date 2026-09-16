@@ -90,8 +90,8 @@ Each file is daily counters and nothing else:
    what changed from the plan: [docs/exports.md](docs/exports.md) ("Phase 1 — as
    built"). **Next:** Coolify redeploy, then the live audit (acceptance criterion 8:
    download September's Daily CSV on the live site and open it in Excel/Sheets).
-   **Re-planned 2026-09-16 (Paul):** next is **1b date spans** (from/to + presets),
-   then **1c backup + import** so the app and its data can move between servers
+   **Re-planned 2026-09-16 (Paul):** **1b date spans** (from/to + presets) built
+   the same day; next is **1c backup + import** so the app and its data can move between servers
    (preview, then replace; usage data + settings; undo). Inventory, coverage,
    printable report and profile come after. Spec: "Revised plan" in docs/exports.md.
    *Found while building it, not fixed:* the dashboard's **Most listened shows**

@@ -66,12 +66,12 @@ test('CSV writer: quoting, BOM, CRLF, formula cells, raw numbers', () => {
 function month(days) { return days; }
 const ZONES = [{ key: 'local', label: 'America/Los_Angeles' }, { key: 'national', label: 'Elsewhere in the US' },
   { key: 'intl', label: 'International' }, { key: 'unknown', label: 'Not reported' }];
-function build(period, store, today, titleFor = () => '') {
-  return L.buildListeningExport({ station: 'kpfk', stationTimezone: 'America/Los_Angeles', period,
-    months: Object.keys(store).sort(), monthDays: m => store[m] || {}, today, titleFor, zones: ZONES, generatedAt: '2026-09-16T00:00:00.000Z' });
+function build(from, to, store, titleFor = () => '') {
+  return L.buildListeningExport({ station: 'kpfk', stationTimezone: 'America/Los_Angeles', from, to,
+    monthDays: m => store[m] || {}, titleFor, zones: ZONES, generatedAt: '2026-09-16T00:00:00.000Z' });
 }
 
-test('builder: every day of the month, totals equal the day records, columns are exactly the documented set', () => {
+test('builder: every day of the span, totals equal the day records, columns are exactly the documented set', () => {
   const store = {
     '2026-08': month({
       '2026-08-03': { pageviews: 5, plays: 2, live: 1, searches: 1, shares: 0, listenSeconds: 400, liveSeconds: 30,
@@ -81,7 +81,7 @@ test('builder: every day of the month, totals equal the day records, columns are
     }),
     '2026-09': month({ '2026-09-02': { pageviews: 2, plays: 3, byShow: { 'kpfk.kpfk.b': 3 }, secondsByShow: { 'kpfk.kpfk.b': 50, 'kpfk.kpfk.a': 60 }, byZone: { national: 2 } } }),
   };
-  const aug = build('2026-08', store, '2026-09-16', k => (k === 'kpfk.kpfk.a' ? 'Show A' : ''));
+  const aug = build('2026-08-01', '2026-08-31', store, k => (k === 'kpfk.kpfk.a' ? 'Show A' : ''));
   assert.equal(aug.daily.length, 31, 'a whole month, including days with no activity');
   assert.equal(aug.daily[0].date_utc, '2026-08-01'); assert.equal(aug.daily[30].date_utc, '2026-08-31');
   const sum = (rows, k) => rows.reduce((n, r) => n + r[k], 0);
@@ -90,15 +90,21 @@ test('builder: every day of the month, totals equal the day records, columns are
   assert.deepEqual(aug.shows, [{ station: 'kpfk', show_key: 'kpfk.kpfk.a', show_title: 'Show A', plays: 2, seconds_listened: 400 }]);
   assert.deepEqual(aug.reach.map(r => [r.bucket, r.page_views]), [['local', 4], ['national', 0], ['intl', 1], ['unknown', 0]]);
 
-  // The current month stops at today — future days are not "no activity".
-  const sep = build('2026-09', store, '2026-09-16');
-  assert.equal(sep.daily.length, 16); assert.equal(sep.manifest.last_date_utc, '2026-09-16');
+  const sep = build('2026-09-01', '2026-09-16', store);
+  assert.equal(sep.daily.length, 16); assert.equal(sep.manifest.to_date_utc, '2026-09-16');
   assert.deepEqual(sep.shows.map(s => [s.show_key, s.plays, s.seconds_listened, s.show_title]),
     [['kpfk.kpfk.a', 0, 60, ''], ['kpfk.kpfk.b', 3, 50, '']], 'ranked by seconds; an unnamed show has an empty title');
 
-  const all = build('all', store, '2026-09-16');
+  const all = build('2026-08-01', '2026-09-16', store);
   assert.equal(all.daily.length, 31 + 16); assert.equal(sum(all.daily, 'episode_plays'), 6);
-  assert.equal(all.manifest.first_date_utc, '2026-08-01'); assert.equal(all.manifest.days_covered, 47);
+  assert.equal(all.manifest.from_date_utc, '2026-08-01'); assert.equal(all.manifest.days_covered, 47);
+
+  // A span cuts at days, not months: only what falls inside it is counted.
+  const cut = build('2026-08-04', '2026-09-01', store);
+  assert.equal(cut.daily.length, 29); assert.equal(sum(cut.daily, 'episode_plays'), 1, 'only 2026-08-31 is inside');
+  assert.deepEqual(cut.shows, [], 'the 31st named no show');
+  assert.equal(build('2026-09-02', '2026-09-02', store).daily.length, 1, 'a single day is a span');
+  assert.equal(L.exportFilename(cut.manifest, 'shows', 'csv'), 'kpfk-listening-shows-2026-08-04_2026-09-01.csv');
 
   for (const [table, cols] of Object.entries(DOCUMENTED)) {
     assert.deepEqual(L.COLUMNS[table], cols, `${table} columns are the documented set`);
@@ -111,7 +117,7 @@ test('builder: every day of the month, totals equal the day records, columns are
 });
 
 test('builder: a station with no data exports zero-filled days, no show rows, zero reach', () => {
-  const x = build('2026-09', {}, '2026-09-03');
+  const x = build('2026-09-01', '2026-09-03', {});
   assert.equal(x.daily.length, 3); assert.ok(x.daily.every(r => r.episode_plays === 0 && r.page_views === 0));
   assert.deepEqual(x.shows, []); assert.ok(x.reach.every(r => r.page_views === 0));
   const csv = parseCsv(toCsv(L.COLUMNS.shows, x.shows));
@@ -185,9 +191,10 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   assert.ok(up, 'server ready: ' + logs);
   await (await fetch(url + '/api/archive')).json();   // settle the scheduled filter
 
-  const good = '/api/studio/export?dataset=listening&period=2020-02&format=csv&table=shows';
+  const FEB = 'from=2020-02-01&to=2020-02-29';
+  const good = `/api/studio/export?dataset=listening&${FEB}&format=csv&table=shows`;
   // Signed out: refused, and not because the URL is wrong — the same URL works signed in below.
-  for (const p of ['/api/studio/exports', good, '/api/studio/export?dataset=listening&period=all&format=json']) {
+  for (const p of ['/api/studio/exports', good, `/api/studio/export?dataset=listening&${FEB}&format=json`]) {
     const r = await fetch(url + p); assert.equal(r.status, 401, p); assert.doesNotMatch(await r.text(), /Capitalism/);
   }
 
@@ -212,13 +219,19 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   assert.equal(index.hasData, true);
   assert.deepEqual(index.months.map(m => m.month), [thisMonth, '2020-02'], 'newest first, only months that exist');
   assert.equal(index.months[1].daysWithData, 2);
+  const todayUtc = new Date().toISOString().slice(0, 10);
+  assert.equal(index.firstDate, '2020-02-01', 'spans start at the oldest month on disk');
+  assert.equal(index.today, todayUtc);
 
-  for (const bad of ['../stats/2020-02', '2026-99', '2019-01', '', '2020-02.json']) {
-    const r = await get('/api/studio/export?dataset=listening&format=csv&period=' + encodeURIComponent(bad));
-    assert.equal(r.status, 400, `period ${JSON.stringify(bad)} refused`);
+  const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
+  for (const [from, to] of [['2020-02-10', '2020-02-09'], ['2020-01-31', '2020-02-29'], ['2020-02-01', tomorrow],
+    ['2020-02-30', '2020-03-01'], ['../stats/2020-02', '2020-02-29'], ['2020-2-1', '2020-02-29'], ['', '2020-02-29'], [null, null]]) {
+    const q = [from !== null && 'from=' + encodeURIComponent(from), to !== null && 'to=' + encodeURIComponent(to)].filter(Boolean).join('&');
+    const r = await get('/api/studio/export?dataset=listening&format=csv&' + q);
+    assert.equal(r.status, 400, `span ${from}..${to} refused`);
   }
-  for (const q of ['dataset=inventory&period=2020-02&format=csv', 'dataset=listening&period=2020-02&format=xlsx',
-    'dataset=listening&period=2020-02&format=csv&table=ip']) {
+  for (const q of [`dataset=inventory&${FEB}&format=csv`, `dataset=listening&${FEB}&format=xlsx`,
+    `dataset=listening&${FEB}&format=csv&table=ip`]) {
     assert.equal((await get('/api/studio/export?' + q)).status, 400, q);
   }
 
@@ -227,7 +240,7 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   const showsRes = await get(good);
   assert.equal(showsRes.status, 200);
   assert.equal(showsRes.headers.get('content-type'), 'text/csv; charset=utf-8');
-  assert.equal(showsRes.headers.get('content-disposition'), 'attachment; filename="kpfk-listening-shows-2020-02.csv"');
+  assert.equal(showsRes.headers.get('content-disposition'), 'attachment; filename="kpfk-listening-shows-2020-02-01_2020-02-29.csv"');
   assert.equal(showsRes.headers.get('cache-control'), 'private, no-store');
   assert.equal(showsRes.headers.get('vary'), 'Cookie');
   const shows = parseCsv(await bytes(showsRes));
@@ -240,7 +253,7 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   assert.deepEqual(shows.rows.map(r => [r.plays, r.seconds_listened]), [['2', '610'], ['2', '500'], ['0', '134'], ['1', '0']]);
 
   // Daily CSV totals equal the seeded file, every day of February present.
-  const daily = parseCsv(await bytes(await get('/api/studio/export?dataset=listening&period=2020-02&format=csv&table=daily')));
+  const daily = parseCsv(await bytes(await get(`/api/studio/export?dataset=listening&${FEB}&format=csv&table=daily`)));
   assert.deepEqual(daily.head, DOCUMENTED.daily);
   assert.equal(daily.rows.length, 29, 'leap February, zero days included');
   const total = (rows, k) => rows.reduce((n, r) => n + Number(r[k]), 0);
@@ -250,14 +263,18 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   assert.equal(total(daily.rows, 'seconds_listened_on_demand'), seeded('listenSeconds'));
   assert.equal(total(daily.rows, 'seconds_listened_live'), seeded('liveSeconds'));
 
-  const reach = parseCsv(await bytes(await get('/api/studio/export?dataset=listening&period=2020-02&format=csv&table=reach')));
+  // A span inside the month counts only its own days: the 10th is outside this one.
+  const late = parseCsv(await bytes(await get('/api/studio/export?dataset=listening&from=2020-02-11&to=2020-02-29&format=csv&table=daily')));
+  assert.equal(late.rows.length, 19); assert.equal(total(late.rows, 'episode_plays'), 1);
+
+  const reach = parseCsv(await bytes(await get(`/api/studio/export?dataset=listening&${FEB}&format=csv&table=reach`)));
   assert.deepEqual(reach.rows.map(r => [r.bucket, r.label, r.page_views]),
     [['local', 'America/Los_Angeles', '5'], ['national', 'Elsewhere in the US', '0'], ['intl', 'International', '2'], ['unknown', 'Not reported', '1']]);
 
   // The export and the dashboard read today's counters identically.
   const usage = await (await get('/api/studio/usage?days=7')).json();
   const todayDash = usage.days[usage.days.length - 1];
-  const now = parseCsv(await bytes(await get(`/api/studio/export?dataset=listening&period=${thisMonth}&format=csv&table=daily`)));
+  const now = parseCsv(await bytes(await get(`/api/studio/export?dataset=listening&from=${thisMonth}-01&to=${todayUtc}&format=csv&table=daily`)));
   const todayExp = now.rows[now.rows.length - 1];
   assert.equal(todayExp.date_utc, todayDash.day);
   assert.ok(todayDash.plays > 0 && todayDash.listenSeconds > 0, 'beacons landed, so the comparison is not 0 = 0');
@@ -266,17 +283,18 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
     [todayDash.pageviews, todayDash.plays, todayDash.live, todayDash.searches, todayDash.shares, todayDash.listenSeconds, todayDash.liveSeconds]);
 
   // JSON: the whole export in one file, same numbers as the CSVs.
-  const jsonRes = await get('/api/studio/export?dataset=listening&period=all&format=json');
-  assert.equal(jsonRes.headers.get('content-disposition'), 'attachment; filename="kpfk-listening-all.json"');
+  const jsonRes = await get(`/api/studio/export?dataset=listening&from=2020-02-01&to=${todayUtc}&format=json`);
+  assert.equal(jsonRes.headers.get('content-disposition'), `attachment; filename="kpfk-listening-2020-02-01_${todayUtc}.json"`);
   const json = await jsonRes.json();
   assert.deepEqual(Object.keys(json), ['manifest', 'daily', 'shows', 'reach']);
   assert.equal(json.manifest.station, 'kpfk'); assert.equal(json.manifest.schema_version, 1);
-  assert.equal(json.manifest.station_timezone, 'America/Los_Angeles'); assert.equal(json.manifest.first_date_utc, '2020-02-01');
+  assert.equal(json.manifest.station_timezone, 'America/Los_Angeles'); assert.equal(json.manifest.from_date_utc, '2020-02-01');
+  assert.equal(json.manifest.to_date_utc, todayUtc);
   for (const [table, cols] of Object.entries(DOCUMENTED)) for (const row of json[table]) assert.deepEqual(Object.keys(row), cols);
   assert.equal(json.daily.filter(r => r.date_utc.startsWith('2020-02')).reduce((n, r) => n + r.episode_plays, 0), seeded('plays'));
 
-  const readme = await get('/api/studio/export?dataset=listening&period=2020-02&format=readme');
-  assert.equal(readme.headers.get('content-disposition'), 'attachment; filename="kpfk-listening-2020-02-README.txt"');
+  const readme = await get(`/api/studio/export?dataset=listening&${FEB}&format=readme`);
+  assert.equal(readme.headers.get('content-disposition'), 'attachment; filename="kpfk-listening-2020-02-01_2020-02-29-README.txt"');
   const text = await readme.text();
   assert.match(text, /never collects an IP address/); assert.match(text, /UTC calendar day/);
   for (const cols of Object.values(DOCUMENTED)) for (const c of cols) assert.match(text, new RegExp(`  ${c}: `));

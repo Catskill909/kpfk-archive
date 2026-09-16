@@ -966,40 +966,87 @@
         .catch(function () { /* the health panel below reports the outage */ });
     }
 
-    /* ---------------- downloads ----------------
-       Periods come from the server — only months that exist on disk, newest
-       first, plus all time — so the picker can never offer a file that would
-       be refused. Loaded once: a new month appears on the next page load. */
-    function monthName(m) {
-      var d = new Date(Date.UTC(+m.slice(0, 4), +m.slice(5, 7) - 1, 1));
-      return d.toLocaleDateString(undefined, { month: 'long', year: 'numeric', timeZone: 'UTC' });
+    /* ---------------- export ----------------
+       A from/to span of UTC days, bounded by what the server reports: the 1st
+       of the oldest stats month and today. Presets are computed from the
+       server's `today`, never this browser's clock — a listener's evening in
+       Los Angeles is already tomorrow in UTC, and the counters are UTC days.
+       Loaded once; a new day shows up on the next page load. */
+    function isoDay(ms) { return new Date(ms).toISOString().slice(0, 10); }
+    function utcMs(d) { return Date.parse(d + 'T00:00:00Z'); }
+    function exportPresets(today, first) {
+      var y = +today.slice(0, 4), m = +today.slice(5, 7);
+      var clamp = function (from, to) {
+        if (to < first) return null;   // wholly before any data: not offered
+        return { from: from < first ? first : from, to: to };
+      };
+      return {
+        thisMonth: clamp(today.slice(0, 8) + '01', today),
+        lastMonth: clamp(isoDay(Date.UTC(y, m - 2, 1)), isoDay(Date.UTC(y, m - 1, 0))),
+        thisYear: clamp(today.slice(0, 5) + '01-01', today),
+        all: clamp(first, today),
+      };
+    }
+    function spanLabel(from, to) {
+      var days = Math.round((utcMs(to) - utcMs(from)) / 86400000) + 1;
+      return from + ' to ' + to + ' (UTC) \u00b7 ' + days + (days === 1 ? ' day' : ' days');
     }
     function loadExports() {
       var section = document.getElementById('downloads');
-      var select = document.getElementById('exportPeriod');
-      if (!section || !select) return;
+      var fromEl = document.getElementById('exportFrom');
+      var toEl = document.getElementById('exportTo');
+      var presetsEl = document.getElementById('exportPresets');
+      var note = document.getElementById('exportSpanNote');
+      if (!section || !fromEl || !toEl) return;
+      var presets = {};
+      // The preset last chosen, while the dates still equal it. Matching by
+      // dates alone lit three buttons at once whenever the data is younger
+      // than a year — This month, This year and All time are then one span.
+      var chosen = null;
       function relink() {
+        var from = fromEl.value, to = toEl.value;
+        var ok = from && to && from <= to && from >= fromEl.min && to <= toEl.max;
+        note.textContent = ok ? spanLabel(from, to)
+          : 'Pick a start date on or before the end date, between '
+            + fromEl.min + ' and ' + toEl.max + '.';
         [].forEach.call(document.querySelectorAll('#exportLinks a'), function (a) {
-          var q = 'dataset=listening&period=' + encodeURIComponent(select.value)
+          if (!ok) { a.removeAttribute('href'); a.setAttribute('aria-disabled', 'true'); return; }
+          var q = 'dataset=listening&from=' + from + '&to=' + to
             + '&format=' + a.getAttribute('data-format');
           if (a.getAttribute('data-table')) q += '&table=' + a.getAttribute('data-table');
           a.href = '/api/studio/export?' + q;
+          a.removeAttribute('aria-disabled');
+        });
+        var cp = chosen && presets[chosen];
+        if (!cp || cp.from !== from || cp.to !== to) chosen = null;
+        [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) {
+          b.setAttribute('aria-pressed', String(b.getAttribute('data-preset') === chosen));
         });
       }
       fetch('/api/studio/exports', { headers: { 'Accept': 'application/json' } })
         .then(function (res) { return res.ok ? res.json() : null; })
         .then(function (x) {
           if (!x || !x.hasData) return;
-          select.textContent = '';
-          x.months.forEach(function (m) {
-            var o = el('option', '', monthName(m.month));
-            o.value = m.month;
-            select.appendChild(o);
+          presets = exportPresets(x.today, x.firstDate);
+          [fromEl, toEl].forEach(function (i) { i.min = x.firstDate; i.max = x.today; });
+          [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) {
+            b.disabled = !presets[b.getAttribute('data-preset')];
           });
-          var all = el('option', '', 'All time');
-          all.value = 'all';
-          select.appendChild(all);
-          select.addEventListener('change', relink);
+          presetsEl.addEventListener('click', function (ev) {
+            var b = ev.target.closest('.win-btn');
+            var p = b && presets[b.getAttribute('data-preset')];
+            if (!p) return;
+            chosen = b.getAttribute('data-preset');
+            fromEl.value = p.from;
+            toEl.value = p.to;
+            relink();
+          });
+          fromEl.addEventListener('input', relink);
+          toEl.addEventListener('input', relink);
+          chosen = presets.thisMonth ? 'thisMonth' : 'all';
+          var start = presets[chosen];
+          fromEl.value = start.from;
+          toEl.value = start.to;
           relink();
           section.hidden = false;
         })

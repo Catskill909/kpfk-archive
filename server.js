@@ -2772,7 +2772,19 @@ function exportShowTitle(key) {
 
 const EXPORT_TABLES = Object.keys(listeningExport.COLUMNS);
 
-/** What the studio's download picker may offer: only periods that exist. */
+/** A real calendar date in YYYY-MM-DD form — `2026-02-30` is not one. */
+function isIsoDate(v) {
+  return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
+    && !Number.isNaN(Date.parse(v + 'T00:00:00Z'))
+    && new Date(v + 'T00:00:00Z').toISOString().slice(0, 10) === v;
+}
+
+/** The earliest date an export may start: the 1st of the oldest stats month. */
+function exportFirstDate() { return listStatsMonths()[0] + '-01'; }
+
+/** What the studio's export picker needs: the span that holds data. The
+ *  presets are computed from `today` here, not the browser's clock, which is
+ *  not UTC. */
 function exportsIndex() {
   const months = listStatsMonths().reverse().map((m) => ({
     month: m,
@@ -2782,6 +2794,8 @@ function exportsIndex() {
     station: STATION_ID,
     schemaVersion: listeningExport.SCHEMA_VERSION,
     hasData: months.some((m) => m.daysWithData > 0),
+    firstDate: exportFirstDate(),
+    today: today(),
     months,
     datasets: [{ name: 'listening', tables: EXPORT_TABLES, formats: ['csv', 'json', 'readme'] }],
   };
@@ -2790,32 +2804,35 @@ function exportsIndex() {
 /** `GET /api/studio/export` — one dataset, one period, one format. */
 function sendExport(req, res) {
   const q = new URL(req.url, 'http://localhost').searchParams;
-  const dataset = q.get('dataset'), period = q.get('period') || '', format = q.get('format');
+  const dataset = q.get('dataset'), from = q.get('from'), to = q.get('to'), format = q.get('format');
   const table = q.get('table') || 'daily';
   if (dataset !== 'listening') return sendStudioJson(res, { error: 'unknown dataset' }, 400);
   if (!['csv', 'json', 'readme'].includes(format)) return sendStudioJson(res, { error: 'unknown format' }, 400);
   if (format === 'csv' && !EXPORT_TABLES.includes(table)) return sendStudioJson(res, { error: 'unknown table' }, 400);
-  // Validated against the months that exist, never parsed into a path: a
-  // period string does not reach the file layer unless it names a real month.
+  // Bounded by the data that can exist: nothing before the oldest month file,
+  // nothing after today. A months list gates the file reads as well, so a
+  // query string never becomes a path.
+  if (!isIsoDate(from) || !isIsoDate(to) || from > to || from < exportFirstDate() || to > today()) {
+    return sendStudioJson(res, { error: 'bad date span', firstDate: exportFirstDate(), today: today() }, 400);
+  }
   const months = listStatsMonths();
-  if (period !== 'all' && !months.includes(period)) return sendStudioJson(res, { error: 'unknown period' }, 400);
 
   const data = listeningExport.buildListeningExport({
-    station: STATION_ID, stationTimezone: STATION_TZ, period, months,
-    monthDays: statsMonthDays, today: today(), titleFor: exportShowTitle,
+    station: STATION_ID, stationTimezone: STATION_TZ, from, to,
+    monthDays: (m) => (months.includes(m) ? statsMonthDays(m) : {}), titleFor: exportShowTitle,
     zones: ZONE_BUCKETS.map((b) => ({ key: b, label: zoneLabel(b) })),
     generatedAt: new Date().toISOString(),
   });
   let body, type, name;
   if (format === 'csv') {
     body = toCsv(listeningExport.COLUMNS[table], data[table]);
-    type = 'text/csv; charset=utf-8'; name = `${STATION_ID}-listening-${table}-${period}.csv`;
+    type = 'text/csv; charset=utf-8'; name = listeningExport.exportFilename(data.manifest, table, 'csv');
   } else if (format === 'json') {
     body = JSON.stringify(data, null, 2) + '\n';
-    type = 'application/json; charset=utf-8'; name = `${STATION_ID}-listening-${period}.json`;
+    type = 'application/json; charset=utf-8'; name = listeningExport.exportFilename(data.manifest, null, 'json');
   } else {
     body = listeningExport.manifestText(data.manifest);
-    type = 'text/plain; charset=utf-8'; name = `${STATION_ID}-listening-${period}-README.txt`;
+    type = 'text/plain; charset=utf-8'; name = listeningExport.exportFilename(data.manifest, null, 'readme');
   }
   const buf = Buffer.from(body, 'utf8');
   res.writeHead(200, {

@@ -61,23 +61,35 @@
 
   <!-- Export — first on the page because it is where every dataset lands:
        listening now; inventory, coverage and the printable report in later
-       phases (docs/exports.md). Calendar months, not the Listening window
-       picker: a board asks for "September", never "the last 30 days". Plain
-       <a download> links, so the browser's own download path does the work.
+       phases (docs/exports.md). Its own from/to dates, not the Listening window
+       picker: a file needs exact dates on it, and a board asks for "September",
+       not "the last 30 days". Plain <a download> links, so the browser's own download path does the work.
        Hidden until the server reports counters exist. -->
   <section class="studio-section studio-section--wide" id="downloads" hidden>
     <h2 class="studio-h2">Export</h2>
     <p class="studio-note">
-      The station&rsquo;s data for a calendar month, as files for Excel, Google Sheets
+      The station&rsquo;s data for any dates you pick, as files for Excel, Google Sheets
       or Pacifica. Today: listening figures &mdash; plays, time listened, page views
       and reach. Counters only; no personal data of any kind.
     </p>
-    <div class="export-period">
-      <label class="studio-field studio-field--inline">
-        <span class="studio-field-label">Period</span>
-        <select class="studio-input" id="exportPeriod"></select>
+    <div class="win-picker" id="exportPresets" role="group" aria-label="Export dates">
+      <span class="studio-field-label">Dates</span>
+      <button class="win-btn" type="button" data-preset="thisMonth">This month</button>
+      <button class="win-btn" type="button" data-preset="lastMonth">Last month</button>
+      <button class="win-btn" type="button" data-preset="thisYear">This year</button>
+      <button class="win-btn" type="button" data-preset="all">All time</button>
+    </div>
+    <div class="export-span">
+      <label class="studio-field">
+        <span class="studio-field-label">From</span>
+        <input class="studio-input" id="exportFrom" type="date" required>
+      </label>
+      <label class="studio-field">
+        <span class="studio-field-label">To</span>
+        <input class="studio-input" id="exportTo" type="date" required>
       </label>
     </div>
+    <p class="studio-note" id="exportSpanNote" aria-live="polite"></p>
     <div class="export-links" id="exportLinks">
       <a class="studio-btn" data-format="csv" data-table="daily" download>Daily CSV</a>
       <a class="studio-btn" data-format="csv" data-table="shows" download>Shows CSV</a>

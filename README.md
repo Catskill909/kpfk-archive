@@ -36,8 +36,8 @@ read the Pacifica JSON feeds through a per-station profile.
   dismissal with focus returned, reduced-motion support.
 - **Private station dashboard** at `/studio` — password-protected archive stats,
   listening figures and maintenance actions.
-- **Downloadable listening figures** — the studio exports a calendar month (or all
-  time) as CSV for Excel or Google Sheets, or JSON. The files hold the same counters
+- **Downloadable listening figures** — the studio exports any date span (this month,
+  last month, this year, all time, or dates you pick) as CSV for Excel or Google Sheets, or JSON. The files hold the same counters
   the dashboard shows and nothing else: still no identifier of any kind.
 - **Listener insights, with privacy built in** — see how long people actually
   listen, plays, searches, and how far the station's reach extends — without
@@ -56,7 +56,7 @@ read the Pacifica JSON feeds through a per-station profile.
 | `GET /api/station` · `/station.js` · `/manifest.webmanifest` | Public station profile and app manifest |
 | `POST /api/ev` | Usage beacon from the page — an event name, and for a play the media URL, and for a page view the browser's timezone (bucketed to one of three labels and discarded). No identifier of any kind; answers `204` to everything. Not registered at all when `USAGE_TRACKING=off` |
 | `GET /studio` | Password-gated station view. **Only exists when `STUDIO_PASSWORD` is set** — otherwise the path falls through like any other unknown one |
-| `GET /api/studio/export?dataset=listening&period=<YYYY-MM\|all>&format=<csv\|json\|readme>` | Studio download (signed-in only): daily, per-show and reach counters for a calendar month. CSV takes `&table=daily\|shows\|reach`. See [docs/exports.md](docs/exports.md) |
+| `GET /api/studio/export?dataset=listening&from=<YYYY-MM-DD>&to=<YYYY-MM-DD>&format=<csv\|json\|readme>` | Studio download (signed-in only): daily, per-show and reach counters for any span of UTC days. CSV takes `&table=daily\|shows\|reach`. See [docs/exports.md](docs/exports.md) |
 | `GET /healthz` | Bundle version, feed state, `archiveFilter`, and storage identity (`storage.mounted`, `storage.instanceId`) |
 
 The server has **no third-party dependencies** — only the Node standard library
