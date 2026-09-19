@@ -66,8 +66,10 @@ A test that has never failed has never been shown to work.
 
 ## 4. PROD IS NOT YOUR LAPTOP — read its state, don't infer it
 
-**Live:** https://kpfk-archive.supersoul.top (Coolify, Dockerfile build pack,
-container port 8080). Deploys are manual — **push is not deploy**; a change is
+**Live:** https://podcast.kpfk.org (Coolify on the Pacifica/Contabo server,
+Dockerfile build pack, container port 8080 — Coolify's **Ports exposes** must be
+`8080`, because it injects that value as `PORT` and overrides the Dockerfile's
+`ENV PORT`). Deploys are manual — **push is not deploy**; a change is
 live only after a Coolify redeploy and `version` in `/healthz` changes.
 
 - Storage is a **named** Coolify volume at `/app/data`

@@ -5,7 +5,7 @@ A modern, responsive, dark-mode listening app for the on-demand archive of
 Angeles — backed by a **light, zero-dependency Node server** that reads KPFK's
 public **Pacifica JSON feeds** (catalog, schedule, now-playing).
 
-**Live:** https://kpfk-archive.supersoul.top
+**Live:** https://podcast.kpfk.org
 
 KPFK's archive publishes every scheduled program's recordings. What it doesn't
 carry is a browsing layer — search, category filters, a weekly schedule and a

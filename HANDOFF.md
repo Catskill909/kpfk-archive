@@ -10,7 +10,7 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 
 | | |
 | --- | --- |
-| Live | **https://kpfk-archive.supersoul.top** — Coolify app "KPFK Archive", Dockerfile build, container port 8080 |
+| Live | **https://podcast.kpfk.org** — Coolify app "KPFK Podcasts" on the Pacifica/Contabo server, Dockerfile build, container port 8080. Deployed 2026-09-19; `kpfk-archive.supersoul.top` was stopped the same day |
 | Repo | https://github.com/Catskill909/kpfk-archive · `main` · push to `origin` only (never `wbai-baseline`) |
 | Deploy | Manual Coolify redeploy after push. Last verified deploy includes everything through `fb3168a` (studio cards), audited live 2026-09-15 23:03 UTC |
 | Storage | Named volume `…-kpfk-archive-data` at `/app/data`. **Persistence proven across three redeploys** 2026-09-15: `instanceId` `e4a9aac9-e3dd-4e9b-8c5b-17656032bd0d` unchanged every time, `freshVolume:false`, and the usage counters kept counting across all three |
