@@ -17,6 +17,7 @@ Current state and working rules live at the repo root: [HANDOFF.md](../HANDOFF.m
 | [exports-for-pacifica.md](exports-for-pacifica.md) | **Current.** For Pacifica: combining several stations' export files — columns, sums, clocks, versions |
 | [kpfk/architecture.md](kpfk/architecture.md) | JSON provider contracts and decision record |
 | [kpfk/implementation.md](kpfk/implementation.md) | Phase plan and implementation checkpoints |
+| [kpfk/flutter-app-plan.md](kpfk/flutter-app-plan.md) | **Planning.** Flutter podcast app clone, KPFK JSON retrofit, native identifiers and phased acceptance criteria |
 | [kpfk/verification.md](kpfk/verification.md) | Contract, service and browser test matrices; release checklist |
 | [kpfk/artwork-evidence-2026-09-15/](kpfk/artwork-evidence-2026-09-15/README.md) | Per-show artwork: catalog vs Confessor vs RSS, with raw captures |
 | [kpfk/artwork-audit-2026-09-15.md](kpfk/artwork-audit-2026-09-15.md) | First artwork audit (superseded by the evidence folder, kept for probes) |

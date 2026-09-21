@@ -18,6 +18,21 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 | Local | `npm start` → http://localhost:8081, `./data` |
 | Tests | `npm test` green: inherited offline suites + 32 Pacifica tests |
 
+## Flutter companion — started 2026-09-21
+
+Separate clone: `/Users/paulhenshaw/Desktop/kpfk-podcast`, based on
+`Catskill909/podcast_app` at `006b5f0a`. Bundle/application ID on iOS and Android:
+`podcast.pacifica.kpfk`. **No live radio, no schedule UI, NO MUSIC SHOWS** (Paul).
+Uses this deployment's `/api/archive` JSON and requires both program and episode
+to be explicitly Talk, with no Music category. The web archive's existing content
+policy remains unchanged. Existing KPFK header and native icon artwork are reused.
+Plan and audit: [docs/kpfk/flutter-app-plan.md](docs/kpfk/flutter-app-plan.md).
+Implementation/test/build status is in the Flutter clone's own `HANDOFF.md`.
+
+Re-verified 2026-09-21: `/healthz` answers `station:"kpfk"`, `ready:true`, catalog
+fresh; archive, artwork, audio range and share routes all respond. Old supersoul
+URLs in historical audit entries below describe past deployments.
+
 ## What the app is now
 
 KPFK's on-demand archive, read entirely from Pacifica's public JSON feeds
