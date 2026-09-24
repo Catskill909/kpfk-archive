@@ -1,6 +1,6 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-23 (client review, core search, separate plugin repository). **This folder is the active KPFK podcast-template project.**
+**Updated:** 2026-09-24 (core search deployed; QIR live in the plugin; Listen along prototype; cue-file finding). **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
@@ -12,46 +12,38 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 | --- | --- |
 | Live | **https://podcast.kpfk.org** — Coolify app "KPFK Podcasts" on the Pacifica/Contabo server, Dockerfile build, container port 8080. Deployed 2026-09-19; `kpfk-archive.supersoul.top` was stopped the same day |
 | Repo | https://github.com/Catskill909/kpfk-archive · `main` · push to `origin` only (never `wbai-baseline`) |
-| Deploy | Manual Coolify redeploy after push. The 2026-09-23 work in this handoff is local and **has not been committed, pushed or deployed from this repository**. Older deploy audit notes below describe prior releases; do not infer current live code from them. |
-| Storage | Named volume `…-kpfk-archive-data` at `/app/data`. **Persistence proven across three redeploys** 2026-09-15: `instanceId` `e4a9aac9-e3dd-4e9b-8c5b-17656032bd0d` unchanged every time, `freshVolume:false`, and the usage counters kept counting across all three |
+| Deploy | Manual Coolify redeploy after push. **2026-09-24: `d3ca868` pushed and deployed by Paul** (build 16:03 UTC; page loads `archive-search.js`). This includes the 2026-09-23 core search and the embedded `/discover` prototype — its **"Discover shows" side-menu link is now public** (`plugins.discovery: true`); set it false and redeploy to hide it. |
+| Storage | Named volume `f6vn03cy47znqlbemewq8dd0-kpfk-archive-data` at `/app/data` for the podcast.kpfk.org app: `instanceId` `73039ae5-6589-4ec2-9df5-354de84c0989`, `persistedSince` 2026-09-19, `freshVolume:false` after the 2026-09-24 redeploy. (`e4a9aac9…` below belongs to the retired supersoul.top deployment.) |
 | Studio | `/studio`, password in Coolify env `STUDIO_PASSWORD` (runtime only — **not** on the Mac and not in the repo; read it from Coolify, never from a file) |
 | Local | `npm start` → http://localhost:8081, `./data` |
-| Tests | Current local `npm test` passed: inherited offline suites + 50 Pacifica tests before one additional QIR date/time case; that 8-test QIR suite passed afterward. The standalone plugin has its own tests/CI. |
+| Tests | `npm test` passed 2026-09-24 before the push: inherited suites + 51 Pacifica tests (incl. QIR per-record validation). The standalone plugin has its own tests/CI. |
 
-## Resume here — current session checkpoint
+## Resume here — current session checkpoint (2026-09-24)
 
-- **Two separate local projects are running:** this KPFK podcast template on
-  http://localhost:8081 and the independent plugin on http://127.0.0.1:8082.
-  The plugin lives at `/Users/paulhenshaw/Desktop/kpfk-discovery-plugin`.
-- **Private plugin repository:** `pacifica-foundation/kpfk-discovery-plugin`,
-  `main` at `9b36196`, visibility verified PRIVATE. Its first GitHub Actions
-  offline run passed. The product name is **undecided**; the repository name is
-  temporary. Its local working tree was clean after the push. Read that repo's
-  README, HANDOFF and docs before further plugin edits.
-- **Standalone plugin result:** approved discovery layout, server-side QIR adapter,
-  archive preview, transcript-local search and timestamp playback. Added the
-  template-style player with artwork, play/pause, desktop ±15 seconds, elapsed /
-  duration and a touch/keyboard scrubber. Ten offline tests and 15 live-browser
-  player checks passed. No production deployment and no live QIR verification:
-  a working `QIR_API_KEY` has not been supplied. Transcript timestamps are not
-  confirmed editorial chapter markers.
-- **Template result:** 2026-09-23 changes in *this* repository are still an
-  **uncommitted working tree**. They include core show/episode search improvements,
-  the earlier embedded Discover prototype/API foundation, tests and planning docs.
-  The embedded `/discover` view is a development snapshot; future plugin changes
-  belong in the separate repository. Do not mistake the private plugin push for
-  a push or deployment of the podcast template. Review this tree before committing
-  it; preserve the user's existing work and never push `wbai-baseline`.
-- **Next KPFK work:** verify Ace's API with a renewed key supplied through a
-  secure runtime channel; check real IDs, transcript coverage, permissions,
-  corrections and marker format. Continue the screenshot-driven homepage/show/
-  episode modal fixes in this template. Decide later which tested plugin features
-  become shared across Pacifica stations.
-- **Later template phase:** [station setup in admin](docs/kpfk/station-admin-template-plan.md)
-  for supported JSON feeds, uploaded branding, editable copy, preview/apply and
-  rollback. This is planned, not built.
+- **Live now:** core show/episode search (`archive-search.js`). "jazz" finds 4 shows
+  by description; episode matches stay rare because the Confessor feed carries a
+  topic for only 28 of 1,177 episodes and no episode descriptions.
+- **Big finding — cue files:** every Confessor episode has `vtiUrl` →
+  `archive.kpfk.org/cue/<id>.vti`, a WebVTT **song playlist** (title, artist,
+  times). 47 of 60 sampled episodes had tracks (~4 each; music shows full lists,
+  talk shows bumpers). This is the searchable content for all stations without
+  the QIR API. **Next template work:** read cue files server-side (conditional,
+  cached on the volume), show "Songs in this episode" with tap-to-play, and add
+  songs/artists to `archive-search.js`. Parser and design:
+  kpfk-discovery-plugin `public/playlist.js`, `docs/LISTEN-ALONG.md`.
+- **Plugin (`/Users/paulhenshaw/Desktop/kpfk-discovery-plugin`, port 8082):** QIR
+  live with Ace's key (2,983/2,984 episodes), QIR default, archive artwork for QIR,
+  shared search, Discover | Admin tabs with a persisted QIR on/off switch, and a
+  **Listen along** prototype (transcript / song-list drawer and phone bottom sheet)
+  for review. Read its HANDOFF before plugin edits.
+- **This repo's embedded QIR copy** (`lib/qir/service.js`) got the same
+  per-record validation fix (`d3ca868`). The embedded `/discover` page is
+  superseded by the plugin; remove it once the plugin ships.
+- **Later template phase:** [station setup in admin](docs/kpfk/station-admin-template-plan.md);
+  the plugin's Admin tab is where station skinning from Confessor JSON will start.
 - **Private conversation:** `.local-notes/client-review-2026-09-23.md` is
-  Git-ignored. Keep candid discussion there. No email to Ace has been sent.
+  Git-ignored. An email to Ace is being prepared (data issues and questions);
+  none sent yet.
 
 ## Plugin extracted to its own private repository — 2026-09-23
 

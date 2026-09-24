@@ -46,3 +46,13 @@ timestamp cues and advanced search. No live QIR authentication has been verified
 
 Status: architecture plan only. No new Flutter module, cross-app adapter contract,
 admin toggle or production connection was built by this documentation change.
+
+## Update 2026-09-24 — Listen along and cue files
+
+The plugin now has a clickable **Listen along** prototype: one panel for timed
+text beside the audio — the QIR transcript, or the Confessor cue-file song list
+that every Pacifica episode links (`vtiUrl`). Wide screens: drawer pushing the
+page; tablets: drawer over it; phones: bottom sheet above the player. Design,
+measurements and plan: kpfk-discovery-plugin `docs/LISTEN-ALONG.md`. When adopted
+here, the panel binds to this app's single audio element; the song list works
+for every station with the plugin off.
