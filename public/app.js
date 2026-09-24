@@ -603,14 +603,14 @@
   }
   function searchEpisodeHtml(hit){
     var r = hit.row;
-    var topic = (r.published || []).filter(function(p){return p.topic;})[0];
-    var name = topic ? topic.topic : r.title + ' · ' + stationDate(new Date(r.dt * 1000));
+    var name = window.ArchiveSearch.episodeTitle(r) || r.title + ' · ' + stationDate(new Date(r.dt * 1000));
+    var blurb = window.ArchiveSearch.episodeBlurb(r);
     var loading = loadingMp3 === r.mp3;
     var playing = nowPlaying.mp3 === r.mp3 && !audio.paused && !audio.ended && !loading;
     return '<article class="search-episode">'+searchArt(r)+'<div class="search-copy">'+
       '<button class="search-title" data-search-episode="'+esc(r.id)+'">'+esc(name)+'</button>'+
       '<p class="search-meta">'+esc(r.dateText)+(r.length ? ' · '+esc(r.length) : '')+'</p>'+
-      (r.episodeDesc ? '<p class="search-excerpt">'+esc(searchExcerpt(r.episodeDesc))+'</p>' : '')+
+      (blurb ? '<p class="search-excerpt">'+esc(searchExcerpt(blurb))+'</p>' : '')+
       '<span class="search-reason">Matches '+esc(hit.reason.toLowerCase())+'</span></div>'+
       '<button type="button" class="play-btn search-play'+(playing?' playing':'')+(loading?' loading':'')+'" '+
         playAttrs(r, r.dateText, r.photo || '', loading, playing)+'>'+glyph(loading,playing)+'</button></article>';

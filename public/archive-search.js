@@ -53,5 +53,19 @@
     }).filter(function(e){return e.score>0;}).sort(function(a,b){return b.score-a.score || b.row.dt-a.row.dt || a.row.id.localeCompare(b.row.id);});
     return {shows:shows, episodes:episodes};
   }
-  return {build:build, find:find, normalize:normalize};
+  // A published topic is used as the episode title only when it reads like one.
+  // Some producers paste the whole episode description into it (Rising Up,
+  // This Way Out: 440-942 characters), which rendered as a bold paragraph where a
+  // heading belongs. Measured 2026-09-24: real topics are 29-84 characters and
+  // QIR headlines 99% under 117 (max 216), so over 200 means a description.
+  var TITLE_MAX = 200;
+  function firstTopic(row){
+    var p = (row.published || []).filter(function(x){ return x && x.topic && String(x.topic).trim(); })[0];
+    return p ? String(p.topic).trim() : '';
+  }
+  // The topic when it is title-length, else '' (callers fall back to show · date).
+  function episodeTitle(row){ var t = firstTopic(row); return t.length <= TITLE_MAX ? t : ''; }
+  // Text to preview under a result: the episode notes, or a demoted long topic.
+  function episodeBlurb(row){ var t = firstTopic(row); return row.episodeDesc || (t.length > TITLE_MAX ? t : ''); }
+  return {build:build, find:find, normalize:normalize, episodeTitle:episodeTitle, episodeBlurb:episodeBlurb, TITLE_MAX:TITLE_MAX};
 });
