@@ -3955,7 +3955,12 @@ const server = http.createServer(async (req, res) => {
       }
       if (pathOnly.startsWith('/api/artwork/')) {
         const result = await pacifica.artwork(pathOnly.slice('/api/artwork/'.length));
-        res.writeHead(200, { 'Content-Type': result.contentType, 'Cache-Control': 'public, max-age=86400', ...securityHeaders() });
+        // ETag lets a browser revalidate a day-old image with a 304 instead of the bytes.
+        if (req.headers['if-none-match'] === result.etag) {
+          res.writeHead(304, { 'Cache-Control': 'public, max-age=86400', ETag: result.etag, ...securityHeaders() });
+          return res.end();
+        }
+        res.writeHead(200, { 'Content-Type': result.contentType, 'Cache-Control': 'public, max-age=86400', ETag: result.etag, ...securityHeaders() });
         return res.end(result.raw);
       }
       if (pathOnly === '/data/shows-fallback.json') return sendJson(res, { error: 'no static fallback' }, 404);
@@ -4093,7 +4098,11 @@ if (require.main === module) {
     // seconds of a deploy. A failure here is not fatal (the first request
     // retries), but it is logged: it usually means no outbound access to the feeds.
     if (pacifica) getArchive()
-      .then(data => console.log(`[pacifica] archive ready: ${data.count} episodes (${data.filter.basis}, ${data.filter.hiddenEpisodes} hidden)`))
+      .then(data => {
+        console.log(`[pacifica] archive ready: ${data.count} episodes (${data.filter.basis}, ${data.filter.hiddenEpisodes} hidden)`);
+        // ARTWORK_WARM=off skips it (offline tests, which forbid outbound requests).
+        if (process.env.ARTWORK_WARM !== 'off') pacifica.warmArtwork().then(w => console.log(`[pacifica] artwork warmed: ${w.cached} of ${w.requested} images in memory`));
+      })
       .catch(e => console.error('[pacifica] archive warm-up failed:', e.message));
   });
 }

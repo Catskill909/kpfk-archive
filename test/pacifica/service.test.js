@@ -168,3 +168,36 @@ test('a schedule outage limits the archive to the on-air channel, labelled, inst
   assert.equal(view.count, catalog.shows.filter(r => r.archiveSource === 'kpfk').length);
   assert.equal(view.shows.filter(r => r.archiveSource === '2kpfk').length, 0, 'uploads stay hidden during the outage');
 });
+
+// Artwork memory cache (2026-09-24): repeats used to go back to Pacifica every time
+// (~0.4 s per image). Class: no request after the first may reach upstream until the
+// refresh interval, and a stale copy is served at once while it refreshes.
+test('artwork is fetched once, shared while in flight, served stale while refreshing, and warmed', async t => {
+  let version = 'v1';
+  const r = rig(t, async url => {
+    if (/\.(jpe?g|png)$/i.test(new URL(url).pathname)) {
+      await new Promise(resolve => setTimeout(resolve, 5));
+      return new Response(Buffer.from('img-' + version + '-' + url), { headers: { 'content-type': 'image/jpeg' } });
+    }
+    return json(raw);
+  });
+  const catalog = await r.service.catalog();
+  const ids = [...new Set(JSON.stringify(catalog).match(/\/api\/artwork\/[a-f0-9]{64}/g).map(p => p.slice(13)))];
+  assert.ok(ids.length > 10, 'fixture has artwork');
+  const images = () => r.requests.filter(q => /\.(jpe?g|png)$/i.test(new URL(q.url).pathname)).length;
+  const [a, b] = await Promise.all([r.service.artwork(ids[0]), r.service.artwork(ids[0])]);
+  assert.equal(images(), 1, 'concurrent requests share one upstream fetch');
+  assert.equal(a.etag, b.etag); assert.match(a.etag, /^"[A-Za-z0-9_-]+"$/);
+  await r.service.artwork(ids[0]);
+  assert.equal(images(), 1, 'a repeat is served from memory');
+  for (let i = 0; i < 61; i++) r.tick(); // past the 6-hour refresh interval
+  version = 'v2';
+  const stale = await r.service.artwork(ids[0]);
+  assert.equal(stale.etag, a.etag, 'the stale copy is answered immediately');
+  await new Promise(resolve => setTimeout(resolve, 30));
+  assert.equal(images(), 2, 'one background refresh');
+  assert.notEqual((await r.service.artwork(ids[0])).etag, a.etag, 'changed art arrives after the refresh');
+  const warmed = await r.service.warmArtwork();
+  assert.equal(warmed.cached, warmed.requested); assert.equal(images(), 2 + warmed.requested);
+  await r.service.artwork(ids[1]); assert.equal(images(), 2 + warmed.requested, 'warmed images need no fetch');
+});

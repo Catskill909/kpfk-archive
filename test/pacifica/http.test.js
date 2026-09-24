@@ -76,7 +76,7 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const port = await freePort(), url = `http://127.0.0.1:${port}`;
   async function boot() {
     child = spawn(process.execPath, ['--require', preload, 'server.js'], { cwd: root,
-      env: { ...cleanEnv(), STATION_PROFILE: profileFile, PACIFICA_TEST_LOCAL: '1', STUDIO_PASSWORD: 'test-studio', QIR_API_KEY: '', PORT: String(port), DATA_DIR: path.join(dir, 'data') },
+      env: { ...cleanEnv(), STATION_PROFILE: profileFile, PACIFICA_TEST_LOCAL: '1', STUDIO_PASSWORD: 'test-studio', QIR_API_KEY: '', ARTWORK_WARM: 'off', PORT: String(port), DATA_DIR: path.join(dir, 'data') },
       stdio: ['ignore', 'pipe', 'pipe'] });
     child.stdout.on('data', x => { logs += x; }); child.stderr.on('data', x => { logs += x; });
     for (let i = 0; i < 100; i++) {

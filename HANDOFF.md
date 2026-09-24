@@ -18,6 +18,14 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 | Local | `npm start` → http://localhost:8081, `./data` |
 | Tests | `npm test` passed 2026-09-24 before the push: inherited suites + 51 Pacifica tests (incl. QIR per-record validation). The standalone plugin has its own tests/CI. |
 
+**Artwork caching (2026-09-24).** `/api/artwork/<id>` used to fetch from Pacifica on every
+request (~0.45 s per image, the same on repeats). Images are now kept in memory
+(≤600 images / 40 MB, least-recently-used out), shared while in flight, refreshed in
+the background after 6 h (stale copy served meanwhile), warmed at start after the
+archive loads (~100 images, ~2 MB), and sent with `Cache-Control: public, max-age=86400`
+plus an `ETag` (If-None-Match → 304). Local measure: repeats 0.45 s → <1 ms.
+`ARTWORK_WARM=off` skips the warm-up (offline tests). Deploy pending at time of writing.
+
 ## Deployed 2026-09-24 (evening) — live on podcast.kpfk.org
 
 Verified live after Paul's Coolify deploys; `instanceId` `73039ae5…` unchanged,
