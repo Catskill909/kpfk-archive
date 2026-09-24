@@ -24,7 +24,7 @@
   let showLimit = 6;
   const labels = {news:'News','public-affairs':'Public Affairs',arts:'Arts & Culture',health:'Health',music:'Music',science:'Science & Tech',special:'Special Programming'};
   const date = row => row.qir ? row.qir.air_date : new Intl.DateTimeFormat('en-US',{timeZone:station.timezone,month:'short',day:'numeric',year:'numeric'}).format(new Date(row.dt * 1000));
-  const time = row => row.qir ? row.qir.air_start.slice(0,5)+' · Los Angeles' : new Intl.DateTimeFormat('en-US',{timeZone:station.timezone,hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(new Date(row.dt * 1000));
+  const time = row => row.qir ? (row.qir.air_start ? row.qir.air_start.slice(0,5)+' · Los Angeles' : 'Time not listed') : new Intl.DateTimeFormat('en-US',{timeZone:station.timezone,hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(new Date(row.dt * 1000));
   const duration = row => row.durationSec ? `${Math.round(row.durationSec / 60)} min` : '';
   const title = row => row.published?.find(p => p.topic)?.topic || `${row.title} · ${date(row)}`;
   const photo = row => /^(\/api\/artwork\/|\/assets\/)/.test(row.photo || '') ? row.photo : station.assets.icon;
@@ -228,7 +228,7 @@
       const cat=/music/i.test(e.category)?'music':/arts|entertainment/i.test(e.category)?'arts':/health|spiritual/i.test(e.category)?'health':/news/i.test(e.category)?'news':/public affairs/i.test(e.category)?'public-affairs':'special';
       // Local wall-clock sort key only; QIR date/time are displayed verbatim.
       return {id:'qir:'+e.public_id,sho:'qir:'+e.show_key,title:e.show_name||e.title,host:e.host,cat,
-        dt:Date.parse(e.air_date+'T'+e.air_start+'Z')/1000,durationSec:Math.round(e.duration_minutes*60),mp3:e.mp3_url,
+        dt:Date.parse(e.air_date+'T'+(e.air_start||'00:00:00')+'Z')/1000,durationSec:Math.round(e.duration_minutes*60),mp3:e.mp3_url,
         episodeDesc:[e.summary,e.guest?'Guests: '+e.guest:''].filter(Boolean).join('\n\n'),
         published:e.headline?[{topic:e.headline}]:[],qir:e,photo:''};
     });return {shows:converted,directory};
