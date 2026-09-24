@@ -67,5 +67,60 @@
   function episodeTitle(row){ var t = firstTopic(row); return t.length <= TITLE_MAX ? t : ''; }
   // Text to preview under a result: the episode notes, or a demoted long topic.
   function episodeBlurb(row){ var t = firstTopic(row); return row.episodeDesc || (t.length > TITLE_MAX ? t : ''); }
-  return {build:build, find:find, normalize:normalize, episodeTitle:episodeTitle, episodeBlurb:episodeBlurb, TITLE_MAX:TITLE_MAX};
+  // ---- Result text: highlighted terms and expandable previews (both apps) ----
+  function escapeHtml(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  // A normalized copy of the text plus, for each of its characters, the index of
+  // the original character it came from — so matches found accent- and
+  // case-insensitively ("musica" in "Música") mark the original text.
+  function foldMap(text){
+    var folded = '', map = [];
+    for(var i = 0; i < text.length; i++){
+      var f = text[i].normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+      for(var k = 0; k < f.length; k++){ folded += f[k]; map.push(i); }
+    }
+    return {folded:folded, map:map};
+  }
+  function queryWords(query){ return normalize(query).split(' ').filter(function(w){ return w.length > 1; }); }
+  // Escaped HTML with every query word wrapped in <mark class="search-hit">.
+  function highlight(text, query){
+    text = String(text || '');
+    var words = queryWords(query);
+    if(!words.length) return escapeHtml(text);
+    var fm = foldMap(text), marked = [];
+    words.forEach(function(w){
+      for(var at = fm.folded.indexOf(w); at >= 0; at = fm.folded.indexOf(w, at + w.length)){
+        for(var j = at; j < at + w.length; j++) marked[fm.map[j]] = true;
+      }
+    });
+    var out = '', open = false;
+    for(var i = 0; i < text.length; i++){
+      if(marked[i] && !open){ out += '<mark class="search-hit">'; open = true; }
+      else if(!marked[i] && open){ out += '</mark>'; open = false; }
+      out += escapeHtml(text[i]);
+    }
+    return out + (open ? '</mark>' : '');
+  }
+  // A window of about `limit` characters starting a little before the first match.
+  function excerpt(text, query, limit){
+    text = String(text || '').replace(/\s+/g, ' ').trim();
+    var fm = foldMap(text), pos = -1;
+    queryWords(query).forEach(function(w){ var at = fm.folded.indexOf(w); if(at >= 0 && (pos < 0 || fm.map[at] < pos)) pos = fm.map[at]; });
+    var start = pos > 50 ? pos - 40 : 0, end = Math.min(text.length, start + limit);
+    return {text:(start ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : ''), clipped:start > 0 || end < text.length, full:text};
+  }
+  // Highlighted preview; when it had to be cut, the full text rides along hidden
+  // with a Show more button (the app toggles it — this file stays DOM-free).
+  function expandable(text, query, limit){
+    var ex = excerpt(text, query, limit || 180);
+    if(!ex.clipped) return highlight(ex.full, query);
+    return '<span class="search-short">' + highlight(ex.text, query) + '</span>' +
+      '<span class="search-full" hidden>' + highlight(ex.full, query) + '</span> ' +
+      '<button type="button" class="search-expand" aria-expanded="false">Show more</button>';
+  }
+  return {build:build, find:find, normalize:normalize, episodeTitle:episodeTitle, episodeBlurb:episodeBlurb, TITLE_MAX:TITLE_MAX,
+    escapeHtml:escapeHtml, highlight:highlight, excerpt:excerpt, expandable:expandable};
 });

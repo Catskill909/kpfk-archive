@@ -3875,3 +3875,12 @@
 .search-group h3{padding:1rem;font-size:.8rem}
 .search-scopes button{flex:1}
 .search-section h2{font-size:1.25rem}}
+
+/* ---- Search: matched words and expandable previews (2026-09-25) ----
+   A soft tint of the theme's own accent, so it reads correctly in light and
+   dark without separate colours; the text keeps its normal colour. */
+.search-hit{background:color-mix(in srgb, var(--accent-2) 22%, transparent); color:inherit; border-radius:3px; padding:0 .08em; box-decoration-break:clone; -webkit-box-decoration-break:clone;}
+.search-full[hidden], .search-short[hidden]{display:none;}
+.search-expand{border:0; background:none; padding:0 .1rem; margin-left:.15rem; color:var(--accent-2); font:600 .8rem/1.4 var(--font-body); cursor:pointer; white-space:nowrap; min-height:24px;}
+.search-expand:hover{text-decoration:underline;}
+.search-expand:focus-visible{outline:2px solid var(--accent-2); outline-offset:2px; border-radius:4px;}

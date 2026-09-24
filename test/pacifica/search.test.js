@@ -36,3 +36,19 @@ test('over-long topics are demoted to the preview; real titles stay titles',()=>
  assert.equal(search.episodeTitle({published:[{topic:'  '},{topic:'Second topic'}]}),'Second topic','blank topics are skipped');
  assert.equal(search.episodeTitle({}),'');
 });
+
+// Class: result text is highlighted safely and previews expand only when cut.
+test('highlight marks query words accent- and case-insensitively, and never injects markup',()=>{
+ assert.equal(search.highlight('Música & <b>Trump</b>','musica trump'),'<mark class="search-hit">Música</mark> &amp; &lt;b&gt;<mark class="search-hit">Trump</mark>&lt;/b&gt;');
+ assert.equal(search.highlight('a b c','a'),'a b c','one-letter words are not highlighted');
+ assert.equal(search.highlight('No match here','zzz'),'No match here');
+ assert.equal(search.highlight('x"y','"'),'x&quot;y');
+});
+test('expandable previews carry the full text only when the preview was cut',()=>{
+ assert.equal(search.expandable('Short note about Trump','trump',180),'Short note about <mark class="search-hit">Trump</mark>');
+ const long='word '.repeat(100)+'Trump appears late. '+'tail '.repeat(100);
+ const html=search.expandable(long,'trump',120);
+ assert.match(html,/^<span class="search-short">…/,'preview starts near the match');
+ assert.match(html,/<span class="search-full" hidden>/);assert.match(html,/<button type="button" class="search-expand" aria-expanded="false">Show more<\/button>$/);
+ assert.ok(html.split('search-hit').length===3,'the term is marked in both the preview and the full text');
+});

@@ -592,12 +592,6 @@
     CATS.forEach(function(c){ labels[c.key] = c.label; });
     searchIndex = window.ArchiveSearch.build(rows, showInfo || {}, labels);
   }
-  function searchExcerpt(value){
-    var text = String(value || '').replace(/\s+/g, ' ').trim();
-    var pos = text.toLowerCase().indexOf(state.query.toLowerCase());
-    var start = pos > 50 ? pos - 40 : 0;
-    return (start ? '…' : '') + text.slice(start, start + 180) + (text.length > start + 180 ? '…' : '');
-  }
   function searchArt(row){
     return row.photo ? '<img src="'+esc(row.photo)+'" alt="" loading="lazy">' : '';
   }
@@ -608,9 +602,9 @@
     var loading = loadingMp3 === r.mp3;
     var playing = nowPlaying.mp3 === r.mp3 && !audio.paused && !audio.ended && !loading;
     return '<article class="search-episode">'+searchArt(r)+'<div class="search-copy">'+
-      '<button class="search-title" data-search-episode="'+esc(r.id)+'">'+esc(name)+'</button>'+
+      '<button class="search-title" data-search-episode="'+esc(r.id)+'">'+window.ArchiveSearch.highlight(name, state.query)+'</button>'+
       '<p class="search-meta">'+esc(r.dateText)+(r.length ? ' · '+esc(r.length) : '')+'</p>'+
-      (blurb ? '<p class="search-excerpt">'+esc(searchExcerpt(blurb))+'</p>' : '')+
+      (blurb ? '<p class="search-excerpt">'+window.ArchiveSearch.expandable(blurb, state.query, 180)+'</p>' : '')+
       '<span class="search-reason">Matches '+esc(hit.reason.toLowerCase())+'</span></div>'+
       '<button type="button" class="play-btn search-play'+(playing?' playing':'')+(loading?' loading':'')+'" '+
         playAttrs(r, r.dateText, r.photo || '', loading, playing)+'>'+glyph(loading,playing)+'</button></article>';
@@ -632,8 +626,8 @@
           var s=hit.show;
           return '<article class="search-show">'+searchArt(s.latest)+'<div class="search-copy">'+
             '<span class="search-reason">Matches '+esc(hit.reason.toLowerCase())+'</span>'+
-            '<button class="search-title" data-search-show="'+esc(s.latest.id)+'">'+esc(s.name)+'</button>'+
-            '<p class="search-excerpt">'+esc(searchExcerpt(s.desc || s.host))+'</p>'+
+            '<button class="search-title" data-search-show="'+esc(s.latest.id)+'">'+window.ArchiveSearch.highlight(s.name, state.query)+'</button>'+
+            '<p class="search-excerpt">'+window.ArchiveSearch.expandable(s.desc || s.host, state.query, 180)+'</p>'+
             '<p class="search-meta">'+s.count+' available episodes · Latest '+esc(stationDate(new Date(s.latest.dt*1000)))+'</p></div>'+
             '<button class="search-action" data-search-show="'+esc(s.latest.id)+'">View show →</button></article>';
         }).join('')+'</div>'+ (matches.shows.length > (searchScope==='all'?6:searchLimit) ? '<button class="search-action search-more" data-search-more="shows">Show more shows</button>' : '')+'</section>';
@@ -660,6 +654,7 @@
   }
   searchResultsEl.addEventListener('click', function(e){
     var button = e.target.closest('button'); if(!button) return;
+    if(button.classList.contains('search-expand')){ toggleExpand(button); return; }
     if(button.hasAttribute('data-search-show')){
       openSheetById(button.dataset.searchShow, button);
       setSheetView('archive');
@@ -670,6 +665,15 @@
     else if(button.hasAttribute('data-search-more')){if(searchScope==='all') searchScope=button.dataset.searchMore;else searchLimit+=12;syncUrl();renderSearch();var more=searchResultsEl.querySelector('[data-search-more]');if(more) more.focus();}
     else if(button.hasAttribute('data-search-reset')){state.cat='all';renderCat();searchEl.value='';onSearchChanged();searchEl.focus();}
   });
+
+  // Show more / Show less on a result preview (markup from ArchiveSearch.expandable).
+  function toggleExpand(button){
+    var box = button.parentNode, open = button.getAttribute('aria-expanded') !== 'true';
+    box.querySelector('.search-short').hidden = open;
+    box.querySelector('.search-full').hidden = !open;
+    button.setAttribute('aria-expanded', String(open));
+    button.textContent = open ? 'Show less' : 'Show more';
+  }
 
   function renderRows(list){
     if(state.view!=='grid') return renderList(list);
