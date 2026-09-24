@@ -62,6 +62,6 @@
     "Special Program": "special"
   },
   "plugins": {
-    "discovery": true
+    "discovery": false
   }
 }

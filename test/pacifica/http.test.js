@@ -62,6 +62,9 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const profile = JSON.parse(fs.readFileSync(path.join(root, 'stations/kpfk.json')));
   profile.origins.feeds = [base];
   profile.feeds.catalog = base + '/fe_feed/fe_catalog_kpfk.json'; profile.feeds.channels = base + '/fe_feed/fe_channels.json';
+  // The shipped profile may have discovery off (it is, since 2026-09-24); this test
+  // exercises both states explicitly, so it switches it on here and off below.
+  profile.plugins = { ...(profile.plugins || {}), discovery: true };
   const profileFile = path.join(dir, 'profile.json'); fs.writeFileSync(profileFile, JSON.stringify(profile));
   const preload = path.join(dir, 'network.cjs');
   fs.writeFileSync(preload, `const original=global.fetch;global.fetch=(url,options)=>{if(new URL(url).origin!==${JSON.stringify(base)}){console.error('UNEXPECTED_UPSTREAM '+url);throw new Error('Unexpected upstream');}return original(url,options)};`);
