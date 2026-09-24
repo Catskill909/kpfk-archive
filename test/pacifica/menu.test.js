@@ -52,3 +52,15 @@ test('menu text is escaped, and only HTTPS links and known networks are accepted
   const unknown = raw(); unknown.social.myspace = 'https://myspace.com/kpfk';
   assert.throws(() => validateProfile(unknown), /unknown social network/);
 });
+
+
+test('Discover menu entry exists only when its station plugin is enabled', () => {
+  const p = raw(); p.plugins = { discovery: true };
+  assert.match(menuOf(render(template, validateProfile(p))), /href="\/discover"/);
+  p.plugins.discovery = false;
+  assert.doesNotMatch(menuOf(render(template, validateProfile(p))), /href="\/discover"/);
+  delete p.plugins;
+  assert.equal(validateProfile(p).plugins.discovery, false);
+  p.plugins = { discovery: 'true' };
+  assert.throws(() => validateProfile(p), /must be boolean/);
+});

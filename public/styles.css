@@ -3811,3 +3811,48 @@
 .sched-stale { margin:0 0 .75rem; color:var(--ink-dim); font-size:.85rem; }
 #liveChoiceArchive[hidden] { display:none; }
 #donateBtn[hidden] { display:none; }
+
+/* Core archive search. Independent of optional transcript providers. */
+#searchResults[hidden], #listing[hidden], #viewToggle[hidden]{display:none!important}
+.archive-search{max-width:1180px;margin:0 auto;padding:0 var(--page-gutter) 5rem}
+.search-scopes{display:flex;gap:.4rem;margin:0 0 1.6rem}
+.search-scopes button{border:1px solid transparent;background:transparent;color:var(--ink-dim);padding:.65rem 1.2rem;border-radius:24px;min-height:44px;font:600 .9rem var(--font-body);cursor:pointer}
+.search-scopes button[aria-pressed=true]{background:var(--surface-3);border-color:var(--outline-strong);color:var(--ink)}
+.search-section{margin:0 0 2rem}
+.search-section h2{font:700 1.4rem var(--font-body);letter-spacing:-.025em;display:flex;align-items:baseline;gap:.7rem;margin:0 0 1rem}
+.search-section h2 span{font-size:.8rem;font-weight:400;color:var(--ink-dim)}
+.search-panel{border:1px solid var(--outline);border-radius:18px;background:var(--surface-1);overflow:hidden}
+.search-show,.search-episode{display:flex;gap:1.2rem;align-items:center;padding:1.4rem}
+.search-show+.search-show,.search-episode+.search-episode{border-top:1px solid var(--outline)}
+.search-show>img{width:90px;height:90px;border-radius:13px;object-fit:cover}
+.search-episode>img{width:52px;height:52px;border-radius:9px;object-fit:cover}
+.search-copy{flex:1;min-width:0}
+.search-title{display:block;border:0;background:none;padding:0;text-align:left;color:var(--ink);font:700 1.2rem/1.35 var(--font-body);cursor:pointer;min-height:32px}
+.search-episode .search-title{font-size:1rem}
+.search-excerpt{font-size:.88rem;color:var(--ink-dim);line-height:1.6;margin:.45rem 0}
+.search-meta{font-size:.76rem;color:var(--ink-dim);line-height:1.5;margin:.35rem 0}
+.search-reason{display:block;font-size:.7rem;color:var(--accent-2);margin:.2rem 0 .4rem}
+.search-action{font:600 .8rem var(--font-body);color:var(--ink);background:var(--surface-2);border:1px solid var(--outline-strong);border-radius:24px;padding:.65rem 1rem;min-height:44px;cursor:pointer}
+.search-more{display:block;margin:1rem auto}
+.search-group{margin-bottom:1rem}
+.search-group h3{font:600 .9rem var(--font-body);margin:0;padding:1rem 1.4rem;background:var(--surface-2);display:flex;gap:1rem;justify-content:space-between;align-items:center}
+.search-group h3 span{font-size:.75rem;font-weight:400;color:var(--ink-dim);white-space:nowrap}
+.search-play{flex-shrink:0}
+.search-empty{text-align:center;padding:3rem 1rem;background:var(--surface-1);border:1px solid var(--outline);border-radius:18px}
+.search-empty h2{font-size:1.3rem}
+.search-empty p{color:var(--ink-dim);margin:1rem 0}
+.archive-search button:focus-visible{outline:3px solid var(--accent-2);outline-offset:3px}
+@media(hover:hover){.search-title:hover{color:var(--accent-2)}
+.search-action:hover{background:var(--surface-3)}}
+@media(max-width:560px){.search-show,.search-episode{padding:1rem;gap:.85rem}
+.search-show{align-items:start;flex-wrap:wrap}
+.search-show>img{width:64px;height:64px}
+.search-show>.search-action{margin-left:calc(64px + .85rem)}
+.search-title{font-size:1.05rem}
+.search-episode .search-title{font-size:.95rem}
+.search-episode>img{width:38px;height:38px}
+.search-excerpt{font-size:.8rem}
+.search-meta{font-size:.7rem}
+.search-group h3{padding:1rem;font-size:.8rem}
+.search-scopes button{flex:1}
+.search-section h2{font-size:1.25rem}}

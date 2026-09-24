@@ -73,7 +73,7 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const port = await freePort(), url = `http://127.0.0.1:${port}`;
   async function boot() {
     child = spawn(process.execPath, ['--require', preload, 'server.js'], { cwd: root,
-      env: { ...cleanEnv(), STATION_PROFILE: profileFile, PACIFICA_TEST_LOCAL: '1', STUDIO_PASSWORD: 'test-studio', PORT: String(port), DATA_DIR: path.join(dir, 'data') },
+      env: { ...cleanEnv(), STATION_PROFILE: profileFile, PACIFICA_TEST_LOCAL: '1', STUDIO_PASSWORD: 'test-studio', QIR_API_KEY: '', PORT: String(port), DATA_DIR: path.join(dir, 'data') },
       stdio: ['ignore', 'pipe', 'pipe'] });
     child.stdout.on('data', x => { logs += x; }); child.stderr.on('data', x => { logs += x; });
     for (let i = 0; i < 100; i++) {
@@ -94,6 +94,13 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const head = await (await fetch(url + '/api/archive/head')).json(); assert.equal(head.revision, archive.revision);
   const home = await (await fetch(url)).text(); assert.match(home, /KPFK/); assert.doesNotMatch(home, /WBAI|wbai\.org|\{\{station\./);
   assert.doesNotMatch(home, /99\.5/, 'no WBAI frequency, including in accessible names');
+  const discover = await fetch(url + '/discover');
+  assert.equal(discover.status, 200);
+  assert.match(await discover.text(), /KPFK discovery · Beta/);
+  assert.equal((await fetch(url + '/review.js')).status, 200);
+  const qirStatus = await (await fetch(url + '/api/plugins/qir/status')).json();
+  assert.equal(qirStatus.state, 'not_configured');
+  assert.equal((await fetch(url + '/api/plugins/qir/catalog')).status, 503);
   // Donate/Privacy open in an iframe; the CSP must allow exactly the profile's link origins.
   const homeCsp = (await fetch(url)).headers.get('content-security-policy');
   assert.match(homeCsp, new RegExp(`frame-src ${new URL(profile.links.donate).origin.replace(/\./g, '\\.')}(;| )`));
@@ -169,7 +176,13 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   assert.doesNotMatch(logs, /UNEXPECTED_UPSTREAM/);
   const identity = health.storage.instanceId;
   child.kill(); await new Promise(resolve => child.once('exit', resolve)); online = false;
+  profile.plugins = { discovery: false };
+  fs.writeFileSync(profileFile, JSON.stringify(profile));
   await boot();
+  for (const route of ['/discover', '/discover/', '/review.html', '/review.js', '/review.css', '/qir-transcript.js', '/api/plugins/qir/status', '/api/plugins/qir/catalog']) {
+    assert.equal((await fetch(url + route)).status, 404, 'disabled plugin: ' + route);
+  }
+  assert.doesNotMatch(await (await fetch(url)).text(), /href="\/discover"/);
   // Straight after a (re)deploy nobody has asked for the archive yet, and that is
   // when /healthz gets read. The boot warm-up alone must settle the filter on
   // "schedule" — never report the outage fallback for a healthy start.

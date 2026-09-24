@@ -21,7 +21,8 @@ read the Pacifica JSON feeds through a per-station profile.
 ## Features
 
 - **Scheduled programs' archive** — every recording of every program in KPFK's
-  published schedule, searchable by name and filterable by category. Archive-only
+  published schedule, searchable by show name, host, show description and published
+  episode topics/notes/guests, with separate show and episode results and category filters. Archive-only
   uploads and programs no longer on the air are not shown.
 - **Built-in player** — any archived episode, or the live 90.7 FM stream, right in
   the app; resumes long shows where you stopped, without an account.
@@ -92,6 +93,13 @@ npm test         # offline suites
 ```
 
 Then open http://localhost:8081.
+
+## Optional Discover interface
+
+The new browsing layout is available at `/discover` when the station profile sets
+`plugins.discovery` to `true`. KPFK enables this preview; the main app remains at
+`/`. It uses the existing archive data and is independent of any transcript API.
+See [configuration and current limits](docs/kpfk/discover-plugin.md).
 
 ## Station profile
 

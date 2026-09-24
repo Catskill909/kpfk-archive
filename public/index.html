@@ -165,7 +165,7 @@
           <circle cx="11" cy="11" r="7" />
           <path d="M21 21l-4.3-4.3" />
         </svg>
-        <input id="q" type="search" placeholder="Search shows — “Democracy Now”, “jazz”, “housing”…" autocomplete="off"
+        <input id="q" type="search" aria-label="Search shows, hosts and episode topics" placeholder="Search shows, hosts or episode topics…" autocomplete="off"
           autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="search" enterkeyhint="search">
         <button class="search-clear" id="qClear" type="button" aria-label="Clear search" hidden>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
@@ -178,7 +178,7 @@
         <button class="cat-trigger" id="catTrigger" type="button" aria-haspopup="listbox" aria-expanded="false"
           aria-label="Filter by category">
           <span class="cat-trigger-icon" id="catTriggerIcon" aria-hidden="true"></span>
-          <span class="cat-trigger-value" id="catTriggerValue">All shows</span>
+          <span class="cat-trigger-value" id="catTriggerValue">All categories</span>
           <svg class="cat-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M6 9l6 6 6-6" />
@@ -209,7 +209,7 @@
               <path d="M20 11a8 8 0 1 0-.9 4.5" />
               <path d="M20 5v6h-6" />
             </svg>
-            <span id="refreshBtnText">New shows</span>
+            <span id="refreshBtnText">New episodes</span>
           </button>
           <div class="view-toggle" id="viewToggle" role="group" aria-label="Change layout">
             <button class="view-btn" data-view="list" type="button" aria-pressed="false" aria-label="List view"
@@ -250,6 +250,7 @@
       </button>
     </div>
 
+    <section id="searchResults" class="archive-search" aria-label="Search results" hidden></section>
     <section class="listing" id="listing">
       <div class="grid" id="grid">
         <div class="row head" role="row">
@@ -273,7 +274,7 @@
           <span class="loading-spinner" aria-hidden="true"></span>
           <span class="loading-text">Loading the archive…</span>
         </div>
-        <div class="empty" id="emptyState" hidden>No shows match your search. Try a different title or category.</div>
+        <div class="empty" id="emptyState" hidden>No episodes match this category. Try another category.</div>
       </div>
     </section>
   </main>
@@ -730,6 +731,7 @@
     </button>
     <audio id="mainAudio" preload="none"></audio>
   </div>
+  <script src="/archive-search.js" defer></script>
   <script src="/app.js" defer></script>
   <!-- Usage counters. Deferred and entirely separate from app.js so it can never
      affect playback; see the header of track.js for what it does and does not

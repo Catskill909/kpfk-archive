@@ -60,5 +60,8 @@
     "Public Affairs - Local": "public-affairs",
     "Public Affairs- National+Syndicated": "public-affairs",
     "Special Program": "special"
+  },
+  "plugins": {
+    "discovery": true
   }
 }

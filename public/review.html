@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>{{station.name}} · Discover</title>
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/review.css">
+<script src="/station.js"></script>
+<script src="/theme-boot.js"></script>
+<script src="/qir-transcript.js" defer></script>
+<script src="/review.js" defer></script>
+</head>
+<body class="review">
+<a class="rv-skip" href="#main">Skip to content</a>
+<div class="rv-reviewbar"><span>KPFK discovery · Beta</span><a href="/">Main archive ↗</a></div>
+<header class="rv-header"><a href="/discover" class="rv-brand"><img src="{{station.logo}}" alt="{{station.name}}"><span>{{station.frequency}} · Archive</span></a><button id="theme" class="rv-quiet" type="button">Switch theme</button></header>
+<main id="main" class="rv-main">
+<aside class="rv-provider" aria-label="Content source"><div><strong id="providerTitle">Archive preview</strong><p id="providerStatus" role="status">Checking the QIR connection…</p></div><label>Browse <select id="source"><option value="archive">Station archive preview</option><option value="qir">QIR API beta</option></select></label></aside>
+<section class="rv-intro"><p class="rv-eyebrow">Independent voices. On your time.</p><h1>Find your next listen.</h1><p>Explore {{station.name}} shows and catch up on the conversations you missed.</p></section>
+<form id="searchForm" class="rv-search" role="search"><label for="search">Search the archive</label><div class="rv-searchline"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search shows, hosts or episode topics" autocomplete="off"><button id="clear" type="button" class="rv-quiet" hidden>Clear</button><button class="rv-primary" type="submit">Search</button></div></form>
+<div class="rv-filters"><div id="scopes" class="rv-scopes" role="group" aria-label="Search scope"><button type="button" data-scope="all" aria-pressed="true">All</button><button type="button" data-scope="shows" aria-pressed="false">Shows</button><button type="button" data-scope="episodes" aria-pressed="false">Episodes</button></div><label class="rv-category">Category <select id="category"><option value="all">All categories</option></select></label></div>
+<div class="rv-datefilters"><label>Aired from <input id="dateFrom" type="date"></label><label>Through <input id="dateTo" type="date"></label><button id="clearDates" class="rv-quiet" type="button">Clear dates</button></div>
+<p id="status" class="rv-status" role="status" aria-live="polite">Loading the archive…</p>
+<div id="results" aria-busy="true"></div>
+</main>
+<dialog id="detail" class="rv-dialog" aria-labelledby="detailTitle"><div class="rv-dialogbar"><button id="dialogBack" type="button" class="rv-quiet" hidden>← Show</button><span id="dialogKind">Episode</span><button id="close" type="button" class="rv-close" aria-label="Close details">×</button></div><div id="detailBody" class="rv-detailbody"></div></dialog>
+<footer id="player" class="rv-player" hidden><div><span class="rv-eyebrow">Now playing</span><strong id="playingTitle"></strong><span id="playingDate"></span></div><audio id="audio" controls preload="none"></audio><button id="stop" type="button" class="rv-close" aria-label="Stop playback">×</button><p id="playerError" role="status"></p></footer>
+</body>
+</html>

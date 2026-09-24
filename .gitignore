@@ -24,3 +24,6 @@ future-dev.md
 
 # Local test/browser state must not be copied into station builds.
 **/*-profile/
+
+# Private local working notes
+.local-notes/

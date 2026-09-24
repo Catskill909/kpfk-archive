@@ -42,6 +42,9 @@
 
 
   var rows = [];
+  var searchIndex = {shows:[], episodes:[]};
+  var searchScope = 'all', searchLimit = 12, searchShow = '';
+  var searchResultsEl = document.getElementById('searchResults');
 
   var latestDt = 0;
 
@@ -79,6 +82,8 @@
     var q = [];
     if(state.cat !== 'all' && CAT_BY_KEY[state.cat]) q.push('cat=' + encodeURIComponent(state.cat));
     if(state.query) q.push('q=' + encodeURIComponent(state.query));
+    if(state.query && searchScope !== 'all') q.push('scope=' + searchScope);
+    if(state.query && searchShow) q.push('match=' + encodeURIComponent(searchShow));
     if(sheetId) q.push('show=' + encodeURIComponent(sheetId));
     return location.pathname + (q.length ? '?' + q.join('&') : '');
   }
@@ -170,14 +175,14 @@
       '</button>';
   }
   function renderCatMenu(){
-    var html = catOption('all', 'All shows');
+    var html = catOption('all', 'All categories');
     CATS.forEach(function(c){ html += catOption(c.key, c.label); });
     catMenu.innerHTML = html;
   }
   function renderCatTrigger(){
     var c = CAT_BY_KEY[state.cat];
     catTriggerIcon.innerHTML = catIcon(c ? c.key : 'all');
-    catTriggerValue.textContent = c ? c.label : 'All shows';
+    catTriggerValue.textContent = c ? c.label : 'All categories';
     catTrigger.classList.toggle('is-filtered', state.cat !== 'all');
   }
   function renderCat(){ renderCatMenu(); renderCatTrigger(); }
@@ -290,6 +295,7 @@
 
   function onSearchChanged(){
     state.query = searchEl.value.trim().toLowerCase();
+    searchScope = 'all'; searchLimit = 12; searchShow = '';
     syncSearchUi();
     render();
     resetListScroll();
@@ -436,12 +442,13 @@
   }
 
   function render(){
+    var searching = !!state.query;
+    searchResultsEl.hidden = !searching;
+    document.getElementById('listing').hidden = searching;
+    document.getElementById('viewToggle').hidden = searching;
+    if(searching){ filtered = []; shown = 0; renderSearch(); return; }
     var list = rows.filter(function(r){
       if(state.cat!=='all' && r.cat!==state.cat) return false;
-      if(state.query){
-        var hay = (r.title+' '+CAT_BY_KEY[r.cat].label+' '+r.host).toLowerCase();
-        if(hay.indexOf(state.query)===-1) return false;
-      }
       return true;
     });
     list.sort(function(a,b){
@@ -458,7 +465,7 @@
     });
 
     loadingEl.hidden = true;
-    setCount(list.length + (list.length===1 ? ' show':' shows') + ' found', true);
+    setCount(list.length + (list.length===1 ? ' episode':' episodes') + ' found', true);
     emptyEl.hidden = list.length!==0;
 
     // reset paging: show the first page, append the rest on scroll
@@ -467,6 +474,90 @@
     rowsEl.innerHTML = '';
     showMore();
   }
+
+  function rebuildSearchIndex(){
+    var labels = {};
+    CATS.forEach(function(c){ labels[c.key] = c.label; });
+    searchIndex = window.ArchiveSearch.build(rows, showInfo || {}, labels);
+  }
+  function searchExcerpt(value){
+    var text = String(value || '').replace(/\s+/g, ' ').trim();
+    var pos = text.toLowerCase().indexOf(state.query.toLowerCase());
+    var start = pos > 50 ? pos - 40 : 0;
+    return (start ? '…' : '') + text.slice(start, start + 180) + (text.length > start + 180 ? '…' : '');
+  }
+  function searchArt(row){
+    return row.photo ? '<img src="'+esc(row.photo)+'" alt="" loading="lazy">' : '';
+  }
+  function searchEpisodeHtml(hit){
+    var r = hit.row;
+    var topic = (r.published || []).filter(function(p){return p.topic;})[0];
+    var name = topic ? topic.topic : r.title + ' · ' + stationDate(new Date(r.dt * 1000));
+    var loading = loadingMp3 === r.mp3;
+    var playing = nowPlaying.mp3 === r.mp3 && !audio.paused && !audio.ended && !loading;
+    return '<article class="search-episode">'+searchArt(r)+'<div class="search-copy">'+
+      '<button class="search-title" data-search-episode="'+esc(r.id)+'">'+esc(name)+'</button>'+
+      '<p class="search-meta">'+esc(r.dateText)+(r.length ? ' · '+esc(r.length) : '')+'</p>'+
+      (r.episodeDesc ? '<p class="search-excerpt">'+esc(searchExcerpt(r.episodeDesc))+'</p>' : '')+
+      '<span class="search-reason">Matches '+esc(hit.reason.toLowerCase())+'</span></div>'+
+      '<button type="button" class="play-btn search-play'+(playing?' playing':'')+(loading?' loading':'')+'" '+
+        playAttrs(r, r.dateText, r.photo || '', loading, playing)+'>'+glyph(loading,playing)+'</button></article>';
+  }
+  function renderSearch(){
+    var matches = window.ArchiveSearch.find(searchIndex, state.query, state.cat);
+    if(searchShow) matches.episodes = matches.episodes.filter(function(hit){return hit.row.sho === searchShow;});
+    loadingEl.hidden = true;
+    setCount(matches.shows.length + (matches.shows.length===1?' show':' shows')+' · '+matches.episodes.length+
+      (matches.episodes.length===1?' episode':' episodes')+' found', true);
+    var html = '<div class="search-scopes" role="group" aria-label="Search scope">'+
+      ['all','shows','episodes'].map(function(scope){return '<button type="button" data-search-scope="'+scope+'" aria-pressed="'+(searchScope===scope)+'">'+scope[0].toUpperCase()+scope.slice(1)+'</button>';}).join('')+'</div>';
+    if(searchShow) html += '<p class="search-meta">Episodes from '+esc((matches.episodes[0] || {}).row ? matches.episodes[0].row.title : 'the selected show')+' · <button class="search-action" data-search-scope="episodes">All shows</button></p>';
+    var hasResults = false;
+    if(searchScope !== 'episodes' && matches.shows.length){
+      hasResults = true;
+      html += '<section class="search-section"><h2>Shows <span>'+matches.shows.length+'</span></h2><div class="search-panel">'+
+        matches.shows.slice(0,searchScope==='all'?6:searchLimit).map(function(hit){
+          var s=hit.show;
+          return '<article class="search-show">'+searchArt(s.latest)+'<div class="search-copy">'+
+            '<span class="search-reason">Matches '+esc(hit.reason.toLowerCase())+'</span>'+
+            '<button class="search-title" data-search-show="'+esc(s.latest.id)+'">'+esc(s.name)+'</button>'+
+            '<p class="search-excerpt">'+esc(searchExcerpt(s.desc || s.host))+'</p>'+
+            '<p class="search-meta">'+s.count+' available episodes · Latest '+esc(stationDate(new Date(s.latest.dt*1000)))+'</p></div>'+
+            '<button class="search-action" data-search-show="'+esc(s.latest.id)+'">View show →</button></article>';
+        }).join('')+'</div>'+ (matches.shows.length > (searchScope==='all'?6:searchLimit) ? '<button class="search-action search-more" data-search-more="shows">Show more shows</button>' : '')+'</section>';
+    }
+    if(searchScope !== 'shows' && matches.episodes.length){
+      hasResults = true;
+      html += '<section class="search-section"><h2>Episodes <span>'+matches.episodes.length+'</span></h2>';
+      if(searchScope === 'all'){
+        var groups = new Map();
+        matches.episodes.forEach(function(hit){var key=hit.row.sho;if(!groups.has(key)) groups.set(key,[]);groups.get(key).push(hit);});
+        Array.from(groups.values()).slice(0,searchLimit).forEach(function(group){
+          html += '<div class="search-panel search-group"><h3>'+esc(group[0].row.title)+' <span>'+group.length+' matches</span></h3>'+
+            group.slice(0,3).map(searchEpisodeHtml).join('')+
+            (group.length>3 ? '<button class="search-action search-more" data-search-matches="'+esc(group[0].row.sho)+'">View matching episodes →</button>' : '')+'</div>';
+        });
+      } else html += '<div class="search-panel">'+matches.episodes.slice(0,searchLimit).map(searchEpisodeHtml).join('')+'</div>';
+      html += '</section>';
+    }
+    if(!hasResults) html += '<div class="search-empty"><h2>No '+(searchScope==='all'?'results':searchScope)+' for “'+esc(state.query)+'”</h2>'+
+      '<p>Try a show name, host, or broader topic.'+(state.cat!=='all'?' A category filter is active.':'')+'</p><button class="search-action" data-search-reset>Clear search and filters</button></div>';
+    if(searchScope==='episodes' && matches.episodes.length>searchLimit) html += '<button class="search-action search-more" data-search-more="episodes">Show more episodes</button>';
+    if(searchScope==='all' && matches.episodes.length>3) html += '<button class="search-action search-more" data-search-scope="episodes">View all episode results</button>';
+    searchResultsEl.innerHTML = html;
+  }
+  searchResultsEl.addEventListener('click', function(e){
+    var button = e.target.closest('button'); if(!button) return;
+    if(button.hasAttribute('data-search-show')){
+      openSheetById(button.dataset.searchShow, button);
+      setSheetView('archive');
+    } else if(button.hasAttribute('data-search-episode')) openSheetById(button.dataset.searchEpisode, button);
+    else if(button.classList.contains('play-btn')) togglePlayFrom(button);
+    else if(button.hasAttribute('data-search-matches')){searchShow=button.dataset.searchMatches;searchScope='episodes';searchLimit=12;syncUrl();renderSearch();searchResultsEl.querySelector('[aria-pressed="true"]').focus();}
+    else if(button.hasAttribute('data-search-scope')){ searchShow='';searchScope=button.dataset.searchScope;searchLimit=12;syncUrl();renderSearch();searchResultsEl.querySelector('[aria-pressed="true"]').focus(); }
+    else if(button.hasAttribute('data-search-more')){if(searchScope==='all') searchScope=button.dataset.searchMore;else searchLimit+=12;syncUrl();renderSearch();var more=searchResultsEl.querySelector('[data-search-more]');if(more) more.focus();}
+    else if(button.hasAttribute('data-search-reset')){state.cat='all';renderCat();searchEl.value='';onSearchChanged();searchEl.focus();}
+  });
 
   function renderRows(list){
     return state.view==='grid' ? renderCards(list) : renderList(list);
@@ -2518,8 +2609,8 @@
       // Wide screens get the wall-clock time of the newest broadcast; phones get
       // the same fact as an interval, which is both shorter and the thing you
       // actually want to know.
-      longEl.textContent = 'Latest show ' + stamp;
-      shortEl.textContent = 'Latest show · ' + relTime(latestDt);
+      longEl.textContent = 'Latest episode ' + stamp;
+      shortEl.textContent = 'Latest episode · ' + relTime(latestDt);
     }
 
     // Deliberately two separate facts — the newest show and when we last looked
@@ -2558,6 +2649,7 @@
   function ingest(list, updated, revision, directory){
     if(directory) { showInfo = directory; detailAsked = {}; }
     rows = list;
+    rebuildSearchIndex();
     if(updated) archiveUpdated = updated;
     latestDt = rows.reduce(function(max,r){ return Math.max(max, r.dt); }, 0);
     archiveSig = revision || (rows.length + ':' + latestDt);
@@ -2598,7 +2690,7 @@
   }
 
   function loadArchive(){
-    setCount('Loading shows…', false);
+    setCount('Loading episodes…', false);
     fetch('/api/archive', {cache:'no-store'})
       .then(function(r){ if(!r.ok) throw new Error('archive '+r.status); return r.json(); })
       .then(function(data){ ingest(data.shows || [], data.updated, data.revision, data.directory); })
@@ -2629,7 +2721,7 @@
     pendingSig = sig;
     var added = count - rows.length;
     refreshBtnText.textContent = added > 0
-      ? (added === 1 ? '1 new show' : added + ' new shows')
+      ? (added === 1 ? '1 new episode' : added + ' new episodes')
       : 'Archive updated';
     refreshBtn.setAttribute('aria-label', refreshBtnText.textContent + ' — refresh the listing');
     refreshBtn.hidden = false;
@@ -3667,7 +3759,7 @@
   function fetchShowInfo(){
     fetch('/api/showinfo', {cache:'no-store'})
       .then(function(r){ return r.json(); })
-      .then(function(data){ if(data && data.shows) showInfo = data.shows; })
+      .then(function(data){ if(data && data.shows) { showInfo = data.shows; rebuildSearchIndex(); if(state.query) render(); } })
       .catch(function(){ /* non-fatal: the sheet just has less to show */ });
   }
 
@@ -3698,6 +3790,7 @@
       .then(function(d){
         if(!d || !d.info) return;
         showInfo[altid] = d.info;
+        rebuildSearchIndex();
         // repaint only if this is still the sheet on screen
         var same = rowById(sheetRowId);
         if(same && same.sho === altid && sheet.classList.contains('show')) paintSheet(same);
@@ -4486,6 +4579,13 @@
     // the thing it was asking about — never leave it floating over a dialog
     // that has already gone.
     closeLiveChoice();
+    var restoredQuery = param('q').trim().toLowerCase();
+    var restoredScope = ['shows','episodes'].indexOf(param('scope')) >= 0 ? param('scope') : 'all';
+    var restoredCat = CAT_BY_KEY[param('cat')] ? param('cat') : 'all';
+    if(state.query !== restoredQuery || searchScope !== restoredScope || state.cat !== restoredCat || searchShow !== param('match')){
+      state.query=restoredQuery;state.cat=restoredCat;searchScope=restoredScope;searchShow=param('match');
+      searchEl.value=restoredQuery;syncSearchUi();renderCat();render();
+    }
     var route = history.state || {};
     if(route.live){
       dismissSheet();
@@ -4900,6 +5000,8 @@
   (function(){
     var cat = param('cat');
     if(cat && CAT_BY_KEY[cat]) state.cat = cat;
+    searchScope = ['shows','episodes'].indexOf(param('scope')) >= 0 ? param('scope') : 'all';
+    searchShow = param('match');
     var q = param('q');
     if(q){ state.query = q.trim().toLowerCase(); searchEl.value = q; }
     syncSearchUi();

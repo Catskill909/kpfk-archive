@@ -35,6 +35,12 @@ if (require.main === module && !station && process.env.STATION_PROVIDER !== 'leg
 }
 
 
+const qir = require('./lib/qir/service').createQirService({
+  enabled: !!(station && station.id === 'kpfk' && station.plugins.discovery),
+  key: process.env.QIR_API_KEY || '',
+  audioOrigins: station ? station.origins.audio : [],
+});
+
 const PORT = process.env.PORT || 8080;
 const PUBLIC_DIR = path.join(__dirname, 'public');
 
@@ -2246,7 +2252,12 @@ function sendFile(req, res, filePath, ext) {
 }
 
 function serveStatic(req, reqPath, res) {
-  let rel = decodeURIComponent(reqPath.split('?')[0]);
+  let rel = path.posix.normalize(decodeURIComponent(reqPath.split('?')[0]));
+  // First bundled UI plugin: a station-controlled route, never executable uploads.
+  if (['/discover', '/discover/', '/review.html', '/review.js', '/review.css', '/qir-transcript.js'].includes(rel)) {
+    if (!station || !station.plugins.discovery) return sendJson(res, { error: 'not found' }, 404);
+    if (rel === '/discover' || rel === '/discover/') rel = '/review.html';
+  }
   if (rel === '/' || rel === '') rel = '/index.html';
   // resolve safely inside PUBLIC_DIR
   const filePath = path.join(PUBLIC_DIR, path.normalize(rel));
@@ -3914,6 +3925,16 @@ const server = http.createServer(async (req, res) => {
   }
 
   try {
+    if (pathOnly.startsWith('/api/plugins/qir/')) {
+      if (!station || station.id !== 'kpfk' || !station.plugins.discovery) return sendJson(res, {error:'not found'},404);
+      try {
+        if (pathOnly === '/api/plugins/qir/status') return sendJson(res,qir.status());
+        if (pathOnly === '/api/plugins/qir/catalog') return sendJson(res,await qir.catalog());
+        const match = /^\/api\/plugins\/qir\/transcript\/([a-f0-9-]+)$/i.exec(pathOnly);
+        if (match) return sendJson(res,await qir.transcript(match[1]));
+        return sendJson(res,{error:'not found'},404);
+      } catch(e) { return sendJson(res,{error:e.message},e.status || 502); }
+    }
     if (station) {
       if (pathOnly === '/api/station') return sendJson(res, publicProfile(station), 200, 0);
       if (pathOnly === '/station.js') {

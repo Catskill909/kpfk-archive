@@ -1,6 +1,6 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-16 (exports, all phases built). **This folder is the active project.**
+**Updated:** 2026-09-23 (client review, core search, separate plugin repository). **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
@@ -12,11 +12,129 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 | --- | --- |
 | Live | **https://podcast.kpfk.org** — Coolify app "KPFK Podcasts" on the Pacifica/Contabo server, Dockerfile build, container port 8080. Deployed 2026-09-19; `kpfk-archive.supersoul.top` was stopped the same day |
 | Repo | https://github.com/Catskill909/kpfk-archive · `main` · push to `origin` only (never `wbai-baseline`) |
-| Deploy | Manual Coolify redeploy after push. Last verified deploy includes everything through `fb3168a` (studio cards), audited live 2026-09-15 23:03 UTC |
+| Deploy | Manual Coolify redeploy after push. The 2026-09-23 work in this handoff is local and **has not been committed, pushed or deployed from this repository**. Older deploy audit notes below describe prior releases; do not infer current live code from them. |
 | Storage | Named volume `…-kpfk-archive-data` at `/app/data`. **Persistence proven across three redeploys** 2026-09-15: `instanceId` `e4a9aac9-e3dd-4e9b-8c5b-17656032bd0d` unchanged every time, `freshVolume:false`, and the usage counters kept counting across all three |
 | Studio | `/studio`, password in Coolify env `STUDIO_PASSWORD` (runtime only — **not** on the Mac and not in the repo; read it from Coolify, never from a file) |
 | Local | `npm start` → http://localhost:8081, `./data` |
-| Tests | `npm test` green: inherited offline suites + 32 Pacifica tests |
+| Tests | Current local `npm test` passed: inherited offline suites + 50 Pacifica tests before one additional QIR date/time case; that 8-test QIR suite passed afterward. The standalone plugin has its own tests/CI. |
+
+## Resume here — current session checkpoint
+
+- **Two separate local projects are running:** this KPFK podcast template on
+  http://localhost:8081 and the independent plugin on http://127.0.0.1:8082.
+  The plugin lives at `/Users/paulhenshaw/Desktop/kpfk-discovery-plugin`.
+- **Private plugin repository:** `pacifica-foundation/kpfk-discovery-plugin`,
+  `main` at `9b36196`, visibility verified PRIVATE. Its first GitHub Actions
+  offline run passed. The product name is **undecided**; the repository name is
+  temporary. Its local working tree was clean after the push. Read that repo's
+  README, HANDOFF and docs before further plugin edits.
+- **Standalone plugin result:** approved discovery layout, server-side QIR adapter,
+  archive preview, transcript-local search and timestamp playback. Added the
+  template-style player with artwork, play/pause, desktop ±15 seconds, elapsed /
+  duration and a touch/keyboard scrubber. Ten offline tests and 15 live-browser
+  player checks passed. No production deployment and no live QIR verification:
+  a working `QIR_API_KEY` has not been supplied. Transcript timestamps are not
+  confirmed editorial chapter markers.
+- **Template result:** 2026-09-23 changes in *this* repository are still an
+  **uncommitted working tree**. They include core show/episode search improvements,
+  the earlier embedded Discover prototype/API foundation, tests and planning docs.
+  The embedded `/discover` view is a development snapshot; future plugin changes
+  belong in the separate repository. Do not mistake the private plugin push for
+  a push or deployment of the podcast template. Review this tree before committing
+  it; preserve the user's existing work and never push `wbai-baseline`.
+- **Next KPFK work:** verify Ace's API with a renewed key supplied through a
+  secure runtime channel; check real IDs, transcript coverage, permissions,
+  corrections and marker format. Continue the screenshot-driven homepage/show/
+  episode modal fixes in this template. Decide later which tested plugin features
+  become shared across Pacifica stations.
+- **Later template phase:** [station setup in admin](docs/kpfk/station-admin-template-plan.md)
+  for supported JSON feeds, uploaded branding, editable copy, preview/apply and
+  rollback. This is planned, not built.
+- **Private conversation:** `.local-notes/client-review-2026-09-23.md` is
+  Git-ignored. Keep candid discussion there. No email to Ace has been sent.
+
+## Plugin extracted to its own private repository — 2026-09-23
+
+**Future plugin development belongs in `/Users/paulhenshaw/Desktop/kpfk-discovery-plugin`.**
+Private repo: https://github.com/pacifica-foundation/kpfk-discovery-plugin.
+Working repository name only; product name intentionally undecided (Paul).
+Independent local server: **http://127.0.0.1:8082**; template stays on 8081.
+
+The standalone app includes the approved design, QIR adapter, transcript search,
+full technical docs, Dockerfile/CI and template-style player/scrubber. Initial implementation commit `ae5b937` and handoff commit `9b36196` pushed; private visibility verified. 10 offline tests and 15 live
+browser checks passed. No live deployment and no working QIR key yet. Private
+notes, data and this repo's Git history were not copied. The embedded Discover
+files remain a historical development snapshot; do not evolve both copies.
+See the new project's README and HANDOFF for authoritative plugin status.
+
+## QIR beta foundation — 2026-09-23
+
+[Build status and limitations](docs/kpfk/qir-beta-build.md): Discover now has an
+explicit archive/QIR selector, metadata/date filters and QIR transcript loading,
+local transcript search and timed cue playback. Server-only adapter exists;
+**working QIR credentials still pending, no live QIR verification**. Tests used
+controlled responses for transcript paths. Chapters and global full-transcript
+search remain future work. Current local URL: http://localhost:8081/discover.
+
+## Direction update — KPFK beta plugin and station template
+
+Paul clarified: the new design belongs first to the KPFK QIR beta plugin,
+demonstrating Ace's VPS API, transcripts, markers when supported and advanced
+search. Core fixes continue; global-template adoption is decided phase by phase.
+The Flutter sister app at `/Users/paulhenshaw/Desktop/kpfk-podcast` follows the
+same boundary: ordinary catalog/search/playback remain independent of QIR, while
+advanced discovery and transcript features are an optional, modular feature that
+can be enabled per station. Its mobile integration is planned, not implemented.
+The standalone discovery app/repository continues independently so the provider
+API can change or move without forcing changes to every station app. See
+[cross-platform discovery module plan](docs/kpfk/cross-platform-discovery-module.md).
+The standalone plugin offers archive preview and a QIR mode that reports
+connection pending without credentials; no live QIR connection is verified. Working credentials are pending. KPFK beta/production comes before
+scaling to other stations.
+
+Added explicit future scope: [admin station setup](docs/kpfk/station-admin-template-plan.md)
+for JSON feed addresses, uploaded images, editable text, validated persistent
+settings and plugin controls. This replaces the old planning hold; implementation
+follows the current fixes/plugin work.
+
+## Discover plugin — 2026-09-23
+
+The preferred prototype is now an optional bundled interface at
+**http://localhost:8081/discover**, linked as “Discover shows” in the main menu.
+KPFK enables `plugins.discovery: true`; missing/false disables the route and
+assets. Main app stays at `/`; QIR remains separate. [Config and evidence](docs/kpfk/discover-plugin.md).
+Full test suite passed (43 Pacifica tests plus inherited suites); browser verified.
+No deployment; local template server running on 8081. This embedded view is superseded for future plugin development by the independent 8082 project.
+
+## Main app search — 2026-09-23
+
+Implemented locally at **http://localhost:8081/?q=jazz**: richer metadata search,
+separate show/episode results, ranked matches, grouped previews, scopes and honest
+episode labels. Uses the existing player/sheets; no API plugin or deployment.
+[Implementation and evidence](docs/kpfk/core-search-phase.md). Offline suite passed
+(42 Pacifica tests plus inherited suites); focused browser checks passed. Next:
+review integrated search, then homepage directory and modal layout integration.
+
+## Local design prototype — 2026-09-23
+
+Phase 0b built: [review notes and verification](docs/kpfk/phase-0b-review.md).
+Run `npm start`, then open **http://localhost:8081/review.html**. Existing app
+remains at `/`. Real catalog data, independent search, show/episode dialogs and
+native audio playback; no QIR dependency. The approved concept was extracted into the separate plugin repository. No template
+deployment. The old prototype files remain under `public/`; decide their release
+disposition when the template work is committed or deployed.
+
+## Client feedback review — 2026-09-23
+
+Investigation and proposed phases: [review plan](docs/kpfk/client-review-plan-2026-09-23.md).
+Reviewed four annotated screenshots, local implementation and live public API data.
+Initial investigation made no application changes. A separate phase 0b prototype
+has since been built (see above). Next: review the interactive layouts
+and the [QIR API review](docs/kpfk/qir-api-review-2026-09-23.md). The supplied
+API specification is now reviewed; authenticated access is pending. Core browsing fixes can
+proceed independently of optional enrichment. Paul explicitly requires a dedicated,
+modern search-results design as a core feature with the plugin disabled. Existing RSS, scheduled-program and
+artwork policies remain in effect pending explicit decisions.
 
 ## Flutter companion — started 2026-09-21
 
@@ -130,7 +248,9 @@ Each file is daily counters and nothing else:
    `episodeRecords()`. The export reads the catalog mirror as well
    (`exportShowTitle()`). Routing those two through the same lookup is a small
    change; it was left out to keep this commit to the export.
-2. **Station settings in the studio — ON HOLD (Paul, 2026-09-16).** Kept for the next
+2. **Station settings in the studio — planned scope expanded (Paul, 2026-09-23).**
+   The September 16 hold is superseded by the [station-admin plan](docs/kpfk/station-admin-template-plan.md);
+   implementation follows the KPFK fixes/plugin beta. Historical context: Kept for the next
    station clone; KPFK is the template and still in beta. Spec not yet written. Paul, 2026-09-15: the
    **station timezone should be settable in the admin panel** rather than only in
    `stations/kpfk.json`. This would be the studio's first setting that *writes station
@@ -332,4 +452,3 @@ commits and deploy. Nothing is shared between the two apps' code or data. Decide
   `mergeFeedItems`: keep every episode, no duplicates); usage months preview-then-replace.
 - No published schedule and no station profile on WBAI: coverage drops that column, the
   profile export is not offered.
-

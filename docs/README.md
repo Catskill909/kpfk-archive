@@ -15,6 +15,13 @@ Current state and working rules live at the repo root: [HANDOFF.md](../HANDOFF.m
 | [DEPLOYMENT.md](DEPLOYMENT.md) | Coolify setup, the `/app/data` volume, `/healthz` checks, backups |
 | [exports.md](exports.md) | **Built 2026-09-16.** Studio Export dialog: listening, archive, coverage, station profile, printable report, backup and restore — spec, decisions and as-built notes per phase |
 | [exports-for-pacifica.md](exports-for-pacifica.md) | **Current.** For Pacifica: combining several stations' export files — columns, sums, clocks, versions |
+| [kpfk/qir-beta-build.md](kpfk/qir-beta-build.md) | KPFK QIR adapter, explicit preview/API modes, transcript search/cues, tests and live-access limits |
+| [kpfk/station-admin-template-plan.md](kpfk/station-admin-template-plan.md) | Future admin setup: station feeds, uploads, text, persistent settings, preview/rollback and new-station launch |
+| [kpfk/discover-plugin.md](kpfk/discover-plugin.md) | Optional prototype interface, station toggle, routes and enabled/disabled verification |
+| [kpfk/core-search-phase.md](kpfk/core-search-phase.md) | Main app metadata search, show/episode results, copy corrections and verification |
+| [kpfk/phase-0b-review.md](kpfk/phase-0b-review.md) | Interactive local prototype, review sequence, browser verification and integration limits |
+| [kpfk/qir-api-review-2026-09-23.md](kpfk/qir-api-review-2026-09-23.md) | Supplied QIR API contract, public health check, identity/sync gaps and independent adapter proposal |
+| [kpfk/client-review-plan-2026-09-23.md](kpfk/client-review-plan-2026-09-23.md) | Review and proposed phases: show/episode browsing, search, modal layouts, optional enrichment |
 | [kpfk/architecture.md](kpfk/architecture.md) | JSON provider contracts and decision record |
 | [kpfk/implementation.md](kpfk/implementation.md) | Phase plan and implementation checkpoints |
 | [kpfk/flutter-app-plan.md](kpfk/flutter-app-plan.md) | **Planning.** Flutter podcast app clone, KPFK JSON retrofit, native identifiers and phased acceptance criteria |
