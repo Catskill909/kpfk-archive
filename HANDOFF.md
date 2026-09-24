@@ -18,6 +18,28 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 | Local | `npm start` → http://localhost:8081, `./data` |
 | Tests | `npm test` passed 2026-09-24 before the push: inherited suites + 51 Pacifica tests (incl. QIR per-record validation). The standalone plugin has its own tests/CI. |
 
+## Deployed 2026-09-24 (evening) — live on podcast.kpfk.org
+
+Verified live after Paul's Coolify deploys; `instanceId` `73039ae5…` unchanged,
+`freshVolume:false`.
+
+- **Homepage gallery = one card per show** ("99 shows · 1034 episodes"); list view stays
+  the full table of recordings. Ace's review point (episode feed read as a directory).
+- **Sort menu** beside All categories, same component: A–Z (default) · Recently aired ·
+  Category (headings). Per-visitor, `?sort=`, restored on Back, synced with the list's
+  column headers. Phones: icon-only sort, no carets.
+- **Keyboard bug fixed in both dropdowns** (the ↓ that opened a menu skipped the current
+  choice).
+- **Search:** matched words highlighted (22% tint of `--accent-2`); cut previews expand
+  in place (Show more/less); a topic over 200 characters is a description, not a title.
+  All in the shared `public/archive-search.js`, kept identical with the Discovery
+  plugin's copy.
+- **"Discover shows" link removed** (`plugins.discovery: false`); Discovery lives at
+  kpfk-discovery.pacifica.audio. Front-facing integration is on hold.
+- Tests: `npm test` 56; browser `test/homepage/sort.cjs` 18, `test/homepage/search-titles.cjs`
+  11 (app on 8081, Chrome CDP 9231).
+- Flutter sister app (`kpfk-podcast`): HANDOFF "Update 2026-09-24" lists what to port.
+
 ## Resume here — current session checkpoint (2026-09-24)
 
 - **Live now:** core show/episode search (`archive-search.js`). "jazz" finds 4 shows
