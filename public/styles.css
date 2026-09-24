@@ -1240,6 +1240,25 @@
     .cat-menu{min-width:min(220px, 78vw);}
   }
 
+  /* ---- Sort dropdown: the category component, narrower ---- */
+  .sort-select .cat-trigger{min-width:0;}
+  /* Phones: the search field needs the width, so sort shows its icon only; its
+     accessible name still says the current order. */
+  @media (max-width:520px){
+    .sort-select .cat-trigger-value{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+    .sort-select .cat-trigger{width:44px; min-width:44px; padding:0; justify-content:center; gap:0;}
+    .sort-select .cat-caret{display:none;}
+    /* Carets are decoration; on a phone the width goes to the search field. */
+    .cat-select:not(.sort-select) .cat-caret{display:none;}
+  }
+  /* Category sort: headings span the whole gallery row. */
+  .grid-heading{
+    grid-column:1 / -1; margin:.6rem 0 -.3rem; padding-bottom:.35rem;
+    font-family:var(--font-body); font-size:.8rem; font-weight:700; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--accent-2); border-bottom:1px solid var(--outline);
+  }
+  .grid-heading:first-child{margin-top:0;}
+
   .result-meta{display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;}
   .result-meta-right{display:flex; align-items:center; gap:.85rem;}
   .result-count{font-size:.8rem; color:var(--ink-faint); font-family:var(--font-mono); font-variant-numeric:tabular-nums;}

@@ -186,6 +186,21 @@
         </button>
         <div class="cat-menu" id="catMenu" role="listbox" aria-label="Category" hidden></div>
       </div>
+      <!-- Sort: same component and look as the category dropdown (reuses its classes). -->
+      <div class="cat-select sort-select" id="sortSelect">
+        <button class="cat-trigger" id="sortTrigger" type="button" aria-haspopup="listbox" aria-expanded="false"
+          aria-label="Sort: A–Z">
+          <span class="cat-trigger-icon" aria-hidden="true"><svg class="cat-icon" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 4v16M3.5 16.5L7 20l3.5-3.5M14 6h7M14 12h5M14 18h3" /></svg></span>
+          <span class="cat-trigger-value" id="sortTriggerValue">A–Z</span>
+          <svg class="cat-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </button>
+        <div class="cat-menu" id="sortMenu" role="listbox" aria-label="Sort" hidden></div>
+      </div>
     </div>
 
     <div class="controls">

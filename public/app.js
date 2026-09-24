@@ -61,7 +61,19 @@
   // load; clicking any column header switches to a real sort and there is no way
   // back to it short of a reload, which is fine — it is a starting view, not a
   // column.
-  var state = { query:'', cat:'all', sortKey:'archive', sortDir:'desc', view:savedView };
+  // Sort menu choices (A–Z is the default, Paul 2026-09-24). Each maps onto the
+  // existing sortKey/sortDir that the list view's column headers also drive.
+  var SORTS = {
+    az:       { label:'A–Z',            key:'title',    dir:'asc'  },
+    recent:   { label:'Recently aired', key:'date',     dir:'desc' },
+    category: { label:'Category',       key:'category', dir:'asc'  }
+  };
+  var savedSort = 'az';
+  try {
+    var storedSort = localStorage.getItem((STATION.storagePrefix + 'sort'));
+    if(SORTS[storedSort]) savedSort = storedSort;
+  } catch(e){}
+  var state = { query:'', cat:'all', sortKey:SORTS[savedSort].key, sortDir:SORTS[savedSort].dir, view:savedView };
 
   // ---------------- URL state ----------------
   // Search, category and the open sheet are reflected in the query string so a
@@ -81,6 +93,8 @@
   function urlFor(sheetId){
     var q = [];
     if(state.cat !== 'all' && CAT_BY_KEY[state.cat]) q.push('cat=' + encodeURIComponent(state.cat));
+    var sortName = currentSort();
+    if(sortName && sortName !== 'az') q.push('sort=' + sortName);
     if(state.query) q.push('q=' + encodeURIComponent(state.query));
     if(state.query && searchScope !== 'all') q.push('scope=' + searchScope);
     if(state.query && searchShow) q.push('match=' + encodeURIComponent(searchShow));
@@ -214,6 +228,10 @@
   }
   function onDocClickCat(e){ if(!catSelect.contains(e.target)) closeCatMenu(); }
   function onCatKeydown(e){
+    // The ↓/↑ that opened the menu from the trigger bubbles here too, because
+    // this listener is attached during that same keydown; handling it again
+    // skipped the current choice. Keys aimed at the trigger belong to it.
+    if(e.target === catTrigger) return;
     if(e.key === 'Escape'){ closeCatMenu(); catTrigger.focus(); return; }
     var els = catOptionEls();
     var idx = els.indexOf(document.activeElement);
@@ -280,6 +298,88 @@
     catTrigger.focus();
   });
 
+  // ---------------- Sort menu ----------------
+  // Same component as the category dropdown (markup classes, keyboard model,
+  // outside-click close). It writes the same sortKey/sortDir the list view's
+  // column headers use, so either control can change the order and both agree.
+  var sortSelect = document.getElementById('sortSelect');
+  var sortTrigger = document.getElementById('sortTrigger');
+  var sortTriggerValue = document.getElementById('sortTriggerValue');
+  var sortMenu = document.getElementById('sortMenu');
+  function currentSort(){
+    for(var k in SORTS) if(SORTS[k].key === state.sortKey && (k !== 'az' || state.sortDir === 'asc')) return k;
+    return '';
+  }
+  function sortLabel(){
+    var k = currentSort();
+    if(k) return SORTS[k].label;
+    return state.sortKey === 'daysLeft' ? 'Retention' : state.sortKey === 'title' ? 'Z–A' : 'Custom';
+  }
+  function renderSortTrigger(){
+    var label = sortLabel();
+    sortTriggerValue.textContent = label;
+    sortTrigger.setAttribute('aria-label', 'Sort: ' + label);
+    document.querySelectorAll('.sortbtn').forEach(function(b){ b.dataset.active = (b.dataset.sort === state.sortKey); });
+  }
+  function renderSortMenu(){
+    var cur = currentSort();
+    sortMenu.innerHTML = Object.keys(SORTS).map(function(k){
+      return '<button class="cat-option" type="button" role="option" data-sortpick="'+k+'" aria-selected="'+(k===cur)+'">'+
+        '<span class="cat-option-label">'+esc(SORTS[k].label)+'</span>'+
+        '<svg class="cat-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>'+
+        '</button>';
+    }).join('');
+  }
+  function sortOptionEls(){ return Array.prototype.slice.call(sortMenu.querySelectorAll('.cat-option')); }
+  function openSortMenu(){
+    if(!catMenu.hidden) closeCatMenu();
+    renderSortMenu();
+    sortMenu.hidden = false;
+    sortSelect.classList.add('open');
+    sortTrigger.setAttribute('aria-expanded', 'true');
+    document.addEventListener('click', onDocClickSort, true);
+    document.addEventListener('keydown', onSortKeydown);
+    var sel = sortMenu.querySelector('.cat-option[aria-selected="true"]');
+    (sel || sortMenu.querySelector('.cat-option')).focus();
+  }
+  function closeSortMenu(){
+    sortMenu.hidden = true;
+    sortSelect.classList.remove('open');
+    sortTrigger.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('click', onDocClickSort, true);
+    document.removeEventListener('keydown', onSortKeydown);
+  }
+  function onDocClickSort(e){ if(!sortSelect.contains(e.target)) closeSortMenu(); }
+  function onSortKeydown(e){
+    if(e.target === sortTrigger) return; // same reason as onCatKeydown
+    if(e.key === 'Escape'){ closeSortMenu(); sortTrigger.focus(); return; }
+    var els = sortOptionEls(), idx = els.indexOf(document.activeElement), n = els.length;
+    if(e.key === 'ArrowDown'){ e.preventDefault(); els[((idx < 0 ? 0 : idx + 1) + n) % n].focus(); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); els[((idx < 0 ? n - 1 : idx - 1) + n) % n].focus(); }
+    else if(e.key === 'Home'){ e.preventDefault(); els[0].focus(); }
+    else if(e.key === 'End'){ e.preventDefault(); els[n - 1].focus(); }
+  }
+  function applySort(name){
+    if(!SORTS[name]) name = 'az';
+    state.sortKey = SORTS[name].key; state.sortDir = SORTS[name].dir;
+    try { localStorage.setItem((STATION.storagePrefix + 'sort'), name); } catch(e){}
+    renderSortTrigger();
+  }
+  sortTrigger.addEventListener('click', function(){ if(sortMenu.hidden) openSortMenu(); else closeSortMenu(); });
+  sortTrigger.addEventListener('keydown', function(e){
+    if(sortMenu.hidden && (e.key === 'ArrowDown' || e.key === 'ArrowUp')){ e.preventDefault(); openSortMenu(); }
+  });
+  sortMenu.addEventListener('click', function(e){
+    var opt = e.target.closest('[data-sortpick]');
+    if(!opt) return;
+    applySort(opt.dataset.sortpick);
+    closeSortMenu();
+    render();
+    resetListScroll();
+    syncUrl();
+    sortTrigger.focus();
+  });
+
   var searchEl = document.getElementById('q');
   var searchClearEl = document.getElementById('qClear');
   var searchFieldEl = searchClearEl.closest('.search-field');
@@ -318,8 +418,10 @@
       if(state.sortKey === key){ state.sortDir = state.sortDir==='asc' ? 'desc':'asc'; }
       else { state.sortKey = key; state.sortDir = key==='title' ? 'asc':'desc'; }
       document.querySelectorAll('.sortbtn').forEach(function(b){ b.dataset.active = (b===btn); });
+      renderSortTrigger();
       render();
       resetListScroll();
+      syncUrl();
     });
   });
 
@@ -451,9 +553,16 @@
       if(state.cat!=='all' && r.cat!==state.cat) return false;
       return true;
     });
+    var episodeCount = list.length;
+    // The gallery is a show directory: one card per show, carrying its newest
+    // recording (the card plays it; the title opens the show sheet with every
+    // past episode). The list view stays the full table of recordings.
+    // (Ace's homepage review, 2026-09-24: an episode feed read as a directory.)
+    if(state.view==='grid') list = latestPerShow(list);
     list.sort(function(a,b){
       var dir = state.sortDir==='asc' ? 1 : -1;
       if(state.sortKey==='title') return a.title.localeCompare(b.title)*dir;
+      if(state.sortKey==='category') return (catOrder(a.cat) - catOrder(b.cat)) || a.title.localeCompare(b.title);
       if(state.sortKey==='daysLeft') return (a.daysLeft-b.daysLeft)*dir;
       // 'archive' — the order archive2 itself lists them in, which is what the
       // app shows on load so the two listings read the same top to bottom. Their
@@ -465,12 +574,15 @@
     });
 
     loadingEl.hidden = true;
-    setCount(list.length + (list.length===1 ? ' episode':' episodes') + ' found', true);
+    setCount(state.view==='grid'
+      ? list.length + (list.length===1 ? ' show':' shows') + ' · ' + episodeCount + (episodeCount===1 ? ' episode':' episodes')
+      : list.length + (list.length===1 ? ' episode':' episodes') + ' found', true);
     emptyEl.hidden = list.length!==0;
 
     // reset paging: show the first page, append the rest on scroll
     filtered = list;
     shown = 0;
+    lastHeadingCat = null;
     rowsEl.innerHTML = '';
     showMore();
   }
@@ -560,7 +672,31 @@
   });
 
   function renderRows(list){
-    return state.view==='grid' ? renderCards(list) : renderList(list);
+    if(state.view!=='grid') return renderList(list);
+    if(state.sortKey!=='category') return renderCards(list);
+    // Category sort: a full-width heading wherever the category changes. Pages
+    // arrive in chunks, so the last heading written is remembered across them.
+    return list.map(function(r){
+      var head = '';
+      if(r.cat !== lastHeadingCat){
+        lastHeadingCat = r.cat;
+        head = '<h3 class="grid-heading">'+esc((CAT_BY_KEY[r.cat] || {label:'Other'}).label)+'</h3>';
+      }
+      return head + renderCards([r]);
+    }).join('');
+  }
+  var lastHeadingCat = null;
+  function latestPerShow(list){
+    var byShow = {};
+    list.forEach(function(r){
+      var cur = byShow[r.sho];
+      if(!cur || r.dt > cur.dt) byShow[r.sho] = r;
+    });
+    return Object.keys(byShow).map(function(k){ return byShow[k]; });
+  }
+  function catOrder(key){
+    for(var i = 0; i < CATS.length; i++) if(CATS[i].key === key) return i;
+    return CATS.length;
   }
 
   // Shared bits: computes per-show display state and the data-* attributes every
@@ -4582,6 +4718,10 @@
     var restoredQuery = param('q').trim().toLowerCase();
     var restoredScope = ['shows','episodes'].indexOf(param('scope')) >= 0 ? param('scope') : 'all';
     var restoredCat = CAT_BY_KEY[param('cat')] ? param('cat') : 'all';
+    var restoredSort = SORTS[param('sort')] ? param('sort') : null;
+    if(restoredSort && restoredSort !== currentSort()){
+      state.sortKey = SORTS[restoredSort].key; state.sortDir = SORTS[restoredSort].dir; renderSortTrigger(); render();
+    }
     if(state.query !== restoredQuery || searchScope !== restoredScope || state.cat !== restoredCat || searchShow !== param('match')){
       state.query=restoredQuery;state.cat=restoredCat;searchScope=restoredScope;searchShow=param('match');
       searchEl.value=restoredQuery;syncSearchUi();renderCat();render();
@@ -5000,6 +5140,11 @@
   (function(){
     var cat = param('cat');
     if(cat && CAT_BY_KEY[cat]) state.cat = cat;
+    // A shared link's sort wins over this device's remembered one, without
+    // overwriting the remembered preference.
+    var sortParam = param('sort');
+    if(SORTS[sortParam]){ state.sortKey = SORTS[sortParam].key; state.sortDir = SORTS[sortParam].dir; }
+    renderSortTrigger();
     searchScope = ['shows','episodes'].indexOf(param('scope')) >= 0 ? param('scope') : 'all';
     searchShow = param('match');
     var q = param('q');

@@ -73,9 +73,10 @@ Dockerfile build pack, container port 8080 — Coolify's **Ports exposes** must 
 live only after a Coolify redeploy and `version` in `/healthz` changes.
 
 - Storage is a **named** Coolify volume at `/app/data`
-  (`…-kpfk-archive-data`). Proven persistent on 2026-09-15: `storage.instanceId`
-  `e4a9aac9-e3dd-4e9b-8c5b-17656032bd0d` survived a redeploy with
-  `freshVolume:false`. **If that id ever changes, the volume was replaced.**
+  (`…-kpfk-archive-data`). On the podcast.kpfk.org app (since 2026-09-19)
+  `storage.instanceId` is `73039ae5-6589-4ec2-9df5-354de84c0989`, unchanged across
+  the 2026-09-24 redeploy with `freshVolume:false`. (`e4a9aac9…` was the retired
+  supersoul.top deployment.) **If that id ever changes, the volume was replaced.**
 - What's on it: `stats/` (usage counters — **irreplaceable**), `pacifica/` (last-good
   feed snapshots — refill from upstream), `.instance.json` (identity; the server
   refuses a data dir stamped for another station).
