@@ -1,10 +1,26 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-25 (upload shows served; temporary workarounds recorded below). **This folder is the active KPFK podcast-template project.**
+**Updated:** 2026-09-25 (feed text decoding shared with Discovery; upload shows served; temporary workarounds recorded below). **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 [docs/README.md](docs/README.md) (which docs are current vs inherited from WBAI).
+
+## 2026-09-25 (afternoon) — feed text decoding shared with Discovery
+
+**Pushed, not deployed — Paul: redeploy in Coolify, then check `/healthz` `version` changed.**
+`lib/pacifica/normalize.js` `plain()` now uses `public/text.js`, the decoder shared with
+the Discovery plugin (keep the two copies identical, like `archive-search.js`). Before: ~30
+named entities, so `&ocirc;`, `&ouml;`, `&agrave;`… would have shown literally, and an
+opening `<p>` ran two lines together. Now: full Latin-1 + typographic entities,
+decimal/hex, Windows-1252 numbers, up to three passes, `&shy` without `;`, NFC; unknown
+entities stay visible and are logged once ("Unknown HTML entity in feed text").
+`/discover`'s `qir-transcript.js` also decodes WebVTT `&amp;` (dormant: `discovery:false`).
+Not changed: `server.js` `unescapeHtml()` (inherited WBAI HTML-scraping paths, unused in
+JSON-only mode). Test: `test/pacifica/text.test.js` — every entity style through every
+listener-facing field of the real `normalizeCatalog`. `npm test` 61/61; local restart:
+`/api/archive` 0 entities, accents intact. Upstream ask (Otis: plain UTF-8 in the feed)
+is tracked as W7 in the Discovery plugin's HANDOFF.
 
 ## 2026-09-25 — upload shows, and what upstream still owes (read first)
 

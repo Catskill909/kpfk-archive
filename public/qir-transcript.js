@@ -1,4 +1,4 @@
-(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.QirTranscript=factory();})(typeof window==='undefined'?this:window,function(){
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('./text'));else root.QirTranscript=factory(root.PlainText);})(typeof window==='undefined'?this:window,function(PlainText){
   'use strict';
   function seconds(value){
     var m=/^(?:(\d{2,}):)?([0-5]\d):([0-5]\d)\.(\d{3})$/.exec(value);
@@ -13,7 +13,8 @@
       var m=/^(\S+)\s+-->\s+(\S+)/.exec(lines[i]);if(!m)return;
       var start=seconds(m[1]),end=seconds(m[2]);
       if(!Number.isFinite(start)||!Number.isFinite(end)||start<previous||end<=start||(duration>0&&end>duration+2)||cues.length>=5000)return;
-      var content=lines.slice(i+1).join(' ').replace(/<v\s+([^>]+)>/g,'$1: ').replace(/<[^>]*>/g,'').trim();
+      // WebVTT escapes & < > as entities in cue text; tags go first, then decode (W7).
+      var content=PlainText.plain(lines.slice(i+1).join(' ').replace(/<v\s+([^>]+)>/g,'$1: ').replace(/<[^>]*>/g,''));
       if(!content)return;cues.push({start:start,end:end,text:content});previous=start;
     });return cues;
   }
