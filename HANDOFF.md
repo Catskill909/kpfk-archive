@@ -1,10 +1,40 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-24 (core search deployed; QIR live in the plugin; Listen along prototype; cue-file finding). **This folder is the active KPFK podcast-template project.**
+**Updated:** 2026-09-25 (upload shows served; temporary workarounds recorded below). **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 [docs/README.md](docs/README.md) (which docs are current vs inherited from WBAI).
+
+## 2026-09-25 — upload shows, and what upstream still owes (read first)
+
+**Deployed by Paul (`f79e0a1`).** The listener archive now serves on-air programs in the
+published schedule **plus every upload (`2kpfk`) show with episodes**. Before, BradCast
+and Bike Talk were missing from podcasts.kpfk.org entirely. Live check: `/healthz`
+`archiveFilter.hiddenEpisodes` 4 (was 144); BradCast w/ Brad Friedman 44 episodes, Bike
+Talk Podcast 12 with its real image. `archive.kpfk.org` is now an artwork origin (three
+upload shows keep their pictures under `archive.kpfk.org/pix/`; image content types only).
+The coverage export's "in published schedule" stays on-air-channel only.
+
+**Why they were missing (Otis's data, not fixed here):** BradCast's schedule slot and
+picture are on Confessor record 210 (`friedman`, on-air list), but its recordings are
+filed under `bradcast2` (upload list, no picture). Bike Talk's current record is
+upload-only (`biketalk`, rec 1492); old rec 263 (`biketalka`) was last used 9 Feb.
+Email to Otis drafted in the Discovery repo (`.local-notes/otis-email-draft.html`).
+
+**Watch for when Otis fixes it:**
+
+| If Otis… | Then on podcasts.kpfk.org | Do |
+|---|---|---|
+| files BradCast recordings under rec 210 (`friedman`) | BradCast appears **twice** (`friedman` new episodes + `bradcast2` old ones) until the old ones age out of the feed (~2 months) or `bradcast2` is retired | Ask Otis to retire `bradcast2`; nothing to change here |
+| gives `bradcast2` the picture | BradCast gets its picture automatically | Nothing |
+| retires `biketalka` / `friedman` | No change here (neither has episodes, so no card) | Discovery: update its `hiddenShows` (its HANDOFF, W1) |
+
+**Newly visible, owed upstream:** upload items with **future air dates** are now served
+(Politics Or Pedagogy dated 27 Sept, Informativo Pacifica Online dated this evening).
+They are future-dated in the Pacifica feed itself; `test/pacifica/normalize.test.js`
+requires that no date filter is applied. Owner: Otis (real publish times). Discovery's
+Just aired hides them (its W5).
 
 ## State at a glance
 
