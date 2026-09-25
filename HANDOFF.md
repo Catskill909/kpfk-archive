@@ -26,6 +26,10 @@ archive loads (~100 images, ~2 MB), and sent with `Cache-Control: public, max-ag
 plus an `ETag` (If-None-Match → 304). Local measure: repeats 0.45 s → <1 ms.
 `ARTWORK_WARM=off` skips the warm-up (offline tests). Deploy pending at time of writing.
 
+**Accessibility (2026-09-24):** Discovery now has `docs/ACCESSIBILITY.md` (WCAG 2.2 AA,
+custom build, axe-core in tests only, no overlays, transcripts as WCAG 1.2.1), aligned
+with this repo's `docs/accessibility.md`. Apply the same test plan here.
+
 ## Deployed 2026-09-24 (evening) — live on podcast.kpfk.org
 
 Verified live after Paul's Coolify deploys; `instanceId` `73039ae5…` unchanged,
