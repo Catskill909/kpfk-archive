@@ -21,7 +21,8 @@
       "https://streams.pacifica.org:9000"
     ],
     "artwork": [
-      "https://confessor.kpfk.org"
+      "https://confessor.kpfk.org",
+      "https://archive.kpfk.org"
     ]
   },
   "links": {

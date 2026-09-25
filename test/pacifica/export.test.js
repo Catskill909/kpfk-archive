@@ -421,7 +421,9 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   const byKey = new Map(covCsv.rows.map(r => [r.show_key, r]));
   for (const k of catalogKeys) {
     assert.equal(byKey.get(k).in_published_schedule, String(scheduled.has(k)), `${k} schedule`);
-    assert.equal(byKey.get(k).shown_to_listeners, String(scheduled.has(k)), `${k} listeners`);
+    // Listeners also get every upload show with episodes (2026-09-25); the schedule column stays schedule-only.
+    const upload = k.split('.')[1] === '2kpfk' && archive.shows.some(r => r.sho === k);
+    assert.equal(byKey.get(k).shown_to_listeners, String(scheduled.has(k) || upload), `${k} listeners`);
   }
   assert.deepEqual(covCsv.rows.filter(r => r.has_artwork === 'false').map(r => r.show_key).sort(), [...noImage].sort(),
     'shows with only the generic station picture have no artwork');

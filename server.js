@@ -2873,8 +2873,10 @@ const EXPORT_DATASETS = {
       const listenerKeys = new Set(Object.keys((archive && archive.directory) || {}));
       // Only a schedule-based filter says which shows are IN the schedule; the
       // outage fallback and the pre-warm-up state do not, so the column is left
-      // empty rather than guessed.
-      const scheduleKeys = archive && archive.filter.basis === 'schedule' ? listenerKeys : null;
+      // empty rather than guessed. Uploads are listed but never scheduled, so the
+      // scheduled set is the listener shows on the on-air channel.
+      const scheduleKeys = archive && archive.filter.basis === 'schedule'
+        ? new Set([...listenerKeys].filter(k => k.split('.')[1] === station.primaryChannel)) : null;
       return coverageExport.buildCoverage({
         station: STATION_ID, stationTimezone: STATION_TZ, directory: catalog.directory, rows: catalog.shows,
         listenerKeys, scheduleKeys, titleFor: exportShowTitle, now: Date.now(), generatedAt,
@@ -3675,7 +3677,7 @@ const STUDIO_ACTIONS = station ? {
   catalog: { label: 'Refresh the JSON catalog', cooldownMs: 60000,
     async run() { const data = await pacifica.archive(true); syncPacificaDirectory(data); archiveCache.set(data);
       if (data.stale) throw new Error('Catalog refresh failed; last-good preserved');
-      return `${data.count} scheduled episodes shown (${data.filter.hiddenEpisodes} archive-only or unscheduled hidden)`; } },
+      return `${data.count} scheduled episodes shown (${data.filter.hiddenEpisodes} unscheduled hidden)`; } },
   metadata: { label: 'Refresh live metadata', cooldownMs: 30000,
     async run() { const data = await pacifica.live(true); return data.stale ? 'Metadata is stale' : 'Live metadata refreshed'; } },
   schedule: { label: 'Refresh the schedule index', cooldownMs: 60000,

@@ -25,9 +25,10 @@ test('missing profile and foreign DATA_DIR fail before boot writes', t => {
   assert.notEqual(foreign.status, 0); assert.match(foreign.stderr, /different station/);
   assert.deepEqual(fs.readdirSync(dir), ['.instance.json']);
 });
-// The listener archive shows only programs in the published schedule (policy
-// 2026-09-15). Expected membership is computed here straight from the fixture
-// files, independently of the service code under test.
+// The listener archive shows on-air programs in the published schedule (policy
+// 2026-09-15) plus every upload show with episodes (2026-09-25). Expected
+// membership is computed here straight from the fixture files, independently of
+// the service code under test.
 function fixtureScheduledArchive() {
   const catalog = JSON.parse(fs.readFileSync(path.join(fixtureDir, 'fe_catalog_kpfk.json'), 'utf8'));
   const altids = new Set();
@@ -38,10 +39,12 @@ function fixtureScheduledArchive() {
     Object.values(node).forEach(walk);
   };
   for (const f of fs.readdirSync(fixtureDir).filter(f => /^fe_schedule_kpfk_\d+\.json$/.test(f))) walk(JSON.parse(fs.readFileSync(path.join(fixtureDir, f), 'utf8')));
-  const onAir = catalog.episodes.kpfk;
-  const episodes = [...altids].reduce((n, a) => n + Object.keys(onAir[a] || {}).length, 0);
+  const onAir = catalog.episodes.kpfk, uploads = catalog.episodes['2kpfk'];
+  const uploadAltids = new Set(Object.keys(uploads).filter(a => Object.keys(uploads[a]).length));
+  const count = eps => Object.keys(eps || {}).length;
+  const episodes = [...altids].reduce((n, a) => n + count(onAir[a]), 0) + [...uploadAltids].reduce((n, a) => n + count(uploads[a]), 0);
   const programs = catalog.shows.kpfk.filter(s => altids.has(s.altid)).map(s => s.altid);
-  return { altids, episodes, programs, allEpisodes: Object.values(catalog.episodes).reduce((n, g) => n + Object.values(g).reduce((m, e) => m + Object.keys(e).length, 0), 0) };
+  return { altids, uploadAltids, episodes, programs, allEpisodes: Object.values(catalog.episodes).reduce((n, g) => n + Object.values(g).reduce((m, e) => m + Object.keys(e).length, 0), 0) };
 }
 test('real HTTP archive serves every episode of scheduled programs only, exact show metadata, branding and durable restart', async t => {
   const expected = fixtureScheduledArchive();
@@ -89,10 +92,10 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   await boot();
   const archive = await (await fetch(url + '/api/archive')).json();
   assert.equal(archive.count, expected.episodes); assert.equal(archive.shows.length, expected.episodes);
-  assert.ok(archive.shows.every(r => r.archiveSource === 'kpfk' && expected.altids.has(r.upstreamAltId)), 'only scheduled on-air programs');
+  assert.ok(archive.shows.every(r => r.archiveSource === 'kpfk' ? expected.altids.has(r.upstreamAltId) : expected.uploadAltids.has(r.upstreamAltId)), 'scheduled on-air programs and upload shows only');
   assert.equal(archive.shows.filter(r => r.upstreamAltId === 'dn').length, 69);
-  assert.equal(archive.shows.filter(r => r.archiveSource === '2kpfk').length, 0, 'archive-only uploads are not served');
-  const info = await (await fetch(url + '/api/showinfo')).json(); assert.equal(info.count, expected.programs.length);
+  assert.ok(archive.shows.filter(r => r.archiveSource === '2kpfk').length > 0, 'upload shows are served');
+  const info = await (await fetch(url + '/api/showinfo')).json(); assert.equal(info.count, expected.programs.length + expected.uploadAltids.size);
   const detail = await (await fetch(url + '/api/showinfo/kpfk.kpfk.' + expected.programs[0])).json(); assert.ok(detail.info.name);
   const head = await (await fetch(url + '/api/archive/head')).json(); assert.equal(head.revision, archive.revision);
   const home = await (await fetch(url)).text(); assert.match(home, /KPFK/); assert.doesNotMatch(home, /WBAI|wbai\.org|\{\{station\./);
@@ -167,7 +170,7 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   assert.equal(studioHealth.counts.programs, undefined, 'no scraped-directory count on a JSON station');
   assert.equal(studioHealth.counts.feeds, undefined, 'no XML feed-store count on a JSON station');
   assert.equal(studioHealth.counts.archiveEpisodes, expected.episodes);
-  assert.equal(studioHealth.counts.archiveShows, expected.programs.length);
+  assert.equal(studioHealth.counts.archiveShows, expected.programs.length + expected.uploadAltids.size);
   assert.ok(studioHealth.counts.catalogShows > studioHealth.counts.archiveShows, 'the catalog holds more shows than the schedule');
   assert.ok(studioHealth.storage.pacificaSnapshots > 0, 'the snapshots on disk are counted');
   // Prove the sweep can see the played show in each report, not an empty list.

@@ -102,9 +102,11 @@ live only after a Coolify redeploy and `version` in `/healthz` changes.
   fetches), `normalize.js` (catalog, channels, now-playing, schedule → app shapes),
   `service.js` (conditional polling, last-good snapshots, artwork proxy).
   - `catalog()` is an **untouched mirror** of the feed. `archive()` / `peekArchive()`
-    is what listeners see: **only programs in the published schedule** (Paul's
-    policy, 2026-09-15). Uploads (`2kpfk`) and unscheduled programs are hidden.
-    A schedule outage falls back to the on-air channel and `/healthz`
+    is what listeners see: **on-air programs in the published schedule** (Paul's
+    policy, 2026-09-15) **plus every upload show with episodes** (`2kpfk`: podcasts
+    and online editions such as Bike Talk Podcast and BradCast w/ Brad Friedman,
+    added 2026-09-25). Unscheduled on-air programs are hidden. A schedule outage
+    falls back to the whole on-air channel (plus uploads) and `/healthz`
     `archiveFilter.basis` says `primary-channel`.
   - Schedule and now-playing `photoUrl` from Pacifica is a bare `/pix` folder;
     every image comes from the **catalog** `photoUrl` joined by show key.

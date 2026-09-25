@@ -120,9 +120,9 @@ test('every photo the service hands the browser is same-origin, schedule slots i
     'a slot whose show has catalog artwork gets the proxied image, even if the week loaded before the catalog');
 });
 
-// Display policy (2026-09-15): the listener archive shows only programs in the
-// published schedule. Archive-only uploads (`2kpfk`) and programs no longer on
-// the air stay in the catalog mirror but are not served.
+// Display policy (2026-09-15, uploads 2026-09-25): the listener archive shows on-air
+// programs in the published schedule plus every upload show (`2kpfk`) with episodes.
+// On-air programs no longer scheduled stay in the catalog mirror but are not served.
 function fixtureService(t, fail = () => false) {
   const dir = path.join(__dirname, '../../docs/fixtures/pacifica-kpfk-2026-09-14');
   const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'kpfk-scheduled-'));
@@ -134,26 +134,27 @@ function fixtureService(t, fail = () => false) {
   };
   return createService({ profile, dataDir, writeJsonAtomic: write, fetchImpl, now: () => 1789435100000 });
 }
-test('archive() serves exactly the scheduled programs; the catalog mirror keeps everything', async t => {
+test('archive() serves the scheduled programs plus upload shows; the catalog mirror keeps everything', async t => {
   const service = fixtureService(t);
   const catalog = await service.catalog();
-  // Not yet measured: must not claim a schedule outage ("primary-channel"), and must not serve uploads.
+  // Not yet measured: must not claim a schedule outage ("primary-channel"); uploads are served.
   const early = service.peekArchive();
   assert.equal(early.filter.basis, "pending");
-  assert.equal(early.shows.filter(r => r.archiveSource === "2kpfk").length, 0);
+  assert.equal(early.shows.filter(r => r.archiveSource === "2kpfk").length, catalog.shows.filter(r => r.archiveSource === "2kpfk").length);
   const index = await service.schedule();
   const scheduled = new Set();
   for (const w of index.weeks) (await service.schedule(w.weekStart)).days.forEach(d => d.slots.forEach(s => scheduled.add(s.showKey)));
-  // Positive controls: the fixture really contains what must be hidden.
+  // Positive controls: the fixture really contains uploads and programs that must be hidden.
   const uploads = catalog.shows.filter(r => r.archiveSource === '2kpfk');
   const unscheduledOnAir = catalog.shows.filter(r => r.archiveSource === 'kpfk' && !scheduled.has(r.sho));
   assert.ok(uploads.length > 100, 'fixture has archive-only uploads');
   const view = await service.archive();
   assert.equal(view.filter.basis, 'schedule');
-  assert.deepEqual(new Set(view.shows.map(r => r.sho)), new Set(catalog.shows.map(r => r.sho).filter(k => scheduled.has(k))));
-  assert.equal(view.shows.filter(r => r.archiveSource === '2kpfk').length, 0, 'no uploads served');
+  assert.ok(unscheduledOnAir.length > 0, 'fixture has unscheduled on-air programs');
+  assert.deepEqual(new Set(view.shows.map(r => r.sho)), new Set(catalog.shows.map(r => r.sho).filter(k => scheduled.has(k) || k.split('.')[1] === '2kpfk')));
+  assert.equal(view.shows.filter(r => r.archiveSource === '2kpfk').length, uploads.length, 'every upload episode served');
   assert.equal(view.shows.filter(r => unscheduledOnAir.includes(r)).length, 0, 'no unscheduled on-air shows served');
-  assert.ok(Object.keys(view.directory).every(k => scheduled.has(k)), 'directory limited to scheduled programs');
+  assert.ok(Object.keys(view.directory).every(k => scheduled.has(k) || uploads.some(r => r.sho === k)), 'directory: scheduled programs and upload shows with episodes');
   assert.equal(view.count, view.shows.length); assert.equal(view.filter.hiddenEpisodes, catalog.count - view.count);
   assert.equal((await service.catalog()).count, 1143, 'catalog mirror is untouched');
   assert.notEqual(view.revision, catalog.revision, 'membership is part of the archive revision');
@@ -165,8 +166,8 @@ test('a schedule outage limits the archive to the on-air channel, labelled, inst
   const view = await service.archive();
   assert.equal(view.filter.basis, 'primary-channel');
   assert.ok(view.count > 0);
-  assert.equal(view.count, catalog.shows.filter(r => r.archiveSource === 'kpfk').length);
-  assert.equal(view.shows.filter(r => r.archiveSource === '2kpfk').length, 0, 'uploads stay hidden during the outage');
+  assert.equal(view.count, catalog.shows.length, 'on-air channel plus uploads');
+  assert.ok(view.shows.filter(r => r.archiveSource === '2kpfk').length > 0, 'uploads stay served during the outage');
 });
 
 // Artwork memory cache (2026-09-24): repeats used to go back to Pacifica every time
