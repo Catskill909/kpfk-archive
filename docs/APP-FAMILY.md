@@ -71,6 +71,34 @@ How each app copes today:
 podcasts.kpfk.org (and, through `/api/archive`, the mobile app and Discovery's archive
 mode) at its last good copy. Not fixed; see action items.
 
+## Feed rules — we handle upstream problems ourselves (Paul, 2026-09-26)
+
+Stations have outages, recordings fail, records get mistyped. Every known problem has a
+rule, applied **once, in kpfk-archive** (which reads the Pacifica feed for all three apps:
+its `/api/archive` feeds the Flutter app and Discovery), or in Discovery for QIR. Each rule
+**corrects** what is knowable, **holds back** what would mislead, and **records** it
+(`/healthz` → `pacifica.catalog.skipped`, `archiveFilter.*`; server log) for an anomaly report.
+
+| Problem | Rule | Where | Recorded as |
+|---|---|---|---|
+| One malformed show/episode | Skip that record; >20 records **and** 5% rejects the catalog (last-good kept) | kpfk-archive `normalize.js`; Flutter `kpfk_catalog.dart` | `catalog.skipped` |
+| Failed recording (outage, blackout: file of a few seconds) | Read the first 16 KB of each new mp3 once; under 1 MB **and** under 60 s of audio (or none), or 404 → hidden | kpfk-archive `audio-probe.js`, `service.js` | `archiveFilter.failedRecordings` |
+| Wrong or missing duration | The file's own length replaces the feed's when off by >1 min and 10% | same | `archiveFilter.durationCorrected` |
+| Pre-uploaded, future-dated episode | Held until its air time, then appears by itself | kpfk-archive `service.js`; Discovery `lib/qir/pending.js` | `archiveFilter.heldUntilAir` |
+| Show typed Music, episodes Talk (upload shows) | Explicit `showTypes` list in `stations/kpfk.json` (never guessed: Flutter Talk-only licensing rule) | kpfk-archive `normalize.js` | catalog `diagnostics` ("corrected") |
+| Spanish shows | "Español" is its own category, **En Español** (was filed under Special Programming) | `stations/kpfk.json` (both web apps), Discovery QIR mapping | — |
+| Empty show records (one-off specials, fund drives, old duplicates) | Never listed (no episodes) | all | — |
+| Duplicate records with episodes | Explicit `hiddenShows` keys only, never by date | Discovery `stations/kpfk.json` | HANDOFF W1 |
+| Missing pictures in schedule/now playing | Catalog picture used | kpfk-archive `service.js` | — |
+| HTML entities/tags in text | Decoded (`public/text.js`, shared) | both web apps | unknown entity logged |
+| QIR behind | Archive episodes aired in last 48 h shown "Transcript pending" | Discovery `lib/qir/pending.js` | `/healthz` `qirPending` |
+| QIR down | Page shows the station archive, with a notice | Discovery `public/app.js` | — |
+| Feed not updating / unreachable | Last-good served, marked stale | kpfk-archive `service.js` | `stale`, `error` |
+
+Known limits: a full-length recording of dead air or the wrong program cannot be detected
+without audio analysis. `AUDIO_CHECK=off` disables the mp3 check (offline tests; an audio host
+that refuses range requests).
+
 ## Incident 2026-09-26 — Discovery "feed broken"
 
 **What listeners saw:** Discovery's Just aired stuck at Midnight Snack (00:00, 26 Sept).
@@ -109,3 +137,5 @@ Discovery shows exactly what QIR has.
 | 6 | **Done 2026-09-26** (Paul: "QIR fallback essential") | Discovery `lib/qir/pending.js`: archive episodes aired in the last 48 h that QIR lacks (matched by mp3) are listed as "Transcript pending" (audio, song list; no summary/transcript) and vanish when QIR has them. If the QIR catalog cannot load at all, the page shows the station archive and says so. `/healthz` `qirPending` |
 | 7 | Dev (proposal, not started) | Same skip-one-record rule for kpfk-archive `normalizeScheduleWeek()` (one bad slot drops the week), `normalizeChannels()` and `normalizeScheduleIndex()` |
 | 8 | **Before the Otis email** | Do **not** ask Otis to add `2kpfk` to `fe_channels.json` as-is: a channel with the upload list's empty `listen` URL makes kpfk-archive reject the whole channels feed today (item 7). Fix item 7 first, or ask for a valid `listenUrl` |
+| 9 | **Done 2026-09-26** | Feed rules above: failed recordings, true durations, air-time hold, `showTypes`, En Español. The Otis email shrinks to FYIs (source fixes are welcome, but nothing waits on them) |
+| 10 | Dev (proposal) | Anomaly report page (studio) from the recorded lists, to send stations/Otis |

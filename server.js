@@ -1732,8 +1732,10 @@ async function getShowDetail(altid) {
  * only thing the two systems share is the show's name.
  */
 const programCache = station ? { updated: 0, programs: {} } : readJsonFile(PROGRAMS_PATH, { updated: 0, programs: {} });
+// AUDIO_CHECK=off skips reading the start of each mp3 (failed recordings, true durations;
+// lib/pacifica/audio-probe.js): offline tests, or an audio host that refuses range requests.
 const pacifica = station ? require('./lib/pacifica/service').createService({
-  profile: station, dataDir: DATA_DIR, writeJsonAtomic,
+  profile: station, dataDir: DATA_DIR, writeJsonAtomic, audioCheck: process.env.AUDIO_CHECK !== 'off',
 }) : null;
 function syncPacificaDirectory(data) {
   if (!data) return;

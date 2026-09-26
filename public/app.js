@@ -9,6 +9,7 @@
     {key:'health', label:'Health', color:'#6fae7c'},
     {key:'music', label:'Music', color:'#9b7fd1'},
     {key:'science', label:'Science & Tech', color:'#4f9fd1'},
+    {key:'espanol', label:'En Español', color:'#e07f5a'},
     {key:'special', label:'Special Programming', color:'#d17fb0'}
   ];
   var CAT_BY_KEY = {}; CATS.forEach(function(c){ CAT_BY_KEY[c.key]=c; });
@@ -173,6 +174,7 @@
     health:'<path d="M12 20s-7-4.4-7-9.6A3.6 3.6 0 0112 7a3.6 3.6 0 017 3.4C19 15.6 12 20 12 20z"/>',
     music:'<path d="M9 18V6l10-2v12"/><circle cx="6" cy="18" r="2.6"/><circle cx="16" cy="16" r="2.6"/>',
     science:'<path d="M9 3h6M10 3v5.5l-4.6 8A2 2 0 007.2 20h9.6a2 2 0 001.8-3.5L14 8.5V3"/><path d="M7.5 14h9"/>',
+    espanol:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
     special:'<path d="M12 3l2.3 5.8L20 10l-4.6 3.9L17 20l-5-3.3L7 20l1.6-6.1L3 10l5.7-1.2z"/>'
   };
   function catIcon(key){

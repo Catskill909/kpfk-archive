@@ -22,6 +22,16 @@ incident and action items. Read it before touching feed parsing or `/api/archive
   `pacifica.catalog.skipped`, server log); document faults and >20 records and 5% still
   reject. `test/pacifica/normalize.test.js`; `npm test` 74/74; real feed 1,171 kept, 0 skipped.
   **Needs a Coolify redeploy.** Schedule week/channels/index still all-or-nothing (item 7).
+- **Feed rules (later the same day, Paul: "handle it on our end"):** failed recordings hidden
+  and true durations from the file itself (`lib/pacifica/audio-probe.js`: first 16 KB of each
+  new mp3, once, saved in `data/pacifica/audio-probes.json`); future-dated episodes held until
+  air time; `showTypes` in `stations/kpfk.json` retypes 7 upload shows Music→Talk (Flutter app
+  gets 139 episodes back); "Español" → own category **En Español**. All on `/healthz`
+  `archiveFilter` (`failedRecordings`, `durationCorrected`, `heldUntilAir`, `audioChecked`).
+  Dry run on all 1,172 real files: 3 hidden, 4 durations corrected, 1 held, 0 false alarms.
+  `AUDIO_CHECK=off` disables the mp3 check. `tools/run-tests.js` now runs every
+  `test/pacifica/*.test.js` (a hand list had skipped the new file). `npm test` 84/84.
+  Rules table: docs/APP-FAMILY.md.
 
 ## 2026-09-25 (afternoon) — feed text decoding shared with Discovery
 

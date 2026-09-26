@@ -52,9 +52,18 @@
     "share": "/assets/kpfk-share.png",
     "touchIcon": "/assets/apple-touch-icon.png"
   },
+  "showTypes": {
+    "2kpfk.bradcast2": "Talk",
+    "2kpfk.informap": "Talk",
+    "2kpfk.politicorpedagog": "Talk",
+    "2kpfk.outagenda": "Talk",
+    "2kpfk.biketalk": "Talk",
+    "2kpfk.scholacirclepodast": "Talk",
+    "2kpfk.swanapodcast": "Talk"
+  },
   "categories": {
     "Arts & Entertainment": "arts",
-    "Espa\u00f1ol": "special",
+    "Espa\u00f1ol": "espanol",
     "Health & Spirituality": "health",
     "Music": "music",
     "News": "news",

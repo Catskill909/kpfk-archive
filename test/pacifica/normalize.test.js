@@ -198,3 +198,31 @@ test('empty track array preserves the current program and next program', () => {
   raw.track = ['invalid'];
   assert.throws(() => n.normalizeNowPlaying(raw, profile), /track/);
 });
+// 2026-09-26: "Español" was mapped to 'special', so 17 Spanish-language shows were listed
+// as Special Programming. Only the feed's own "Special Program" label may land there.
+test('no feed category except Special Program is filed under Special Programming', () => {
+  const data = n.normalizeCatalog(catalog(), profile);
+  const wrong = Object.values(data.directory).filter(s => s.cat === 'special' && s.categoryLabel !== 'Special Program' && Object.hasOwn(profile.categories, s.categoryLabel));
+  assert.deepEqual(wrong.map(s => `${s.name} (${s.categoryLabel})`), []);
+  for (const [label, key] of Object.entries(profile.categories)) if (label !== 'Special Program') assert.notEqual(key, 'special', label);
+  assert.equal(profile.categories['Español'], 'espanol');
+});
+// 2026-09-26: seven upload shows are typed Music in Confessor while every episode is Talk, so
+// the Talk-only Flutter app hid 139 episodes. Corrections come only from station showTypes.
+test('showTypes corrects only the listed show records, and each correction is recorded', () => {
+  const raw = catalog(), show = raw.shows['2kpfk'].find(s => raw.episodes['2kpfk'][s.altid]);
+  show.type = 'Music';
+  const other = raw.shows['2kpfk'].find(s => s !== show); other.type = 'Music';
+  const p = { ...profile, showTypes: { [`2kpfk.${show.altid}`]: 'Talk' } };
+  const data = n.normalizeCatalog(raw, p);
+  assert.equal(data.directory[`kpfk.2kpfk.${show.altid}`].type, 'Talk');
+  assert.equal(data.directory[`kpfk.2kpfk.${other.altid}`].type, 'Music', 'unlisted shows are never guessed');
+  assert.ok(data.diagnostics.some(d => d.path === `kpfk.2kpfk.${show.altid}.type` && /Music corrected to Talk/.test(d.issue)));
+  assert.equal(n.normalizeCatalog(raw, { ...profile, showTypes: {} }).directory[`kpfk.2kpfk.${show.altid}`].type, 'Music', 'no config, no change');
+});
+test('showTypes entries are validated', () => {
+  const base = require('../../stations/kpfk.json');
+  for (const bad of [{ 'bradcast2': 'Talk' }, { '2kpfk.x': 'talk' }, { '2kpfk.x': 'Podcast' }, []])
+    assert.throws(() => validateProfile({ ...base, showTypes: bad }), /showTypes/);
+  assert.equal(validateProfile(base).showTypes['2kpfk.bradcast2'], 'Talk');
+});

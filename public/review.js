@@ -22,7 +22,7 @@
   let modalHistory = false;
   let episodeShow = params.get('episode_show') || '';
   let showLimit = 6;
-  const labels = {news:'News','public-affairs':'Public Affairs',arts:'Arts & Culture',health:'Health',music:'Music',science:'Science & Tech',special:'Special Programming'};
+  const labels = {news:'News','public-affairs':'Public Affairs',arts:'Arts & Culture',health:'Health',music:'Music',science:'Science & Tech',espanol:'En Español',special:'Special Programming'};
   const date = row => row.qir ? row.qir.air_date : new Intl.DateTimeFormat('en-US',{timeZone:station.timezone,month:'short',day:'numeric',year:'numeric'}).format(new Date(row.dt * 1000));
   const time = row => row.qir ? (row.qir.air_start ? row.qir.air_start.slice(0,5)+' · Los Angeles' : 'Time not listed') : new Intl.DateTimeFormat('en-US',{timeZone:station.timezone,hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(new Date(row.dt * 1000));
   const duration = row => row.durationSec ? `${Math.round(row.durationSec / 60)} min` : '';
@@ -225,7 +225,7 @@
     const directory={};
     for(const s of data.shows) directory['qir:'+s.key]={name:s.display_name,desc:'',dj:'',shortdesc:''};
     const converted=data.episodes.map(e=>{
-      const cat=/music/i.test(e.category)?'music':/arts|entertainment/i.test(e.category)?'arts':/health|spiritual/i.test(e.category)?'health':/news/i.test(e.category)?'news':/public affairs/i.test(e.category)?'public-affairs':'special';
+      const cat=/music/i.test(e.category)?'music':/arts|entertainment/i.test(e.category)?'arts':/health|spiritual/i.test(e.category)?'health':/news/i.test(e.category)?'news':/public affairs/i.test(e.category)?'public-affairs':/espa[ñn]ol/i.test(e.category)?'espanol':'special';
       // Local wall-clock sort key only; QIR date/time are displayed verbatim.
       return {id:'qir:'+e.public_id,sho:'qir:'+e.show_key,title:e.show_name||e.title,host:e.host,cat,
         dt:Date.parse(e.air_date+'T'+(e.air_start||'00:00:00')+'Z')/1000,durationSec:Math.round(e.duration_minutes*60),mp3:e.mp3_url,

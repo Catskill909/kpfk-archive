@@ -140,7 +140,9 @@ test('archive() serves the scheduled programs plus upload shows; the catalog mir
   // Not yet measured: must not claim a schedule outage ("primary-channel"); uploads are served.
   const early = service.peekArchive();
   assert.equal(early.filter.basis, "pending");
-  assert.equal(early.shows.filter(r => r.archiveSource === "2kpfk").length, catalog.shows.filter(r => r.archiveSource === "2kpfk").length);
+  // Aired uploads are served; future-dated ones are held until air time (2026-09-26).
+  const aired = r => r.dt <= 1789435100;
+  assert.equal(early.shows.filter(r => r.archiveSource === "2kpfk").length, catalog.shows.filter(r => r.archiveSource === "2kpfk" && aired(r)).length);
   const index = await service.schedule();
   const scheduled = new Set();
   for (const w of index.weeks) (await service.schedule(w.weekStart)).days.forEach(d => d.slots.forEach(s => scheduled.add(s.showKey)));
@@ -152,13 +154,33 @@ test('archive() serves the scheduled programs plus upload shows; the catalog mir
   assert.equal(view.filter.basis, 'schedule');
   assert.ok(unscheduledOnAir.length > 0, 'fixture has unscheduled on-air programs');
   assert.deepEqual(new Set(view.shows.map(r => r.sho)), new Set(catalog.shows.map(r => r.sho).filter(k => scheduled.has(k) || k.split('.')[1] === '2kpfk')));
-  assert.equal(view.shows.filter(r => r.archiveSource === '2kpfk').length, uploads.length, 'every upload episode served');
+  assert.equal(view.shows.filter(r => r.archiveSource === '2kpfk').length, uploads.filter(aired).length, 'every aired upload episode served');
   assert.equal(view.shows.filter(r => unscheduledOnAir.includes(r)).length, 0, 'no unscheduled on-air shows served');
   assert.ok(Object.keys(view.directory).every(k => scheduled.has(k) || uploads.some(r => r.sho === k)), 'directory: scheduled programs and upload shows with episodes');
-  assert.equal(view.count, view.shows.length); assert.equal(view.filter.hiddenEpisodes, catalog.count - view.count);
+  const future = catalog.shows.filter(r => !aired(r) && (scheduled.has(r.sho) || r.archiveSource === '2kpfk'));
+  assert.ok(future.length > 0, 'fixture has future-dated episodes');
+  assert.deepEqual(view.filter.heldUntilAir.map(h => h.id).sort(), future.map(r => r.id).sort(), 'held, and named');
+  assert.equal(view.count, view.shows.length); assert.equal(view.filter.hiddenEpisodes, catalog.count - view.count - future.length);
   assert.equal((await service.catalog()).count, 1143, 'catalog mirror is untouched');
   assert.notEqual(view.revision, catalog.revision, 'membership is part of the archive revision');
   assert.equal(service.peekArchive().count, view.count, 'the synchronous view agrees');
+});
+test('a held episode appears by itself at its air time, and the listing revision moves', async t => {
+  const dir = path.join(__dirname, '../../docs/fixtures/pacifica-kpfk-2026-09-14');
+  const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'kpfk-held-'));
+  t.after(() => fs.rmSync(dataDir, { recursive: true, force: true }));
+  let clock = 1789435100000;
+  const service = createService({ profile, dataDir, writeJsonAtomic: write, now: () => clock,
+    fetchImpl: async url => json(JSON.parse(fs.readFileSync(path.join(dir, path.basename(new URL(url).pathname)), 'utf8'))) });
+  const before = await service.archive();
+  const next = before.filter.heldUntilAir.reduce((a, h) => (a && a.airs <= h.airs ? a : h), null);
+  assert.ok(next, 'fixture holds something');
+  assert.ok(!before.shows.some(r => r.id === next.id));
+  clock = next.airs * 1000;
+  const after = service.peekArchive();
+  assert.ok(after.shows.some(r => r.id === next.id), 'released at air time');
+  assert.ok(!after.filter.heldUntilAir.some(h => h.id === next.id));
+  assert.notEqual(after.revision, before.revision);
 });
 test('a schedule outage limits the archive to the on-air channel, labelled, instead of emptying it', async t => {
   const service = fixtureService(t, name => name !== 'fe_catalog_kpfk.json');
@@ -166,7 +188,7 @@ test('a schedule outage limits the archive to the on-air channel, labelled, inst
   const view = await service.archive();
   assert.equal(view.filter.basis, 'primary-channel');
   assert.ok(view.count > 0);
-  assert.equal(view.count, catalog.shows.length, 'on-air channel plus uploads');
+  assert.equal(view.count, catalog.shows.filter(r => r.dt <= 1789435100).length, 'on-air channel plus uploads, aired only');
   assert.ok(view.shows.filter(r => r.archiveSource === '2kpfk').length > 0, 'uploads stay served during the outage');
 });
 

@@ -11,6 +11,8 @@ for (const file of legacy) {
   const result = spawnSync(process.execPath, [path.join('test', file)], { cwd: root, env, stdio: 'inherit' });
   if (result.status !== 0) process.exit(result.status || 1);
 }
-const result = spawnSync(process.execPath, ['--test', 'test/pacifica/qir.test.js', 'test/pacifica/search.test.js', 'test/pacifica/normalize.test.js', 'test/pacifica/text.test.js', 'test/pacifica/service.test.js',
-  'test/pacifica/http.test.js', 'test/pacifica/branding.test.js', 'test/pacifica/menu.test.js', 'test/pacifica/export.test.js', 'test/pacifica/backup.test.js'], { cwd: root, env, stdio: 'inherit' });
+// Every test/pacifica/*.test.js runs. A hand-kept list silently skipped a new file once
+// (audio-probe.test.js, 2026-09-26): the suite reported green without running it.
+const files = require('fs').readdirSync(path.join(root, 'test/pacifica')).filter(f => f.endsWith('.test.js')).sort().map(f => 'test/pacifica/' + f);
+const result = spawnSync(process.execPath, ['--test', ...files], { cwd: root, env, stdio: 'inherit' });
 process.exit(result.status || (result.error ? 1 : 0));
