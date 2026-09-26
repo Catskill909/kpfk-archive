@@ -16,10 +16,12 @@ incident and action items. Read it before touching feed parsing or `/api/archive
 - **Discovery's Just aired froze** because QIR (Ace) stopped taking in new episodes at
   ~02:00 PT; Otis points at the off-schedule "special programming" (e.g. the 3-min
   Politics Or Pedagogy upload, dated a day ahead). Upstream, not our code.
-- **Risk here (proposal, not started):** `normalizeCatalog()` fails the whole catalog on
-  one bad record, so one malformed upload would freeze this site — and through
-  `/api/archive`, the Flutter app — at the last good copy. Discovery skips and counts
-  instead. See APP-FAMILY action item 4.
+- **Fixed the same day:** `normalizeCatalog()` used to fail the whole catalog on one bad
+  record (freezing this site and, through `/api/archive`, the Flutter app at last-good).
+  Now one bad show/episode is skipped and recorded in `skipped` (`/healthz`
+  `pacifica.catalog.skipped`, server log); document faults and >20 records and 5% still
+  reject. `test/pacifica/normalize.test.js`; `npm test` 74/74; real feed 1,171 kept, 0 skipped.
+  **Needs a Coolify redeploy.** Schedule week/channels/index still all-or-nothing (item 7).
 
 ## 2026-09-25 (afternoon) — feed text decoding shared with Discovery
 

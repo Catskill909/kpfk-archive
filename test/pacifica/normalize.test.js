@@ -58,11 +58,86 @@ test('two published entries, notes aliases, safe text, and clearing editorial fi
   const show = raw.shows.kpfk.find(s => s.altid === e.altid); show.description = '';
   assert.equal(n.normalizeCatalog(raw, profile).directory[row.sho].desc, '');
 });
-test('malformed joins and duplicate IDs reject without losing records silently', () => {
+// 2026-09-26: one malformed record used to reject the whole catalog, freezing the site (and
+// the Flutter app and Discovery via /api/archive) at last-good. Every kind of record fault
+// must now cost only that record, be named in `skipped`, and never go missing silently.
+const firstEpisode = raw => { const [slug, dates] = Object.entries(raw.episodes['2kpfk'])[0]; const date = Object.keys(dates)[0]; return { slug, date, e: dates[date] }; };
+const episodeFaults = {
+  'identity disagrees with outer keys': e => { e.altid = 'wrong'; },
+  'invalid episode id': e => { e.id = 'x'; },
+  'invalid or unapproved URL': e => { e.mp3Url = 'https://evil.example/a.mp3'; },
+  'expected array': e => { e.pub = 'text'; },
+  'expected object': (e, dates, date) => { dates[date] = 'not a record'; },
+};
+for (const [issue, spoil] of Object.entries(episodeFaults)) {
+  test(`one bad episode (${issue}) is skipped and named; the rest of the catalog is kept`, () => {
+    const good = n.normalizeCatalog(catalog(), profile), raw = catalog(), { slug, date, e } = firstEpisode(raw);
+    spoil(e, raw.episodes['2kpfk'][slug], date);
+    const data = n.normalizeCatalog(raw, profile);
+    assert.equal(data.count, good.count - 1);
+    assert.equal(data.skipped.count, 1);
+    assert.match(data.skipped.records[0].issue, new RegExp(issue.replace(/[()]/g, '\\$&')));
+    assert.deepEqual([data.skipped.records[0].source, data.skipped.records[0].altid, data.skipped.records[0].date], ['2kpfk', slug, date]);
+    assert.equal(data.skipped.records[0].path.startsWith(`episodes.kpfk.2kpfk.${slug}`), true);
+  });
+}
+test('duplicate episode id: the first is kept, the second skipped', () => {
+  const good = n.normalizeCatalog(catalog(), profile), raw = catalog();
+  const list = Object.values(Object.values(raw.episodes.kpfk)[0]); list[1].id = list[0].id;
+  const data = n.normalizeCatalog(raw, profile);
+  assert.equal(data.count, good.count - 1); assert.equal(data.skipped.count, 1);
+  assert.match(data.skipped.records[0].issue, /duplicate episode id/);
+  assert.ok(data.shows.some(r => r.upstreamId === String(list[0].id)));
+});
+test('a bad show record is skipped once; its episodes are counted as dropped with it, not as separate faults', () => {
+  const good = n.normalizeCatalog(catalog(), profile), raw = catalog();
+  const show = raw.shows['2kpfk'].find(s => raw.episodes['2kpfk'][s.altid]);
+  const episodes = Object.keys(raw.episodes['2kpfk'][show.altid]).length;
+  show.plistid = 'kpfk';
+  const data = n.normalizeCatalog(raw, profile);
+  assert.equal(data.skipped.count, 1); assert.equal(data.skipped.droppedWithShow, episodes);
+  assert.equal(data.count, good.count - episodes);
+  assert.equal(data.directory[`kpfk.2kpfk.${show.altid}`], undefined);
+});
+test('a duplicate show keeps the first record and its episodes', () => {
+  const good = n.normalizeCatalog(catalog(), profile), raw = catalog();
+  raw.shows.kpfk.push({ ...raw.shows.kpfk[0] });
+  const data = n.normalizeCatalog(raw, profile);
+  assert.equal(data.skipped.count, 1); assert.match(data.skipped.records[0].issue, /duplicate show/);
+  assert.equal(data.count, good.count); assert.equal(data.skipped.droppedWithShow, 0);
+});
+test('episodes for a show that is not in the directory are skipped and named', () => {
+  const good = n.normalizeCatalog(catalog(), profile), raw = catalog(), { slug, date } = firstEpisode(raw);
+  raw.shows['2kpfk'] = raw.shows['2kpfk'].filter(s => s.altid !== slug);
+  const lost = Object.keys(raw.episodes['2kpfk'][slug]).length;
+  const data = n.normalizeCatalog(raw, profile);
+  assert.equal(data.count, good.count - lost); assert.equal(data.skipped.count, lost);
+  assert.ok(data.skipped.records.some(r => r.date === date && /show missing/.test(r.issue)));
+});
+test('the fixture itself has nothing to skip', () => {
+  assert.deepEqual(n.normalizeCatalog(catalog(), profile).skipped, { count: 0, droppedWithShow: 0, records: [] });
+});
+test('many malformed records mean a changed feed format: the whole catalog is rejected (last-good kept)', () => {
+  const raw = catalog(); let spoiled = 0;
+  for (const dates of Object.values(raw.episodes.kpfk)) for (const e of Object.values(dates)) { if (spoiled < 100) { e.mp3Url = ''; spoiled++; } }
+  assert.throws(() => n.normalizeCatalog(raw, profile), /100 of \d+ records malformed.*feed format may have changed/);
+});
+test('document-level faults still reject the whole catalog', () => {
+  for (const spoil of [r => { r.shows = []; }, r => { r.episodes = null; }, r => { r.updated = 'soon'; }, r => { r.channels = {}; }]) {
+    const raw = catalog(); spoil(raw);
+    assert.throws(() => n.normalizeCatalog(raw, profile), n.FeedError);
+  }
+});
+test('a code bug inside a record is not mistaken for bad data', () => {
+  const raw = catalog(), { e } = firstEpisode(raw);
+  Object.defineProperty(e, 'pub', { get() { throw new TypeError('bug'); } });
+  assert.throws(() => n.normalizeCatalog(raw, profile), TypeError);
+});
+test('malformed joins and duplicate IDs never lose records silently', () => {
   const raw = catalog(), group = Object.values(raw.episodes.kpfk)[0], date = Object.keys(group)[0];
-  group[date].altid = 'wrong'; assert.throws(() => n.normalizeCatalog(raw, profile), /identity/);
-  const other = catalog(), eps = Object.values(other.episodes.kpfk)[0], list = Object.values(eps);
-  list[1].id = list[0].id; assert.throws(() => n.normalizeCatalog(other, profile), /duplicate episode/);
+  group[date].altid = 'wrong';
+  const data = n.normalizeCatalog(raw, profile);
+  assert.equal(data.count + data.skipped.count + data.skipped.droppedWithShow, n.normalizeCatalog(catalog(), profile).count);
 });
 test('a valid empty episode map is an empty archive; directory does not manufacture episodes', () => {
   const raw = catalog(); raw.episodes = {};

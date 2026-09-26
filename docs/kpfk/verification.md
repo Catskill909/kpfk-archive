@@ -28,8 +28,8 @@ Implement meaningful fixtures that differ from the live happy path. Register new
 | C02 | Same slug in two sources; same numeric ID in two sources | Distinct canonical routes, show maps, analytics attribution and episode groups |
 | C03 | Reordered object keys, corrected notes, corrected MP3 URL | Reordering leaves revision unchanged; each content correction changes it with count/latest unchanged |
 | C04 | String IDs, underscore slug, long invalid slug | Deep-link/OG/show-info/studio agree on accepted IDs; malformed input is rejected without upstream fetch |
-| C05 | Nested outer source/slug/date disagrees with episode fields | Candidate rejected with record path; last-good unchanged |
-| C06 | Orphan or conflicting duplicate episode | No silently dropped episode; candidate rejected and diagnosed |
+| C05 | Nested outer source/slug/date disagrees with episode fields | That record skipped and named in `skipped` (/healthz, server log); rest of catalog accepted. Over 20 records and 5% malformed: candidate rejected, last-good unchanged. Changed 2026-09-26 (docs/APP-FAMILY.md) |
+| C06 | Orphan or conflicting duplicate episode | No silently dropped episode: orphan skipped and named; duplicate id keeps the first, skips and names the second; same limit as C05 |
 | C07 | Zero/negative/nonfinite duration | Zero remains unknown and playable; negative/nonfinite duration becomes unknown with a diagnostic, never silently substituted with slot length |
 | C08 | Empty `pub`, two entries, both `notes` and `hotes` | Preserve every entry; nonblank `notes` precedence; conflict reported; all notes remain available in raw snapshot |
 | C09 | Accents, repeated entities, HTML/script-like content | Readable escaped text, paragraph breaks, no executable DOM content |
