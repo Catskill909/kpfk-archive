@@ -6,6 +6,21 @@ WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here o
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 [docs/README.md](docs/README.md) (which docs are current vs inherited from WBAI).
 
+## 2026-09-26 — off-schedule programs; QIR stalled; three apps, one feed
+
+New shared doc **[docs/APP-FAMILY.md](docs/APP-FAMILY.md)** (identical in the Discovery and
+Flutter repos): which app reads what, how off-schedule uploads (`2kpfk`) differ, today's
+incident and action items. Read it before touching feed parsing or `/api/archive`.
+
+- **This app was fine today.** The Pacifica feed is well-formed; `/healthz` ready, not stale.
+- **Discovery's Just aired froze** because QIR (Ace) stopped taking in new episodes at
+  ~02:00 PT; Otis points at the off-schedule "special programming" (e.g. the 3-min
+  Politics Or Pedagogy upload, dated a day ahead). Upstream, not our code.
+- **Risk here (proposal, not started):** `normalizeCatalog()` fails the whole catalog on
+  one bad record, so one malformed upload would freeze this site — and through
+  `/api/archive`, the Flutter app — at the last good copy. Discovery skips and counts
+  instead. See APP-FAMILY action item 4.
+
 ## 2026-09-25 (afternoon) — feed text decoding shared with Discovery
 
 **Pushed, not deployed — Paul: redeploy in Coolify, then check `/healthz` `version` changed.**

@@ -4,6 +4,12 @@ This repo is **the** active project (since 2026-09-15). It began as a copy of
 `wbai-archive`; WBAI is now maintenance-only in its own folder. Read
 [HANDOFF.md](HANDOFF.md) for current state before starting work.
 
+**Three apps share this feed — read [docs/APP-FAMILY.md](docs/APP-FAMILY.md).** This app
+serves `/api/archive` to the Flutter app (`~/Desktop/kpfk-podcast`) and to the Discovery
+plugin (`~/Desktop/kpfk-discovery-plugin`). A change to feed parsing or to `/api/archive`
+reaches both without a deploy of theirs. That file is identical in all three repos; when
+it changes, copy it to the other two.
+
 Guardrails that exist because we lost hours to them (most learned on WBAI, all
 still true here). Follow them.
 
