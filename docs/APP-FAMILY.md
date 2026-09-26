@@ -9,13 +9,27 @@ same session** (like `public/text.js` and `archive-search.js`):
 
 Updated 2026-09-26.
 
+## The vision (Paul, 2026-09-26) — read this first
+
+- **QIR** is Ace's service. It makes the transcripts and summaries.
+- **Discovery is the plugin** (`kpfk-discovery-plugin`). It is the only thing that talks to QIR.
+- **The podcast site (`kpfk-archive`) and the Flutter app (`kpfk-podcast`)** are the main apps.
+  They work on the Pacifica feed alone, for every station.
+- **Where a station has Discovery switched on**, the podcast site and the Flutter app show
+  Discovery's features. Where it is off, they work exactly as they do without it.
+
+Discovery is a paid/package add-on (AI processing cost + Pacifica's margin); not every station
+will have it. So: never copy QIR code into the main apps, and never let a main app depend on
+Discovery. Everything that handles QIR being slow or down lives inside Discovery. Features
+built from station data (feed rules, cue-file song lists) belong to the main apps.
+
 ## The three apps
 
 | App | Repo | Live | Reads | Role |
 |---|---|---|---|---|
 | **KPFK podcast web app** | `kpfk-archive` | podcasts.kpfk.org (also podcast.kpfk.org) | Pacifica JSON feed (`archive.kpfk.org/fe_feed/…`) | The main app. Serves `/api/archive` to the other two |
-| **Discovery plugin** | `kpfk-discovery-plugin` | kpfk-discovery.pacifica.audio (beta) | QIR API (Ace) + podcast web app's `/api/archive` + Pacifica feed (show images) | Plugin **to the podcast web app**: search, summaries, transcripts. Will move into it |
-| **KPFK Podcasts mobile** | `kpfk-podcast` (Flutter) | iOS/Android, `podcast.pacifica.kpfk` | Podcast web app's `/api/archive` (Talk shows only) | Mobile sister app. Will inherit the QIR features (Discover module) |
+| **Discovery plugin** | `kpfk-discovery-plugin` | kpfk-discovery.pacifica.audio (beta) | QIR API (Ace) + podcast web app's `/api/archive` + Pacifica feed (show images) | **The plugin**: QIR search, summaries, transcripts. Shown in the podcast site where a station has it on |
+| **KPFK Podcasts mobile** | `kpfk-podcast` (Flutter) | iOS/Android, `podcast.pacifica.kpfk` | Podcast web app's `/api/archive` (Talk shows only) | Mobile sister app. Will show Discovery's features where a station has it on, same switch |
 
 ```
 Confessor (Otis) ──► Pacifica JSON feed ──► kpfk-archive ──► /api/archive ──┬─► kpfk-podcast (mobile)
