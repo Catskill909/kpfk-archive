@@ -128,28 +128,35 @@ podcasts.kpfk.org and the mobile app were fine.
 - Missing from QIR, present in the Pacifica feed: Potira 02:00, Awakenings 04:00,
   Way Out West 05:00, Alive and Picking 07:00, Special Programming 09:00.
 
-Otis told Paul the special (off-schedule) programming is the issue. The timing fits (the
-last record touched before the re-run was the 3-min upload show), but only Ace's
-processor logs can confirm it.
+**Root cause (confirmed by Paul with Otis and Ace, 2026-09-26): the consumers — QIR's
+processor and our apps — were not parsing the special / off-schedule shows correctly. The
+Pacifica feed was right; Otis needs to do nothing.** Ace fixed QIR's side; our side is the
+feed rules above (off-schedule uploads, future dates, show types, failed recordings).
 
 **Not the cause (checked):** the Pacifica feed is well-formed (every show/episode has
 the usual fields and types, no orphans); the schedule weeks have no gaps, overlaps or
 unknown shows; Discovery's server was ready, polling every 5 min, no page errors.
 Discovery shows exactly what QIR has.
 
-**Our side:** no code change. Discovery catches up by itself within 5 min of QIR resuming.
+**Our side:** no code change needed for recovery; the "Transcript pending" fallback covered the gap.
+
+**Resolved 2026-09-26 evening (Ace):** QIR processed 11 of the day's programs (Awakenings 04:00
+through Afro-Dicia 16:00, updated 00:05–01:29 UTC 27 Sept). Discovery's pending list fell from
+9 to 2 with no action from us, as designed: CodePINK Radio (never processed by QIR) and World
+Massive 02:00 (skipped in QIR's catch-up; Paul: fine, we're in dev). Both leave "Transcript
+pending" after 48 h. Otis was sent two FYIs the same day (cc Ace); no action needed from him.
 
 ## Action items
 
 | # | Who | What |
 |---|---|---|
-| 1 | Paul → **Ace** | QIR ingest stalled since ~02:00 PT 26 Sept; ask him to check the processor and the off-schedule uploads (null `air_start`, future dates). Send now — outage, not a queued question |
-| 2 | Paul → **Otis** (next email) | Off-schedule uploads: future air dates, 0-s durations, `2kpfk` missing from `fe_channels.json`, Politics Or Pedagogy show `Music` vs episodes `Talk` |
-| 3 | Dev | Watch: when QIR resumes, confirm Just aired shows today's 02:00–09:00 programs |
+| 1 | **Done** | Ace told of the stall; **fixed the same evening** |
+| 2 | **Done** | Otis sent two FYIs 2026-09-26 (cc Ace). **No action needed from Otis** — the issue was our parsing, now handled by the feed rules |
+| 3 | **Done** | Verified live after Ace's fix: Just aired and pending list caught up |
 | 4 | **Done 2026-09-26** | kpfk-archive `normalizeCatalog()` and kpfk-podcast `KpfkCatalog.parse` skip one bad show/episode/row and record it (`skipped`: path, source, altid, date, issue — structured for a later anomaly report). Whole-document faults, and more than 20 records **and** 5%, still reject. kpfk-archive `/healthz` `pacifica.catalog.skipped`; server log. Tests for every record-fault kind in both |
 | 5 | Dev (proposal) | A feed-health check that alerts when QIR's newest broadcast lags the Pacifica feed by more than a few hours, so a stall is seen before listeners see it |
 | 6 | **Done 2026-09-26** (Paul: "QIR fallback essential") | Discovery `lib/qir/pending.js`: archive episodes aired in the last 48 h that QIR lacks (matched by mp3) are listed as "Transcript pending" (audio, song list; no summary/transcript) and vanish when QIR has them. If the QIR catalog cannot load at all, the page shows the station archive and says so. `/healthz` `qirPending` |
 | 7 | Dev (proposal, not started) | Same skip-one-record rule for kpfk-archive `normalizeScheduleWeek()` (one bad slot drops the week), `normalizeChannels()` and `normalizeScheduleIndex()` |
 | 8 | **Before the Otis email** | Do **not** ask Otis to add `2kpfk` to `fe_channels.json` as-is: a channel with the upload list's empty `listen` URL makes kpfk-archive reject the whole channels feed today (item 7). Fix item 7 first, or ask for a valid `listenUrl` |
-| 9 | **Done 2026-09-26** | Feed rules above: failed recordings, true durations, air-time hold, `showTypes`, En Español. The Otis email shrinks to FYIs (source fixes are welcome, but nothing waits on them) |
+| 9 | **Done 2026-09-26** | Feed rules above: failed recordings, true durations, air-time hold, `showTypes`, En Español. The Otis email became FYIs only; no action needed from him |
 | 10 | Dev (proposal) | Anomaly report page (studio) from the recorded lists, to send stations/Otis |

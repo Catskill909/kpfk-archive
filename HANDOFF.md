@@ -8,14 +8,18 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 
 ## 2026-09-26 — off-schedule programs; QIR stalled; three apps, one feed
 
+**Evening: QIR outage resolved by Ace; all of the below is live** (Paul redeployed `032702b`).
+Vision and rules: [docs/APP-FAMILY.md](docs/APP-FAMILY.md) — QIR is Ace's service; Discovery is
+the plugin; this app works on the Pacifica feed alone and shows Discovery where it is switched on.
+
 New shared doc **[docs/APP-FAMILY.md](docs/APP-FAMILY.md)** (identical in the Discovery and
 Flutter repos): which app reads what, how off-schedule uploads (`2kpfk`) differ, today's
 incident and action items. Read it before touching feed parsing or `/api/archive`.
 
 - **This app was fine today.** The Pacifica feed is well-formed; `/healthz` ready, not stale.
 - **Discovery's Just aired froze** because QIR (Ace) stopped taking in new episodes at
-  ~02:00 PT; Otis points at the off-schedule "special programming" (e.g. the 3-min
-  Politics Or Pedagogy upload, dated a day ahead). Upstream, not our code.
+  ~02:00 PT. Root cause: consumers (QIR and our apps) weren't parsing the special /
+  off-schedule shows correctly — the Pacifica feed was right; Otis needs to do nothing.
 - **Fixed the same day:** `normalizeCatalog()` used to fail the whole catalog on one bad
   record (freezing this site and, through `/api/archive`, the Flutter app at last-good).
   Now one bad show/episode is skipped and recorded in `skipped` (`/healthz`
