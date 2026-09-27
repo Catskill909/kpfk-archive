@@ -67,23 +67,14 @@ expect all of these:
 | Show `type: "Music"` while its episodes say `"Talk"` (Politics Or Pedagogy) | Pacifica feed | The mobile app's Talk filter drops the show |
 | Recordings under a different record than the schedule/picture (BradCast `bradcast2` vs `friedman`) | Confessor | Duplicate or missing shows (Discovery HANDOFF W1/W6) |
 
-How each app copes today:
+All of these are now handled by the feed rules below (2026-09-26). Each app's part:
 
-- **kpfk-archive** `lib/pacifica/normalize.js`: accepts all of the above. **But
-  `normalizeCatalog()` rejects the whole catalog if one record breaks identity rules**
-  (`fail()`). `lib/pacifica/service.js` then keeps serving the last good copy, marked
-  stale, and retries with backoff — so every new episode stops until the record is fixed
-  (blank only on a cold start with no saved snapshot).
-- **kpfk-podcast** `lib/core/services/kpfk_catalog.dart`: accepts all of the above. **One
-  malformed row throws `FormatException` and the whole catalog fails.** What the app then
-  shows from its local cache was not checked (2026-09-26). Future-dated Talk items would
-  sort first.
-- **Discovery** `lib/qir/service.js`: skips and counts a malformed QIR record, never the
-  catalog. `air_start: null` shows "Time not listed"; Just aired hides future items (W5).
-
-**Open risk:** the two strict parsers mean one bad off-schedule upload freezes
-podcasts.kpfk.org (and, through `/api/archive`, the mobile app and Discovery's archive
-mode) at its last good copy. Not fixed; see action items.
+- **kpfk-archive** (podcast site): applies every rule once, for all three apps. One bad
+  record is skipped, not the whole catalog.
+- **kpfk-podcast** (Flutter): gets the corrected data through `/api/archive`; one bad row is
+  left out, not the whole catalog.
+- **Discovery**: skips a bad QIR record; "Time not listed" when `air_start` is null;
+  future-dated items held until air time.
 
 ## Feed rules — we handle upstream problems ourselves (Paul, 2026-09-26)
 
@@ -96,6 +87,9 @@ its `/api/archive` feeds the Flutter app and Discovery), or in Discovery for QIR
 | Problem | Rule | Where | Recorded as |
 |---|---|---|---|
 | One malformed show/episode | Skip that record; >20 records **and** 5% rejects the catalog (last-good kept) | kpfk-archive `normalize.js`; Flutter `kpfk_catalog.dart` | `catalog.skipped` |
+| One bad schedule slot or day | Skip that slot/day, keep the week; >20 **and** 5% rejects the week (last-good kept) | kpfk-archive `normalizeScheduleWeek` | `week-*.skipped` |
+| One bad schedule-index week entry | Skip it; no usable week at all rejects the index | kpfk-archive `normalizeScheduleIndex` | `schedule-index.skipped` |
+| One bad extra channel (e.g. upload list with an empty stream URL) | Skip it. **The main channel must be valid** (it is what plays) — a bad main channel still rejects | kpfk-archive `normalizeChannels` | `channels.skipped` |
 | Failed recording (outage, blackout: file of a few seconds) | Read the first 16 KB of each new mp3 once; under 1 MB **and** under 60 s of audio (or none), or 404 → hidden | kpfk-archive `audio-probe.js`, `service.js` | `archiveFilter.failedRecordings` |
 | Wrong or missing duration | The file's own length replaces the feed's when off by >1 min and 10% | same | `archiveFilter.durationCorrected` |
 | Pre-uploaded, future-dated episode | Held until its air time, then appears by itself | kpfk-archive `service.js`; Discovery `lib/qir/pending.js` | `archiveFilter.heldUntilAir` |
@@ -105,7 +99,7 @@ its `/api/archive` feeds the Flutter app and Discovery), or in Discovery for QIR
 | Duplicate records with episodes | Explicit `hiddenShows` keys only, never by date | Discovery `stations/kpfk.json` | HANDOFF W1 |
 | Missing pictures in schedule/now playing | Catalog picture used | kpfk-archive `service.js` | — |
 | HTML entities/tags in text | Decoded (`public/text.js`, shared) | both web apps | unknown entity logged |
-| QIR behind | Archive episodes aired in last 48 h shown "Transcript pending" | Discovery `lib/qir/pending.js` | `/healthz` `qirPending` |
+| QIR behind | Archive episodes aired in last 48 h shown "Transcript pending"; **log warning at 6 h behind** | Discovery `lib/qir/pending.js`, `server.js` | `/healthz` `qirPending.behindHours` |
 | QIR down | Page shows the station archive, with a notice | Discovery `public/app.js` | — |
 | Feed not updating / unreachable | Last-good served, marked stale | kpfk-archive `service.js` | `stale`, `error` |
 
@@ -146,17 +140,19 @@ through Afro-Dicia 16:00, updated 00:05–01:29 UTC 27 Sept). Discovery's pendin
 Massive 02:00 (skipped in QIR's catch-up; Paul: fine, we're in dev). Both leave "Transcript
 pending" after 48 h. Otis was sent two FYIs the same day (cc Ace); no action needed from him.
 
-## Action items
+## Status
 
-| # | Who | What |
-|---|---|---|
-| 1 | **Done** | Ace told of the stall; **fixed the same evening** |
-| 2 | **Done** | Otis sent two FYIs 2026-09-26 (cc Ace). **No action needed from Otis** — the issue was our parsing, now handled by the feed rules |
-| 3 | **Done** | Verified live after Ace's fix: Just aired and pending list caught up |
-| 4 | **Done 2026-09-26** | kpfk-archive `normalizeCatalog()` and kpfk-podcast `KpfkCatalog.parse` skip one bad show/episode/row and record it (`skipped`: path, source, altid, date, issue — structured for a later anomaly report). Whole-document faults, and more than 20 records **and** 5%, still reject. kpfk-archive `/healthz` `pacifica.catalog.skipped`; server log. Tests for every record-fault kind in both |
-| 5 | Dev (proposal) | A feed-health check that alerts when QIR's newest broadcast lags the Pacifica feed by more than a few hours, so a stall is seen before listeners see it |
-| 6 | **Done 2026-09-26** (Paul: "QIR fallback essential") | Discovery `lib/qir/pending.js`: archive episodes aired in the last 48 h that QIR lacks (matched by mp3) are listed as "Transcript pending" (audio, song list; no summary/transcript) and vanish when QIR has them. If the QIR catalog cannot load at all, the page shows the station archive and says so. `/healthz` `qirPending` |
-| 7 | Dev (proposal, not started) | Same skip-one-record rule for kpfk-archive `normalizeScheduleWeek()` (one bad slot drops the week), `normalizeChannels()` and `normalizeScheduleIndex()` |
-| 8 | **Before the Otis email** | Do **not** ask Otis to add `2kpfk` to `fe_channels.json` as-is: a channel with the upload list's empty `listen` URL makes kpfk-archive reject the whole channels feed today (item 7). Fix item 7 first, or ask for a valid `listenUrl` |
-| 9 | **Done 2026-09-26** | Feed rules above: failed recordings, true durations, air-time hold, `showTypes`, En Español. The Otis email became FYIs only; no action needed from him |
-| 10 | Dev (proposal) | Anomaly report page (studio) from the recorded lists, to send stations/Otis |
+**Done 2026-09-26** (all live and tested):
+- QIR outage: Ace fixed it the same evening; Discovery caught up by itself.
+- Discovery: "Transcript pending" when QIR is behind; station archive shown when QIR is down.
+- Feed rules in the podcast site: one bad record skipped, failed recordings hidden, true
+  durations, pre-uploads held until air time, 7 upload shows retyped Talk, En Español.
+- Flutter: one bad row left out instead of failing.
+- (27 Sept) Schedule and channels: one bad slot, day, week entry or extra channel is skipped
+  and recorded; the main channel must still be valid. QIR-behind alert: `/healthz`
+  `qirPending.behindHours` and a log warning from 6 h.
+- Otis: sent two FYIs; **no action needed from him.**
+
+**Open — idea, not started** (ask Paul first):
+- **Anomaly report page** (studio): the recorded lists (skipped, failed, corrected, held) in
+  one place to review or send on. Today they are on `/healthz` and in the server log.

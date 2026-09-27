@@ -226,3 +226,60 @@ test('showTypes entries are validated', () => {
     assert.throws(() => validateProfile({ ...base, showTypes: bad }), /showTypes/);
   assert.equal(validateProfile(base).showTypes['2kpfk.bradcast2'], 'Talk');
 });
+// 2026-09-27: one bad schedule slot used to drop that whole week (a new week then vanished from
+// the schedule page), and one bad channel entry dropped the channels feed (on a fresh start:
+// no live stream or now playing). Every entry-level fault must cost only that entry.
+const week1 = () => fixture('fe_schedule_kpfk_1789282800.json');
+const slotCount = w => w.days.reduce((n, d) => n + d.slots.length, 0);
+const slotFaults = {
+  'zero-length slot': (d, s) => { s.endTime = s.startTime; },
+  'slot on another day': (d, s) => { s.startTime -= 3 * 86400; s.endTime -= 3 * 86400; },
+  'duplicate slot': d => { d.slots.push({ ...d.slots[0] }); },
+  'non-object slot': d => { d.slots[1] = 'not a slot'; },
+  'bad start time': (d, s) => { s.startTime = 'noon'; },
+};
+for (const [name, spoil] of Object.entries(slotFaults)) {
+  test(`schedule: one bad slot (${name}) is skipped and named; the week is kept`, () => {
+    const good = n.normalizeScheduleWeek(week1(), profile), raw = week1(), day = raw.days[2];
+    spoil(day, day.slots[1]);
+    const w = n.normalizeScheduleWeek(raw, profile);
+    assert.equal(w.days.length, 7);
+    assert.equal(w.skipped.count, 1);
+    assert.equal(w.skipped.records[0].date, day.date);
+    assert.equal(slotCount(w), slotCount(good) - (name === 'duplicate slot' ? 0 : 1));
+  });
+}
+test('schedule: a bad day is skipped with its slots; the other six days are kept', () => {
+  const raw = week1(); raw.days[3].date = '1999-01-01';
+  const w = n.normalizeScheduleWeek(raw, profile);
+  assert.equal(w.days.length, 6); assert.equal(w.skipped.count, 1); assert.match(w.skipped.records[0].issue, /date/);
+});
+test('schedule: many bad slots mean a changed format — the week is rejected (last-good kept)', () => {
+  const raw = week1(); let spoiled = 0;
+  for (const d of raw.days) for (const s of d.slots) if (spoiled < 40) { s.endTime = s.startTime; spoiled++; }
+  assert.throws(() => n.normalizeScheduleWeek(raw, profile), /40 of \d+ slots\/days malformed/);
+});
+test('schedule: the week anchor and station stay document-level', () => {
+  const raw = week1(); raw.weekStart += 86400; assert.throws(() => n.normalizeScheduleWeek(raw, profile), /weekStart/);
+  const other = week1(); other.station.plistid = 'kpfa'; assert.throws(() => n.normalizeScheduleWeek(other, profile), /station/);
+});
+test('schedule index: a bad week entry is skipped; no usable week at all is rejected', () => {
+  const base = 'https://archive.kpfk.org/fe_feed/fe_schedule_kpfk_index.json';
+  const raw = fixture('fe_schedule_kpfk_index.json'); raw.weeks[1].file = '../../private.json';
+  const idx = n.normalizeScheduleIndex(raw, profile, base);
+  assert.equal(idx.weeks.length, 2); assert.equal(idx.skipped.count, 1); assert.match(idx.skipped.records[0].issue, /outside/);
+  const none = fixture('fe_schedule_kpfk_index.json'); none.weeks.forEach(w => { w.file = '../x.json'; });
+  assert.throws(() => n.normalizeScheduleIndex(none, profile, base), /no usable week/);
+});
+test('channels: a bad extra channel is skipped; the primary channel must be valid', () => {
+  const extra = { plistid: '2kpfk', name: 'Uploads', listenUrl: '', nowplaying: 'fe_nowplaying_2kpfk.json', scheduleIndex: 'fe_schedule_2kpfk_index.json' };
+  const raw = fixture('fe_channels.json'); raw.channels.push(extra);
+  const data = n.normalizeChannels(raw, profile);
+  assert.deepEqual(data.channels.map(c => c.id), ['kpfk']);
+  assert.equal(data.skipped.count, 1); assert.equal(data.skipped.records[0].channel, '2kpfk');
+  const bad = fixture('fe_channels.json'); bad.channels[0].listenUrl = 'https://evil.example/s';
+  assert.throws(() => n.normalizeChannels(bad, profile), /listenUrl|unapproved/);
+  const dup = fixture('fe_channels.json'); dup.channels.push({ ...dup.channels[0], listenUrl: '' });
+  const kept = n.normalizeChannels(dup, profile);
+  assert.equal(kept.channels.length, 1); assert.equal(kept.skipped.count, 1, 'a later duplicate of the primary is skipped, the first kept');
+});
