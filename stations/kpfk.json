@@ -72,6 +72,15 @@
     "Special Program": "special"
   },
   "plugins": {
-    "discovery": false
-  }
+    "discovery": false,
+    "qir": true
+  },
+  "hiddenShows": ["friedman", "biketalka"],
+  "musicWindowDays": 14,
+  "musicShows": ["specialmusicprogramm"],
+  "episodeCorrections": [
+    { "file": "kpfk_260726_083000onconta.mp3", "show": "alanwatts", "note": "Fund-drive hour of Alan Watts in the On Contact slot; not entered in Confessor (checked by listening 2026-09-27)" },
+    { "file": "kpfk_260802_083000onconta.mp3", "show": "alanwatts", "note": "Fund-drive hour of Alan Watts in the On Contact slot; not entered in Confessor (checked by listening 2026-09-27)" },
+    { "file": "kpfk_260927_083000onconta.mp3", "show": "alanwatts", "note": "Fund-drive hour of Alan Watts in the On Contact slot; not entered in Confessor (checked by listening 2026-09-27)" }
+  ]
 }
