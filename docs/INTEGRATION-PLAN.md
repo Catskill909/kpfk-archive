@@ -47,6 +47,24 @@ Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-28.**
 - **Just aired updates itself** (next deploy): every 2 minutes; new episodes slide in, and with
   Discovery on, late QIR headlines update the cards. The listing waits for "New episodes".
 
+## Start here tomorrow (written 2026-09-28, end of day)
+
+Before the separate Discovery site can be closed, three things (about an hour, with tests):
+
+1. **Music 14-day limit on the podcast site** (music licence; Discovery applied it, the podcast
+   site never has — 1 music episode over 14 days was listed on 2026-09-28: Reggae Central, Sep 13).
+   Station rule, so for every station: `musicWindowDays` / `musicShows` in the profile.
+2. **Episode corrections on the podcast site** — the three Alan Watts fund-drive hours (Jul 26,
+   Aug 2, Sep 27) still show as "On Contact" there; Discovery shows them right. Station rule:
+   `episodeCorrections` in the profile.
+3. **4f** `/discover` goes to the main page.
+
+Then close the Discovery site: redirect `kpfk-discovery.pacifica.audio` to `podcasts.kpfk.org`
+(old links keep working), stop its Coolify deployment, tell Ace the new address.
+
+Everything built on 2026-09-28 is pushed; the last few changes (persistent player, floating
+player card, Episode/Show info tabs, "Transcript processing") go live with the next redeploy.
+
 ## Next up
 
 1. **4f** `/discover` points to the main page (one page for everyone).
@@ -225,3 +243,4 @@ same site, same stats).
 | 2026-09-28 | Step 5a: studio Discovery tab with live on/off switches. Plan reorganised for project tracking. |
 | 2026-09-28 | Studio: real tabs, in-app confirmations (never browser pop-ups). Step 4e: Transcript and Songs on the main site; headlines in the Episodes tab and the show popup. |
 | 2026-09-28 | Show popup layout reworked; popups beside the transcript; cards wrap; Just aired updates itself (2-minute check, cards slide in). |
+| 2026-09-28 | Popup tabs (Episode info / Show info); live-stream Transcript button fix; persistent player (no Close); floating player card; "Transcript processing". Checked what is left before closing the Discovery site (see "Start here tomorrow"). |
