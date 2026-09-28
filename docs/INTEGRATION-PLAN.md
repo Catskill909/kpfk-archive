@@ -115,8 +115,13 @@ on. Sub-steps:
   while searching. Rules shared with Discovery in `public/just-aired.js` (one per show and air
   time, nothing under 10 minutes, pre-uploads only from their air time). With Discovery on, the
   items carry QIR headlines. Tap opens the show on that episode; the button plays it.
+  Layout (Paul, 2026-09-28): Discovery's — three roomy cards, the episode title first, then
+  "show · date · time · length".
 - ⬜ 4c All / Shows / Episodes tabs outside search too (browsing)
-- ⬜ 4d Show card layout (desktop text under image, phone text on top)
+- ✅ **4d Show card layout** — desktop: clean image, then category, show name, host and "Latest ·
+  date" underneath (Discovery's cards), outside the light-mode mat so it frames only the image.
+  Phones keep the title on the artwork, so more shows fit on screen. Search box, dropdowns and
+  light/dark themes stay the podcast site's.
 - ⬜ 4e Transcript and Songs in the show sheet (Listen along on the main player)
 - ⬜ 4f `/discover` points to the main page
 

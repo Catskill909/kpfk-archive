@@ -586,7 +586,7 @@
     if(!justAiredEl) return;
     var list = state.query ? [] : rows.filter(function(r){ return state.cat === 'all' || r.cat === state.cat; })
       .sort(function(a, b){ return b.dt - a.dt; });
-    var picks = list.length ? window.JustAired.pick(list, {timeZone: STATION.timezone, limit: 4}) : [];
+    var picks = list.length ? window.JustAired.pick(list, {timeZone: STATION.timezone, limit: 3}) : [];
     justAiredEl.hidden = !picks.length;
     justAiredList.innerHTML = picks.map(function(r){
       var c = CAT_BY_KEY[r.cat] || {label:''};
@@ -594,17 +594,19 @@
       var isPlaying = (nowPlaying.mp3===r.mp3 && !audio.paused && !audio.ended && !isLoading);
       var subLine = c.label + (r.host ? ' · with '+r.host : '');
       var photo = r.photo || '';
+      // Discovery's layout (Paul, 2026-09-28): the episode title first, then "show · date ·
+      // time · length" underneath. Without an episode title (a feed with none and no
+      // Discovery), the show name is the title and the category leads the details.
       var topic = window.ArchiveSearch.episodeTitle(r);
-      // Short enough for one line on a phone: "Sep 28 · 8:00 am · 60 min".
       var when = splitDateText(r.dateText);
       var mins = r.durationSec ? Math.round(r.durationSec / 60) + ' min' : '';
+      var details = [topic ? r.title : c.label, stationDate(new Date(r.dt * 1000)), when.time, mins].filter(Boolean).join(' · ');
       return '<article class="ja-item">'+
         '<button class="ja-art show-open" type="button" data-id="'+esc(r.id)+'" tabindex="-1" aria-hidden="true">'+
           (photo ? '<img loading="lazy" alt="" src="'+esc(photo)+'">' : '')+'</button>'+
         '<button class="ja-text show-open" type="button" data-id="'+esc(r.id)+'" aria-label="More about '+esc(topic || r.title)+'">'+
-          '<span class="ja-show">'+esc(r.title)+'</span>'+
-          (topic ? '<span class="ja-topic">'+esc(topic)+'</span>' : '')+
-          '<span class="ja-when">'+esc([stationDate(new Date(r.dt * 1000)), when.time, mins].filter(Boolean).join(' · '))+'</span>'+
+          '<span class="ja-topic">'+esc(topic || r.title)+'</span>'+
+          '<span class="ja-when">'+esc(details)+'</span>'+
         '</button>'+
         '<button class="play-btn ja-play'+(isPlaying?' playing':'')+(isLoading?' loading':'')+'" '+playAttrs(r, subLine, photo, isLoading, isPlaying)+'>'+glyph(isLoading, isPlaying)+'</button>'+
       '</article>';
@@ -835,7 +837,9 @@
       var isPlaying = (nowPlaying.mp3===r.mp3 && !audio.paused && !audio.ended && !isLoading);
       var subLine = c.label + (r.host ? ' · with '+r.host : '');
       var photo = r.photo || '';
+      var host = r.host || (showInfo[r.sho] || {}).dj || '';
       return (
+      '<div class="card-cell">'+
       '<div class="card-wrap">'+
         '<button class="card card-art play-btn'+(isPlaying?' playing':'')+(isLoading?' loading':'')+'" data-id="'+esc(r.id)+'" '+playAttrs(r, subLine, photo, isLoading, isPlaying)+'>'+
           (photo ? '<img loading="lazy" alt="" src="'+photo+'">' : '')+
@@ -850,6 +854,15 @@
           '<span class="card-title">'+esc(r.title)+'</span>'+
         '</button>'+
         '<button class="more-link card-more" type="button" data-id="'+esc(r.id)+'" tabindex="-1">More</button>'+
+      '</div>'+
+      // Desktop: the details sit under the image, as Discovery's cards do (Paul,
+      // 2026-09-28). Phones keep the title on the artwork (styles.css CARD DETAILS).
+      '<button class="card-meta show-open" type="button" data-id="'+esc(r.id)+'" aria-label="More about '+esc(r.title)+'">'+
+        '<span class="card-meta-eyebrow">'+esc(c.label)+'</span>'+
+        '<span class="card-meta-title">'+esc(r.title)+'</span>'+
+        (host ? '<span class="card-meta-host">'+esc(host)+'</span>' : '')+
+        '<span class="card-meta-latest">Latest · '+esc(compactDate)+'</span>'+
+      '</button>'+
       '</div>');
     }).join('');
   }

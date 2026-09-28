@@ -3911,30 +3911,53 @@
     margin:0 0 .7rem; font-family:var(--font-display); font-size:1.05rem; font-weight:800;
     letter-spacing:.01em; color:var(--ink);
   }
-  .just-aired-list{ display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:.75rem; }
+  /* Discovery's layout (Paul, 2026-09-28): three roomy cards, title first. */
+  .just-aired-list{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:1rem; }
   .ja-item{
-    display:grid; grid-template-columns:56px minmax(0, 1fr) auto; align-items:center; gap:.7rem;
-    padding:.6rem .65rem; border:1px solid var(--outline); border-radius:14px; background:var(--surface-1);
+    display:grid; grid-template-columns:72px minmax(0, 1fr) auto; align-items:start; gap:1rem;
+    padding:1.1rem 1.15rem; border:1px solid var(--outline); border-radius:16px; background:var(--surface-1);
   }
   .ja-art{
-    width:56px; height:56px; padding:0; border:0; border-radius:10px; overflow:hidden; cursor:pointer;
+    width:72px; height:72px; padding:0; border:0; border-radius:12px; overflow:hidden; cursor:pointer;
     background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-2);
   }
   .ja-art img{ width:100%; height:100%; object-fit:cover; display:block; }
   .ja-text{
-    min-width:0; display:flex; flex-direction:column; gap:.12rem; padding:0; border:0;
+    min-width:0; display:flex; flex-direction:column; gap:.4rem; padding:.1rem 0 0; border:0;
     background:none; color:var(--ink); font-family:inherit; text-align:left; cursor:pointer;
   }
-  .ja-show{ font-size:.7rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-2);
-    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .ja-topic{ font-size:.86rem; font-weight:650; line-height:1.3;
-    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  .ja-when{ font-size:.72rem; color:var(--ink-dim); font-family:var(--font-mono);
-    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .ja-play{ flex:none; }
-  @media (max-width:1000px){ .just-aired-list{ grid-template-columns:repeat(2, minmax(0, 1fr)); } }
+  .ja-topic{ font-size:1rem; font-weight:500; line-height:1.35;
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .ja-when{ font-size:.8rem; line-height:1.45; color:var(--ink-dim); }
+  .ja-play{ flex:none; align-self:center; }
+  @media (max-width:1000px){ .just-aired-list{ grid-template-columns:1fr; } }
   @media (max-width:560px){
     .just-aired{ padding:0 1rem; }
-    .just-aired-list{ grid-template-columns:1fr; gap:.5rem; }
-    .ja-item:nth-child(n+4){ display:none; }
+    .just-aired-list{ gap:.6rem; }
+    .ja-item{ grid-template-columns:60px minmax(0, 1fr) auto; gap:.8rem; padding:.9rem; }
+    .ja-art{ width:60px; height:60px; }
+  }
+
+  /* ================= CARD DETAILS under the image (desktop) =================
+     Discovery's show cards (Paul, 2026-09-28): the image clean, then category,
+     show name, host and latest date underneath with room to breathe. The details
+     sit after .card-wrap, outside the light-mode mat, so the mat frames only the
+     image. Phones keep the title on the artwork: two narrow columns have no room. */
+  .card-cell{ min-width:0; }
+  .card-meta{ display:none; }
+  @media (min-width:561px){
+    body.view-grid #rows{ gap:2rem 1.4rem; }
+    .card-wrap .card-overlay, .card-wrap .card-more, .card-wrap .card-date, .card-wrap .card-fade{ display:none; }
+    .card-meta{
+      display:flex; flex-direction:column; align-items:flex-start; gap:.25rem; width:100%;
+      margin-top:.85rem; padding:0; border:0; background:none; color:var(--ink);
+      font-family:inherit; text-align:left; cursor:pointer;
+    }
+    .card-meta-eyebrow{ font-size:.68rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--accent-2); }
+    .card-meta-title{ font-size:1.02rem; font-weight:700; line-height:1.3; }
+    .card-meta-host{ font-size:.86rem; color:var(--ink-dim); line-height:1.35; }
+    .card-meta-latest{ font-size:.82rem; color:var(--ink-dim); }
+    .card-meta-eyebrow, .card-meta-title, .card-meta-host{ max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    @media (hover:hover) and (pointer:fine){ .card-meta:hover .card-meta-title{ color:var(--accent-2); } }
+    .card-meta:focus-visible{ outline:2px solid var(--accent-2); outline-offset:3px; border-radius:6px; }
   }
