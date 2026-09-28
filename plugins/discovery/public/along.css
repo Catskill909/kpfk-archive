@@ -81,14 +81,16 @@
    Transcript / Songs buttons in the show sheet. */
 .player-along{
   flex:none; display:inline-flex; align-items:center; gap:5px; min-height:34px; padding:5px 12px 5px 10px;
-  border:1.5px solid var(--accent); border-radius:999px; background:transparent; color:var(--accent);
+  border:1.5px solid color-mix(in srgb, var(--accent) 70%, transparent); border-radius:999px;
+  background:color-mix(in srgb, var(--accent) 14%, transparent); color:var(--ink);
   font:700 .8rem/1 var(--font-body); cursor:pointer; transition:background .15s ease, color .15s ease;
 }
 .player-along[hidden]{ display:none; }
-/* Orange guides people to it (Paul, 2026-09-28) but lightly: an outline until the panel is
-   open, then filled. */
-.player-along[aria-expanded="true"]{ background:var(--accent); color:var(--accent-ink,#fff); }
-@media (hover:hover) and (pointer:fine){ .player-along:hover{ background:color-mix(in srgb, var(--accent) 14%, transparent); } }
+/* Bright orange means ON (Paul, 2026-09-28): closed is a soft tint with a thin orange edge;
+   solid orange only while the transcript / song list is open. */
+@media (hover:hover) and (pointer:fine){ .player-along:hover{ background:color-mix(in srgb, var(--accent) 24%, transparent); } }
+.player-along[aria-expanded="true"],
+.player-along[aria-expanded="true"]:hover{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink,#fff); }
 .player-along .rv-alongtoggle-icon{ display:inline-flex; }
 .player-along svg{ width:16px; height:16px; }
 @media(max-width:700px){
