@@ -41,7 +41,10 @@ function createDiscovery({ station, env = process.env, dataDir = null, fetchImpl
   const qirSupported = station.id === 'kpfk' && station.plugins.qir;
   const qir = createQirService({ enabled: qirSupported, key: env.QIR_API_KEY || '', audioOrigins: station.origins.audio, fetchImpl });
   const settings = createSettings({ dir: dataDir ? path.join(dataDir, 'discovery') : null, now });
-  const qirOn = () => qirSupported && settings.get().plugins.qir.enabled;
+  // The studio's on/off switch (settings.enabled). Off: every route answers 404 (handle
+  // returns false), no page script, no QIR requests; the site is as it is without Discovery.
+  const enabled = () => settings.get().enabled;
+  const qirOn = () => enabled() && qirSupported && settings.get().plugins.qir.enabled;
   function qirStatus() {
     if (qirOn()) return qir.status();
     return { provider: 'qir', station: station.id, configured: false, state: qirSupported ? 'switched_off' : 'disabled', error: null, lastSuccess: null, episodes: null, skipped: null, chaptersSupported: false };
@@ -182,7 +185,7 @@ function createDiscovery({ station, env = process.env, dataDir = null, fetchImpl
   /** Answers a GET/HEAD for one of this plugin's routes. Returns false for any other path. */
   async function handle(req, res, url) {
     const route = decodeURIComponent(url.pathname);
-    if (!ownsRoute(route)) return false;
+    if (!ownsRoute(route) || !enabled()) return false;
     try {
       if (route === '/discover' || route === '/discover/') { send(res, 200, page(), MIME['.html']); return true; }
       if (route === '/discover/station.js') { send(res, 200, 'window.StationConfig=Object.freeze(' + JSON.stringify(config).replace(/</g, '\\u003c') + ');', MIME['.js']); return true; }
@@ -220,9 +223,28 @@ function createDiscovery({ station, env = process.env, dataDir = null, fetchImpl
     handle,
     settings,
     /** Script tags the host puts on its main page (step 4a): QIR details on the main listing. */
-    pageScripts: () => `<script src="/discover/main.js?v=${version('main.js')}" defer></script>\n`,
+    pageScripts: () => enabled() ? `<script src="/discover/main.js?v=${version('main.js')}" defer></script>\n` : '',
+    enabled,
+    /** For the studio's Discovery tab. Never includes the QIR key, only whether one is set. */
+    adminState: () => {
+      const s = settings.get();
+      return { available: true, enabled: s.enabled, updatedAt: s.updatedAt, persisted: !!dataDir,
+        station: { name: station.name, frequency: station.frequency, city: station.city, timezone: station.timezone,
+          provider: station.provider, logo: station.assets.logo, feeds: station.feeds },
+        qir: { supported: qirSupported, keyConfigured: !!env.QIR_API_KEY, enabled: s.plugins.qir.enabled, status: qirStatus() },
+        pending: lastPending };
+    },
+    /** Studio changes: {enabled?: boolean, qir?: boolean}. Throws on anything else. */
+    applyAdmin(change) {
+      const keys = Object.keys(change || {});
+      if (!keys.length || keys.some(k => !['enabled', 'qir'].includes(k) || typeof change[k] !== 'boolean')) throw Object.assign(new Error('invalid_settings'), { status: 400 });
+      if (change.qir === true && !qirSupported) throw Object.assign(new Error('qir_not_available_for_station'), { status: 409 });
+      if ('enabled' in change) settings.setEnabled(change.enabled);
+      if ('qir' in change) settings.setQir(change.qir);
+      console.log(`Studio: Discovery ${settings.get().enabled ? 'on' : 'off'}, QIR ${settings.get().plugins.qir.enabled ? 'on' : 'off'}`);
+    },
     /** For /healthz: QIR state and the pending/behind numbers. */
-    status: () => ({ qir: qirStatus().state, qirPending: lastPending }),
+    status: () => ({ enabled: enabled(), qir: qirStatus().state, qirPending: lastPending }),
     // Loads the QIR catalog ahead of the first visitor (~17 s cold). Failures are already
     // recorded in qir.status(); logged so a bad key or provider change is visible at startup.
     warm: () => qirOn() && qir.status().configured ? qir.catalog().then(c => console.log('QIR catalog ready: ' + c.episodes.length + ' episodes'), e => console.warn('QIR warm-up failed: ' + e.message)) : Promise.resolve(),

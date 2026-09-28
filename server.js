@@ -37,7 +37,8 @@ if (require.main === module && !station && process.env.STATION_PROVIDER !== 'leg
 
 
 // Discovery plugin (plugins/discovery/, moved in 2026-09-28). Created below, after the
-// Pacifica service, and only when the station profile has plugins.discovery on.
+// Pacifica service, only where the station profile has plugins.discovery: the station MAY
+// have it (a paid package). Whether it is on right now is the studio's switch.
 const { ownsRoute: discoveryOwnsRoute } = require('./plugins/discovery');
 
 const PORT = process.env.PORT || 8080;
@@ -2129,6 +2130,13 @@ function studioVersion() {
  */
 const LOCAL_ASSET_RE = /(href|src)="(\/[A-Za-z0-9._\/-]+\.(?:css|js))"/g;
 const PLUGIN_MARK = /[ \t]*<!-- plugins:[^>]*-->\n?/;
+// The station as listeners see it right now: plugins.discovery is the studio switch (on
+// only where the profile allows it), so the menu never links to a switched-off Discovery.
+function liveStation() {
+  if (!station) return station;
+  const on = !!(discovery && discovery.enabled());
+  return on === station.plugins.discovery ? station : { ...station, plugins: { ...station.plugins, discovery: on } };
+}
 function stampAssets(html) {
   return html.replace(LOCAL_ASSET_RE, (m, attr, file) => `${attr}="${file}?v=${fileVer(file)}"`);
 }
@@ -2237,7 +2245,7 @@ function sendFile(req, res, filePath, ext) {
     if (ext === '.html') {
       fs.readFile(filePath, 'utf8', (e2, html) => {
         if (e2) return notFound(req, res, filePath);
-        const page = injectOg(stampAssets(stationView.render(html, station)), req, req.url || '/');
+        const page = injectOg(stampAssets(stationView.render(html, liveStation())), req, req.url || '/');
         // Bundled plugin scripts: only where the station has the plugin on; otherwise the
         // marker becomes nothing and the page is exactly what it is without the plugin.
         const body = Buffer.from(page.replace(PLUGIN_MARK, () => discovery ? discovery.pageScripts() : ''), 'utf8');
@@ -3802,8 +3810,25 @@ async function studioAction(req, res) {
   }
 }
 
+// Studio's Discovery tab (integration step 5). Same guard as every studio change: signed
+// in, CSRF token, small JSON body. 404 where the station may not have Discovery at all.
+async function studioDiscoveryPost(req, res) {
+  if (!studioAuthed(req)) return sendStudioJson(res, { error: 'unauthorized' }, 401);
+  if (!secretEquals(req.headers['x-studio-csrf'] || '', studioCsrf(req))) return sendStudioJson(res, { error: 'bad token' }, 403);
+  if (!discovery) return sendStudioJson(res, { error: 'not found' }, 404);
+  let change;
+  try { change = JSON.parse(await readBody(req, 512)); } catch (e) { return sendStudioJson(res, { error: 'invalid json' }, 400); }
+  try { discovery.applyAdmin(change); }
+  catch (e) { return sendStudioJson(res, { error: e.message }, e.status || 400); }
+  discovery.warm();   // starts loading QIR at once when it was just switched on; no-op otherwise
+  return sendStudioJson(res, discovery.adminState());
+}
+
 function studioApi(req, res, pathOnly) {
   if (!studioAuthed(req)) return sendStudioJson(res, { error: 'unauthorized' }, 401);
+  if (pathOnly === '/api/studio/discovery') {
+    return discovery ? sendStudioJson(res, discovery.adminState()) : sendStudioJson(res, { available: false });
+  }
   if (pathOnly === '/api/studio/usage') {
     return sendStudioJson(res, usageReport(usageWindowFromUrl(req.url)));
   }
@@ -3923,6 +3948,10 @@ const server = http.createServer(async (req, res) => {
         return sendStudioJson(res, { ok: false, errors: ['The upload could not be read: ' + e.message] }, 400);
       }
     }
+    if (STUDIO_ENABLED && pathOnly === '/api/studio/discovery') {
+      try { return await studioDiscoveryPost(req, res); }
+      catch (e) { return sendStudioJson(res, { error: 'bad request' }, 400); }
+    }
     if (STUDIO_ENABLED && pathOnly === '/api/studio/action') {
       try { return await studioAction(req, res); }
       catch (e) { return sendStudioJson(res, { error: 'bad request' }, 400); }
@@ -3957,13 +3986,15 @@ const server = http.createServer(async (req, res) => {
   try {
     if (discoveryOwnsRoute(pathOnly)) {
       if (!discovery) return sendJson(res, { error: 'not found' }, 404);
-      return await discovery.handle(req, res, new URL(url, 'http://localhost'));
+      // Switched off in the studio: handle() declines and the route does not exist.
+      if (!(await discovery.handle(req, res, new URL(url, 'http://localhost')))) return sendJson(res, { error: 'not found' }, 404);
+      return;
     }
     if (station) {
       if (pathOnly === '/api/station') return sendJson(res, publicProfile(station), 200, 0);
       if (pathOnly === '/station.js') {
         res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8', 'Cache-Control': 'no-store', ...securityHeaders() });
-        return res.end(stationView.script(station));
+        return res.end(stationView.script(liveStation()));
       }
       if (pathOnly === '/manifest.webmanifest') return sendJson(res, stationView.manifest(station), 200, 0);
       if (pathOnly === '/api/showinfo') {

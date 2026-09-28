@@ -156,6 +156,16 @@ Notes on the picks:
 
 ### Step 5 — Discovery admin as a studio tab
 
+**Progress (2026-09-28):** ✅ **5a Discovery tab in the studio** (`/studio#discovery`, studio sign-in):
+two switches, saved on the data volume, applied at once with no redeploy — **Discovery on this
+station** (listener pages, main-page QIR data, menu link, QIR requests) and **Transcripts &
+summaries (QIR)** — plus QIR status in plain words and Station & appearance (read-only). The
+station profile's `plugins.discovery` now means the station *may* have Discovery (KPFK: yes);
+the switch **starts off**, so deploying changes nothing for listeners until it is flipped.
+Tested end to end (sign-in, CSRF, bad values refused, on → pages appear, off → gone).
+⬜ 5b Station template: edit a station's feeds, logo, colours and text in the studio, preview,
+apply, with a way back (Paul, 2026-09-28: "customize template").
+
 - A **Discovery** tab in `/studio`, behind the studio login (Discovery's separate admin
   password goes away).
 - The QIR on/off switch, hidden-show list, and QIR health: how many hours behind, the

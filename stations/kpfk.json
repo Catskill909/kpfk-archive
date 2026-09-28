@@ -72,7 +72,7 @@
     "Special Program": "special"
   },
   "plugins": {
-    "discovery": false,
+    "discovery": true,
     "qir": true
   },
   "hiddenShows": ["friedman", "biketalka"],

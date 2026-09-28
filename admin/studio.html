@@ -65,6 +65,49 @@
   </div>
 </header>
 
+<!-- Studio tabs (integration step 5, 2026-09-28): Stats is everything below; Discovery
+     appears only where the station may have the plugin (studio-discovery.js shows it). -->
+<nav class="studio-tabs" id="studioTabs" aria-label="Studio sections">
+  <div class="studio-tabs-inner">
+    <button class="studio-tab" type="button" data-studio-tab="stats" aria-pressed="true">Stats</button>
+    <button class="studio-tab" type="button" data-studio-tab="discovery" aria-pressed="false" hidden>Discovery</button>
+  </div>
+</nav>
+
+<div class="studio-main studio-discovery" id="discoveryPanel" role="region" aria-labelledby="discoveryTitle" hidden>
+  <section class="studio-section studio-section--wide">
+    <h2 class="studio-h2" id="discoveryTitle">Discovery</h2>
+    <p class="studio-note">QIR search, summaries and transcripts on the listener site. The station
+      profile decides whether this station may have it; these switches turn it on and off
+      right away, with no redeploy.</p>
+    <div class="disc-setting">
+      <div>
+        <h3 class="disc-label" id="discEnabledLabel">Discovery on this station</h3>
+        <p class="disc-desc">Off: the listener site is exactly as it is without Discovery — no
+          Discover page, no QIR requests, no Discover link in the menu.</p>
+        <p class="disc-status" id="discEnabledStatus" role="status"></p>
+      </div>
+      <button class="disc-switch" id="discEnabled" type="button" role="switch" aria-checked="false" aria-labelledby="discEnabledLabel"><span aria-hidden="true"></span></button>
+    </div>
+    <div class="disc-setting">
+      <div>
+        <h3 class="disc-label" id="discQirLabel">Transcripts &amp; summaries (QIR)</h3>
+        <p class="disc-desc">Episode summaries, transcript search and play-from-timestamp, from
+          the QIR transcript API. Available only to stations with a QIR connection — today, KPFK.</p>
+        <p class="disc-status" id="discQirStatus" role="status"></p>
+      </div>
+      <button class="disc-switch" id="discQir" type="button" role="switch" aria-checked="false" aria-labelledby="discQirLabel"><span aria-hidden="true"></span></button>
+    </div>
+    <p class="disc-error" id="discError" role="alert"></p>
+  </section>
+  <section class="studio-section studio-section--wide">
+    <h2 class="studio-h2">Station &amp; appearance</h2>
+    <div id="discStation"></div>
+    <p class="studio-note">Coming next: a station template — change a station's feeds, logo,
+      colours and text here, preview them, then apply, with a way back. Not editable yet.</p>
+  </section>
+</div>
+
 <main class="studio-main" id="main" aria-busy="true">
 
   <!-- What's in the archive right now. Every number here is computed from the
@@ -631,5 +674,6 @@
 <div class="chart-tip" id="chartTip" role="presentation" aria-hidden="true" hidden></div>
 
 <script src="/studio.js"></script>
+<script src="/studio-discovery.js" defer></script>
 </body>
 </html>

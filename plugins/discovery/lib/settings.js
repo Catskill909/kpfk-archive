@@ -3,13 +3,19 @@
 // Stored on the app's data volume at <DATA_DIR>/discovery/settings.json. Defaults apply
 // when the file is missing; a present but unreadable file is an error, never silently
 // replaced with defaults. The studio's Discovery tab (integration step 5) writes it.
+//
+// enabled: Discovery is on for listeners right now (studio switch, 2026-09-28). Starts OFF:
+// the station profile's plugins.discovery only says the station MAY have it (a paid
+// package), so a deploy never turns it on by itself. Files from before the switch have no
+// `enabled` and read as off.
 const fs = require('node:fs');
 const path = require('node:path');
 
-const DEFAULTS = Object.freeze({ schemaVersion: 1, plugins: { qir: { enabled: true } }, updatedAt: null });
+const DEFAULTS = Object.freeze({ schemaVersion: 1, enabled: false, plugins: { qir: { enabled: true } }, updatedAt: null });
 function validSettings(value) {
   return !!value && value.schemaVersion === 1 && value.plugins && value.plugins.qir
-    && typeof value.plugins.qir.enabled === 'boolean';
+    && typeof value.plugins.qir.enabled === 'boolean'
+    && (value.enabled === undefined || typeof value.enabled === 'boolean');
 }
 // dir null keeps settings in memory only (offline tests); the server always passes a directory.
 function createSettings({ dir, now = Date.now }) {
@@ -34,8 +40,10 @@ function createSettings({ dir, now = Date.now }) {
     fs.renameSync(tmp, file);
     current = next;
   }
+  const stamp = () => new Date(now()).toISOString();
   return {
-    get: () => structuredClone(current),
+    get: () => ({ ...structuredClone(current), enabled: current.enabled === true }),
+    setEnabled(enabled) { save({ ...structuredClone(current), enabled, updatedAt: stamp() }); },
     setQir(enabled) { save({ ...structuredClone(current), plugins: { ...current.plugins, qir: { enabled } }, updatedAt: new Date(now()).toISOString() }); },
   };
 }

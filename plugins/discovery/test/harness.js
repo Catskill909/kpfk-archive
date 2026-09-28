@@ -16,7 +16,7 @@ const ROOT = path.join(__dirname, '../../..');
 const ARCHIVE_URL = 'https://podcast.kpfk.org/api/archive';
 const token = url => '/api/artwork/' + crypto.createHash('sha256').update(url).digest('hex');
 
-function createApp({ env = {}, fetchImpl = async () => { throw Error('no network'); }, dataDir = null, now, catalog = [], profile = 'stations/kpfk.json' } = {}) {
+function createApp({ env = {}, fetchImpl = async () => { throw Error('no network'); }, dataDir = null, now, catalog = [], profile = 'stations/kpfk.json', switchedOn = true } = {}) {
   const station = loadProfile(env.STATION_PROFILE || profile, { root: ROOT, env: {} });
   station.plugins.discovery = true;
   async function getArchive() {
@@ -29,6 +29,8 @@ function createApp({ env = {}, fetchImpl = async () => { throw Error('no network
     { upstreamAltId: s.altid, photo: s.photoUrl ? token(s.photoUrl) : station.assets.icon }]));
   const securityHeaders = () => ({ 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self'" });
   const discovery = createDiscovery({ station, env, dataDir, fetchImpl, now, getArchive, peekCatalog: () => ({ directory }), securityHeaders });
+  // Discovery starts switched off (studio switch, step 5); these tests exercise it switched on.
+  if (switchedOn) discovery.settings.setEnabled(true);
   const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, 'http://localhost');
     if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405, { Allow: 'GET, HEAD' }); return res.end(); }

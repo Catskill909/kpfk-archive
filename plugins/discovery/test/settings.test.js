@@ -49,3 +49,35 @@ test('a station without a QIR connection can never switch it on',async t=>{
  assert.equal((await fetch(s.origin+'/api/plugins/qir/catalog')).status,404);
  assert.equal(calls.filter(u=>u.includes('qir.kpfk.org')).length,0);
 });
+
+// Step 5: the studio switch. The class of bug: a switched-off Discovery still answering, still
+// fetching from QIR, or still putting its script on the main page.
+test('switched off: every route declines, no main-page script, no QIR traffic', async t => {
+ const calls=[];const app=createApp({env:{QIR_API_KEY:'k'},fetchImpl:upstream(calls),switchedOn:false});
+ await new Promise(r=>app.listen(0,'127.0.0.1',r));t.after(()=>new Promise(r=>app.close(r)));const o='http://127.0.0.1:'+app.address().port;
+ for(const route of ['/discover','/discover/app.js','/discover/station.js','/api/plugins/qir/status','/api/plugins/qir/catalog','/api/plugins/qir/recent?since=2026-09-18%2000:00:00','/api/cue/1'])assert.equal((await fetch(o+route)).status,404,route);
+ assert.equal(app.discovery.pageScripts(),'');
+ assert.equal(app.discovery.status().enabled,false);
+ assert.deepEqual(calls,[],'no requests while off');
+ app.discovery.applyAdmin({enabled:true});
+ assert.equal((await fetch(o+'/discover')).status,200,'on at once, no restart');
+ assert.match(app.discovery.pageScripts(),/\/discover\/main\.js\?v=/);
+});
+
+test('a settings file from before the switch reads as off; the switch is saved', async t => {
+ const dir=tmp();t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ fs.mkdirSync(path.join(dir,'discovery'));fs.writeFileSync(path.join(dir,'discovery','settings.json'),JSON.stringify({schemaVersion:1,plugins:{qir:{enabled:true}},updatedAt:null}));
+ const a=createApp({env:{},dataDir:dir,switchedOn:false});assert.equal(a.discovery.adminState().enabled,false);
+ a.discovery.applyAdmin({enabled:true});
+ assert.equal(JSON.parse(fs.readFileSync(path.join(dir,'discovery','settings.json'),'utf8')).enabled,true);
+ assert.equal(createApp({env:{},dataDir:dir,switchedOn:false}).discovery.adminState().enabled,true,'survives a restart');
+});
+
+test('studio changes: only the two switches, booleans only; state never carries the QIR key', () => {
+ const app=createApp({env:{QIR_API_KEY:'secret-key'},switchedOn:false});
+ for(const bad of [{},{enabled:'yes'},{qir:1},{other:true},null])assert.throws(()=>app.discovery.applyAdmin(bad),/invalid_settings/);
+ app.discovery.applyAdmin({enabled:true,qir:false});
+ const s=app.discovery.adminState();
+ assert.deepEqual([s.enabled,s.qir.enabled,s.qir.keyConfigured],[true,false,true]);
+ assert.doesNotMatch(JSON.stringify(s),/secret-key/);
+});

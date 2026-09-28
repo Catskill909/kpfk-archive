@@ -6,11 +6,11 @@ const { loadProfile, validateProfile, publicProfile } = require('../../lib/stati
 const root = path.join(__dirname, '../..');
 const raw = () => JSON.parse(fs.readFileSync(path.join(root, 'stations/kpfk.json'), 'utf8'));
 
-test('plugins: discovery and qir are separate booleans; Discovery stays off on KPFK until switched on', () => {
+test('plugins: discovery (may have it) and qir are separate booleans; KPFK may have both', () => {
   const kpfk = loadProfile('stations/kpfk.json', { root, env: {} });
-  assert.deepEqual(kpfk.plugins, { discovery: false, qir: true });
+  assert.deepEqual(kpfk.plugins, { discovery: true, qir: true });
   // The main page learns only whether Discovery is on; the rest is the plugin's business.
-  assert.deepEqual(publicProfile(kpfk).plugins, { discovery: false });
+  assert.deepEqual(publicProfile(kpfk).plugins, { discovery: true });
   for (const bad of [{ qir: 'yes' }, { discovery: 1 }]) assert.throws(() => validateProfile({ ...raw(), plugins: bad }), /plugins\./);
   const { plugins, ...none } = raw();
   assert.deepEqual(validateProfile(none).plugins, { discovery: false, qir: false });

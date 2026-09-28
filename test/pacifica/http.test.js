@@ -65,8 +65,8 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const profile = JSON.parse(fs.readFileSync(path.join(root, 'stations/kpfk.json')));
   profile.origins.feeds = [base];
   profile.feeds.catalog = base + '/fe_feed/fe_catalog_kpfk.json'; profile.feeds.channels = base + '/fe_feed/fe_channels.json';
-  // The shipped profile may have discovery off (it is, since 2026-09-24); this test
-  // exercises both states explicitly, so it switches it on here and off below.
+  // Discovery allowed here (the shipped KPFK profile allows it too since 2026-09-28); the
+  // studio switch turns it on and off below, and the reboot further down disallows it.
   profile.plugins = { ...(profile.plugins || {}), discovery: true };
   const profileFile = path.join(dir, 'profile.json'); fs.writeFileSync(profileFile, JSON.stringify(profile));
   const preload = path.join(dir, 'network.cjs');
@@ -114,9 +114,30 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   assert.equal(og(await (await fetch(url + '/show/dn/999999999')).text()).url, url + '/show/dn', 'rotated out: previews as the show');
   const unknown = await fetch(url + '/show/no-such-show');
   assert.equal(unknown.status, 200); assert.equal(og(await unknown.text()).url, url + '/', 'unknown show: the station card');
+  // Step 5: the profile only says this station MAY have Discovery; it starts switched off.
+  assert.doesNotMatch(home, /discover\/main\.js|href="\/discover"|<!-- plugins:/, 'switched off: no script, no menu link, no marker');
+  assert.equal((await fetch(url + '/discover')).status, 404);
+  assert.equal((await fetch(url + '/api/plugins/qir/status')).status, 404);
+  // The studio's Discovery tab switches it (signed in, CSRF token, boolean values only).
+  const dLogin = await fetch(url + '/api/studio/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: 'test-studio' }) });
+  const dCookie = dLogin.headers.get('set-cookie').split(';')[0];
+  const dCsrf = (await (await fetch(url + '/api/studio/health', { headers: { Cookie: dCookie } })).json()).csrf;
+  const dState = await (await fetch(url + '/api/studio/discovery', { headers: { Cookie: dCookie } })).json();
+  assert.deepEqual([dState.available, dState.enabled], [true, false]);
+  const setDiscovery = (body, headers = { Cookie: dCookie, 'X-Studio-CSRF': dCsrf }) => fetch(url + '/api/studio/discovery', { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body) });
+  assert.equal((await setDiscovery({ enabled: true }, {})).status, 401, 'not signed in');
+  assert.equal((await setDiscovery({ enabled: true }, { Cookie: dCookie })).status, 403, 'no CSRF token');
+  assert.equal((await setDiscovery({ enabled: 'yes' })).status, 400, 'booleans only');
+  assert.equal((await setDiscovery({ other: true })).status, 400, 'known switches only');
+  const switchedOn = await setDiscovery({ enabled: true });
+  assert.equal(switchedOn.status, 200);
+  const onState = await switchedOn.json();
+  assert.equal(onState.enabled, true); assert.equal(onState.qir.keyConfigured, false);
   // Step 4a: with Discovery on, the main page carries its script (and no leftover marker).
-  assert.match(home, /<script src="\/discover\/main\.js\?v=[^"]+" defer><\/script>/);
-  assert.doesNotMatch(home, /<!-- plugins:/);
+  const homeOn = await (await fetch(url)).text();
+  assert.match(homeOn, /<script src="\/discover\/main\.js\?v=[^"]+" defer><\/script>/);
+  assert.doesNotMatch(homeOn, /<!-- plugins:/);
+  assert.match(homeOn, /href="\/discover"/, 'the menu links to Discover while it is on');
   const discover = await fetch(url + '/discover');
   assert.equal(discover.status, 200);
   assert.match(await discover.text(), /KPFK Discovery/);
@@ -124,6 +145,10 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const qirStatus = await (await fetch(url + '/api/plugins/qir/status')).json();
   assert.equal(qirStatus.state, 'not_configured');
   assert.equal((await fetch(url + '/api/plugins/qir/catalog')).status, 503);
+  // Off again in the studio: gone at once, no redeploy.
+  assert.equal((await setDiscovery({ enabled: false })).status, 200);
+  assert.equal((await fetch(url + '/discover')).status, 404);
+  assert.doesNotMatch(await (await fetch(url)).text(), /discover\/main\.js|href="\/discover"/);
   // Donate/Privacy open in an iframe; the CSP must allow exactly the profile's link origins.
   const homeCsp = (await fetch(url)).headers.get('content-security-policy');
   assert.match(homeCsp, new RegExp(`frame-src ${new URL(profile.links.donate).origin.replace(/\./g, '\\.')}(;| )`));
