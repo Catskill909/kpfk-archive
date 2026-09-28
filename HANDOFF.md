@@ -8,12 +8,12 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 
 ## Remind Paul first (say these at the start of every session)
 
-1. **Redeployed after 2026-09-28?** Check `/healthz` `storage.instanceId` =
+1. **Redeployed?** Only the LIVE badge (`436064c`) was waiting at end of 2026-09-28. Check `/healthz` `storage.instanceId` =
    `73039ae5-6589-4ec2-9df5-354de84c0989`. Then Paul's call on the player: floating card + bottom
    fade, or docked full-width bar with a slimmer centred row of controls.
-2. **Ace email (drafted 2026-09-28, `kpfk-discovery-plugin/.local-notes/ace-email-2026-09-28.html`)
-   — sent? any reply?** Recheck QIR: the 7 show keys and World Massive Sep 26 were still open.
-   Paul shares his own Coolify login and the studio password with Ace (Pacifica GM, partner).
+2. **Ace email sent 2026-09-28** (`kpfk-discovery-plugin/.local-notes/ace-email-2026-09-28.html`):
+   7 show keys + World Massive Sep 26 still open in QIR; heads-up that Discovery moved here; studio
+   tour. Paul sent Ace his Coolify login and the studio password. **Any reply?** Recheck QIR.
 3. **Start here:** "Start here tomorrow" in [docs/INTEGRATION-PLAN.md](docs/INTEGRATION-PLAN.md) —
    music 14-day limit → Alan Watts corrections → 4f → retire the Discovery site.
 4. **Parked:** desktop "Copy link" share button (so desktop shares count); Coolify SMTP and
@@ -32,7 +32,7 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
   redirect and stop the Discovery deployment. Then 5b, 7, 8.
 - Paul's open decision: floating player + fade vs docked full-width bar (see the plan).
 - Ace (checked 2026-09-28): the 7 show keys and World Massive Sep 26 are still not fixed in QIR.
-  Follow-up email drafted: `kpfk-discovery-plugin/.local-notes/ace-email-2026-09-28.html`.
+  Follow-up email sent 2026-09-28.
 - Checks: popup audit `tools/popup-audit/` (Chrome on port 9333); stats counters proven by
   `test/pacifica/ui-counters.test.js`.
 
