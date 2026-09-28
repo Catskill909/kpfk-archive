@@ -219,6 +219,8 @@ function createDiscovery({ station, env = process.env, dataDir = null, fetchImpl
   return {
     handle,
     settings,
+    /** Script tags the host puts on its main page (step 4a): QIR details on the main listing. */
+    pageScripts: () => `<script src="/discover/main.js?v=${version('main.js')}" defer></script>\n`,
     /** For /healthz: QIR state and the pending/behind numbers. */
     status: () => ({ qir: qirStatus().state, qirPending: lastPending }),
     // Loads the QIR catalog ahead of the first visitor (~17 s cold). Failures are already

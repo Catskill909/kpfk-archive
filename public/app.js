@@ -2796,9 +2796,27 @@
   // /api/archive/head. Optional — the shipped fallback snapshot has no such
   // thing, and a missing value must leave the last known one alone rather than
   // zeroing it.
+  // PLUGIN HOOK (integration step 4a, docs/INTEGRATION-PLAN.md). A bundled plugin
+  // (Discovery, loaded only where the station has it on) may ADD fields to episode
+  // rows, never remove or overwrite what the feed carries: enrich(rows) runs on every
+  // new listing, and refresh() re-runs it when the plugin's own data arrives later.
+  var plugins = [];
+  function enrichRows(){
+    plugins.forEach(function(p){
+      // Caught: any error inside a plugin. The plugin is optional enrichment; the
+      // station's archive must keep working without it, so log it and carry on.
+      try { p.enrich(rows); } catch(e){ console.warn('[plugin ' + p.name + '] enrich failed:', e.message); }
+    });
+  }
+  window.ArchiveApp = {
+    addPlugin: function(p){ plugins.push(p); },
+    refresh: function(){ enrichRows(); rebuildSearchIndex(); render(); }
+  };
+
   function ingest(list, updated, revision, directory){
     if(directory) { showInfo = directory; detailAsked = {}; }
     rows = list;
+    enrichRows();
     rebuildSearchIndex();
     if(updated) archiveUpdated = updated;
     latestDt = rows.reduce(function(max,r){ return Math.max(max, r.dt); }, 0);

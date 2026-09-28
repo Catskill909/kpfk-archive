@@ -2127,6 +2127,7 @@ function studioVersion() {
  * rather than double-stamped.
  */
 const LOCAL_ASSET_RE = /(href|src)="(\/[A-Za-z0-9._\/-]+\.(?:css|js))"/g;
+const PLUGIN_MARK = /[ \t]*<!-- plugins:[^>]*-->\n?/;
 function stampAssets(html) {
   return html.replace(LOCAL_ASSET_RE, (m, attr, file) => `${attr}="${file}?v=${fileVer(file)}"`);
 }
@@ -2216,7 +2217,10 @@ function sendFile(req, res, filePath, ext) {
     if (ext === '.html') {
       fs.readFile(filePath, 'utf8', (e2, html) => {
         if (e2) return notFound(req, res, filePath);
-        const body = Buffer.from(injectOg(stampAssets(stationView.render(html, station)), req, req.url || '/'), 'utf8');
+        const page = injectOg(stampAssets(stationView.render(html, station)), req, req.url || '/');
+        // Bundled plugin scripts: only where the station has the plugin on; otherwise the
+        // marker becomes nothing and the page is exactly what it is without the plugin.
+        const body = Buffer.from(page.replace(PLUGIN_MARK, () => discovery ? discovery.pageScripts() : ''), 'utf8');
         res.writeHead(200, {
           'Content-Type': MIME['.html'],
           'Content-Length': body.length,

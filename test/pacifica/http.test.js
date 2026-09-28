@@ -100,6 +100,9 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const head = await (await fetch(url + '/api/archive/head')).json(); assert.equal(head.revision, archive.revision);
   const home = await (await fetch(url)).text(); assert.match(home, /KPFK/); assert.doesNotMatch(home, /WBAI|wbai\.org|\{\{station\./);
   assert.doesNotMatch(home, /99\.5/, 'no WBAI frequency, including in accessible names');
+  // Step 4a: with Discovery on, the main page carries its script (and no leftover marker).
+  assert.match(home, /<script src="\/discover\/main\.js\?v=[^"]+" defer><\/script>/);
+  assert.doesNotMatch(home, /<!-- plugins:/);
   const discover = await fetch(url + '/discover');
   assert.equal(discover.status, 200);
   assert.match(await discover.text(), /KPFK Discovery/);
@@ -191,7 +194,9 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
     '/api/plugins/qir/status', '/api/plugins/qir/catalog', '/api/plugins/qir/recent', '/api/cue/1']) {
     assert.equal((await fetch(url + route)).status, 404, 'disabled plugin: ' + route);
   }
-  assert.doesNotMatch(await (await fetch(url)).text(), /href="\/discover"/);
+  const homeOff = await (await fetch(url)).text();
+  assert.doesNotMatch(homeOff, /href="\/discover"/);
+  assert.doesNotMatch(homeOff, /discover\/main\.js|<!-- plugins:/, 'switched off: no plugin script, no marker');
   // Straight after a (re)deploy nobody has asked for the archive yet, and that is
   // when /healthz gets read. The boot warm-up alone must settle the filter on
   // "schedule" — never report the outage fallback for a healthy start.

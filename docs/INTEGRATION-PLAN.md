@@ -96,6 +96,23 @@ in it. Details: [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md).
 
 For each: compare, Paul picks, build, check (phone first, player visible, way back works).
 
+**Approach (Paul, 2026-09-28):** Discovery becomes part of the main page, not a separate page:
+it shares the main top bar, search, player and popups, and adds its data where the station has it
+on. Sub-steps:
+
+- ✅ **4a Discovery hooks onto the main page** — the main page loads `plugins/discovery/public/main.js`
+  only where Discovery is on; it adds QIR headlines (as episode titles) and summaries (as notes)
+  to the main page's episodes, never overwriting the feed's own. The shared search picks them up.
+  Check (2026-09-28, search "Gaza"): live site without Discovery 4 episodes; with Discovery 96,
+  titled by QIR headline with summary previews. The main search already has All / Shows /
+  Episodes tabs in search results.
+- ⬜ 4b Just aired on the main page
+- ⬜ 4c All / Shows / Episodes tabs outside search too (browsing)
+- ⬜ 4d Show card layout (desktop text under image, phone text on top)
+- ⬜ 4e Transcript and Songs in the show sheet (Listen along on the main player)
+- ⬜ 4f `/discover` points to the main page
+
+
 | # | Section / popup | Main side | Discovery | Pick (Paul, date) |
 |---|---|---|---|---|
 | 4.1 | Top bar (header) | ✓ | ✓ | **Main side's** top bar on both sides; Discovery's is dropped (2026-09-28) |
