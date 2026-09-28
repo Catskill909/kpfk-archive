@@ -3871,7 +3871,7 @@
     }
     /* The left column is narrower than the old full-width sheet: the button's label
        stays on one line and only the "in progress" note shortens (… ellipsis). */
-    .sheet:has(.sheet-foot:not(:empty)) .sheet-archive-primary{ flex:none; }
+    .sheet:has(.sheet-foot:not(:empty)) .sheet-archive-primary{ flex:0 1 auto; min-width:0; }
     .sheet-archive-label{ white-space:nowrap; }
     /* The scroll hint belongs to the body: centre it under the left column. */
     .sheet:has(.sheet-foot:not(:empty)) .sheet-scroll-cue{ left:calc((100% - 280px) / 2); }
@@ -4021,8 +4021,9 @@
   .sheet-summary-more{ padding:0; border:0; background:none; color:var(--accent-2); font:600 .82rem/1.6 var(--font-body); cursor:pointer; }
 
   /* ================= SHOW SHEET SECTIONS (Paul, 2026-09-28) =================
-     The wide left column carries the text: "This episode" (headline, Transcript /
-     Songs, summary), then "About the show" (description, links). The narrow right
+     The wide left column carries the text: "Episode info" (headline, Transcript /
+     Songs, summary), then "Show info" (description, links). Expanding either
+     description grows the left column's scroll area only; the controls never move. The narrow right
      column keeps only the broadcast and its controls. */
   .sheet-episode, .sheet-about{ display:flex; flex-direction:column; gap:.55rem; padding-top:1rem; border-top:1px solid var(--outline); }
   .sheet-about{ margin-top:.2rem; }
@@ -4060,3 +4061,11 @@
   @keyframes jaIn{ from{ opacity:0; transform:translateY(-10px) scale(.98); } to{ opacity:1; transform:none; } }
   .ja-item.ja-in{ animation:jaIn .55s cubic-bezier(.2,.8,.2,1) both; }
   @media (prefers-reduced-motion:reduce){ .ja-item.ja-in{ animation:none; } }
+
+  /* Tablets and small laptops (two columns, narrow left column): smaller artwork so the
+     titles and "Past episodes" fit beside it; the button's "in progress" note shortens
+     (ellipsis) instead of pushing the button under the art (768 px check, 2026-09-28). */
+  @media (min-width:761px) and (max-width:1000px){
+    .sheet-art{ width:112px; height:112px; }
+    .sheet-archive-open{ max-width:100%; }
+  }

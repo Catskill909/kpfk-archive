@@ -2931,7 +2931,7 @@
   }
   window.ArchiveApp = {
     addPlugin: function(p){ plugins.push(p); },
-    refresh: function(){ enrichRows(); rebuildSearchIndex(); render(); },
+    refresh: function(){ enrichRows(); rebuildSearchIndex(); render(); repaintOpenSheet(); },
     // For a plugin's Listen along (integration step 4e): play an episode from a moment.
     // Already playing: jump there. Otherwise start it there (no "Resumed at" notice: a
     // jump is not a resume).
@@ -2952,8 +2952,16 @@
     barMode: function(){ return barMode; },
     // A plugin's own live data arrived (new QIR headlines): redo the rows' extra fields
     // and redraw Just aired only; the listing never moves under the reader.
-    refreshJustAired: function(){ enrichRows(); rebuildSearchIndex(); renderJustAired(true); }
+    refreshJustAired: function(){ enrichRows(); rebuildSearchIndex(); renderJustAired(true); repaintOpenSheet(); }
   };
+  // A plugin's data can arrive after a sheet is already open (a shared /show/ link lands on
+  // the sheet before the QIR catalog loads): repaint it in place so its headline, summary and
+  // Transcript / Songs appear without closing it (2026-09-28). Keeps its scroll position.
+  function repaintOpenSheet(){
+    if(!sheet || !sheet.classList.contains('show') || sheetView !== 'show') return;
+    var open = rowById(sheetRowId);
+    if(open) paintSheet(open, true);
+  }
   // Buttons a plugin adds to the show sheet's selected broadcast (step 4e: Transcript,
   // Songs). Each returns markup whose buttons carry data-plugin-action and data-id.
   function pluginSheetActions(r){
@@ -4514,11 +4522,11 @@
           '</div>'+
         '</div>'+
         // Layout (Paul, 2026-09-28): the episode's own text sits in the wide left column under
-        // "This episode" (headline, Transcript/Songs, summary), then "About the show"; the
+        // "Episode info" (headline, Transcript/Songs, summary), then "Show info"; the
         // narrow right column (the footer) keeps only the broadcast and its controls.
         (episodeBlock
-          ? '<section class="sheet-episode" aria-label="This episode"><span class="sheet-section-k">This episode</span>'+episodeBlock+'</section>'+
-            (desc || links ? '<section class="sheet-about" aria-label="About the show"><span class="sheet-section-k">About the show</span>' : '')
+          ? '<section class="sheet-episode" aria-label="Episode info"><span class="sheet-section-k">Episode info</span>'+episodeBlock+'</section>'+
+            (desc || links ? '<section class="sheet-about" aria-label="Show info"><span class="sheet-section-k">Show info</span>' : '')
           : '')+
         (desc ? '<div class="sheet-desc-wrap"><p class="sheet-desc" id="sheetDesc">'+esc(desc)+'</p></div>' : '')+
         (links ? '<div class="sheet-links sheet-profile-links">'+links+'</div>' : '')+
