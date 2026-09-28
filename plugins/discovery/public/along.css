@@ -80,16 +80,19 @@
 /* Main page (step 4e): the Transcript / Songs button in the main player bar, and the
    Transcript / Songs buttons in the show sheet. */
 .player-along{
-  flex:none; display:inline-flex; align-items:center; gap:6px; min-height:40px; padding:8px 14px;
-  border:1px solid var(--outline-strong); border-radius:999px; background:var(--surface-2); color:var(--ink);
-  font:600 .88rem/1 var(--font-body); cursor:pointer;
+  flex:none; display:inline-flex; align-items:center; gap:5px; min-height:34px; padding:5px 12px 5px 10px;
+  border:1.5px solid var(--accent); border-radius:999px; background:transparent; color:var(--accent);
+  font:700 .8rem/1 var(--font-body); cursor:pointer; transition:background .15s ease, color .15s ease;
 }
 .player-along[hidden]{ display:none; }
-.player-along[aria-expanded="true"]{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink,#fff); }
+/* Orange guides people to it (Paul, 2026-09-28) but lightly: an outline until the panel is
+   open, then filled. */
+.player-along[aria-expanded="true"]{ background:var(--accent); color:var(--accent-ink,#fff); }
+@media (hover:hover) and (pointer:fine){ .player-along:hover{ background:color-mix(in srgb, var(--accent) 14%, transparent); } }
 .player-along .rv-alongtoggle-icon{ display:inline-flex; }
-.player-along svg{ width:18px; height:18px; }
+.player-along svg{ width:16px; height:16px; }
 @media(max-width:700px){
-  .player-along{ width:40px; height:40px; min-height:40px; padding:0; justify-content:center; }
+  .player-along{ width:36px; height:36px; min-height:36px; padding:0; justify-content:center; }
   .player-along .rv-alongtoggle-label{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 }
 .sheet-plugin-actions{ display:flex; flex-wrap:wrap; gap:.4rem; margin:.1rem 0 .1rem; }

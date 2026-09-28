@@ -4069,3 +4069,22 @@
     .sheet-art{ width:112px; height:112px; }
     .sheet-archive-open{ max-width:100%; }
   }
+
+  /* Sheet info tabs (Paul, 2026-09-28): "Episode info | Show info", one visible at a time
+     so the sheet stays short; an underline marks the open one. */
+  .sheet-info{ border-top:1px solid var(--outline); }
+  .sheet-info-tabs{ display:flex; gap:1.4rem; border-bottom:1px solid var(--outline); margin-bottom:.85rem; }
+  .sheet-info-tab{
+    position:relative; padding:.8rem 0 .7rem; border:0; background:none; cursor:pointer;
+    color:var(--ink-dim); font:700 .9rem/1 var(--font-body);
+  }
+  .sheet-info-tab::after{ content:''; position:absolute; left:0; right:0; bottom:-1px; height:2px; border-radius:2px; background:transparent; }
+  .sheet-info-tab[aria-selected="true"]{ color:var(--ink); }
+  .sheet-info-tab[aria-selected="true"]::after{ background:var(--accent); }
+  @media (hover:hover) and (pointer:fine){ .sheet-info-tab:hover{ color:var(--ink); } }
+  .sheet-info-tab:focus-visible{ outline:2px solid var(--accent-2); outline-offset:3px; border-radius:4px; }
+  .sheet-info-panel{ display:flex; flex-direction:column; gap:.6rem; }
+  .sheet-info-panel[hidden]{ display:none; }
+  .sheet-info-panel .sheet-selected-topic{ margin:0; font-size:1.08rem; font-weight:700; line-height:1.35; }
+  .sheet-info-panel .sheet-selected-summary{ font-size:.92rem; -webkit-line-clamp:6; }
+  .sheet-info-panel .sheet-links{ margin-bottom:0; }

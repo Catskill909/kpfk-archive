@@ -2954,6 +2954,35 @@
     // and redraw Just aired only; the listing never moves under the reader.
     refreshJustAired: function(){ enrichRows(); rebuildSearchIndex(); renderJustAired(true); repaintOpenSheet(); }
   };
+  // ---- Sheet info tabs: "Episode info" | "Show info" (Paul, 2026-09-28) ----
+  // Which opens first: Episode info, except a shared SHOW link (/show/<code>, no episode),
+  // which opens on Show info. The choice holds while the sheet repaints (late QIR data) and
+  // resets when it closes or another episode is picked.
+  var sheetInfoTab = 'episode';
+  function infoTabs(episodeHtml, showHtml){
+    var tab = function(key, label){
+      var on = sheetInfoTab === key;
+      return '<button class="sheet-info-tab" type="button" role="tab" id="sheetInfoTab-'+key+'" data-sheet-info="'+key+'" aria-controls="sheetInfo-'+key+'" aria-selected="'+on+'" tabindex="'+(on ? 0 : -1)+'">'+label+'</button>';
+    };
+    var panel = function(key, html){
+      return '<div class="sheet-info-panel" role="tabpanel" id="sheetInfo-'+key+'" aria-labelledby="sheetInfoTab-'+key+'"'+(sheetInfoTab === key ? '' : ' hidden')+'>'+html+'</div>';
+    };
+    return '<div class="sheet-info"><div class="sheet-info-tabs" role="tablist" aria-label="Information">'+
+      tab('episode', 'Episode info')+tab('show', 'Show info')+'</div>'+
+      panel('episode', episodeHtml)+panel('show', showHtml)+'</div>';
+  }
+  function setInfoTab(key, focus){
+    sheetInfoTab = key;
+    sheetBody.querySelectorAll('.sheet-info-tab').forEach(function(b){
+      var on = b.dataset.sheetInfo === key;
+      b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
+      if(on && focus) b.focus();
+    });
+    sheetBody.querySelectorAll('.sheet-info-panel').forEach(function(p){ p.hidden = p.id !== 'sheetInfo-' + key; });
+    setupDescClamp();   // a description measured while hidden offered no "Show more"
+    syncSheetFade();
+  }
+
   // A plugin's data can arrive after a sheet is already open (a shared /show/ link lands on
   // the sheet before the QIR catalog loads): repaint it in place so its headline, summary and
   // Transcript / Songs appear without closing it (2026-09-28). Keeps its scroll position.
@@ -3006,6 +3035,8 @@
     // Permanent link: /show/<code>[/<episode>] (public/links.js).
     var link = window.ShowLinks.parse(location.pathname);
     sheetLinkNote = '';
+    // A show link opens on Show info; an episode link on Episode info.
+    if(link) sheetInfoTab = link.episode ? 'episode' : 'show';
     if(link){
       var found = window.ShowLinks.resolve(link, rows, showInfo);
       var notice = document.getElementById('linkNotice');
@@ -4493,6 +4524,9 @@
     // This broadcast's own headline and summary (integration step 4e): QIR's where the
     // Discovery plugin added them, else the feed's topic and notes; plus a plugin's buttons
     // (Transcript, Songs). Long summaries show four lines with More.
+    var showBlock =
+      (desc ? '<div class="sheet-desc-wrap"><p class="sheet-desc" id="sheetDesc">'+esc(desc)+'</p></div>' : '')+
+      (links ? '<div class="sheet-links sheet-profile-links">'+links+'</div>' : '');
     var selTopic = window.ArchiveSearch.episodeTitle(r);
     var selNotes = r.episodeDesc || '';
     var selExtra = pluginSheetActions(r);
@@ -4524,13 +4558,11 @@
         // Layout (Paul, 2026-09-28): the episode's own text sits in the wide left column under
         // "Episode info" (headline, Transcript/Songs, summary), then "Show info"; the
         // narrow right column (the footer) keeps only the broadcast and its controls.
-        (episodeBlock
-          ? '<section class="sheet-episode" aria-label="Episode info"><span class="sheet-section-k">Episode info</span>'+episodeBlock+'</section>'+
-            (desc || links ? '<section class="sheet-about" aria-label="Show info"><span class="sheet-section-k">Show info</span>' : '')
-          : '')+
-        (desc ? '<div class="sheet-desc-wrap"><p class="sheet-desc" id="sheetDesc">'+esc(desc)+'</p></div>' : '')+
-        (links ? '<div class="sheet-links sheet-profile-links">'+links+'</div>' : '')+
-        (episodeBlock && (desc || links) ? '</section>' : ''),
+        // Both kinds of text: "Episode info | Show info" tabs, one visible at a time, so the
+        // sheet stays short (Paul, 2026-09-28). Only one kind: that section, labelled.
+        (episodeBlock && showBlock ? infoTabs(episodeBlock, showBlock)
+          : episodeBlock ? '<section class="sheet-episode" aria-label="Episode info"><span class="sheet-section-k">Episode info</span>'+episodeBlock+'</section>'
+          : showBlock),
       // One dated broadcast. Archive navigation belongs to the show identity
       // above; the footer stays about this selection and nothing else.
       foot:
@@ -4619,6 +4651,7 @@
     var p = document.getElementById('sheetDesc');
     if(!p) return;
     var wrap = p.parentNode;
+    if(wrap.querySelector('.desc-toggle')) return;   // already offered (tab switched back)
     // clamped by CSS on paint; only offer the toggle if it actually overflows
     if(p.scrollHeight - p.clientHeight < 4) return;
     var btn = document.createElement('button');
@@ -4781,6 +4814,7 @@
   // icon is the only archive-list action that starts audio immediately.
   function selectEpisode(id){
     sheetLinkNote = '';
+    sheetInfoTab = 'episode';
     var r = rowById(id);
     if(!r) return;
     sheetView = 'show';
@@ -4844,6 +4878,7 @@
   // this, closing by button would leave a dead entry that Back would replay.
   function closeSheet(){
     sheetLinkNote = '';
+    sheetInfoTab = 'episode';
     if(!sheet.classList.contains('show')) return;
     // Close/minimize means leave the modal journey, not go Back within it. A
     // show opened from Live has two owned entries, so consume both at once.
@@ -4936,6 +4971,13 @@
     cycleTab(e, sheet.querySelectorAll('a[href], button:not([disabled]):not([tabindex="-1"])'));
   }
 
+  // Arrow keys move between the info tabs (the standard tablist pattern).
+  sheetBody.addEventListener('keydown', function(e){
+    var t = e.target.closest && e.target.closest('.sheet-info-tab');
+    if(!t || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
+    e.preventDefault();
+    setInfoTab(t.dataset.sheetInfo === 'episode' ? 'show' : 'episode', true);
+  });
   sheetClose.addEventListener('click', closeSheet);
   sheetScrim.addEventListener('click', closeSheet);
   // Bound on the dialog, so it covers profile, archive route and fixed player.
@@ -4959,6 +5001,8 @@
     var episode = e.target.closest('.sheet-episode-open');
     if(episode){ selectEpisode(episode.dataset.id); return; }
     if(e.target.closest('.sheet-restart')){ restartSheetEpisode(); return; }
+    var infoTab = e.target.closest('[data-sheet-info]');
+    if(infoTab){ setInfoTab(infoTab.dataset.sheetInfo, false); return; }
     var pa = e.target.closest('[data-plugin-action]');
     if(pa){
       plugins.forEach(function(p){ if(p.onAction) p.onAction(pa.dataset.pluginAction, pa.dataset.id); });
