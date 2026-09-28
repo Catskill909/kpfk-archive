@@ -3028,6 +3028,31 @@
   }
   .player-live-dot{width:7px; height:7px; border-radius:50%; background:var(--accent); animation:pulse 1.8s infinite;}
   @media (prefers-reduced-motion:reduce){ .player-live-dot{animation:none;} }
+  /* Live badge (Paul, 2026-09-28): on the live stream the bar's right side was empty. A LIVE pill
+     with sound bars that move while the stream plays and settle when paused. Tablet/desktop only;
+     phones keep the small "● Live" tag by the title, which this replaces on wider screens. */
+  .player-onair{ display:none; }
+  @media (min-width:701px){
+    .player-bar.live .player-onair{
+      display:inline-flex; align-items:center; gap:.5rem; flex:none; margin-left:auto;
+      padding:.4rem .85rem .4rem .7rem; border-radius:999px;
+      border:1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
+      background:color-mix(in srgb, var(--accent) 12%, transparent);
+      font-family:var(--font-display); text-transform:uppercase; letter-spacing:.12em;
+      font-size:.78rem; font-weight:800; color:var(--accent);
+    }
+    .player-bar.live .player-live-source{ display:none; }
+  }
+  .player-onair-eq{ display:inline-flex; align-items:flex-end; gap:2px; height:16px; }
+  .player-onair-eq i{ width:3px; height:30%; border-radius:1px; background:var(--accent); }
+  .player-bar.live.is-playing .player-onair-eq i{ animation:eqbar .9s ease-in-out infinite; }
+  .player-bar.live.is-playing .player-onair-eq i:nth-child(2){ animation-delay:.3s; animation-duration:.8s; }
+  .player-bar.live.is-playing .player-onair-eq i:nth-child(3){ animation-delay:.1s; animation-duration:1.05s; }
+  .player-bar.live.is-playing .player-onair-eq i:nth-child(4){ animation-delay:.45s; animation-duration:.85s; }
+  .player-bar.live.is-playing .player-onair-eq i:nth-child(5){ animation-delay:.2s; animation-duration:.95s; }
+  .player-onair-eq i:nth-child(2){ height:55%; } .player-onair-eq i:nth-child(3){ height:40%; }
+  .player-onair-eq i:nth-child(4){ height:65%; } .player-onair-eq i:nth-child(5){ height:35%; }
+  @media (prefers-reduced-motion:reduce){ .player-bar.live.is-playing .player-onair-eq i{ animation:none; } }
   .player-close{
     /* Deliberately an ✕ and not the modals' chevron-down: this one really does
        end playback and drop the bar (app.js), and the bar is already the
