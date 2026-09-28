@@ -5,12 +5,16 @@ FROM node:24-alpine
 WORKDIR /app
 
 # Only source is needed; there are no dependencies to install. This is the
-# complete runtime: server.js requires nothing outside lib/ and stations/.
+# complete runtime: server.js requires nothing outside lib/, plugins/ and stations/.
 COPY package.json ./
 COPY server.js ./
 COPY lib ./lib
 COPY stations ./stations
 COPY public ./public
+
+# Bundled plugins (Discovery: plugins/discovery/). server.js requires this folder at
+# startup whether or not a station switches the plugin on, so it must always ship.
+COPY plugins ./plugins
 
 # The studio's HTML. Deliberately NOT under public/ — anything in that directory
 # is served to anyone who asks, which would let /studio.html walk straight around

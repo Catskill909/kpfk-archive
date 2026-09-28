@@ -45,6 +45,13 @@ add admin, stats and backup after the screens settle.
 
 ### Step 1 — Move Discovery in (no visible change)
 
+**Progress (2026-09-28):** ✅ 1a profile settings · ✅ 1b server module `plugins/discovery/` ·
+✅ 1c page at `/discover` · ✅ 1d tests in `npm test` (plugin tests in `plugins/discovery/test/`,
+switched-off test in `test/pacifica/http.test.js`) · ⬜ 1e local check with Discovery on.
+The old 24 Sept copy (`public/review.*`, `lib/qir/service.js`) is removed. Discovery's own
+sign-in page is retired; until step 5 its QIR switch is set in the settings file on the volume
+(`discovery/settings.json`, default on) and Discovery itself by `plugins.discovery` in the profile.
+
 - Discovery's server code (`lib/qir/`, its routes, settings) becomes a module in this repo,
   loaded only when `plugins.discovery` is on.
 - Its pages are served at `/discover` inside this app, still in their current look.

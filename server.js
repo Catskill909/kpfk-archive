@@ -35,11 +35,9 @@ if (require.main === module && !station && process.env.STATION_PROVIDER !== 'leg
 }
 
 
-const qir = require('./lib/qir/service').createQirService({
-  enabled: !!(station && station.id === 'kpfk' && station.plugins.discovery),
-  key: process.env.QIR_API_KEY || '',
-  audioOrigins: station ? station.origins.audio : [],
-});
+// Discovery plugin (plugins/discovery/, moved in 2026-09-28). Created below, after the
+// Pacifica service, and only when the station profile has plugins.discovery on.
+const { ownsRoute: discoveryOwnsRoute } = require('./plugins/discovery');
 
 const PORT = process.env.PORT || 8080;
 const PUBLIC_DIR = path.join(__dirname, 'public');
@@ -2255,11 +2253,6 @@ function sendFile(req, res, filePath, ext) {
 
 function serveStatic(req, reqPath, res) {
   let rel = path.posix.normalize(decodeURIComponent(reqPath.split('?')[0]));
-  // First bundled UI plugin: a station-controlled route, never executable uploads.
-  if (['/discover', '/discover/', '/review.html', '/review.js', '/review.css', '/qir-transcript.js'].includes(rel)) {
-    if (!station || !station.plugins.discovery) return sendJson(res, { error: 'not found' }, 404);
-    if (rel === '/discover' || rel === '/discover/') rel = '/review.html';
-  }
   if (rel === '/' || rel === '') rel = '/index.html';
   // resolve safely inside PUBLIC_DIR
   const filePath = path.join(PUBLIC_DIR, path.normalize(rel));
@@ -3877,6 +3870,12 @@ function studioApi(req, res, pathOnly) {
 
 // --------------------------------------------------------------- the server
 
+// Switched off (or no station profile): null, no QIR code runs and every Discovery route is
+// a 404, so the site behaves exactly as it does without the plugin.
+const discovery = station && station.plugins.discovery ? require('./plugins/discovery').createDiscovery({
+  station, dataDir: DATA_DIR, getArchive, peekCatalog: () => pacifica.peekCatalog(), securityHeaders,
+}) : null;
+
 const server = http.createServer(async (req, res) => {
   const url = req.url || '/';
   const pathOnly = url.split('?')[0];
@@ -3932,15 +3931,9 @@ const server = http.createServer(async (req, res) => {
   }
 
   try {
-    if (pathOnly.startsWith('/api/plugins/qir/')) {
-      if (!station || station.id !== 'kpfk' || !station.plugins.discovery) return sendJson(res, {error:'not found'},404);
-      try {
-        if (pathOnly === '/api/plugins/qir/status') return sendJson(res,qir.status());
-        if (pathOnly === '/api/plugins/qir/catalog') return sendJson(res,await qir.catalog());
-        const match = /^\/api\/plugins\/qir\/transcript\/([a-f0-9-]+)$/i.exec(pathOnly);
-        if (match) return sendJson(res,await qir.transcript(match[1]));
-        return sendJson(res,{error:'not found'},404);
-      } catch(e) { return sendJson(res,{error:e.message},e.status || 502); }
+    if (discoveryOwnsRoute(pathOnly)) {
+      if (!discovery) return sendJson(res, { error: 'not found' }, 404);
+      return await discovery.handle(req, res, new URL(url, 'http://localhost'));
     }
     if (station) {
       if (pathOnly === '/api/station') return sendJson(res, publicProfile(station), 200, 0);
@@ -4052,6 +4045,9 @@ const server = http.createServer(async (req, res) => {
         // volume at all, and a 64-hex `volume` = an anonymous one a redeploy
         // will replace. `instanceId` unchanged across two deploys is the proof.
         storage: storageReport(),
+        // Present only where the station has the Discovery plugin on: QIR state and how far
+        // behind QIR is (qirPending.behindHours; the log warns from 6 h).
+        discovery: discovery ? discovery.status() : undefined,
         // The app now publishes only what the feeds carry, so "how many feeds do
         // we hold" is the difference between a full archive and an empty one.
         // `held` at 0 with `lastHarvest` set means every fetch failed — the one
@@ -4111,6 +4107,7 @@ if (require.main === module) {
         if (process.env.ARTWORK_WARM !== 'off') pacifica.warmArtwork().then(w => console.log(`[pacifica] artwork warmed: ${w.cached} of ${w.requested} images in memory`));
       })
       .catch(e => console.error('[pacifica] archive warm-up failed:', e.message));
+    if (discovery) discovery.warm();
   });
 }
 

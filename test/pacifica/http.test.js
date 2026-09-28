@@ -102,8 +102,8 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   assert.doesNotMatch(home, /99\.5/, 'no WBAI frequency, including in accessible names');
   const discover = await fetch(url + '/discover');
   assert.equal(discover.status, 200);
-  assert.match(await discover.text(), /KPFK discovery · Beta/);
-  assert.equal((await fetch(url + '/review.js')).status, 200);
+  assert.match(await discover.text(), /KPFK Discovery/);
+  assert.equal((await fetch(url + '/discover/app.js')).status, 200);
   const qirStatus = await (await fetch(url + '/api/plugins/qir/status')).json();
   assert.equal(qirStatus.state, 'not_configured');
   assert.equal((await fetch(url + '/api/plugins/qir/catalog')).status, 503);
@@ -182,10 +182,13 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   assert.doesNotMatch(logs, /UNEXPECTED_UPSTREAM/);
   const identity = health.storage.instanceId;
   child.kill(); await new Promise(resolve => child.once('exit', resolve)); online = false;
-  profile.plugins = { discovery: false };
+  profile.plugins = { discovery: false, qir: true };
   fs.writeFileSync(profileFile, JSON.stringify(profile));
   await boot();
-  for (const route of ['/discover', '/discover/', '/review.html', '/review.js', '/review.css', '/qir-transcript.js', '/api/plugins/qir/status', '/api/plugins/qir/catalog']) {
+  // Discovery switched off: every route it owns is gone, including the old 24 Sept review
+  // page and the files that moved into plugins/discovery/public/.
+  for (const route of ['/discover', '/discover/', '/discover/app.js', '/discover/station.js', '/discover/text.js', '/review.html', '/review.js', '/review.css', '/qir-transcript.js',
+    '/api/plugins/qir/status', '/api/plugins/qir/catalog', '/api/plugins/qir/recent', '/api/cue/1']) {
     assert.equal((await fetch(url + route)).status, 404, 'disabled plugin: ' + route);
   }
   assert.doesNotMatch(await (await fetch(url)).text(), /href="\/discover"/);

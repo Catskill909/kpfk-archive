@@ -13,6 +13,12 @@ for (const file of legacy) {
 }
 // Every test/pacifica/*.test.js runs. A hand-kept list silently skipped a new file once
 // (audio-probe.test.js, 2026-09-26): the suite reported green without running it.
-const files = require('fs').readdirSync(path.join(root, 'test/pacifica')).filter(f => f.endsWith('.test.js')).sort().map(f => 'test/pacifica/' + f);
+const fs = require('fs');
+const files = fs.readdirSync(path.join(root, 'test/pacifica')).filter(f => f.endsWith('.test.js')).sort().map(f => 'test/pacifica/' + f);
+// Each bundled plugin's own tests run too (plugins/<name>/test/*.test.js), found the same way.
+for (const plugin of fs.readdirSync(path.join(root, 'plugins')).sort()) {
+  const dir = path.join('plugins', plugin, 'test');
+  if (fs.existsSync(path.join(root, dir))) files.push(...fs.readdirSync(path.join(root, dir)).filter(f => f.endsWith('.test.js')).sort().map(f => dir + '/' + f));
+}
 const result = spawnSync(process.execPath, ['--test', ...files], { cwd: root, env, stdio: 'inherit' });
 process.exit(result.status || (result.error ? 1 : 0));

@@ -10,7 +10,7 @@ const path = require('path');
 const { validateProfile } = require('../../lib/station-config');
 const n = require('../../lib/pacifica/normalize');
 const text = require('../../public/text');
-const transcript = require('../../public/qir-transcript');
+const transcript = require('../../plugins/discovery/public/qir-transcript');
 const root = path.join(__dirname, '../..');
 const catalog = () => JSON.parse(fs.readFileSync(path.join(root, 'docs/fixtures/pacifica-kpfk-2026-09-14/fe_catalog_kpfk.json'), 'utf8'));
 const profile = validateProfile(require('../../stations/kpfk.json'));

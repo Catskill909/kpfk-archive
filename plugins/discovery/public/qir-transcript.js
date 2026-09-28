@@ -1,4 +1,4 @@
-(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('./text'));else root.QirTranscript=factory(root.PlainText);})(typeof window==='undefined'?this:window,function(PlainText){
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('../../../public/text'));else root.QirTranscript=factory(root.PlainText);})(typeof window==='undefined'?this:window,function(PlainText){
   'use strict';
   function seconds(value){
     var m=/^(?:(\d{2,}):)?([0-5]\d):([0-5]\d)\.(\d{3})$/.exec(value);
