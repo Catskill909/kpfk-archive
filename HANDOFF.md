@@ -6,6 +6,22 @@ WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here o
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 [docs/README.md](docs/README.md) (which docs are current vs inherited from WBAI).
 
+## Remind Paul first (say these at the start of every session)
+
+1. **Redeployed after 2026-09-28?** Check `/healthz` `storage.instanceId` =
+   `73039ae5-6589-4ec2-9df5-354de84c0989`. Then Paul's call on the player: floating card + bottom
+   fade, or docked full-width bar with a slimmer centred row of controls.
+2. **Ace email (drafted 2026-09-28, `kpfk-discovery-plugin/.local-notes/ace-email-2026-09-28.html`)
+   — sent? any reply?** Recheck QIR: the 7 show keys and World Massive Sep 26 were still open.
+   Paul shares his own Coolify login and the studio password with Ace (Pacifica GM, partner).
+3. **Start here:** "Start here tomorrow" in [docs/INTEGRATION-PLAN.md](docs/INTEGRATION-PLAN.md) —
+   music 14-day limit → Alan Watts corrections → 4f → retire the Discovery site.
+4. **Parked:** desktop "Copy link" share button (so desktop shares count); Coolify SMTP and
+   "Instance's Domain" (invite links); queued Ace items in the Discovery HANDOFF (hold).
+5. **How Paul works:** short plain wrap-ups + "Paul — your action points"; copy-paste text on a
+   page with Copy buttons; ask before opening a browser or touching his app on port 8081;
+   announce every push. Paul was worn out at the end of 2026-09-28 — keep the start light.
+
 ## 2026-09-28 — one app: Discovery moved into the podcast site (read this first)
 
 **Plan and status live in [docs/INTEGRATION-PLAN.md](docs/INTEGRATION-PLAN.md)** — at-a-glance table,
