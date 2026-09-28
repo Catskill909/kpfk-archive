@@ -8,7 +8,7 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 
 ## Remind Paul first (say these at the start of every session)
 
-1. **Redeployed?** Only the LIVE badge (`436064c`) was waiting at end of 2026-09-28. Check `/healthz` `storage.instanceId` =
+1. **Redeployed?** The LIVE badge and the transcript spacing fix (`ec68584`) were waiting at end of 2026-09-28. Check `/healthz` `storage.instanceId` =
    `73039ae5-6589-4ec2-9df5-354de84c0989`. Then Paul's call on the player: floating card + bottom
    fade, or docked full-width bar with a slimmer centred row of controls.
 2. **Ace email sent 2026-09-28** (`kpfk-discovery-plugin/.local-notes/ace-email-2026-09-28.html`):

@@ -27,7 +27,7 @@ Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-28.**
 
 ## Live now on podcasts.kpfk.org (checked 2026-09-28, late)
 
-Everything built on 2026-09-28 is live **except the LIVE badge** (pushed last, next redeploy).
+Everything built on 2026-09-28 is live **except the two items under "Waiting for the next redeploy"**.
 Storage intact (`/healthz` `instanceId` 73039ae5-…). Discovery is ON for KPFK, QIR key set.
 
 - **Player:** always visible and usable under every popup; no Close; floating card on wider
@@ -44,7 +44,9 @@ Storage intact (`/healthz` `instanceId` 73039ae5-…). Discovery is ON for KPFK,
 
 ## Waiting for the next redeploy
 
-- **LIVE badge** on the live-stream player (tablet/desktop): moving sound bars while playing.
+- **LIVE badge** on the live-stream player (tablet/desktop): slow, subtle sound bars while playing.
+- **Transcript spacing:** time column sized to the episode and right-aligned, so the time sits
+  next to its text (the wide gap had come back).
 
 ## The old Discovery site (kpfk-discovery.pacifica.audio)
 
