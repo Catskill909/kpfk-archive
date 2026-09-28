@@ -15,8 +15,9 @@ test('the page is served at /discover with stamped assets and no secrets; only i
  assert.doesNotMatch(html,/\{\{station/);assert.match(html,/data-view="discover"/);assert.doesNotMatch(html,/id="admin"|admin\.js/,'the admin view moves to the studio');
  assert.match(page.headers.get('content-security-policy'),/script-src 'self'/);
  assert.equal((await fetch(o+'/discover/')).status,200);
- for(const asset of ['app.js','player.js','base.css','app.css','qir-transcript.js','archive-search.js','along.js','playlist.js','media-session.js','just-aired.js','text.js','theme-boot.js'])assert.equal((await fetch(o+'/discover/'+asset)).status,200,asset);
- for(const bad of ['/discover/admin.js','/discover/index.js','/discover/..%2Findex.js','/discover/lib/qir/service.js','/discover/app.js.map','/discover/nope.js','/api/plugins/qir/unknown','/api/cue/'])assert.equal((await fetch(o+bad)).status,404,bad);
+ for(const asset of ['app.js','player.js','styles.css','app.css','qir-transcript.js','archive-search.js','along.js','playlist.js','media-session.js','just-aired.js','text.js','theme-boot.js'])assert.equal((await fetch(o+'/discover/'+asset)).status,200,asset);
+ assert.match(html,/href="\/discover\/styles\.css\?v=/,'one stylesheet with the main site');
+ for(const bad of ['/discover/base.css','/discover/admin.js','/discover/index.js','/discover/..%2Findex.js','/discover/lib/qir/service.js','/discover/app.js.map','/discover/nope.js','/api/plugins/qir/unknown','/api/cue/'])assert.equal((await fetch(o+bad)).status,404,bad);
  assert.equal((await fetch(o+'/discover',{method:'POST'})).status,405);
  const cfg=await(await fetch(o+'/discover/station.js')).text();
  assert.doesNotMatch(cfg,/QIR_API_KEY|Bearer|feeds|origins|episodeCorrections|musicShows/);
