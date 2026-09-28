@@ -20,6 +20,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { loadProfile, publicProfile } = require('./lib/station-config');
 const stationView = require('./lib/station-view');
+const ShowLinks = require('./public/links');
 const { toCsv } = require('./lib/export/csv');
 const listeningExport = require('./lib/export/listening');
 const backupLib = require('./lib/export/backup');
@@ -2187,6 +2188,25 @@ function ogTags(req, reqUrl) {
       pageUrl = origin + '/?show=' + encodeURIComponent(id);
     }
   }
+  // Permanent links (public/links.js): /show/<code> previews as the show (its name,
+  // description and artwork); /show/<code>/<episode> as that episode while it is in the
+  // archive, and as the show once it has rotated out (the page does the same).
+  const link = !id && ShowLinks.parse(reqUrl.split('?')[0]);
+  if (link) {
+    const data = archiveCache.get() || archiveCache.stale();
+    const found = data && ShowLinks.resolve(link, data.shows, data.directory || {});
+    if (found) {
+      const info = showInfo[found.sho] || (data.directory || {})[found.sho] || {};
+      const episode = link.episode && !found.rotated;
+      const photo = found.row.photo || info.photo || '';
+      title = episode ? found.row.title : (info.name || found.row.title);
+      if (photo && !/\.svg(\?|$)/i.test(photo)) { image = abs(photo); large = false; }
+      desc = (info.desc || info.shortdesc || '').replace(/\s+/g, ' ').trim();
+      if (desc.length > 300) desc = desc.slice(0, 297).trimEnd() + '…';
+      if (!desc) desc = (episode && found.row.dateText ? found.row.dateText + ' · ' : '') + OG_DEFAULT_TITLE;
+      pageUrl = origin + (episode ? ShowLinks.episodePath(found.row) : ShowLinks.showPath(found.sho));
+    }
+  }
 
   // A show's own artwork is square, so it gets a `summary` card (a wide card would
   // letterbox it); the station's 1200×630 share card gets `summary_large_image`.
@@ -4072,7 +4092,7 @@ const server = http.createServer(async (req, res) => {
     // reads the OG tags once and caches the card. If the archive cache is cold
     // (fresh boot / fresh deploy) that one shot would get the generic station
     // image forever, so warm it first. Failures fall through to the defaults.
-    if (url.includes('?') && new URLSearchParams(url.slice(url.indexOf('?') + 1)).has('show')) {
+    if ((url.includes('?') && new URLSearchParams(url.slice(url.indexOf('?') + 1)).has('show')) || ShowLinks.parse(pathOnly)) {
       await getArchive().catch(() => {});
     }
     return serveStatic(req, url, res);

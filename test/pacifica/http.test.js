@@ -100,6 +100,20 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const head = await (await fetch(url + '/api/archive/head')).json(); assert.equal(head.revision, archive.revision);
   const home = await (await fetch(url)).text(); assert.match(home, /KPFK/); assert.doesNotMatch(home, /WBAI|wbai\.org|\{\{station\./);
   assert.doesNotMatch(home, /99\.5/, 'no WBAI frequency, including in accessible names');
+  // Permanent links (public/links.js): the page, with the show's or episode's link preview.
+  const og = html => Object.fromEntries([...html.matchAll(/<meta property="og:(\w+)" content="([^"]*)">/g)].map(m => [m[1], m[2]]));
+  const dnRow = archive.shows.find(r => r.upstreamAltId === 'dn');
+  const dnName = archive.directory[dnRow.sho].name;
+  const showPage = await fetch(url + '/show/dn');
+  assert.equal(showPage.status, 200);
+  const showOg = og(await showPage.text());
+  assert.equal(showOg.url, url + '/show/dn'); assert.equal(showOg.title, dnName.replace(/&/g, '&amp;'));
+  const epNum = dnRow.id.split('.').pop();
+  const epOg = og(await (await fetch(url + '/show/dn/' + epNum)).text());
+  assert.equal(epOg.url, url + '/show/dn/' + epNum);
+  assert.equal(og(await (await fetch(url + '/show/dn/999999999')).text()).url, url + '/show/dn', 'rotated out: previews as the show');
+  const unknown = await fetch(url + '/show/no-such-show');
+  assert.equal(unknown.status, 200); assert.equal(og(await unknown.text()).url, url + '/', 'unknown show: the station card');
   // Step 4a: with Discovery on, the main page carries its script (and no leftover marker).
   assert.match(home, /<script src="\/discover\/main\.js\?v=[^"]+" defer><\/script>/);
   assert.doesNotMatch(home, /<!-- plugins:/);

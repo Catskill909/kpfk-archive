@@ -99,8 +99,10 @@
     if(state.query) q.push('q=' + encodeURIComponent(state.query));
     if(state.query && searchScope !== 'all') q.push('scope=' + searchScope);
     if(state.query && searchShow) q.push('match=' + encodeURIComponent(searchShow));
-    if(sheetId) q.push('show=' + encodeURIComponent(sheetId));
-    return location.pathname + (q.length ? '?' + q.join('&') : '');
+    // An open popup is addressed by its permanent link (public/links.js), so the address
+    // bar is always something that can be copied into a post or a web page.
+    var open = sheetId && rowById(sheetId);
+    return (open ? window.ShowLinks.episodePath(open) : '/') + (q.length ? '?' + q.join('&') : '');
   }
   var canHistory = !!(window.history && history.replaceState);
   // Tapping the player bar's title while a sheet is open (the bar stays visible above
@@ -2840,9 +2842,29 @@
   // A `?show=` link can only be honoured once the rows exist, and only if the
   // episode is still inside its retention window — see the note in index.html.
   var deepLinkDone = false;
+  var sheetLinkNote = '';   // shown in the sheet opened from a rotated-out link, until it closes or changes episode
   function openDeepLink(){
     if(deepLinkDone) return;
     deepLinkDone = true;
+    // Permanent link: /show/<code>[/<episode>] (public/links.js).
+    var link = window.ShowLinks.parse(location.pathname);
+    sheetLinkNote = '';
+    if(link){
+      var found = window.ShowLinks.resolve(link, rows, showInfo);
+      var notice = document.getElementById('linkNotice');
+      if(!found || found.rotated){
+        var text = notice && notice.querySelector('span');
+        if(text) text.textContent = found
+          ? 'That broadcast has rotated out of the archive — ' + STATION.name + ' keeps each show for a limited window. Here is the show’s latest episode.'
+          : 'That show isn’t in the archive right now. Everything currently available is listed below.';
+        if(notice) notice.hidden = false;
+      }
+      if(canHistory){ try { history.replaceState(null, '', urlFor(null)); } catch(e){} }
+      // Rotated out: say so inside the popup too; the page's note sits behind its backdrop.
+      if(found && found.rotated) sheetLinkNote = 'The episode in that link has rotated out of the archive. This is the latest one.';
+      if(found) openSheetById(found.row.id);
+      return;
+    }
     var id = param('show');
     if(!id) return;
     if(!rowById(id)){
@@ -4313,6 +4335,7 @@
       // above; the footer stays about this selection and nothing else.
       foot:
         '<div class="sheet-selected">'+
+          (sheetLinkNote ? '<p class="sheet-link-note" role="status">'+esc(sheetLinkNote)+'</p>' : '')+
           '<span class="sheet-selected-k">Selected broadcast</span>'+
           '<div class="sheet-selected-line">'+
             (dparts.date ? '<span class="sheet-selected-date">'+esc(shortDateText(dparts.date))+'</span>' : '')+
@@ -4556,6 +4579,7 @@
   // A row chooses context and returns to the restored profile. Its separate play
   // icon is the only archive-list action that starts audio immediately.
   function selectEpisode(id){
+    sheetLinkNote = '';
     var r = rowById(id);
     if(!r) return;
     sheetView = 'show';
@@ -4618,6 +4642,7 @@
   // consumed; popstate then calls dismissSheet() to do the actual work. Without
   // this, closing by button would leave a dead entry that Back would replay.
   function closeSheet(){
+    sheetLinkNote = '';
     if(!sheet.classList.contains('show')) return;
     // Close/minimize means leave the modal journey, not go Back within it. A
     // show opened from Live has two owned entries, so consume both at once.
@@ -4746,7 +4771,7 @@
     navigator.share({
       title: r.title,
       text: r.title + (' — ' + STATION.label + ' Archive'),
-      url: location.origin + location.pathname + '?show=' + encodeURIComponent(r.id)
+      url: location.origin + window.ShowLinks.episodePath(r)
     }).catch(function(){ /* dismissed by the user, or no target chosen */ });
   }
   // artwork that 404s falls back to the station placeholder behind it

@@ -3892,3 +3892,10 @@
      audit). Every popup that shows an episode has its own Start over and position,
      so the notice waits while one is open (html.scroll-lock = a popup is open). */
   html.scroll-lock .resume-toast{ display:none; }
+
+  /* A rotated-out permanent link (public/links.js) says so inside the sheet it opens:
+     the page's own notice sits behind the sheet's backdrop. */
+  .sheet-link-note{
+    margin:0 0 .35rem; padding:.55rem .75rem; border-left:3px solid var(--warn);
+    border-radius:8px; background:var(--warn-bg); color:var(--ink); font-size:.8rem; line-height:1.4;
+  }

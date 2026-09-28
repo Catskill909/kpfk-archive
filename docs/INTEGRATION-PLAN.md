@@ -106,6 +106,10 @@ on. Sub-steps:
   Check (2026-09-28, search "Gaza"): live site without Discovery 4 episodes; with Discovery 96,
   titled by QIR headline with summary previews. The main search already has All / Shows /
   Episodes tabs in search results.
+- ✅ **Permanent links** (Paul, 2026-09-28, for websites and social posts): `/show/<code>` opens a
+  show on its latest episode; `/show/<code>/<episode>` an episode, falling back to the show with
+  a note once it rotates out. Social previews for both; old `?show=` links still work. Guide:
+  [LINKS.md](LINKS.md).
 - ⬜ 4b Just aired on the main page
 - ⬜ 4c All / Shows / Episodes tabs outside search too (browsing)
 - ⬜ 4d Show card layout (desktop text under image, phone text on top)
