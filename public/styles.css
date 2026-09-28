@@ -3908,7 +3908,9 @@
   .just-aired{ max-width:1180px; margin:0 auto 1.4rem; padding:0 1.6rem; }
   .just-aired[hidden]{ display:none; }
   /* Discovery's layout (Paul, 2026-09-28): three roomy cards, title first. */
-  .just-aired-list{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:1rem; }
+  /* Cards keep a comfortable width and wrap to the next row when space is tight (a narrow
+     window, or the transcript panel open) instead of squeezing (Paul, 2026-09-28). */
+  .just-aired-list{ display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap:1rem; }
   .ja-item{
     display:grid; grid-template-columns:72px minmax(0, 1fr) auto; align-items:start; gap:1rem;
     padding:1.1rem 1.15rem; border:1px solid var(--outline); border-radius:16px; background:var(--surface-1);
@@ -3930,7 +3932,7 @@
     display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
   .ja-when{ font-size:.8rem; line-height:1.45; color:var(--ink-dim); }
   .ja-play{ flex:none; align-self:center; }
-  @media (max-width:1000px){ .just-aired-list{ grid-template-columns:1fr; } }
+
   @media (max-width:560px){
     .just-aired{ padding:0 1rem; }
     .just-aired-list{ gap:.6rem; }
@@ -4017,3 +4019,39 @@
     display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
   .sheet-selected-notes.open .sheet-selected-summary{ display:block; -webkit-line-clamp:unset; overflow:visible; }
   .sheet-summary-more{ padding:0; border:0; background:none; color:var(--accent-2); font:600 .82rem/1.6 var(--font-body); cursor:pointer; }
+
+  /* ================= SHOW SHEET SECTIONS (Paul, 2026-09-28) =================
+     The wide left column carries the text: "This episode" (headline, Transcript /
+     Songs, summary), then "About the show" (description, links). The narrow right
+     column keeps only the broadcast and its controls. */
+  .sheet-episode, .sheet-about{ display:flex; flex-direction:column; gap:.55rem; padding-top:1rem; border-top:1px solid var(--outline); }
+  .sheet-about{ margin-top:.2rem; }
+  .sheet-section-k{ font:700 .68rem/1 var(--font-body); letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); }
+  .sheet-episode .sheet-selected-topic{ margin:0; font-size:1.08rem; font-weight:700; line-height:1.35; }
+  .sheet-episode .sheet-selected-summary{ font-size:.92rem; -webkit-line-clamp:5; }
+  .sheet-about .sheet-desc-wrap{ margin:0; }
+  .sheet-about .sheet-links{ margin-bottom:0; }
+
+  /* ================= POPUPS BESIDE THE TRANSCRIPT (Paul, 2026-09-28) =================
+     With the Listen along panel open (body.along-open, plugins/discovery along.js), a
+     popup opens in the space beside it instead of covering it, and its dark backdrop
+     stops at the panel's edge, so the transcript stays visible and usable. From 700px:
+     below that the panel is a bottom sheet and a popup opens above it (closing the popup
+     brings it straight back). The side menu is a right-hand drawer and keeps its place. */
+  @media (min-width:700px){
+    body.along-open :is(.sheet-scrim, .live-scrim, .sched-scrim, .donate-scrim, .lp-info-scrim, .lp-alert-scrim, .live-choice-scrim){
+      right:min(var(--along-w, 420px), 92vw);
+    }
+    body.along-open .lightbox{ right:min(var(--along-w, 420px), 92vw); }
+    body.along-open :is(.sheet, .live-player, .sched-modal, .donate-modal, .lp-info, .lp-alert, .live-choice){
+      left:calc((100vw - min(var(--along-w, 420px), 92vw)) / 2);
+      max-width:calc(100vw - min(var(--along-w, 420px), 92vw) - 2rem);
+    }
+  }
+
+  /* The show grid adapts to the width it actually has (5 columns on a laptop, fewer with the
+     transcript panel open) instead of fixed viewport steps that squeezed the cards. Phones
+     keep their two columns (the max-width:560px rules above). */
+  @media (min-width:561px){
+    body.view-grid #rows{ grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); }
+  }

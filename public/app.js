@@ -4436,8 +4436,17 @@
         '<span class="listen-progress sheet-selected-progress" id="sheetSelectedProgress" aria-hidden="true"></span>'+
       '</div>';
 
+    // This broadcast's own headline and summary (integration step 4e): QIR's where the
+    // Discovery plugin added them, else the feed's topic and notes; plus a plugin's buttons
+    // (Transcript, Songs). Long summaries show four lines with More.
     var selTopic = window.ArchiveSearch.episodeTitle(r);
     var selNotes = r.episodeDesc || '';
+    var selExtra = pluginSheetActions(r);
+    var episodeBlock =
+      (selTopic ? '<p class="sheet-selected-topic">'+esc(selTopic)+'</p>' : '')+
+      (selExtra ? '<div class="sheet-plugin-actions">'+selExtra+'</div>' : '')+
+      (selNotes ? '<div class="sheet-selected-notes"><p class="sheet-selected-summary">'+esc(selNotes)+'</p>'+
+        (selNotes.length > 220 ? '<button class="sheet-summary-more" type="button" aria-expanded="false">More</button>' : '')+'</div>' : '');
     return {
       body:
         '<div class="sheet-head">'+
@@ -4458,8 +4467,16 @@
             episodeBrowseButton(r)+
           '</div>'+
         '</div>'+
+        // Layout (Paul, 2026-09-28): the episode's own text sits in the wide left column under
+        // "This episode" (headline, Transcript/Songs, summary), then "About the show"; the
+        // narrow right column (the footer) keeps only the broadcast and its controls.
+        (episodeBlock
+          ? '<section class="sheet-episode" aria-label="This episode"><span class="sheet-section-k">This episode</span>'+episodeBlock+'</section>'+
+            (desc || links ? '<section class="sheet-about" aria-label="About the show"><span class="sheet-section-k">About the show</span>' : '')
+          : '')+
         (desc ? '<div class="sheet-desc-wrap"><p class="sheet-desc" id="sheetDesc">'+esc(desc)+'</p></div>' : '')+
-        (links ? '<div class="sheet-links sheet-profile-links">'+links+'</div>' : ''),
+        (links ? '<div class="sheet-links sheet-profile-links">'+links+'</div>' : '')+
+        (episodeBlock && (desc || links) ? '</section>' : ''),
       // One dated broadcast. Archive navigation belongs to the show identity
       // above; the footer stays about this selection and nothing else.
       foot:
@@ -4472,13 +4489,6 @@
             (r.length ? '<span class="sheet-selected-length">'+esc(r.length)+'</span>' : '')+
             retentionBadge(r)+
           '</div>'+
-          // This broadcast's own headline and summary (integration step 4e): QIR's where the
-          // Discovery plugin added them, else the feed's topic and notes. Long summaries
-          // show four lines with More, so Play stays near the top.
-          (selTopic ? '<p class="sheet-selected-topic">'+esc(selTopic)+'</p>' : '')+
-          (function(){ var extra = pluginSheetActions(r); return extra ? '<div class="sheet-plugin-actions">'+extra+'</div>' : ''; })()+
-          (selNotes ? '<div class="sheet-selected-notes"><p class="sheet-selected-summary">'+esc(selNotes)+'</p>'+
-            (selNotes.length > 220 ? '<button class="sheet-summary-more" type="button" aria-expanded="false">More</button>' : '')+'</div>' : '')+
           listen+
           (play ? '<div class="sheet-actions">'+play+restart+'</div>' : '')+
         '</div>'

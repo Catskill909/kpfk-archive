@@ -106,3 +106,7 @@
    under every popup (150 and up). The player bar (80) is never covered: the panel ends above
    it at --player-h. */
 .rv-along{z-index:90}
+/* Transcript / Songs in the show sheet read as the feature they are, not as disabled pills. */
+.sheet-link.sheet-along{ border-color:color-mix(in srgb, var(--accent-2) 60%, transparent); color:var(--ink); background:color-mix(in srgb, var(--accent-2) 12%, transparent); }
+.sheet-link.sheet-along svg{ color:var(--accent-2); }
+@media (hover:hover) and (pointer:fine){ .sheet-link.sheet-along:hover{ background:color-mix(in srgb, var(--accent-2) 22%, transparent); } }
