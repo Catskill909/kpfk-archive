@@ -1,205 +1,215 @@
-# Integration plan — one app, Discovery as a plugin inside it
+# Integration plan — one app, with Discovery as a plugin inside it
 
-Started 2026-09-28 (Paul). Living plan: tick steps off here as they land.
+**Goal:** one deployable app (the podcast site, `kpfk-archive`) for every Pacifica station, with
+Discovery (QIR search, summaries, transcripts) as a switch-on plugin for stations that have it.
+Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-28.**
 
-**This file is identical in two repos** (like `APP-FAMILY.md`). Edit it in one, copy it to
-the other in the same session: `kpfk-archive/docs/INTEGRATION-PLAN.md` and
-`kpfk-discovery-plugin/docs/INTEGRATION-PLAN.md`.
+> This file is identical in two repos (like `APP-FAMILY.md`). Edit it in one and copy it to the
+> other in the same session: `kpfk-archive/docs/INTEGRATION-PLAN.md` and
+> `kpfk-discovery-plugin/docs/INTEGRATION-PLAN.md`.
 
-## The goal
+---
 
-**One deployable app** (this repo, `kpfk-archive`) with two sides:
+## At a glance
 
-- **The main side** — the podcast site as it is: Pacifica feed, player, shows, schedule,
-  live, studio. Works for every station.
-- **The plugin side** — Discovery (QIR search, summaries, transcripts, Just aired), moved in
-  from `kpfk-discovery-plugin`. Switched on per station in `stations/<id>.json`
-  (`plugins.discovery`). Switch off → the site looks and behaves exactly as today, and no
-  QIR code runs.
+| Step | What | Status | Live on podcasts.kpfk.org? |
+|---|---|---|---|
+| 1 | Move Discovery into the podcast site | ✅ Done | Yes (switched off) |
+| 2 | One design system; popups never cover the player | ✅ Done | Yes |
+| 3 | The player (spare copy removed, keyboard reaches it) | ✅ Done | Yes |
+| 4 | Discovery's sections on the main page | 🟡 4 of 6 parts done | Mostly — see below |
+| 5 | Discovery admin as a studio tab | 🟡 5a done, 5b to do | 5a with the next deploy |
+| 6 | Stats for both sides in the studio | ⬜ Not started | — |
+| 7 | Import / export cover everything | ⬜ Not started | — |
+| 8 | Production release (retire the separate Discovery site) | ⬜ Not started | — |
 
-Why keep the switch even in one app: Discovery is a paid package (AI cost + Pacifica's
-margin) and not every station will have it; a QIR outage must never affect the main side.
+**Legend:** ✅ done · 🟡 in progress · ⬜ not started
 
-The Flutter app (`kpfk-podcast`) is unaffected as long as `/api/archive` keeps its shape.
+## Live now on podcasts.kpfk.org
+
+- The **player bar stays visible and usable under every popup**, on phones and desktop, and the
+  keyboard can reach it.
+- **Show popup:** two columns on desktop, compact on phones, Play near the top.
+- **Just aired** (three cards) and **All / Shows / Episodes** tabs; big "Just aired" and
+  "Explore shows" headings; show cards with details under the image on desktop.
+- **Permanent links** to shows and episodes, with social previews ([how to link](LINKS.md)).
+
+## Built, waiting for a deploy or the switch
+
+- **Studio → Discovery tab** (with the next deploy): switch Discovery and QIR on or off at once,
+  no redeploy.
+- **Discovery for listeners** (after the switch is flipped): QIR headlines and summaries in the
+  main search and Just aired; the `/discover` page; "Discover shows" in the menu.
+
+## Next up
+
+1. **4e** Transcript and Songs inside the show popup (Discovery's "Listen along", on the main player).
+2. **4f** `/discover` points to the main page (one page for everyone).
+3. **5b** Station template in the studio: edit a station's feeds, logo, colours and text, preview,
+   apply, with a way back.
+4. **6** Stats: transcript and summary clicks, Discovery searches (counts only).
+5. **7** Import / export include Discovery's settings; prove a full restore.
+6. **8** Production release.
+
+## Paul — to do and decisions
+
+- [ ] Add `QIR_API_KEY` to the podcast site app in Coolify (copy it from the Discovery app), then redeploy. *(in progress)*
+- [ ] Try it: Studio → **Discovery** tab → switch Discovery on → look at the site → switch off.
+- [ ] Decide when to switch Discovery on for listeners.
+- [ ] Pick the remaining sections (table in Step 4): search results (4.6), show popup (4.7), episode + transcript (4.8).
+- [ ] Say what the station template (5b) must let staff change first (logo? colours? feeds? text?).
+
+## How to check it yourself
+
+| Check | Where | What you should see |
+|---|---|---|
+| Player never covered | Play an episode, open any popup (show, schedule, menu, live, donate) | The player bar stays at the bottom and works |
+| Show link | `podcasts.kpfk.org/show/lawsnddisor` | Law and Disorder opens on its latest episode |
+| Old episode link | `podcasts.kpfk.org/show/lawsnddisor/999999999` | The show opens with a "rotated out" note |
+| Tabs | Home page → Episodes | "All episodes", newest first, address ends `?tab=episodes` |
+| Discovery switch | `podcasts.kpfk.org/studio` → Discovery tab | Two switches; on = Discover page and menu link appear, off = gone |
+| Health | `podcasts.kpfk.org/healthz` | `storage.instanceId` unchanged across deploys (stats safe) |
+
+## Links
+
+- [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md) — design rules, popup audit results, how each fix is built
+- [LINKS.md](LINKS.md) — linking to shows and episodes (for websites and social posts)
+- [APP-FAMILY.md](APP-FAMILY.md) — how the podcast site, Discovery and the Flutter app fit together
+- `tools/popup-audit/` — the repeatable browser check (player visible, Play tappable, keyboard)
+
+---
 
 ## Rules for every step
 
-1. **The bottom player is always visible and usable.** Sheets and popups open above it, never
-   over it. No dead ends: every popup has a clear way back to where you were, and survives
-   play, pause and episode changes.
-2. **Popups use their width.** Today many cards stack everything in one column, with oversized
-   buttons and empty space on the right. Lay content side by side where there is room,
-   size buttons to their label, and check at phone width first, then desktop.
-3. **One design system.** One set of colours, type, spacing, button sizes and popup layouts
-   for both sides. No section brings its own look.
-4. **One section at a time.** For each section or popup: compare both apps' versions, Paul
-   picks (keep main / keep Discovery / blend), then build and check it.
-5. **Stats stay anonymous.** Counters only, no identifiers, no search words
-   (see `public/track.js` and the README).
+1. **The bottom player is always visible and usable.** Popups open above it, never over it. Every
+   popup has a clear way back and survives play, pause and episode changes.
+2. **Popups use their width.** No single column with the right side empty; buttons sized to their
+   label; phone first, then desktop.
+3. **One design system.** One set of colours, type, spacing and popup layouts for both sides.
+4. **One section at a time.** Compare both apps' versions, Paul picks, build, check.
+5. **Stats stay anonymous.** Counters only, no identifiers, no search words (`public/track.js`).
 
-## Steps, in order
+**Why Discovery stays a switch even inside one app:** it is a paid package (AI cost + Pacifica's
+margin), not every station will have it, and a QIR outage must never affect the main site. The
+station profile (`stations/<id>.json`, `plugins.discovery`) says whether a station *may* have it;
+the studio switch says whether it is *on*. The Flutter app (`kpfk-podcast`) is unaffected as long
+as `/api/archive` keeps its shape.
 
-Why this order: merge first, so every styling change happens once in one codebase instead
-of twice; set the design rules and the player next, because every section sits on them;
-add admin, stats and backup after the screens settle.
+**Why this order:** merge first, so every styling change happens once; design rules and the player
+next, because every section sits on them; admin, stats and backup after the screens settle.
 
-### Step 1 — Move Discovery in (no visible change)
+---
 
-**Progress (2026-09-28):** ✅ 1a profile settings · ✅ 1b server module `plugins/discovery/` ·
-✅ 1c page at `/discover` · ✅ 1d tests in `npm test` (plugin tests in `plugins/discovery/test/`,
-switched-off test in `test/pacifica/http.test.js`) · ✅ 1e local check with Discovery on (real
-QIR and feed, port 8091): page and all its files load; catalog matches live Discovery (3,059
-episodes, same holds, same music window, all 120 show pictures identical); transcripts, song
-lists, Just aired refresh and `/healthz` work. Not yet looked at in a browser.
-The old 24 Sept copy (`public/review.*`, `lib/qir/service.js`) is removed. Discovery's own
-sign-in page is retired; until step 5 its QIR switch is set in the settings file on the volume
-(`discovery/settings.json`, default on) and Discovery itself by `plugins.discovery` in the profile.
+## Step details
 
-- Discovery's server code (`lib/qir/`, its routes, settings) becomes a module in this repo,
-  loaded only when `plugins.discovery` is on.
-- Its pages are served at `/discover` inside this app, still in their current look.
-- One port, one Dockerfile, one Coolify deploy. Discovery's data (settings, hidden shows)
-  moves to this app's named volume.
-- Tests: Discovery's test suite runs in this repo's `npm test`; a switch-off test proves no
-  QIR route exists and no QIR request is made.
-- The separate Discovery deployment (kpfk-discovery.pacifica.audio) keeps running until
-  Step 8.
+### Step 1 — Move Discovery in ✅
 
-### Step 2 — Design system and popup layout
+- Discovery's server code is a module in this repo, `plugins/discovery/` (QIR catalog, "Transcript
+  pending", corrections, music window, Just aired refresh, song lists, Listen along).
+- It reads the archive and artwork from this app directly; its own archive fetch, artwork proxy
+  and image cache are gone. The old 24 Sept copy (`public/review.*`, `lib/qir/service.js`) is removed.
+- One port, one Dockerfile (ships `plugins/`), one Coolify deploy. Discovery's settings live on this
+  app's named volume (`discovery/settings.json`).
+- Checked with real QIR data: the catalog matched live Discovery (3,059 episodes, same holds, same
+  music window, all 120 show pictures identical).
+- The separate Discovery site (kpfk-discovery.pacifica.audio) keeps running until Step 8.
 
-**Progress (2026-09-28):** ✅ 2a one stylesheet (Discovery loads `styles.css`) · ✅ 2b player
-frame: the bar is visible and usable under all 11 popups at phone and desktop (was 4 of 22
-checks) · ✅ 2c popup layout on the show sheet and Discovery popup (two columns on desktop, Play
-in the header on phones) · ✅ 2d remaining popups reviewed (only the live player needed a change).
-**Step 2 complete.** Rules, audit results and
-how it is built: [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md). Repeatable check: `tools/popup-audit/`.
+### Step 2 — Design system and popup layout ✅
 
-- Merge both stylesheets into one set of tokens: colours, type, spacing, button sizes, corner
-  radii, popup widths.
-- One popup layout: side-by-side columns where there is room, compact buttons, one scroll
-  area, close top-right, Back where a popup has inner pages.
-- Page frame that reserves space for the bottom player on every page.
+- One stylesheet (`public/styles.css`) for both sides; Discovery's old copy is removed.
+- **Player frame:** the bar is visible and usable under all 11 popups at phone and desktop — 22 of
+  22 checks, up from 4. An offline test fails if a future popup covers it.
+- Show popup and Discovery popup: two columns on desktop, Play near the top on phones. The live
+  player card sized to its content. Everything else reviewed and kept.
+- Details and screenshots: [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md).
 
-### Step 3 — The player
+### Step 3 — The player ✅
 
-**Progress (2026-09-28):** ✅ 3a the show sheet's copy of the player removed · ✅ 3b keyboard
-reaches the player bar from every popup · ⬜ 3c Now Playing sheet (tap the bar) with Transcript
-in it. Details: [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md).
+- The show popup's hidden spare copy of the player is removed (the real bar is always visible).
+- The keyboard reaches the player bar from every popup (one shared Tab loop).
+- The "Now Playing sheet" idea is folded into 4e: tapping the bar already opens the show popup for
+  what is playing; Transcript and Songs get added there.
 
-- One bottom bar (based on the main side's: ±15 s, scrubber, tap to open), always on screen.
-- Transcript as an icon in the bar, so titles are not cut short.
-- Tapping the bar opens a **Now Playing** sheet above the bar: Transcript/Songs · About ·
-  More episodes. Transcript tab only when Discovery is on.
-- Retire the copy of the player inside the show sheet (the real bar stays visible instead).
+### Step 4 — Discovery's sections on the main page 🟡
 
-### Step 4 — Sections and popups, one at a time
+**Approach (Paul, 2026-09-28):** Discovery becomes part of the main page, not a separate page. It
+shares the main top bar, search, player and popups, and adds its data where the station has it on.
 
-For each: compare, Paul picks, build, check (phone first, player visible, way back works).
-
-**Approach (Paul, 2026-09-28):** Discovery becomes part of the main page, not a separate page:
-it shares the main top bar, search, player and popups, and adds its data where the station has it
-on. Sub-steps:
-
-- ✅ **4a Discovery hooks onto the main page** — the main page loads `plugins/discovery/public/main.js`
-  only where Discovery is on; it adds QIR headlines (as episode titles) and summaries (as notes)
-  to the main page's episodes, never overwriting the feed's own. The shared search picks them up.
-  Check (2026-09-28, search "Gaza"): live site without Discovery 4 episodes; with Discovery 96,
-  titled by QIR headline with summary previews. The main search already has All / Shows /
-  Episodes tabs in search results.
-- ✅ **Permanent links** (Paul, 2026-09-28, for websites and social posts): `/show/<code>` opens a
-  show on its latest episode; `/show/<code>/<episode>` an episode, falling back to the show with
-  a note once it rotates out. Social previews for both; old `?show=` links still work. Guide:
-  [LINKS.md](LINKS.md).
-- ✅ **4b Just aired on the main page** — for every station, Discovery or not: the newest programmes
-  that have aired, for the chosen category, above the listing (4 on desktop, 3 on phones), hidden
-  while searching. Rules shared with Discovery in `public/just-aired.js` (one per show and air
-  time, nothing under 10 minutes, pre-uploads only from their air time). With Discovery on, the
-  items carry QIR headlines. Tap opens the show on that episode; the button plays it.
-  Layout (Paul, 2026-09-28): Discovery's — three roomy cards, the episode title first, then
-  "show · date · time · length".
-- ✅ **4c All / Shows / Episodes tabs** (Paul, 2026-09-28) — in the tally's place under the search
-  box: All = Just aired + show grid, Shows = the grid, Episodes = every episode newest first
-  (`?tab=` in the address). They replace the list/gallery switch. Large "Just aired" (with a
-  "Latest episodes" link) and "Explore shows" / "All episodes" headings with counts. Just aired
-  cards: headline, then the show name bold in the accent colour, then date · time · length.
-  Phones drop the "Latest episode" line to push content up.
-- ✅ **4d Show card layout** — desktop: clean image, then category, show name, host and "Latest ·
-  date" underneath (Discovery's cards), outside the light-mode mat so it frames only the image.
-  Phones keep the title on the artwork, so more shows fit on screen. Search box, dropdowns and
-  light/dark themes stay the podcast site's.
-- ⬜ 4e Transcript and Songs in the show sheet (Listen along on the main player)
-- ⬜ 4f `/discover` points to the main page
-
+- ✅ **4a Discovery on the main page** — where Discovery is on, the main page loads
+  `plugins/discovery/public/main.js`, which adds QIR headlines (as episode titles) and summaries
+  (as notes), never overwriting the feed's own. Search "Gaza": 4 episodes without Discovery, 96 with.
+- ✅ **Permanent links** — `/show/<code>` and `/show/<code>/<episode>`, with social previews; old
+  `?show=` links still work ([LINKS.md](LINKS.md)).
+- ✅ **4b Just aired** — for every station: the newest programmes that have aired, for the chosen
+  category (rules in `public/just-aired.js`). Three roomy cards: headline, show name bold in the
+  accent colour, then date · time · length. Without Discovery the show name is the title (station
+  feeds rarely have episode titles, so a headline line would only repeat it).
+- ✅ **4c All / Shows / Episodes tabs** — under the search box in place of the count; Episodes lists
+  every episode newest first (`?tab=episodes`). Large "Just aired" (with "Latest episodes") and
+  "Explore shows" / "All episodes" headings. Phones drop the "Latest episode" line.
+- ✅ **4d Show cards** — desktop: clean image with category, name, host and "Latest · date" under it;
+  phones keep the title on the artwork so more shows fit.
+- ⬜ **4e** Transcript and Songs in the show popup (Listen along on the main player).
+- ⬜ **4f** `/discover` points to the main page.
 
 | # | Section / popup | Main side | Discovery | Pick (Paul, date) |
 |---|---|---|---|---|
-| 4.1 | Top bar (header) | ✓ | ✓ | **Main side's** top bar on both sides; Discovery's is dropped (2026-09-28) |
-| 4.2 | Search bar, category dropdown, sort order | ✓ | ✓ | **Main side's** controls on both sides (2026-09-28) |
-| 4.3 | All / Shows / Episodes tabs | — | ✓ | **On both sides** (2026-09-28) |
-| 4.4 | Just aired | — | ✓ | **On both sides** (2026-09-28) |
-| 4.5 | Show cards (gallery) | text on top of image | title, host, date, category under image | **Desktop: Discovery's** (text under image, cleaner). **Phone: main side's** (text on top), on both sides (2026-09-28) |
-| 4.6 | Search results (archive search vs QIR search) | ✓ | ✓ | |
-| 4.7 | Show sheet / past episodes | ✓ | ✓ | |
-| 4.8 | Episode + transcript (Listen along) | — | ✓ | |
-| 4.9 | Schedule | ✓ | — | |
-| 4.10 | Live player | ✓ | — | |
-| 4.11 | Menu, Donate, Privacy, About | ✓ | — | |
-| 4.12 | Navigation between the two sides | ✓ | ✓ | |
+| 4.1 | Top bar | ✓ | ✓ | **Main side's** (2026-09-28) |
+| 4.2 | Search box, category dropdown, sort | ✓ | ✓ | **Main side's** (2026-09-28) |
+| 4.3 | All / Shows / Episodes tabs | — | ✓ | **On both** (2026-09-28) — done |
+| 4.4 | Just aired | — | ✓ | **On both, Discovery's layout** (2026-09-28) — done |
+| 4.5 | Show cards | text on image | text under image | **Desktop: Discovery's; phone: main's** (2026-09-28) — done |
+| 4.6 | Search results | ✓ | ✓ | *to pick* |
+| 4.7 | Show popup / past episodes | ✓ | ✓ | *to pick* (main's is live, improved in step 2) |
+| 4.8 | Episode + transcript (Listen along) | — | ✓ | *to pick* (becomes 4e) |
+| 4.9 | Schedule | ✓ | — | Main's (only one) |
+| 4.10 | Live player | ✓ | — | Main's (only one) |
+| 4.11 | Menu, Donate, Privacy, About | ✓ | — | Main's (only one) |
+| 4.12 | Navigation between the two sides | ✓ | ✓ | Resolved by 4f (one page) |
 
-Notes on the picks:
+### Step 5 — Discovery admin as a studio tab 🟡
 
-- **Just aired and the All / Shows / Episodes tabs on the main side** must work with
-  Discovery switched off, so there they are built from the Pacifica feed (`/api/archive`:
-  newest episodes, episode list), not from QIR. With Discovery on, the same sections add
-  QIR's extras (summaries, "Transcript pending").
-- **One card component** with two layouts chosen by screen width, not two separate cards.
+- ✅ **5a** `podcasts.kpfk.org/studio` → **Discovery** tab, behind the studio sign-in: **Discovery on
+  this station** and **Transcripts & summaries (QIR)**, saved on the data volume and applied at once.
+  QIR status in plain words; Station & appearance (read-only). Starts **off**: deploying changes
+  nothing for listeners until the switch is flipped. Tested end to end (sign-in, anti-forgery
+  token, bad values refused, on → pages appear, off → gone).
+- ⬜ **5b** Station template: edit a station's feeds, logo, colours and text in the studio, preview,
+  apply, with a way back.
 
-### Step 5 — Discovery admin as a studio tab
+### Step 6 — Stats for both sides in the studio ⬜
 
-**Progress (2026-09-28):** ✅ **5a Discovery tab in the studio** (`/studio#discovery`, studio sign-in):
-two switches, saved on the data volume, applied at once with no redeploy — **Discovery on this
-station** (listener pages, main-page QIR data, menu link, QIR requests) and **Transcripts &
-summaries (QIR)** — plus QIR status in plain words and Station & appearance (read-only). The
-station profile's `plugins.discovery` now means the station *may* have Discovery (KPFK: yes);
-the switch **starts off**, so deploying changes nothing for listeners until it is flipped.
-Tested end to end (sign-in, CSRF, bad values refused, on → pages appear, off → gone).
-⬜ 5b Station template: edit a station's feeds, logo, colours and text in the studio, preview,
-apply, with a way back (Paul, 2026-09-28: "customize template").
+Existing counters stay. New counters, only where Discovery is on: transcript opened; transcript line
+clicked (jump to that moment); summary opened; Discovery search used (count only, never the words);
+Just aired card played; "Transcript pending" shown; song list opened. Shown in the studio stats with
+a Discovery column. README updated in the same commit.
 
-- A **Discovery** tab in `/studio`, behind the studio login (Discovery's separate admin
-  password goes away).
-- The QIR on/off switch, hidden-show list, and QIR health: how many hours behind, the
-  "Transcript pending" list.
+### Step 7 — Import and export cover everything ⬜
 
-### Step 6 — Stats for both sides in the studio
+The studio already has export, full backup, and import with preview / apply / undo. Add Discovery's
+settings to them, then prove a full restore onto a fresh install (empty volume → import backup →
+same site, same stats).
 
-Existing counters stay. New counters, only when Discovery is on:
-
-- transcript opened; transcript line clicked (jump to that moment)
-- summary opened
-- Discovery search used (count only, never the words)
-- Just aired card played
-- "Transcript pending" shown
-- song list opened; Now Playing sheet opened (both sides)
-
-Shown in the studio stats view with a Discovery column. README updated in the same commit.
-
-### Step 7 — Import and export cover everything
-
-The studio already has export, full backup, and import with preview / apply / undo. Add
-Discovery's settings and hidden-show list to them, then prove a full restore onto a fresh
-install (empty volume → import backup → same site, same stats).
-
-### Step 8 — Production release
+### Step 8 — Production release ⬜
 
 - Deploy the one app; check `/healthz` version and the storage `instanceId`.
-- Point kpfk-discovery.pacifica.audio at `/discover` on the main site (redirect).
-- Retire the separate Discovery deployment; archive the `kpfk-discovery-plugin` repo with a
-  pointer here. Update `docs/APP-FAMILY.md` in both remaining repos.
+- Point kpfk-discovery.pacifica.audio at the main site.
+- Retire the separate Discovery deployment; archive the `kpfk-discovery-plugin` repo with a pointer
+  here. Update `docs/APP-FAMILY.md`.
+
+---
 
 ## Open questions
 
-- Flutter: when it shows Discovery features, it reads them from this app's API. Not part
+- **Flutter app:** when it shows Discovery features, it will read them from this app's API. Not part
   of this plan; note any API choices that affect it.
-- Station setup: which Discovery settings belong in `stations/<id>.json` (fixed per station)
-  and which in the studio tab (changed by staff).
+- **Station settings:** which belong in `stations/<id>.json` (fixed per station) and which in the
+  studio (changed by staff) — decided as part of 5b.
+
+## Change log
+
+| Date | Change |
+|---|---|
+| 2026-09-28 | Plan started. Step 1 (Discovery moved in), Step 2 (design system, player frame, popup layouts), Step 3 (player). |
+| 2026-09-28 | Step 4: QIR data on the main page, permanent links, Just aired, All / Shows / Episodes tabs, show card layout. |
+| 2026-09-28 | Step 5a: studio Discovery tab with live on/off switches. Plan reorganised for project tracking. |
