@@ -31,6 +31,10 @@
   const playerEl = () => api.player || $('player');
   const toggleEl = () => api.toggle || $('alongToggle');
   const currentId = () => api.currentId ? api.currentId() : (audioEl().dataset.id || '');
+  // Open or closed as the listener sees it, set the moment they open or close it. The panel
+  // stays un-hidden for its 300 ms slide-out, so "not hidden" read as open while closing and
+  // the Transcript button stayed lit after the panel was closed (2026-09-28).
+  let isShown = false;
   const cache = new Map();
 
   function build() {
@@ -66,7 +70,7 @@
     dragSheet();
     // The main page measures --player-h itself (app.js); only Discovery's page needs this.
     if(!api.hostMeasuresPlayer) new ResizeObserver(() => document.documentElement.style.setProperty('--player-h', (playerEl().hidden ? 0 : playerEl().offsetHeight) + 'px')).observe(playerEl());
-    window.addEventListener('popstate', () => { if(!panel.hidden && pushed && !history.state?.along) { pushed = false; hide(); } });
+    window.addEventListener('popstate', () => { if(isShown && pushed && !history.state?.along) { pushed = false; hide(); } });
   }
 
   // Phone sheet: drag the handle between half and full height; drag low to close.
@@ -225,23 +229,22 @@
   function open(id, options) {
     if(!panel) build();
     const wasHidden = panel.hidden;
-    panel.hidden = false; document.body.classList.add('along-open');
-    if(wasHidden) {
-      panel.classList.toggle('full', phone()); // small screens get all the height; drag down for half
-      requestAnimationFrame(() => panel.classList.add('shown'));
-      // The phone Back button closes the panel rather than leaving the page.
-      if(!pushed) { history.pushState({...(history.state || {}), along: true}, '', location.href); pushed = true; }
-    }
+    panel.hidden = false; document.body.classList.add('along-open'); isShown = true;
+    if(wasHidden) panel.classList.toggle('full', phone()); // small screens get all the height; drag down for half
+    // Also when reopened mid-slide-out: the panel is not hidden yet but must slide back in.
+    requestAnimationFrame(() => panel.classList.add('shown'));
+    // The phone Back button closes the panel rather than leaving the page.
+    if(!pushed) { history.pushState({...(history.state || {}), along: true}, '', location.href); pushed = true; }
     show(id, options); api.onChange?.();
     $('alongTitle').focus({preventScroll: true});
   }
   function hide() {
-    panel.classList.remove('shown'); document.body.classList.remove('along-open');
+    isShown = false; panel.classList.remove('shown'); document.body.classList.remove('along-open');
     const done = () => { if(!panel.classList.contains('shown')) panel.hidden = true; api.onChange?.(); };
     if(reduceMotion()) done(); else setTimeout(done, 300);
     paintAvailability(); toggleEl()?.focus({preventScroll: true});
   }
-  function close() { if(!panel || panel.hidden) return; if(pushed) { pushed = false; history.back(); } hide(); }
+  function close() { if(!panel || !isShown) return; if(pushed) { pushed = false; history.back(); } hide(); }
   function paintAvailability() {
     const btn = toggleEl(); if(!btn) return;
     const row = api?.getRow(currentId()), k = kindOf(row);
@@ -249,17 +252,17 @@
     const label = k === 'transcript' ? 'Transcript' : 'Songs';
     btn.hidden = !k; btn.querySelector('.rv-alongtoggle-label').textContent = label;
     btn.querySelector('.rv-alongtoggle-icon').innerHTML = k === 'songs' ? SONGS_ICON : TRANSCRIPT_ICON;
-    btn.setAttribute('aria-label', (panel && !panel.hidden ? 'Close ' : 'Open ') + label.toLowerCase());
-    btn.setAttribute('aria-expanded', String(!!panel && !panel.hidden));
+    btn.setAttribute('aria-label', (isShown ? 'Close ' : 'Open ') + label.toLowerCase());
+    btn.setAttribute('aria-expanded', String(isShown));
   }
   function init(options) {
     api = options; build();
     const audio = audioEl();
     audio.addEventListener('timeupdate', followAudio); audio.addEventListener('seeked', followAudio);
     // The panel belongs to what is playing: a new episode brings its own words.
-    audio.addEventListener('loadstart', () => { paintAvailability(); const id = currentId(); if(!panel.hidden && id && id !== openId) show(id); });
-    toggleEl().onclick = () => panel.hidden ? open(currentId()) : close();
+    audio.addEventListener('loadstart', () => { paintAvailability(); const id = currentId(); if(isShown && id && id !== openId) show(id); });
+    toggleEl().onclick = () => isShown ? close() : open(currentId());
     paintAvailability();
   }
-  window.ListenAlong = {init, open, close, kindOf, kindsOf, isOpen: () => !!panel && !panel.hidden, refresh: () => paintAvailability()};
+  window.ListenAlong = {init, open, close, kindOf, kindsOf, isOpen: () => isShown, refresh: () => paintAvailability()};
 })();

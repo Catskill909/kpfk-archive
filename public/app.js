@@ -1164,7 +1164,11 @@
     document.body.classList.remove('has-player');
   }
 
-  function setStatus(html){ playerStatus.innerHTML = html; }
+  // The play/pause button already shows (and its aria-label speaks) the plain
+  // state, so those words stay off the bar; only things the listener needs to
+  // know about — loading, buffering, blocked, unavailable — are shown here.
+  var QUIET_STATES = { 'Playing':1, 'Paused':1, 'Ready':1, 'Finished':1 };
+  function setStatus(html){ playerStatus.innerHTML = QUIET_STATES[html] ? '' : html; }
 
   function refreshToggleIcon(){
     // Live has no "paused element" to read — a stopped stream has no element at
