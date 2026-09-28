@@ -4533,7 +4533,7 @@
     // No headline or summary: say why, so no popup looks empty (Paul, 2026-09-28). QIR has
     // not reached it yet (Discovery), QIR skipped it, or the feed simply has no notes.
     var selEmpty = !selTopic && !selNotes && (selExtra || r.qirPending)
-      ? (r.qirPending ? (r.qirPending.skipped ? 'No summary or transcript for this episode.' : 'Summary and transcript coming soon — usually within a few hours of the broadcast.')
+      ? (r.qirPending ? (r.qirPending.skipped ? 'No summary or transcript for this episode.' : 'Transcript processing — the summary and transcript usually appear within a few hours of the broadcast.')
         : 'No episode notes for this broadcast.')
       : '';
     var episodeBlock =
@@ -5296,7 +5296,10 @@
     // stylesheet rather than restating .55rem here, and 0 while it is down.
     var toast = document.getElementById('resumeToast');
     function syncBarHeight(){
-      var h = (bar && !bar.hidden) ? bar.offsetHeight : 0;
+      // From the bar's top edge to the bottom of the screen, not just its height: on wider
+      // screens the bar floats as a card above a small gap (2026-09-28), and everything that
+      // stops above the player (popups, panels, Back to top) must clear that gap too.
+      var h = (bar && !bar.hidden) ? Math.max(bar.offsetHeight, Math.round(window.innerHeight - bar.getBoundingClientRect().top)) : 0;
       root.style.setProperty('--player-h', h + 'px');
       var t = 0;
       if(toast && !toast.hidden){

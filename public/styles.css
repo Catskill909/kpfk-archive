@@ -4098,3 +4098,28 @@
      The bar still starts hidden until something is played. */
   .player-bar .player-close{ display:none; }
   @media (max-width:700px){ .player-bar:not(.live) .player-info{ padding-right:0; } }
+
+  /* ================= FLOATING PLAYER CARD (Paul, 2026-09-28) =================
+     The full-width bar left a lot of empty chrome either side of its controls. From
+     701px it is a card the width of the content column (its edges line up with the
+     search box, Just aired and the grid), lifted 12px off the bottom with a soft
+     shadow. Phones keep the docked, edge-to-edge bar: every pixel counts there.
+     --player-h (app.js) is measured from the card's top to the screen's bottom, so
+     popups, the transcript panel and Back to top still stop above it, gap included.
+     With the transcript panel pushing the page (1100px+), the card moves with the page. */
+  @media (min-width:701px){
+    .player-bar{
+      left:max(var(--page-gutter, 1rem), calc((100% - 1180px) / 2 + var(--page-gutter, 1rem)));
+      right:max(var(--page-gutter, 1rem), calc((100% - 1180px) / 2 + var(--page-gutter, 1rem)));
+      bottom:12px;
+      padding:.6rem 1.1rem;
+      border:1px solid var(--outline-strong); border-radius:18px;
+      box-shadow:0 14px 44px rgba(0,0,0,.28), 0 2px 8px rgba(0,0,0,.12);
+    }
+  }
+  @media (min-width:1100px){
+    body.along-open .player-bar{
+      right:calc(min(var(--along-w, 420px), 92vw) + 12px);
+      left:max(12px, calc((100% - min(var(--along-w, 420px), 92vw) - 1180px) / 2 + var(--page-gutter, 1rem)));
+    }
+  }

@@ -113,3 +113,8 @@
 .sheet-link.sheet-along{ border-color:color-mix(in srgb, var(--accent-2) 60%, transparent); color:var(--ink); background:color-mix(in srgb, var(--accent-2) 12%, transparent); }
 .sheet-link.sheet-along svg{ color:var(--accent-2); }
 @media (hover:hover) and (pointer:fine){ .sheet-link.sheet-along:hover{ background:color-mix(in srgb, var(--accent-2) 22%, transparent); } }
+
+/* Main page, 1100px+: the floating player card sits beside the pushed-in panel, not under
+   it, so the panel runs to the bottom of the screen (Discovery's own page, body.review,
+   keeps its full-width bar and the panel ending above it). */
+@media(min-width:1100px){ body:not(.review) .rv-along{ bottom:0 } }
