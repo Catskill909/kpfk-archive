@@ -1,10 +1,24 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-25 (feed text decoding shared with Discovery; upload shows served; temporary workarounds recorded below). **This folder is the active KPFK podcast-template project.**
+**Updated:** 2026-09-28 (Discovery integrated as a plugin; see the first section). **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 [docs/README.md](docs/README.md) (which docs are current vs inherited from WBAI).
+
+## 2026-09-28 — one app: Discovery moved into the podcast site (read this first)
+
+**Plan and status live in [docs/INTEGRATION-PLAN.md](docs/INTEGRATION-PLAN.md)** — at-a-glance table,
+"Start here tomorrow", how to check. Identical copy in `kpfk-discovery-plugin/docs/`.
+
+- Done today: steps 1–3, 4a–4e, 5a, 6 (32 commits, all pushed; `npm test` 182/182).
+- Next session, in order: music 14-day limit here → episode corrections here (Alan Watts) → 4f →
+  redirect and stop the Discovery deployment. Then 5b, 7, 8.
+- Paul's open decision: floating player + fade vs docked full-width bar (see the plan).
+- Ace (checked 2026-09-28): the 7 show keys and World Massive Sep 26 are still not fixed in QIR.
+  Follow-up email drafted: `kpfk-discovery-plugin/.local-notes/ace-email-2026-09-28.html`.
+- Checks: popup audit `tools/popup-audit/` (Chrome on port 9333); stats counters proven by
+  `test/pacifica/ui-counters.test.js`.
 
 ## 2026-09-26 — off-schedule programs; QIR stalled; three apps, one feed
 

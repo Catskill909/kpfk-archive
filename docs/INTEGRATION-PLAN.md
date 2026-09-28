@@ -60,10 +60,18 @@ Before the separate Discovery site can be closed, three things (about an hour, w
 3. **4f** `/discover` goes to the main page.
 
 Then close the Discovery site: redirect `kpfk-discovery.pacifica.audio` to `podcasts.kpfk.org`
-(old links keep working), stop its Coolify deployment, tell Ace the new address.
+(old links keep working), stop its Coolify deployment. Ace is told in the 2026-09-28 email
+(`kpfk-discovery-plugin/.local-notes/ace-email-2026-09-28.html`).
 
-Everything built on 2026-09-28 is pushed; the last few changes (persistent player, floating
-player card, Episode/Show info tabs, "Transcript processing") go live with the next redeploy.
+**Already live (2026-09-28, late):** the Discovery site shows a "Discovery has moved" notice with
+one button to podcasts.kpfk.org and no way to dismiss it (Paul: capture all listening on one site).
+
+**Pushed, live after the next podcast-site redeploy:** step 6 feature-click counters; floating
+player with no outline + bottom fade; Transcript button soft when closed, solid orange only when
+open; no "Playing/Paused" word on the bar.
+
+**Open decision (Paul):** after the redeploy, is the floating player + bottom fade right, or
+switch to a docked full-width bar with the controls in a slimmer centred row? (Both ready to do.)
 
 ## Next up
 
