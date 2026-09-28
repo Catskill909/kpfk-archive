@@ -1,6 +1,6 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict');
-const {pick,wallClockNow}=require('../public/just-aired');
+const {pick,wallClockNow}=require('../../../public/just-aired');
 // 2026-09-24 17:30 in Los Angeles (PDT, UTC-7) = 2026-09-25T00:30Z.
 const nowMs=Date.parse('2026-09-25T00:30:00Z');
 const qir=(sho,clock,day='2026-09-24')=>({sho,qir:{},dt:Date.parse(day+'T'+clock+'Z')/1000});

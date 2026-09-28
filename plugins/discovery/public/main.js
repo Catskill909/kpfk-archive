@@ -29,7 +29,9 @@
     rows.forEach(function(row){
       var q = byMp3.get(row.mp3);
       if(!q) return;
-      row.qir = {id: q.public_id, headline: q.headline || '', summary: q.summary || ''};
+      // Not row.qir: on Discovery's own page that marks a QIR row whose dt is station clock
+      // time (just-aired.js reads it). Main-page rows keep real Unix times.
+      row.qirEpisode = {id: q.public_id, headline: q.headline || '', summary: q.summary || ''};
       if(!hasTopic(row) && q.headline) row.published = (row.published || []).concat([{host:'', guest:'', topic:q.headline, notes:''}]);
       if(!row.episodeDesc && q.summary) row.episodeDesc = q.summary;
       n++;

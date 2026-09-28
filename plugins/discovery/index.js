@@ -25,7 +25,7 @@ const { applyCorrections, joinCorrectedParts } = require('./lib/qir/corrections'
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const HOST_PUBLIC_DIR = path.join(__dirname, '../../public');
 // Identical files the host already serves; the page loads them from /discover/ like the rest.
-const SHARED = new Set(['text.js', 'theme-boot.js', 'archive-search.js', 'styles.css']);
+const SHARED = new Set(['text.js', 'theme-boot.js', 'archive-search.js', 'styles.css', 'just-aired.js']);
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8' };
 
 /** True for every path this plugin owns, so the host can 404 them while it is switched off. */

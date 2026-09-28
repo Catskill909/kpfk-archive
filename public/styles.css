@@ -3899,3 +3899,42 @@
     margin:0 0 .35rem; padding:.55rem .75rem; border-left:3px solid var(--warn);
     border-radius:8px; background:var(--warn-bg); color:var(--ink); font-size:.8rem; line-height:1.4;
   }
+
+  /* ================= JUST AIRED (integration step 4b) =================
+     The newest programmes that have aired, above the listing (app.js
+     renderJustAired, rules in just-aired.js). Desktop: up to four side by side;
+     phones: three, stacked. Art and text open the show sheet on that episode,
+     the round button plays it (the same .play-btn as the listing). */
+  .just-aired{ max-width:1180px; margin:0 auto 1.4rem; padding:0 1.6rem; }
+  .just-aired[hidden]{ display:none; }
+  .just-aired-title{
+    margin:0 0 .7rem; font-family:var(--font-display); font-size:1.05rem; font-weight:800;
+    letter-spacing:.01em; color:var(--ink);
+  }
+  .just-aired-list{ display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:.75rem; }
+  .ja-item{
+    display:grid; grid-template-columns:56px minmax(0, 1fr) auto; align-items:center; gap:.7rem;
+    padding:.6rem .65rem; border:1px solid var(--outline); border-radius:14px; background:var(--surface-1);
+  }
+  .ja-art{
+    width:56px; height:56px; padding:0; border:0; border-radius:10px; overflow:hidden; cursor:pointer;
+    background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-2);
+  }
+  .ja-art img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .ja-text{
+    min-width:0; display:flex; flex-direction:column; gap:.12rem; padding:0; border:0;
+    background:none; color:var(--ink); font-family:inherit; text-align:left; cursor:pointer;
+  }
+  .ja-show{ font-size:.7rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-2);
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ja-topic{ font-size:.86rem; font-weight:650; line-height:1.3;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .ja-when{ font-size:.72rem; color:var(--ink-dim); font-family:var(--font-mono);
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ja-play{ flex:none; }
+  @media (max-width:1000px){ .just-aired-list{ grid-template-columns:repeat(2, minmax(0, 1fr)); } }
+  @media (max-width:560px){
+    .just-aired{ padding:0 1rem; }
+    .just-aired-list{ grid-template-columns:1fr; gap:.5rem; }
+    .ja-item:nth-child(n+4){ display:none; }
+  }

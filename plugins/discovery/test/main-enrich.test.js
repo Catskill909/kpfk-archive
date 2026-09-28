@@ -14,7 +14,8 @@ const catalog = { episodes: [
 test('adds the QIR headline as title and summary as notes where the feed has none', () => {
   const rows = [{ id: '1', mp3: mp3('080000dn'), published: [] }];
   assert.equal(enrich(rows, index(catalog)), 1);
-  assert.deepEqual(rows[0].qir, { id: 'a', headline: 'QIR headline A', summary: 'QIR summary A' });
+  assert.deepEqual(rows[0].qirEpisode, { id: 'a', headline: 'QIR headline A', summary: 'QIR summary A' });
+  assert.equal(rows[0].qir, undefined, 'never row.qir: that marks station-clock times (just-aired.js)');
   assert.equal(rows[0].published[0].topic, 'QIR headline A');
   assert.equal(rows[0].episodeDesc, 'QIR summary A');
 });
@@ -24,7 +25,7 @@ test("never overwrites the station feed's own title or notes", () => {
   enrich(rows, index(catalog));
   assert.deepEqual(rows[0].published.map(p => p.topic), ['Feed topic']);
   assert.equal(rows[0].episodeDesc, 'Feed notes');
-  assert.equal(rows[0].qir.id, 'b', 'the transcript id is still attached');
+  assert.equal(rows[0].qirEpisode.id, 'b', 'the transcript id is still attached');
 });
 
 test('pending episodes and unmatched rows are left alone', () => {

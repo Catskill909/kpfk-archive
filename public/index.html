@@ -265,6 +265,12 @@
       </button>
     </div>
 
+    <!-- Just aired: the newest programmes that have actually aired (public/just-aired.js has
+       the rules). Painted by app.js renderJustAired(); hidden while searching. -->
+    <section class="just-aired" id="justAired" aria-labelledby="justAiredTitle" hidden>
+      <h2 class="just-aired-title" id="justAiredTitle">Just aired</h2>
+      <div class="just-aired-list" id="justAiredList"></div>
+    </section>
     <section id="searchResults" class="archive-search" aria-label="Search results" hidden></section>
     <section class="listing" id="listing">
       <div class="grid" id="grid">
@@ -718,6 +724,7 @@
   </div>
   <script src="/archive-search.js" defer></script>
   <script src="/links.js" defer></script>
+  <script src="/just-aired.js" defer></script>
   <script src="/app.js" defer></script>
   <!-- Usage counters. Deferred and entirely separate from app.js so it can never
      affect playback; see the header of track.js for what it does and does not

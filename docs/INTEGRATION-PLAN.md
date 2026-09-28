@@ -110,7 +110,11 @@ on. Sub-steps:
   show on its latest episode; `/show/<code>/<episode>` an episode, falling back to the show with
   a note once it rotates out. Social previews for both; old `?show=` links still work. Guide:
   [LINKS.md](LINKS.md).
-- ⬜ 4b Just aired on the main page
+- ✅ **4b Just aired on the main page** — for every station, Discovery or not: the newest programmes
+  that have aired, for the chosen category, above the listing (4 on desktop, 3 on phones), hidden
+  while searching. Rules shared with Discovery in `public/just-aired.js` (one per show and air
+  time, nothing under 10 minutes, pre-uploads only from their air time). With Discovery on, the
+  items carry QIR headlines. Tap opens the show on that episode; the button plays it.
 - ⬜ 4c All / Shows / Episodes tabs outside search too (browsing)
 - ⬜ 4d Show card layout (desktop text under image, phone text on top)
 - ⬜ 4e Transcript and Songs in the show sheet (Listen along on the main player)

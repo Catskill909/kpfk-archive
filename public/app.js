@@ -575,7 +575,44 @@
     });
   }
 
+  // JUST AIRED (integration step 4b; Paul, 2026-09-28: on both sides). The newest
+  // programmes that have actually aired, for the chosen category: one per show and air
+  // time, nothing under 10 minutes, pre-uploads only from their air time (the rules are
+  // public/just-aired.js, shared with Discovery). Episode titles come from the feed, or
+  // from QIR where the Discovery plugin has added them (step 4a).
+  var justAiredEl = document.getElementById('justAired');
+  var justAiredList = document.getElementById('justAiredList');
+  function renderJustAired(){
+    if(!justAiredEl) return;
+    var list = state.query ? [] : rows.filter(function(r){ return state.cat === 'all' || r.cat === state.cat; })
+      .sort(function(a, b){ return b.dt - a.dt; });
+    var picks = list.length ? window.JustAired.pick(list, {timeZone: STATION.timezone, limit: 4}) : [];
+    justAiredEl.hidden = !picks.length;
+    justAiredList.innerHTML = picks.map(function(r){
+      var c = CAT_BY_KEY[r.cat] || {label:''};
+      var isLoading = (loadingMp3===r.mp3);
+      var isPlaying = (nowPlaying.mp3===r.mp3 && !audio.paused && !audio.ended && !isLoading);
+      var subLine = c.label + (r.host ? ' · with '+r.host : '');
+      var photo = r.photo || '';
+      var topic = window.ArchiveSearch.episodeTitle(r);
+      // Short enough for one line on a phone: "Sep 28 · 8:00 am · 60 min".
+      var when = splitDateText(r.dateText);
+      var mins = r.durationSec ? Math.round(r.durationSec / 60) + ' min' : '';
+      return '<article class="ja-item">'+
+        '<button class="ja-art show-open" type="button" data-id="'+esc(r.id)+'" tabindex="-1" aria-hidden="true">'+
+          (photo ? '<img loading="lazy" alt="" src="'+esc(photo)+'">' : '')+'</button>'+
+        '<button class="ja-text show-open" type="button" data-id="'+esc(r.id)+'" aria-label="More about '+esc(topic || r.title)+'">'+
+          '<span class="ja-show">'+esc(r.title)+'</span>'+
+          (topic ? '<span class="ja-topic">'+esc(topic)+'</span>' : '')+
+          '<span class="ja-when">'+esc([stationDate(new Date(r.dt * 1000)), when.time, mins].filter(Boolean).join(' · '))+'</span>'+
+        '</button>'+
+        '<button class="play-btn ja-play'+(isPlaying?' playing':'')+(isLoading?' loading':'')+'" '+playAttrs(r, subLine, photo, isLoading, isPlaying)+'>'+glyph(isLoading, isPlaying)+'</button>'+
+      '</article>';
+    }).join('');
+  }
+
   function render(){
+    renderJustAired();
     var searching = !!state.query;
     searchResultsEl.hidden = !searching;
     document.getElementById('listing').hidden = searching;
@@ -1250,12 +1287,11 @@
   var ROW_TAP_CLICK_GUARD_MS = 500;
   var ghostArmed = false;     // a synthetic click is still owed for a tap we handled
 
-  rowsEl.addEventListener('touchstart', function(e){
+  function onRowTouchStart(e){
     var t = e.touches[0];
     rowTouchStart = { x: t.clientX, y: t.clientY, target: e.target };
-  }, { passive: true });
-
-  rowsEl.addEventListener('touchend', function(e){
+  }
+  function onRowTouchEnd(e){
     var start = rowTouchStart;
     rowTouchStart = null;
     if(!start) return;
@@ -1264,11 +1300,17 @@
     lastRowTapAt = Date.now();
     ghostArmed = true;
     activateRowTarget(start.target);
-  }, { passive: true });
-
-  rowsEl.addEventListener('click', function(e){
+  }
+  function onRowClick(e){
     if(Date.now() - lastRowTapAt < ROW_TAP_CLICK_GUARD_MS) return;
     activateRowTarget(e.target);
+  }
+  // The listing and Just aired share the same tap handling (the mid-scroll tap fix above).
+  [rowsEl, justAiredList].forEach(function(el){
+    if(!el) return;
+    el.addEventListener('touchstart', onRowTouchStart, { passive: true });
+    el.addEventListener('touchend', onRowTouchEnd, { passive: true });
+    el.addEventListener('click', onRowClick);
   });
 
   // ---- The ghost click.
