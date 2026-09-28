@@ -951,6 +951,14 @@
   // Which source owns the docked bar: 'archive' (a seekable mp3, full scrubber) or
   // 'live' (the stream — scrubber and ±15s hidden, play/pause + close only).
   var barMode = null;
+  // Every change of what the player bar is holding goes through here, so plugins hear about it
+  // (Listen along hides its Transcript button while the live stream plays: the archive audio
+  // element keeps the previous episode loaded, paused, and must not count as playing).
+  function setBarMode(mode){
+    if(barMode === mode) return;
+    barMode = mode;
+    document.dispatchEvent(new CustomEvent('archive:barmode', {detail: {mode: mode}}));
+  }
 
   function formatTime(sec){
     if(!isFinite(sec) || sec < 0) return '0:00';
@@ -1236,7 +1244,7 @@
     setPlayerPhoto(photo);
     setStatus('Loading…');
     resetScrubber();
-    barMode = 'archive';
+    setBarMode('archive');
     playerBar.classList.remove('live');
     showPlayerBar();
     stopLive();                   // hand the bar to the archive track
@@ -1466,7 +1474,7 @@
     // Live mode: stop the stream and drop the bar, nothing archive-specific.
     if(barMode === 'live'){
       stopLive();
-      barMode = null;
+      setBarMode(null);
       playerBar.classList.remove('live');
       setStatus('');
       hidePlayerBar();
@@ -1483,7 +1491,7 @@
     nowPlaying.mp3 = null;
     nowPlaying.title = nowPlaying.sub = nowPlaying.photo = '';
     pendingResume = 0;
-    barMode = null;
+    setBarMode(null);
     resetScrubber();
     hidePlayerBar();
     updatePlayButtons();
@@ -2323,7 +2331,7 @@
     syncLiveIdentity();
   }
   function showLiveBar(){
-    barMode = 'live';
+    setBarMode('live');
     playerBar.classList.add('live');
     paintLiveBar();
     showPlayerBar();
@@ -2940,6 +2948,8 @@
       pendingResume = seconds; resumeIsJump = true;
     },
     closeSheet: function(){ closeSheet(); },
+    // What the player bar holds: 'archive', 'live' or null.
+    barMode: function(){ return barMode; },
     // A plugin's own live data arrived (new QIR headlines): redo the rows' extra fields
     // and redraw Just aired only; the listing never moves under the reader.
     refreshJustAired: function(){ enrichRows(); rebuildSearchIndex(); renderJustAired(true); }

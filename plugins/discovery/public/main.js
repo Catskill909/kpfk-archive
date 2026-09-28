@@ -85,7 +85,11 @@
       toggle.setAttribute('aria-expanded', 'false');
       toggle.innerHTML = '<span class="rv-alongtoggle-icon">' + ICONS.transcript + '</span><span class="rv-alongtoggle-label">Transcript</span>';
       bar.insertBefore(toggle, doc.getElementById('playerClose'));
+      // The playing episode, or '' when the bar holds the live stream (or nothing): the
+      // archive audio element keeps the last episode loaded, paused, while live plays, so its
+      // src alone would offer that episode's transcript over the live stream (2026-09-28 bug).
       var currentId = function(){
+        if(app.barMode && app.barMode() !== 'archive') return '';
         var src = audio.currentSrc || audio.src || '';
         if(!src) return '';
         for(var r of rowsById.values()) if(r.mp3 === src) return r.id;
@@ -100,6 +104,11 @@
         art: function(r){ return r.photo || ''; },
         about: function(r){ return r.episodeDesc || ''; },
         seek: function(id, at){ app.playAt(id, at); }
+      });
+      // Live stream on (or player closed): no transcript to offer; close an open panel.
+      doc.addEventListener('archive:barmode', function(e){
+        if(e.detail && e.detail.mode !== 'archive' && along.isOpen()) along.close();
+        along.refresh();
       });
     }
     // After the page has shown: the catalog is ~1 MB and the archive never waits for it.
