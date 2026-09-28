@@ -67,6 +67,10 @@ const MEASURE = box => `
     await c.send('Emulation.setDeviceMetricsOverride', { width: w, height: h, deviceScaleFactor: 1, mobile });
     await c.send('Emulation.setTouchEmulationEnabled', { enabled: mobile });
     for (const k of CASES.filter(k => !process.env.AUDIT_ONLY || process.env.AUDIT_ONLY.split(',').includes(k.name))) {
+      // Blank page first: the site reopens whatever the saved history entry says was open
+      // (a reload with the live player open reopens it, by design), which leaked one
+      // case's popup into the next when the same address was reloaded.
+      await c.send('Page.navigate', { url: 'about:blank' }); await sleep(300);
       await c.send('Page.navigate', { url: k.url }); await sleep(3500);
       const steps = [];
       // A step that never settles is reported as 'timeout' rather than hanging the whole run.

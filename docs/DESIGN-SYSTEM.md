@@ -124,6 +124,26 @@ bottom row of an open popup (the show sheet's Pause on phones). It waits while a
 open; every popup showing an episode has its own Start over and position. The "Past episodes"
 button's label no longer wraps in the narrower left column.
 
+### Step 2d: the remaining popups reviewed (2026-09-28)
+
+Every remaining popup screenshotted at phone and desktop with an episode playing and judged
+against rule 2. Only one needed a change.
+
+| Popup | Verdict |
+|---|---|
+| Live player | Desktop card narrowed 760 → 680 px (content needs ~650; ~150 px sat empty on the right). Changed in its one definition, not overridden. Phone: a full "now playing" screen with large art, which suits a live stream; unchanged |
+| Past episodes (in the show sheet) | Clear list, playing episode marked, Back link; unchanged |
+| Schedule | Day tabs and a list, live show marked; unchanged |
+| Live "about this show" | Compact card sized to its text; unchanged |
+| Side menu | List that scrolls, ends above the player bar; unchanged |
+| Donate / privacy | Pacifica's own page in a frame, not ours to restyle; sits above the player bar |
+| Artwork lightbox | Art centred, close top right, player bar below; unchanged |
+
+**Audit fix:** the menu screenshot twice showed the live player instead. Not a site bug: the
+site reopens what the saved history entry says was open (a reload with the live player open
+reopens it, by design), and the audit reloaded the same address between cases, carrying the
+previous case's live player into the menu case. Each case now starts from a blank page.
+
 ### Known limits and follow-ups
 
 - **Keyboard on the main side:** focus is trapped inside each popup, so Tab does not reach
@@ -139,3 +159,4 @@ button's label no longer wraps in the narrower left column.
 | 2026-09-28 | 2a | Discovery loads `styles.css`; its `base.css` copy removed | Discovery screenshots (baseline above) render normally with it; not compared side by side with the old copy |
 | 2026-09-28 | 2b | Player frame on both sides; Discovery popup non-modal; show sheet's player copy hidden; offline guard test | player usable in 22 of 22 (was 4 of 22) |
 | 2026-09-28 | 2c | Show sheet two columns (desktop) / compact header (phone); Discovery popup Play in header, two columns on desktop; sheet Pause restored; resume notice waits under popups; audit checks play control is tappable | player usable 22 of 22; Play/Pause tappable in all 6 episode views; checked by eye (phone and desktop) |
+| 2026-09-28 | 2d | Remaining popups reviewed; live player desktop card 760 → 680 px; audit cases start from a blank page | all 11 popups: player usable at both widths; screenshots judged by eye |

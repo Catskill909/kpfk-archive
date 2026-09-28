@@ -968,7 +968,9 @@
       display:grid; grid-template-columns:auto minmax(0, 1fr);
       align-content:start; justify-items:stretch;
       gap:1.15rem 1.9rem;
-      width:min(760px, 94vw);
+      /* 680, was 760: the content needs ~650 and the wider card left ~150 px empty
+         on the right (design rule 2, docs/DESIGN-SYSTEM.md, 2026-09-28). */
+      width:min(680px, 94vw);
       padding:1.9rem 2.1rem 1.7rem;
     }
     .lp-badge{ grid-column:1 / -1; }
