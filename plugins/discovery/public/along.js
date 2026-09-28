@@ -24,6 +24,13 @@
   const TRANSCRIPT_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 6h14M5 10h14M5 14h9M5 18h6"/></svg>';
   const SONGS_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>';
   let api = null, panel, list, find, note = '', openId = '', lines = [], plainText = '', kind = '', following = true, nowIndex = -1, matches = [], matchAt = -1, pushed = false, loadToken = 0;
+  // The host's audio element, player bar and Transcript button, and which episode is playing
+  // (integration step 4e: Discovery's page passes nothing and keeps its own; the main page
+  // passes its player). currentId() is the playing episode's row id, '' when none.
+  const audioEl = () => api.audio || $('audio');
+  const playerEl = () => api.player || $('player');
+  const toggleEl = () => api.toggle || $('alongToggle');
+  const currentId = () => api.currentId ? api.currentId() : (audioEl().dataset.id || '');
   const cache = new Map();
 
   function build() {
@@ -57,7 +64,8 @@
     for(const type of ['wheel','touchmove','keydown']) list.addEventListener(type, e => { if(type !== 'keydown' || /^(Arrow|Page|Home|End)/.test(e.key)) { following = false; paintNowPill(); } }, {passive:true});
     $('alongNow').onclick = () => { following = true; scrollToNow(true); paintNowPill(); };
     dragSheet();
-    new ResizeObserver(() => document.documentElement.style.setProperty('--player-h', ($('player').hidden ? 0 : $('player').offsetHeight) + 'px')).observe($('player'));
+    // The main page measures --player-h itself (app.js); only Discovery's page needs this.
+    if(!api.hostMeasuresPlayer) new ResizeObserver(() => document.documentElement.style.setProperty('--player-h', (playerEl().hidden ? 0 : playerEl().offsetHeight) + 'px')).observe(playerEl());
     window.addEventListener('popstate', () => { if(!panel.hidden && pushed && !history.state?.along) { pushed = false; hide(); } });
   }
 
@@ -118,7 +126,7 @@
   const REST = 0.33;
   function followAudio() {
     if(panel.hidden || !lines.length) return;
-    const audio = $('audio'), mine = audio.dataset.id === openId, t = audio.currentTime || 0;
+    const audio = audioEl(), mine = currentId() === openId, t = audio.currentTime || 0;
     const i = mine ? currentIndex(t) : -1;
     if(i !== nowIndex) {
       const prev = nowIndex;
@@ -231,12 +239,12 @@
     panel.classList.remove('shown'); document.body.classList.remove('along-open');
     const done = () => { if(!panel.classList.contains('shown')) panel.hidden = true; api.onChange?.(); };
     if(reduceMotion()) done(); else setTimeout(done, 300);
-    paintAvailability(); $('alongToggle')?.focus({preventScroll: true});
+    paintAvailability(); toggleEl()?.focus({preventScroll: true});
   }
   function close() { if(!panel || panel.hidden) return; if(pushed) { pushed = false; history.back(); } hide(); }
   function paintAvailability() {
-    const btn = $('alongToggle'); if(!btn) return;
-    const row = api?.getRow($('audio').dataset.id || ''), k = kindOf(row);
+    const btn = toggleEl(); if(!btn) return;
+    const row = api?.getRow(currentId()), k = kindOf(row);
     // Icon + label; phones show the icon only, so the label also names the button.
     const label = k === 'transcript' ? 'Transcript' : 'Songs';
     btn.hidden = !k; btn.querySelector('.rv-alongtoggle-label').textContent = label;
@@ -246,12 +254,12 @@
   }
   function init(options) {
     api = options; build();
-    const audio = $('audio');
+    const audio = audioEl();
     audio.addEventListener('timeupdate', followAudio); audio.addEventListener('seeked', followAudio);
     // The panel belongs to what is playing: a new episode brings its own words.
-    audio.addEventListener('loadstart', () => { paintAvailability(); if(!panel.hidden && audio.dataset.id && audio.dataset.id !== openId) show(audio.dataset.id); });
-    $('alongToggle').onclick = () => panel.hidden ? open($('audio').dataset.id) : close();
+    audio.addEventListener('loadstart', () => { paintAvailability(); const id = currentId(); if(!panel.hidden && id && id !== openId) show(id); });
+    toggleEl().onclick = () => panel.hidden ? open(currentId()) : close();
     paintAvailability();
   }
-  window.ListenAlong = {init, open, close, kindOf, kindsOf, isOpen: () => !!panel && !panel.hidden};
+  window.ListenAlong = {init, open, close, kindOf, kindsOf, isOpen: () => !!panel && !panel.hidden, refresh: () => paintAvailability()};
 })();

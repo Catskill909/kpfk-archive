@@ -223,7 +223,12 @@ function createDiscovery({ station, env = process.env, dataDir = null, fetchImpl
     handle,
     settings,
     /** Script tags the host puts on its main page (step 4a): QIR details on the main listing. */
-    pageScripts: () => enabled() ? `<script src="/discover/main.js?v=${version('main.js')}" defer></script>\n` : '',
+    // Listen along (step 4e) needs its panel styles, the text decoder, the transcript and
+    // song-list parsers and the panel itself, then main.js wires it to the main player.
+    pageScripts: () => enabled() ? [
+      `<link rel="stylesheet" href="/discover/along.css?v=${version('along.css')}">`,
+      ...['text.js', 'qir-transcript.js', 'playlist.js', 'along.js', 'main.js'].map(f => `<script src="/discover/${f}?v=${version(f)}" defer></script>`),
+    ].join('\n') + '\n' : '',
     enabled,
     /** For the studio's Discovery tab. Never includes the QIR key, only whether one is set. */
     adminState: () => {

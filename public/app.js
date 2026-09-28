@@ -836,6 +836,10 @@
       // bar prints it with textContent
       var subLine = c.label + (r.host ? ' · with '+r.host : '');
       var photo = r.photo || '';
+      // The episode headline leads where there is one (QIR via Discovery, or the feed's own
+      // topic), with the show name under it (Paul, 2026-09-28). Without one the row is as
+      // before, so a station without Discovery never shows the show name twice.
+      var topic = window.ArchiveSearch.episodeTitle(r);
       return (
       '<div class="row body" role="row" data-id="'+esc(r.id)+'">'+
         '<div class="show-cell">'+
@@ -848,8 +852,9 @@
           '</button>'+
           '<span class="show-text">'+
             // title + category open the info sheet; the play button on the right plays
-            '<button class="show-open" type="button" data-id="'+esc(r.id)+'" aria-label="More about '+esc(r.title)+'">'+
-              '<span class="show-title">'+esc(r.title)+'</span>'+
+            '<button class="show-open" type="button" data-id="'+esc(r.id)+'" aria-label="More about '+esc(topic || r.title)+'">'+
+              (topic ? '<span class="show-title show-title--episode">'+esc(topic)+'</span>'+
+                '<span class="show-name">'+esc(r.title)+'</span>' : '<span class="show-title">'+esc(r.title)+'</span>')+
               '<span class="show-cat">'+esc(subLine)+' <span class="cell-duration inline-meta">· '+esc(r.length)+'</span></span>'+
             '</button>'+
             '<button class="more-link" type="button" data-id="'+esc(r.id)+'" tabindex="-1">More</button>'+
@@ -1015,6 +1020,7 @@
   // Restoring can't happen until the element knows its duration, so playTrack()
   // parks the offset here and `loadedmetadata` spends it.
   var pendingResume = 0;
+  var resumeIsJump = false;   // pendingResume came from a plugin's "play from this line", not a saved place
   var lastResumeSync = 0;   // seconds; throttles resumeRemember from timeupdate
 
   var resumeToast = document.getElementById('resumeToast');
@@ -1261,9 +1267,10 @@
       pendingResume = 0;
       if(isFinite(audio.duration) && at < audio.duration - RESUME_TAIL){
         audio.currentTime = at;
-        showResumeToast(at);
+        if(!resumeIsJump) showResumeToast(at);
       }
     }
+    resumeIsJump = false;
     applyDuration();
     paintScrubTime();
     updatePositionState();
@@ -2908,8 +2915,32 @@
   }
   window.ArchiveApp = {
     addPlugin: function(p){ plugins.push(p); },
-    refresh: function(){ enrichRows(); rebuildSearchIndex(); render(); }
+    refresh: function(){ enrichRows(); rebuildSearchIndex(); render(); },
+    // For a plugin's Listen along (integration step 4e): play an episode from a moment.
+    // Already playing: jump there. Otherwise start it there (no "Resumed at" notice: a
+    // jump is not a resume).
+    playAt: function(id, seconds){
+      var r = rowById(id);
+      if(!r || !r.mp3) return;
+      if(nowPlaying.mp3 === r.mp3 && barMode === 'archive'){
+        audio.currentTime = seconds;
+        if(audio.paused) audio.play().catch(function(e){ console.warn('Play from line failed:', e.message); });
+        return;
+      }
+      var c = CAT_BY_KEY[r.cat] || {label:''};
+      playTrack(r.mp3, r.title, c.label + (r.host ? ' · with '+r.host : ''), r.photo || '', true);
+      pendingResume = seconds; resumeIsJump = true;
+    },
+    closeSheet: function(){ closeSheet(); }
   };
+  // Buttons a plugin adds to the show sheet's selected broadcast (step 4e: Transcript,
+  // Songs). Each returns markup whose buttons carry data-plugin-action and data-id.
+  function pluginSheetActions(r){
+    return plugins.map(function(p){
+      // Caught: an error inside a plugin; the sheet must still open without its buttons.
+      try { return p.sheetActions ? p.sheetActions(r) : ''; } catch(e){ console.warn('[plugin ' + p.name + '] sheetActions failed:', e.message); return ''; }
+    }).join('');
+  }
 
   function ingest(list, updated, revision, directory){
     if(directory) { showInfo = directory; detailAsked = {}; }
@@ -4405,6 +4436,8 @@
         '<span class="listen-progress sheet-selected-progress" id="sheetSelectedProgress" aria-hidden="true"></span>'+
       '</div>';
 
+    var selTopic = window.ArchiveSearch.episodeTitle(r);
+    var selNotes = r.episodeDesc || '';
     return {
       body:
         '<div class="sheet-head">'+
@@ -4438,7 +4471,15 @@
             (dparts.time ? '<span class="sheet-selected-time">'+esc(dparts.time)+'</span>' : '')+
             (r.length ? '<span class="sheet-selected-length">'+esc(r.length)+'</span>' : '')+
             retentionBadge(r)+
-          '</div>'+listen+
+          '</div>'+
+          // This broadcast's own headline and summary (integration step 4e): QIR's where the
+          // Discovery plugin added them, else the feed's topic and notes. Long summaries
+          // show four lines with More, so Play stays near the top.
+          (selTopic ? '<p class="sheet-selected-topic">'+esc(selTopic)+'</p>' : '')+
+          (function(){ var extra = pluginSheetActions(r); return extra ? '<div class="sheet-plugin-actions">'+extra+'</div>' : ''; })()+
+          (selNotes ? '<div class="sheet-selected-notes"><p class="sheet-selected-summary">'+esc(selNotes)+'</p>'+
+            (selNotes.length > 220 ? '<button class="sheet-summary-more" type="button" aria-expanded="false">More</button>' : '')+'</div>' : '')+
+          listen+
           (play ? '<div class="sheet-actions">'+play+restart+'</div>' : '')+
         '</div>'
     };
@@ -4854,6 +4895,19 @@
     var episode = e.target.closest('.sheet-episode-open');
     if(episode){ selectEpisode(episode.dataset.id); return; }
     if(e.target.closest('.sheet-restart')){ restartSheetEpisode(); return; }
+    var pa = e.target.closest('[data-plugin-action]');
+    if(pa){
+      plugins.forEach(function(p){ if(p.onAction) p.onAction(pa.dataset.pluginAction, pa.dataset.id); });
+      return;
+    }
+    var more = e.target.closest('.sheet-summary-more');
+    if(more){
+      var box = more.parentNode, open = !box.classList.contains('open');
+      box.classList.toggle('open', open);
+      more.setAttribute('aria-expanded', String(open));
+      more.textContent = open ? 'Less' : 'More';
+      return;
+    }
     if(e.target.closest('.sheet-share')) shareSheet();
   });
 

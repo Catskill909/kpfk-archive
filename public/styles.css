@@ -3983,7 +3983,7 @@
   }
   .section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin:0 0 1rem; }
   .section-title{
-    margin:0; font-family:var(--font-display); font-size:clamp(1.4rem, 2.4vw, 1.9rem); font-weight:800;
+    margin:0; font-family:var(--font-display); font-size:clamp(1.25rem, 2vw, 1.6rem); font-weight:800;
     letter-spacing:-.02em; line-height:1.15; color:var(--ink);
   }
   .section-link{ padding:0; border:0; background:none; color:var(--accent-2); font:600 1rem/1.2 var(--font-body); cursor:pointer; }
@@ -4004,3 +4004,16 @@
   @media (max-width:560px){
     body:not(.is-searching) .result-meta .clock-btn{ display:none; }
   }
+
+  /* Episodes list: headline first, show name under it in the accent colour (as in Just aired). */
+  .show-title--episode{ font-weight:600; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; white-space:normal; }
+  .show-name{ display:block; font-size:.82rem; font-weight:700; color:var(--accent-2); margin-top:.1rem;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+  /* The selected broadcast's headline and summary (integration step 4e). */
+  .sheet-selected-topic{ margin:.15rem 0 0; font-size:.98rem; font-weight:650; line-height:1.35; color:var(--ink); }
+  .sheet-selected-notes{ margin:0; }
+  .sheet-selected-summary{ margin:0; font-size:.86rem; line-height:1.5; color:var(--ink-dim);
+    display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
+  .sheet-selected-notes.open .sheet-selected-summary{ display:block; -webkit-line-clamp:unset; overflow:visible; }
+  .sheet-summary-more{ padding:0; border:0; background:none; color:var(--accent-2); font:600 .82rem/1.6 var(--font-body); cursor:pointer; }

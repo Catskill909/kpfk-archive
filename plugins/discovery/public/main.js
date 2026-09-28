@@ -38,16 +38,75 @@
     });
     return n;
   }
+  // Listen along reads row.qir (a QIR row, Discovery's page) and row.vtiUrl. Main-page rows
+  // carry qirEpisode instead; this gives Listen along its own view of a row without touching
+  // the shared one (just-aired.js reads row.qir as station-clock time). Upload-list shows'
+  // song files do not exist (their cue links are 404), so they offer no Songs.
+  function forAlong(row){
+    if(!row) return null;
+    var view = Object.assign({}, row);
+    view.qir = row.qirEpisode ? {public_id: row.qirEpisode.id} : null;
+    view.vtiUrl = row.archiveSource === '2kpfk' ? '' : (row.vtiUrl || '');
+    return view;
+  }
+  var ICONS = {
+    transcript: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 6h14M5 10h14M5 14h9M5 18h6"/></svg>',
+    songs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>'
+  };
   function start(win){
     var app = win.ArchiveApp;
     if(!app) return;
-    var byMp3 = null;
-    app.addPlugin({name: 'discovery', enrich: function(rows){ enrich(rows, byMp3); }});
+    var byMp3 = null, rowsById = new Map();
+    var doc = win.document, audio = doc.getElementById('mainAudio'), bar = doc.getElementById('playerBar');
+    var along = win.ListenAlong;
+    app.addPlugin({
+      name: 'discovery',
+      enrich: function(rows){ enrich(rows, byMp3); rowsById = new Map(rows.map(function(r){ return [r.id, r]; })); },
+      // Show sheet: Transcript / Songs for the selected broadcast (step 4e).
+      sheetActions: function(r){
+        if(!along) return '';
+        return along.kindsOf(forAlong(r)).map(function(k){
+          return '<button class="sheet-link sheet-along" type="button" data-plugin-action="along-' + k + '" data-id="' + String(r.id).replace(/"/g, '&quot;') + '">' +
+            ICONS[k] + '<span>' + (k === 'transcript' ? 'Transcript' : 'Songs') + '</span></button>';
+        }).join('');
+      },
+      onAction: function(action, id){
+        var m = /^along-(transcript|songs)$/.exec(action || '');
+        if(!m || !along) return;
+        // The panel sits under popups; close the sheet first, then open it for this episode.
+        app.closeSheet();
+        win.setTimeout(function(){ along.open(id, {kind: m[1]}); }, 50);
+      }
+    });
+    // Listen along on the main player: a Transcript / Songs button in the player bar.
+    if(along && audio && bar){
+      var toggle = doc.createElement('button');
+      toggle.type = 'button'; toggle.id = 'playerAlong'; toggle.className = 'player-along rv-alongtoggle'; toggle.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.innerHTML = '<span class="rv-alongtoggle-icon">' + ICONS.transcript + '</span><span class="rv-alongtoggle-label">Transcript</span>';
+      bar.insertBefore(toggle, doc.getElementById('playerClose'));
+      var currentId = function(){
+        var src = audio.currentSrc || audio.src || '';
+        if(!src) return '';
+        for(var r of rowsById.values()) if(r.mp3 === src) return r.id;
+        return '';
+      };
+      along.init({
+        audio: audio, player: bar, toggle: toggle, currentId: currentId, hostMeasuresPlayer: true,
+        getRow: function(id){ return forAlong(rowsById.get(id)); },
+        title: function(r){ return win.ArchiveSearch.episodeTitle(r) || r.title; },
+        meta: function(r){ return r.dateText || ''; },
+        show: function(r){ return r.title || ''; },
+        art: function(r){ return r.photo || ''; },
+        about: function(r){ return r.episodeDesc || ''; },
+        seek: function(id, at){ app.playAt(id, at); }
+      });
+    }
     // After the page has shown: the catalog is ~1 MB and the archive never waits for it.
     function load(){
       win.fetch('/api/plugins/qir/catalog', {cache: 'no-store'})
         .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-        .then(function(catalog){ byMp3 = index(catalog); app.refresh(); })
+        .then(function(catalog){ byMp3 = index(catalog); app.refresh(); if(along) along.refresh(); })
         // Caught: QIR switched off, down or slow. The archive works without it; say so once.
         .catch(function(e){ console.warn('Discovery: QIR catalog unavailable (' + e.message + '); the archive works without it.'); });
     }

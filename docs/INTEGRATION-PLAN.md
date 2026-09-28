@@ -17,7 +17,7 @@ Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-28.**
 | 1 | Move Discovery into the podcast site | ✅ Done | Yes (switched off) |
 | 2 | One design system; popups never cover the player | ✅ Done | Yes |
 | 3 | The player (spare copy removed, keyboard reaches it) | ✅ Done | Yes |
-| 4 | Discovery's sections on the main page | 🟡 4 of 6 parts done | Mostly — see below |
+| 4 | Discovery's sections on the main page | 🟡 5 of 6 parts done | Mostly — see below |
 | 5 | Discovery admin as a studio tab | 🟡 5a done, 5b to do | 5a with the next deploy |
 | 6 | Stats for both sides in the studio | ⬜ Not started | — |
 | 7 | Import / export cover everything | ⬜ Not started | — |
@@ -38,18 +38,19 @@ Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-28.**
 
 - **Studio → Discovery tab** (with the next deploy): switch Discovery and QIR on or off at once,
   no redeploy.
-- **Discovery for listeners** (after the switch is flipped): QIR headlines and summaries in the
-  main search and Just aired; the `/discover` page; "Discover shows" in the menu.
+- **Transcripts and Songs on the main site** (next deploy, Discovery on): a Transcript / Songs button
+  in the player bar and in the show popup; read along, find in the episode, tap a line to play
+  from there. The show popup also shows the episode's headline and summary.
+- **Headlines in the Episodes tab** and slightly smaller section headings (next deploy).
 
 ## Next up
 
-1. **4e** Transcript and Songs inside the show popup (Discovery's "Listen along", on the main player).
-2. **4f** `/discover` points to the main page (one page for everyone).
-3. **5b** Station template in the studio: edit a station's feeds, logo, colours and text, preview,
+1. **4f** `/discover` points to the main page (one page for everyone).
+2. **5b** Station template in the studio: edit a station's feeds, logo, colours and text, preview,
    apply, with a way back.
-4. **6** Stats: transcript and summary clicks, Discovery searches (counts only).
-5. **7** Import / export include Discovery's settings; prove a full restore.
-6. **8** Production release.
+3. **6** Stats: transcript and summary clicks, Discovery searches (counts only).
+4. **7** Import / export include Discovery's settings; prove a full restore.
+5. **8** Production release.
 
 ## Paul — to do and decisions
 
@@ -149,7 +150,12 @@ shares the main top bar, search, player and popups, and adds its data where the 
   "Explore shows" / "All episodes" headings. Phones drop the "Latest episode" line.
 - ✅ **4d Show cards** — desktop: clean image with category, name, host and "Latest · date" under it;
   phones keep the title on the artwork so more shows fit.
-- ⬜ **4e** Transcript and Songs in the show popup (Listen along on the main player).
+- ✅ **4e Transcript and Songs on the main site** — where Discovery is on: a Transcript / Songs
+  button in the player bar and in the show popup; the Listen along panel (read along, find in the
+  episode, tap a line to play from there) runs on the main player; the show popup shows the
+  episode's headline and summary (for every station where the feed or QIR has them). The Episodes
+  tab leads with the headline where there is one. Checked on phone and desktop: 625-line transcript,
+  tapping a line jumps the audio there, the player bar stays visible.
 - ⬜ **4f** `/discover` points to the main page.
 
 | # | Section / popup | Main side | Discovery | Pick (Paul, date) |
@@ -161,7 +167,7 @@ shares the main top bar, search, player and popups, and adds its data where the 
 | 4.5 | Show cards | text on image | text under image | **Desktop: Discovery's; phone: main's** (2026-09-28) — done |
 | 4.6 | Search results | ✓ | ✓ | *to pick* |
 | 4.7 | Show popup / past episodes | ✓ | ✓ | *to pick* (main's is live, improved in step 2) |
-| 4.8 | Episode + transcript (Listen along) | — | ✓ | *to pick* (becomes 4e) |
+| 4.8 | Episode + transcript (Listen along) | — | ✓ | Discovery's panel on the main player (2026-09-28) — done |
 | 4.9 | Schedule | ✓ | — | Main's (only one) |
 | 4.10 | Live player | ✓ | — | Main's (only one) |
 | 4.11 | Menu, Donate, Privacy, About | ✓ | — | Main's (only one) |
@@ -213,3 +219,4 @@ same site, same stats).
 | 2026-09-28 | Plan started. Step 1 (Discovery moved in), Step 2 (design system, player frame, popup layouts), Step 3 (player). |
 | 2026-09-28 | Step 4: QIR data on the main page, permanent links, Just aired, All / Shows / Episodes tabs, show card layout. |
 | 2026-09-28 | Step 5a: studio Discovery tab with live on/off switches. Plan reorganised for project tracking. |
+| 2026-09-28 | Studio: real tabs, in-app confirmations (never browser pop-ups). Step 4e: Transcript and Songs on the main site; headlines in the Episodes tab and the show popup. |

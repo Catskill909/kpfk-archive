@@ -1,0 +1,108 @@
+/* Listen along panel (transcripts and song lists), shared by Discovery's page and the main
+   page (integration step 4e). Moved here from app.css so there is one copy of its look.
+   On the main page it sits above the sticky top bar and below every popup (z-index 90;
+   popups start at 150, the player bar is 80 and the panel ends above it at --player-h). */
+.rv-along .rv-close{width:44px;height:44px;border:1px solid var(--outline-strong);border-radius:50%;background:var(--surface-3);color:var(--ink);font-size:24px;flex-shrink:0;cursor:pointer}
+.rv-along .rv-eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;color:var(--accent-2);margin:0 0 10px}
+.rv-along .rv-bodytext{white-space:pre-line;font-size:15px;line-height:1.75;color:var(--ink-dim)}
+/* Listen along: drawer (push ≥1100px, over 700–1099px) and phone bottom sheet (<700px). */
+:root{--along-w:420px;--player-h:0px}
+.rv-along{position:fixed;z-index:9;top:0;right:0;bottom:var(--player-h);width:min(var(--along-w),92vw);display:flex;flex-direction:column;background:var(--surface-1);border-left:1px solid var(--outline-strong);box-shadow:-18px 0 50px #0003;transform:translateX(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.rv-along.shown{transform:none}.rv-along[hidden]{display:none}
+@media(min-width:1100px){body.along-open{padding-right:var(--along-w)}body.along-open .rv-main{padding-left:24px;padding-right:24px}body.along-open .rv-reviewbar,body.along-open .rv-header{padding-right:24px}.rv-along{box-shadow:none}}
+.rv-along-handle{display:none}
+.rv-along-find{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:0 20px 10px}
+.rv-along-find input[type=search]{flex:1 1 180px;min-width:0;min-height:40px;border:1px solid var(--outline-strong);border-radius:10px;background:var(--surface-2);color:var(--ink);padding:8px 12px;font-size:16px}
+.rv-along-count{font-size:12px;color:var(--ink-dim);min-width:4ch}
+.rv-along-step{width:36px;height:36px;border-radius:50%;border:1px solid var(--outline-strong);background:var(--surface-3);color:var(--ink)}.rv-along-step:disabled{opacity:.4}
+.rv-along-only{font-size:12px;color:var(--ink-dim);display:flex;align-items:center;gap:6px;min-height:36px}
+.rv-along-note{font-size:12px;color:var(--ink-dim);margin:4px 10px 10px;line-height:1.5}.rv-along-find{border-bottom:1px solid var(--outline)}.rv-along-only[hidden]{display:none}
+.rv-along-list{position:relative;flex:1;overflow:auto;overscroll-behavior:contain;padding:8px 10px 60px;outline:none}
+.rv-along-line{display:grid;grid-template-columns:56px 1fr;gap:10px;width:100%;text-align:left;background:none;border:0;border-radius:10px;padding:9px 10px;color:var(--ink-dim);font-size:15px;line-height:1.55;cursor:pointer}
+.rv-along-line:hover{background:var(--surface-2);color:var(--ink)}
+.rv-along-time{font-size:12px;font-variant-numeric:tabular-nums;color:var(--accent-2);padding-top:3px}
+.rv-along-text{min-width:0;overflow-wrap:anywhere}.rv-along-line.song .rv-along-text{color:var(--ink);font-weight:600}.rv-along-artist{display:block;font-weight:400;font-size:13px;color:var(--ink-dim)}
+.rv-along-line.is-now{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--ink)}.rv-along-line.is-now .rv-along-time{color:var(--accent)}
+.rv-along-line.is-match{box-shadow:inset 0 0 0 2px var(--accent-2)}
+.rv-along-line mark{background:color-mix(in srgb,var(--accent-2) 35%,transparent);color:inherit;border-radius:3px}
+.rv-along-empty{color:var(--ink-dim);font-size:14px;padding:20px 12px}
+.rv-along-now{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);border:0;border-radius:20px;background:var(--accent);color:var(--accent-ink);font-weight:650;padding:10px 18px;box-shadow:0 6px 20px #0004}
+@media(max-width:699px){
+ .rv-along{top:auto;left:0;right:0;width:auto;height:min(58vh,calc(100dvh - var(--player-h) - 40px));border-left:0;border-top:1px solid var(--outline-strong);border-radius:20px 20px 0 0;transform:translateY(100%);box-shadow:0 -12px 40px #0005;transition:transform .28s cubic-bezier(.2,.8,.2,1),height .22s ease}
+ .rv-along.full{height:calc(100dvh - var(--player-h) - 12px)}.rv-along.dragging{transition:none}
+ .rv-along-handle{display:flex;justify-content:center;padding:10px 0 4px;touch-action:none;cursor:grab}.rv-along-handle span{width:40px;height:5px;border-radius:3px;background:var(--outline-strong)}
+ .rv-along-find{padding:0 16px 8px}.rv-along-find input[type=search]{flex-basis:120px}
+ .rv-along-line{grid-template-columns:48px 1fr;font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){.rv-along,.rv-along-list{transition:none!important;scroll-behavior:auto}}
+
+/* Read-along, calm version (2026-09-24): the list's edges fade so text dissolves as it
+   scrolls out; past lines are gently faded; the highlight fades in slowly. No per-line
+   progress bar and no dimming of upcoming lines — less motion inside the text. */
+.rv-along-list{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 14%,#000 86%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 14%,#000 86%,transparent 100%)}
+.rv-along-line{transition:color .45s ease,background-color .45s ease,opacity .6s ease}
+.rv-along-line.is-past:not(:hover){opacity:.62}
+@media(prefers-reduced-motion:reduce){.rv-along-line{transition:none}}
+
+/* Transcript list scrolls without a visible bar (touch, wheel and keys still scroll it). */
+.rv-along-list{scrollbar-width:none}
+.rv-along-list::-webkit-scrollbar{display:none}
+.rv-along-list{padding-top:36px;padding-bottom:90px}
+
+/* Listen along header (2026-09-25): show art + show name, then the episode title (two
+   lines) and a meta line ending in a small About toggle. About is a card laid over the
+   find bar and list — out of the header's flow, so opening it never shrinks the transcript. */
+.rv-along-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;column-gap:12px;align-items:center;padding:18px 20px 12px}
+.rv-along-art{width:44px;height:44px;border-radius:8px;object-fit:cover;background:var(--surface-2);grid-column:1}
+.rv-along-art[hidden]{display:none}
+.rv-along-headtext{grid-column:2;min-width:0}.rv-along-art[hidden]+.rv-along-headtext{grid-column:1/3}
+.rv-along-head .rv-eyebrow{margin:0 0 2px;font-size:10px}
+.rv-along-show{margin:0;font-size:14px;font-weight:650;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rv-along-head .rv-close{grid-column:3;grid-row:1;width:40px;height:40px;font-size:22px}
+.rv-along-head h2{grid-column:1/-1;font-size:17px;line-height:1.3;margin:12px 0 0;outline:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rv-along-sub{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;column-gap:10px;font-size:12px;color:var(--ink-dim);margin:4px 0 0}
+.rv-along-more{display:inline-flex;align-items:center;gap:2px;background:none;border:0;padding:4px 0;min-height:28px;color:var(--accent-2);font:inherit;font-weight:650;cursor:pointer}
+.rv-along-more[hidden]{display:none}
+.rv-along-more svg{width:13px;height:13px;transition:transform .18s ease}
+.rv-along-more[aria-expanded=true] svg{transform:rotate(180deg)}
+.rv-along-more:hover span{text-decoration:underline}
+.rv-along-body{position:relative;flex:1;min-height:0;display:flex;flex-direction:column}
+.rv-along-about{position:absolute;z-index:2;top:0;left:12px;right:12px;max-height:min(60%,420px);overflow:auto;overscroll-behavior:contain;background:var(--surface-1);border:1px solid var(--outline-strong);border-radius:12px;box-shadow:0 12px 32px #0003;padding:14px 16px;font-size:14px;line-height:1.6;color:var(--ink-dim);white-space:pre-line}
+.rv-along-about[hidden]{display:none}
+.rv-along-about p{margin:0}.rv-along-about p+p{margin-top:10px}
+.rv-along-about-title{color:var(--ink);font-weight:650;font-size:15px;line-height:1.35}
+@media(max-width:699px){
+ .rv-along-head{padding:4px 16px 8px}.rv-along-art{width:40px;height:40px}.rv-along-head h2{font-size:16px;margin-top:8px}
+ .rv-along-about{left:8px;right:8px;max-height:70%}
+}
+@media(prefers-reduced-motion:reduce){.rv-along-more svg{transition:none}}
+
+/* Main page (step 4e): the Transcript / Songs button in the main player bar, and the
+   Transcript / Songs buttons in the show sheet. */
+.player-along{
+  flex:none; display:inline-flex; align-items:center; gap:6px; min-height:40px; padding:8px 14px;
+  border:1px solid var(--outline-strong); border-radius:999px; background:var(--surface-2); color:var(--ink);
+  font:600 .88rem/1 var(--font-body); cursor:pointer;
+}
+.player-along[hidden]{ display:none; }
+.player-along[aria-expanded="true"]{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink,#fff); }
+.player-along .rv-alongtoggle-icon{ display:inline-flex; }
+.player-along svg{ width:18px; height:18px; }
+@media(max-width:700px){
+  .player-along{ width:40px; height:40px; min-height:40px; padding:0; justify-content:center; }
+  .player-along .rv-alongtoggle-label{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+}
+.sheet-plugin-actions{ display:flex; flex-wrap:wrap; gap:.4rem; margin:.1rem 0 .1rem; }
+.sheet-along svg{ width:16px; height:16px; }
+
+/* Transcript / Songs switch at the top of the panel (moved from app.css). */
+.rv-along-switch{grid-column:1/-1;display:flex;gap:4px;margin:10px 0 2px;padding:3px;border:1px solid var(--outline);border-radius:22px;width:max-content;background:var(--surface-2)}
+.rv-along-switch[hidden]{display:none}
+.rv-along-switch button{border:0;background:transparent;color:var(--ink-dim);padding:6px 14px;min-height:36px;border-radius:18px;font-weight:600;font-size:13px}
+.rv-along-switch button[aria-pressed=true]{background:var(--surface-3);color:var(--ink);box-shadow:inset 0 0 0 1px var(--outline-strong)}
+
+/* Layer, LAST so it wins over the base .rv-along rule above (which says 9): on the main
+   page the panel must cover the sticky top bar (50) and search row (40) on phones, and stay
+   under every popup (150 and up). The player bar (80) is never covered: the panel ends above
+   it at --player-h. */
+.rv-along{z-index:90}
