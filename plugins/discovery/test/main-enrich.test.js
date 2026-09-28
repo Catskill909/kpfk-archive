@@ -28,10 +28,10 @@ test("never overwrites the station feed's own title or notes", () => {
   assert.equal(rows[0].qirEpisode.id, 'b', 'the transcript id is still attached');
 });
 
-test('pending episodes and unmatched rows are left alone', () => {
+test('pending episodes get no title or notes (only the pending mark); unmatched rows are left alone', () => {
   const rows = [{ id: '3', mp3: mp3('100000pending') }, { id: '4', mp3: mp3('110000other') }];
   assert.equal(enrich(rows, index(catalog)), 0);
-  assert.deepEqual(rows, [{ id: '3', mp3: mp3('100000pending') }, { id: '4', mp3: mp3('110000other') }]);
+  assert.deepEqual(rows, [{ id: '3', mp3: mp3('100000pending'), qirPending: { skipped: false } }, { id: '4', mp3: mp3('110000other') }]);
 });
 
 test('running it again adds nothing twice (the host re-runs it on refresh)', () => {
@@ -45,4 +45,16 @@ test('before the catalog arrives nothing changes', () => {
   const rows = [{ id: '1', mp3: mp3('080000dn') }];
   assert.equal(enrich(rows, null), 0);
   assert.deepEqual(rows, [{ id: '1', mp3: mp3('080000dn') }]);
+});
+
+test('an episode QIR has not processed is marked pending (or skipped), and unmarked once processed', () => {
+  const rows = [{ id: '3', mp3: mp3('100000pending') }];
+  const cat = { episodes: [...catalog.episodes, { mp3_url: mp3('110000skip'), pending: true, skipped: true }] };
+  enrich(rows, index(cat));
+  assert.deepEqual(rows[0].qirPending, { skipped: false });
+  const skipped = [{ id: '5', mp3: mp3('110000skip') }]; enrich(skipped, index(cat));
+  assert.deepEqual(skipped[0].qirPending, { skipped: true });
+  const later = index({ episodes: [{ public_id: 'z', mp3_url: mp3('100000pending'), headline: 'Now processed', summary: 'S' }] });
+  enrich(rows, later);
+  assert.equal(rows[0].qirPending, undefined); assert.equal(rows[0].published[0].topic, 'Now processed');
 });

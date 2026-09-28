@@ -4530,7 +4530,14 @@
     var selTopic = window.ArchiveSearch.episodeTitle(r);
     var selNotes = r.episodeDesc || '';
     var selExtra = pluginSheetActions(r);
+    // No headline or summary: say why, so no popup looks empty (Paul, 2026-09-28). QIR has
+    // not reached it yet (Discovery), QIR skipped it, or the feed simply has no notes.
+    var selEmpty = !selTopic && !selNotes && (selExtra || r.qirPending)
+      ? (r.qirPending ? (r.qirPending.skipped ? 'No summary or transcript for this episode.' : 'Summary and transcript coming soon — usually within a few hours of the broadcast.')
+        : 'No episode notes for this broadcast.')
+      : '';
     var episodeBlock =
+      (selEmpty ? '<p class="sheet-selected-empty">'+esc(selEmpty)+'</p>' : '')+
       (selTopic ? '<p class="sheet-selected-topic">'+esc(selTopic)+'</p>' : '')+
       (selExtra ? '<div class="sheet-plugin-actions">'+selExtra+'</div>' : '')+
       (selNotes ? '<div class="sheet-selected-notes"><p class="sheet-selected-summary">'+esc(selNotes)+'</p>'+

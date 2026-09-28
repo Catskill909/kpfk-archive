@@ -17,6 +17,10 @@
   function index(catalog){
     var byMp3 = new Map();
     (catalog && catalog.episodes || []).forEach(function(e){ if(e && e.mp3_url && !e.pending) byMp3.set(e.mp3_url, e); });
+    // Recent station episodes QIR has not processed yet (lib/qir/pending.js): the popup says
+    // "coming soon", or, when QIR skipped it, that there will be none.
+    byMp3.pending = new Map();
+    (catalog && catalog.episodes || []).forEach(function(e){ if(e && e.mp3_url && e.pending) byMp3.pending.set(e.mp3_url, {skipped: !!e.skipped}); });
     return byMp3;
   }
   function hasTopic(row){
@@ -28,7 +32,9 @@
     var n = 0;
     rows.forEach(function(row){
       var q = byMp3.get(row.mp3);
-      if(!q) return;
+      var waiting = byMp3.pending && byMp3.pending.get(row.mp3);
+      if(!q){ if(waiting) row.qirPending = waiting; else delete row.qirPending; return; }
+      delete row.qirPending;
       // Not row.qir: on Discovery's own page that marks a QIR row whose dt is station clock
       // time (just-aired.js reads it). Main-page rows keep real Unix times.
       row.qirEpisode = {id: q.public_id, headline: q.headline || '', summary: q.summary || ''};
