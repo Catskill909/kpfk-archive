@@ -1488,8 +1488,60 @@
       readme.addEventListener('click', function () { download('readme'); });
     })();
 
+    // ---- feed anomalies (2026-09-27): what the feed rules hid, corrected, held or skipped.
+    var ANOMALY_KINDS = [
+      ['failed', 'Failed recording'], ['duration', 'Duration corrected'], ['held', 'Held until air'],
+      ['skipped', 'Record left out'], ['type', 'Show type corrected'], ['schedule', 'Schedule entry left out'],
+    ];
+    var anomalyText = '';
+    function anomalyDate(sec, tz, kind) {
+      if (!sec) return '—';
+      var opts = kind === 'schedule' ? { timeZone: tz, weekday: 'short', month: 'short', day: 'numeric' }
+        : { timeZone: tz, weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+      return new Intl.DateTimeFormat('en-US', opts).format(sec * 1000);
+    }
+    function renderAnomalies(a) {
+      var label = {}; ANOMALY_KINDS.forEach(function (k) { label[k[0]] = k[1]; });
+      var order = {}; ANOMALY_KINDS.forEach(function (k, i) { order[k[0]] = i; });
+      var items = (a.items || []).slice().sort(function (x, y) {
+        return (order[x.kind] - order[y.kind]) || ((y.date || 0) - (x.date || 0));
+      });
+      var counts = document.getElementById('anomalyCounts'); counts.textContent = '';
+      ANOMALY_KINDS.forEach(function (k) {
+        var n = (a.counts || {})[k[0]] || 0;
+        var chip = el('span', 'anomaly-chip' + (n ? ' has-items' : ''), k[1] + ': ' + n);
+        counts.appendChild(chip);
+      });
+      if (a.audioChecked !== null && a.audioChecked !== undefined) counts.appendChild(el('span', 'anomaly-chip', 'Audio files checked: ' + num(a.audioChecked)));
+      var body = document.getElementById('anomalyRows'); body.textContent = '';
+      var lines = [];
+      items.forEach(function (i) {
+        var tr = el('tr');
+        var when = anomalyDate(i.date, a.timezone, i.kind);
+        [label[i.kind] || i.kind, i.show, when, i.detail].forEach(function (v) { tr.appendChild(el('td', null, v)); });
+        body.appendChild(tr);
+        lines.push('- ' + (label[i.kind] || i.kind) + ': ' + i.show + (when !== '—' ? ' (' + when + ')' : '') + ' — ' + i.detail);
+      });
+      document.getElementById('anomalyTable').hidden = !items.length;
+      document.getElementById('anomalyEmpty').hidden = !!items.length;
+      anomalyText = 'Feed anomalies, ' + new Date(a.generatedAt || Date.now()).toLocaleString() + '\n' + (lines.join('\n') || '(none)');
+    }
+    function loadAnomalies() {
+      fetch('/api/studio/anomalies', { headers: { 'Accept': 'application/json' } })
+        .then(function (res) { return res.ok ? res.json() : null; })
+        .then(function (a) { if (a) renderAnomalies(a); })
+        .catch(function () { /* the next 30 s poll retries; the section keeps its last list */ });
+    }
+    document.getElementById('anomalyCopy').addEventListener('click', function () {
+      var said = document.getElementById('anomalyCopied');
+      navigator.clipboard.writeText(anomalyText).then(function () { said.textContent = 'Copied.'; },
+        function () { said.textContent = 'Could not copy — select the table instead.'; });
+      setTimeout(function () { said.textContent = ''; }, 4000);
+    });
+
     function load() {
       loadUsage();
+      loadAnomalies();
 
       fetch('/api/studio/health', { headers: { 'Accept': 'application/json' } })
         .then(function (res) {

@@ -8,6 +8,11 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 
 ## 2026-09-26 — off-schedule programs; QIR stalled; three apps, one feed
 
+**27 Sept:** schedule/channels skip one bad entry (`a2327d6`); **studio "Feed anomalies"**
+section (`/api/studio/anomalies`, `anomalies()` in `lib/pacifica/service.js`): 15 items on the
+live feed today (3 failed recordings, 4 durations, 1 held, 7 show types), "Copy as text".
+`npm test` 94/94; checked in Chrome at 1280 px, no errors.
+
 **Evening: QIR outage resolved by Ace; all of the below is live** (Paul redeployed `032702b`).
 Vision and rules: [docs/APP-FAMILY.md](docs/APP-FAMILY.md) — QIR is Ace's service; Discovery is
 the plugin; this app works on the Pacifica feed alone and shows Discovery where it is switched on.

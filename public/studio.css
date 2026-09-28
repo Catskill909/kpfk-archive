@@ -1310,3 +1310,10 @@ th[aria-sort] .th-sort::after {
 }
 th[aria-sort="descending"] .th-sort::after { content: "\25BC"; }   /* ▼ */
 th[aria-sort="ascending"] .th-sort::after { content: "\25B2"; }    /* ▲ */
+
+/* Feed anomalies (2026-09-27) */
+.anomaly-counts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.anomaly-chip{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--outline);color:var(--ink-dim)}
+.anomaly-chip.has-items{color:var(--ink);border-color:var(--accent-2);font-weight:600}
+.anomaly-copied{font-size:12px;margin-left:8px;color:var(--ink-dim)}
+.anomaly-empty{font-size:14px;color:var(--ink-dim)}

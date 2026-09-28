@@ -91,6 +91,18 @@ test('listener view: a failed recording is hidden, a wrong duration corrected, b
   assert.deepEqual(view.filter.durationCorrected.find(c => c.id === wrongId), { id: wrongId, show: wrong.altid, dt: wrong.airDate, feed: wrong.durationSec, file: wrong.durationSec + 1800 });
   assert.ok(view.filter.durationCorrected.every(c => Math.abs(c.file - c.feed) > 60), 'only real disagreements are corrected');
   assert.notEqual(view.revision, before.revision);
+  // The studio's anomaly report lists every recorded item, by show name (2026-09-27).
+  const report = service.anomalies();
+  const names = new Map(Object.entries(view.directory).map(([k, v]) => [k, v.name]));
+  const failedItem = report.items.find(i => i.kind === 'failed');
+  assert.equal(failedItem.show, names.get(`kpfk.2kpfk.${failed.altid}`)); assert.equal(failedItem.date, failed.airDate);
+  assert.match(failedItem.detail, /hidden/);
+  const durItem = report.items.find(i => i.kind === 'duration' && i.show === names.get(`kpfk.2kpfk.${wrong.altid}`) && i.date === wrong.airDate);
+  assert.ok(durItem, 'the corrected duration is listed'); assert.match(durItem.detail, /file length used/);
+  assert.equal(report.counts.failed, 1);
+  assert.equal(report.counts.held, view.filter.heldUntilAir.length, 'held items listed');
+  assert.ok(report.items.filter(i => i.kind === 'type').every(i => / corrected to Talk/.test(i.detail)), 'show-type corrections listed');
+  assert.equal(report.items.length, Object.values(report.counts).reduce((x, y) => x + y, 0));
   // Checked once, ever: a restart reads the saved results instead of the files.
   let reads = 0;
   const again = createService({ profile, dataDir, writeJsonAtomic: write, now: () => 1789435100000, fetchImpl: async (url, opts) => {

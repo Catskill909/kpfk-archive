@@ -82,7 +82,8 @@ Stations have outages, recordings fail, records get mistyped. Every known proble
 rule, applied **once, in kpfk-archive** (which reads the Pacifica feed for all three apps:
 its `/api/archive` feeds the Flutter app and Discovery), or in Discovery for QIR. Each rule
 **corrects** what is knowable, **holds back** what would mislead, and **records** it
-(`/healthz` → `pacifica.catalog.skipped`, `archiveFilter.*`; server log) for an anomaly report.
+(`/healthz` → `pacifica.catalog.skipped`, `archiveFilter.*`; server log), and lists it in the
+studio's **Feed anomalies** section.
 
 | Problem | Rule | Where | Recorded as |
 |---|---|---|---|
@@ -153,6 +154,8 @@ pending" after 48 h. Otis was sent two FYIs the same day (cc Ace); no action nee
   `qirPending.behindHours` and a log warning from 6 h.
 - Otis: sent two FYIs; **no action needed from him.**
 
-**Open — idea, not started** (ask Paul first):
-- **Anomaly report page** (studio): the recorded lists (skipped, failed, corrected, held) in
-  one place to review or send on. Today they are on `/healthz` and in the server log.
+- (27 Sept) **Feed anomalies** section in the podcast site's studio (`/studio`): everything the
+  feed rules hid, corrected, held or skipped, by show name and air date, with counts and a
+  "Copy as text" button for sending on. API `/api/studio/anomalies` (studio login).
+
+**Open:** nothing from this incident. Next: styling, UI/UX and integration of the three apps.

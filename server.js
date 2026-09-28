@@ -3808,6 +3808,9 @@ function studioApi(req, res, pathOnly) {
     }
     return sendStudioJson(res, showHistory(slug));
   }
+  if (pathOnly === '/api/studio/anomalies') {
+    return sendStudioJson(res, pacifica ? pacifica.anomalies() : { items: [], counts: {}, unsupported: true });
+  }
   if (pathOnly === '/api/studio/health') {
     return sendStudioJson(res, {
       station: STATION_ID,

@@ -275,6 +275,36 @@
     </div>
   </section>
 
+  <section class="studio-section studio-section--wide" id="anomalySection">
+    <h2 class="studio-h2">Feed anomalies
+      <span class="info-wrap">
+        <button class="info-btn" type="button" aria-label="About this section" aria-describedby="anomalyNote">i</button>
+        <p class="info-pop" id="anomalyNote" role="tooltip">
+          What the feed rules caught in Pacifica's data right now: recordings hidden because
+          they failed, durations corrected from the audio file itself, pre-uploads held until
+          they air, records left out because they were malformed, show types corrected, and
+          schedule or channel entries left out. Listeners never see the problems; this list is
+          for review, or to send to a station. docs/APP-FAMILY.md has the rules.
+        </p>
+      </span>
+    </h2>
+    <div class="anomaly-counts" id="anomalyCounts"></div>
+    <div class="table-tools">
+      <button class="studio-btn studio-btn--quiet" id="anomalyCopy" type="button"
+              title="Copy the list as plain text, e.g. to paste into an email">
+        Copy as text
+      </button>
+      <span class="anomaly-copied" id="anomalyCopied" role="status" aria-live="polite"></span>
+    </div>
+    <div class="table-wrap">
+      <table class="studio-table" id="anomalyTable">
+        <thead><tr><th scope="col">What</th><th scope="col">Show</th><th scope="col">Air date</th><th scope="col">Detail</th></tr></thead>
+        <tbody id="anomalyRows"></tbody>
+      </table>
+    </div>
+    <p class="anomaly-empty" id="anomalyEmpty" hidden>Nothing to report: every show, episode and schedule entry came through clean.</p>
+  </section>
+
   <section class="studio-section">
     <h2 class="studio-h2">Actions
       <span class="info-wrap">
