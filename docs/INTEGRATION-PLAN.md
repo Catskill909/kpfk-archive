@@ -47,7 +47,10 @@ add admin, stats and backup after the screens settle.
 
 **Progress (2026-09-28):** ✅ 1a profile settings · ✅ 1b server module `plugins/discovery/` ·
 ✅ 1c page at `/discover` · ✅ 1d tests in `npm test` (plugin tests in `plugins/discovery/test/`,
-switched-off test in `test/pacifica/http.test.js`) · ⬜ 1e local check with Discovery on.
+switched-off test in `test/pacifica/http.test.js`) · ✅ 1e local check with Discovery on (real
+QIR and feed, port 8091): page and all its files load; catalog matches live Discovery (3,059
+episodes, same holds, same music window, all 120 show pictures identical); transcripts, song
+lists, Just aired refresh and `/healthz` work. Not yet looked at in a browser.
 The old 24 Sept copy (`public/review.*`, `lib/qir/service.js`) is removed. Discovery's own
 sign-in page is retired; until step 5 its QIR switch is set in the settings file on the volume
 (`discovery/settings.json`, default on) and Discovery itself by `plugins.discovery` in the profile.
