@@ -18,9 +18,13 @@
 .rv-along-only{font-size:12px;color:var(--ink-dim);display:flex;align-items:center;gap:6px;min-height:36px}
 .rv-along-note{font-size:12px;color:var(--ink-dim);margin:4px 10px 10px;line-height:1.5}.rv-along-find{border-bottom:1px solid var(--outline)}.rv-along-only[hidden]{display:none}
 .rv-along-list{position:relative;flex:1;overflow:auto;overscroll-behavior:contain;padding:8px 10px 60px;outline:none}
-.rv-along-line{display:grid;grid-template-columns:56px 1fr;gap:10px;width:100%;text-align:left;background:none;border:0;border-radius:10px;padding:9px 10px;color:var(--ink-dim);font-size:15px;line-height:1.55;cursor:pointer}
+.rv-along-line{display:grid;grid-template-columns:var(--along-time-w,36px) 1fr;gap:8px;width:100%;text-align:left;background:none;border:0;border-radius:10px;padding:9px 10px;color:var(--ink-dim);font-size:15px;line-height:1.55;cursor:pointer}
 .rv-along-line:hover{background:var(--surface-2);color:var(--ink)}
-.rv-along-time{font-size:12px;font-variant-numeric:tabular-nums;color:var(--accent-2);padding-top:3px}
+/* Time column sized to the episode (Paul, 2026-09-28: a fixed 56px left a wide gap before the
+   text). Fits "59:59"; episodes with an hour mark ("1:02:03") get .has-hours from along.js. Right-aligned, so
+   the time always sits 8px from its text whatever the column width. */
+.rv-along-list.has-hours{--along-time-w:48px}
+.rv-along-time{white-space:nowrap;text-align:right;font-size:12px;font-variant-numeric:tabular-nums;color:var(--accent-2);padding-top:3px}
 .rv-along-text{min-width:0;overflow-wrap:anywhere}.rv-along-line.song .rv-along-text{color:var(--ink);font-weight:600}.rv-along-artist{display:block;font-weight:400;font-size:13px;color:var(--ink-dim)}
 .rv-along-line.is-now{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--ink)}.rv-along-line.is-now .rv-along-time{color:var(--accent)}
 .rv-along-line.is-match{box-shadow:inset 0 0 0 2px var(--accent-2)}
@@ -32,7 +36,7 @@
  .rv-along.full{height:calc(100dvh - var(--player-h) - 12px)}.rv-along.dragging{transition:none}
  .rv-along-handle{display:flex;justify-content:center;padding:10px 0 4px;touch-action:none;cursor:grab}.rv-along-handle span{width:40px;height:5px;border-radius:3px;background:var(--outline-strong)}
  .rv-along-find{padding:0 16px 8px}.rv-along-find input[type=search]{flex-basis:120px}
- .rv-along-line{grid-template-columns:48px 1fr;font-size:16px}
+ .rv-along-line{font-size:16px}
 }
 @media(prefers-reduced-motion:reduce){.rv-along,.rv-along-list{transition:none!important;scroll-behavior:auto}}
 

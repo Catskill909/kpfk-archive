@@ -222,6 +222,7 @@
     try {
       const data = await loadData(row, kind); if(token !== loadToken) return;
       lines = data.lines; plainText = data.text;
+      list.classList.toggle('has-hours', lines.some(l => l.start >= 3600));
       if(data.lang) list.lang = data.lang; else list.removeAttribute('lang');
       if(!lines.length && !plainText) { list.innerHTML = `<p class="rv-along-empty">${kind === 'songs' ? 'No songs were logged for this episode — it is probably all talk.' : 'This transcript is empty.'}</p>`; return; }
       paintLines(); if(query) stepMatch(0); else scrollToNow(false);
