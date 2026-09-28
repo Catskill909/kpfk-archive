@@ -466,7 +466,8 @@
           b.addEventListener('click', function () {
             // These are cheap and idempotent, but "re-check every feed" reaches
             // out to WBAI 122 times — worth one deliberate keystroke.
-            if (!window.confirm(a.label + '?\n\nThis refreshes our cache from Pacifica.')) return;
+            window.StudioDialog.confirm({ title: a.label + '?', message: 'This refreshes our cache from Pacifica.', confirmLabel: a.label }).then(function (ok) {
+            if (!ok) return;
             var result = document.getElementById('actionResult');
             b.disabled = true;
             var was = b.textContent;
@@ -493,6 +494,7 @@
             }).then(function () {
               b.disabled = false;
               b.textContent = was;
+            });
             });
           });
           actionsBox.appendChild(b);

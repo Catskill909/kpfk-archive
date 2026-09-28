@@ -69,8 +69,14 @@
      appears only where the station may have the plugin (studio-discovery.js shows it). -->
 <nav class="studio-tabs" id="studioTabs" aria-label="Studio sections">
   <div class="studio-tabs-inner">
-    <button class="studio-tab" type="button" data-studio-tab="stats" aria-pressed="true">Stats</button>
-    <button class="studio-tab" type="button" data-studio-tab="discovery" aria-pressed="false" hidden>Discovery</button>
+    <button class="studio-tab" type="button" data-studio-tab="stats" aria-pressed="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Stats &amp; archive
+    </button>
+    <button class="studio-tab" type="button" data-studio-tab="discovery" aria-pressed="false" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3M8 11h6M11 8v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Discovery &amp; settings
+    </button>
   </div>
 </nav>
 
@@ -673,6 +679,7 @@
      without hovering: in the direct labels and in the table above. -->
 <div class="chart-tip" id="chartTip" role="presentation" aria-hidden="true" hidden></div>
 
+<script src="/studio-dialog.js"></script>
 <script src="/studio.js"></script>
 <script src="/studio-discovery.js" defer></script>
 </body>

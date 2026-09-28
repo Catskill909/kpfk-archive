@@ -40,7 +40,7 @@
     state = d;
     var q = d.qir || {}, st = q.status || {}, p = d.pending || {};
     paintSwitch($('discEnabled'), d.enabled, false);
-    $('discEnabledStatus').textContent = (d.enabled ? 'On for listeners' : 'Off — listeners see the site without Discovery') +
+    $('discEnabledStatus').textContent = (d.enabled ? 'On for listeners (open pages show it after a reload)' : 'Off — listeners see the site without Discovery') +
       (d.updatedAt ? ' · changed ' + when(d.updatedAt) : '') + (d.persisted ? '' : ' · not saved (no data volume)');
     paintSwitch($('discQir'), q.enabled, !q.supported);
     var parts = [];
@@ -55,7 +55,8 @@
         not_configured: 'No QIR key configured on the server', disabled: 'Not available for this station' };
       parts.push(words[st.state] || ('Status: ' + (st.state || 'unknown')));
       if (st.episodes != null) parts.push(Number(st.episodes).toLocaleString() + ' episodes loaded');
-      if (st.skipped) parts.push(st.skipped + ' skipped (bad data)');
+      var skipped = st.skipped && typeof st.skipped === 'object' ? st.skipped.count : st.skipped;
+      if (skipped) parts.push(skipped + ' skipped (bad data)');
       if (st.lastSuccess) parts.push('updated ' + when(st.lastSuccess));
       if (p.count) parts.push(p.count + ' recent episode' + (p.count === 1 ? '' : 's') + ' waiting for QIR' + (p.behindHours ? ' (' + p.behindHours + ' h behind)' : ''));
       if (st.error) parts.push('Last error: ' + st.error);
@@ -82,9 +83,12 @@
       })
       .catch(function (e) { $('discError').textContent = 'Could not load Discovery settings: ' + e.message; });
   }
-  function change(body, label) {
+  function change(body, label, confirmLabel) {
     if (busy) return;
-    if (!window.confirm(label + '?\n\nThis changes the listener site right away.')) return;
+    window.StudioDialog.confirm({ title: label + '?', message: 'This changes the listener site right away. Pages already open show the change after a reload.', confirmLabel: confirmLabel })
+      .then(function (ok) { if (ok) apply(body); });
+  }
+  function apply(body) {
     busy = true; $('discError').textContent = '';
     paint(state);
     withCsrf().then(function (token) {
@@ -96,11 +100,11 @@
   }
   $('discEnabled').addEventListener('click', function () {
     var on = !(state && state.enabled);
-    change({ enabled: on }, on ? 'Switch Discovery ON for listeners' : 'Switch Discovery OFF for listeners');
+    change({ enabled: on }, on ? 'Switch Discovery on for listeners' : 'Switch Discovery off for listeners', on ? 'Switch on' : 'Switch off');
   });
   $('discQir').addEventListener('click', function () {
     var on = !(state && state.qir && state.qir.enabled);
-    change({ qir: on }, on ? 'Switch QIR transcripts & summaries ON' : 'Switch QIR transcripts & summaries OFF');
+    change({ qir: on }, on ? 'Switch QIR transcripts & summaries on' : 'Switch QIR transcripts & summaries off', on ? 'Switch on' : 'Switch off');
   });
 
   // Show the Discovery tab only where the station may have it; open it from #discovery.
