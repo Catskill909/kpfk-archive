@@ -3907,10 +3907,6 @@
      the round button plays it (the same .play-btn as the listing). */
   .just-aired{ max-width:1180px; margin:0 auto 1.4rem; padding:0 1.6rem; }
   .just-aired[hidden]{ display:none; }
-  .just-aired-title{
-    margin:0 0 .7rem; font-family:var(--font-display); font-size:1.05rem; font-weight:800;
-    letter-spacing:.01em; color:var(--ink);
-  }
   /* Discovery's layout (Paul, 2026-09-28): three roomy cards, title first. */
   .just-aired-list{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:1rem; }
   .ja-item{
@@ -3926,6 +3922,10 @@
     min-width:0; display:flex; flex-direction:column; gap:.4rem; padding:.1rem 0 0; border:0;
     background:none; color:var(--ink); font-family:inherit; text-align:left; cursor:pointer;
   }
+  /* The show name on its own bold line in the accent colour, so it reads as the show
+     under the headline (Paul, 2026-09-28). */
+  .ja-show{ font-size:.9rem; font-weight:700; color:var(--accent-2); line-height:1.3;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .ja-topic{ font-size:1rem; font-weight:500; line-height:1.35;
     display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
   .ja-when{ font-size:.8rem; line-height:1.45; color:var(--ink-dim); }
@@ -3960,4 +3960,47 @@
     .card-meta-eyebrow, .card-meta-title, .card-meta-host{ max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     @media (hover:hover) and (pointer:fine){ .card-meta:hover .card-meta-title{ color:var(--accent-2); } }
     .card-meta:focus-visible{ outline:2px solid var(--accent-2); outline-offset:3px; border-radius:6px; }
+  }
+
+  /* ================= BROWSE TABS and SECTION HEADINGS =================
+     From Discovery (Paul, 2026-09-28): All / Shows / Episodes tabs take the tally's
+     place (the tally stays for screen readers, and shows in search results); large
+     "Just aired" and "Explore shows" headings. The list/gallery switch is replaced
+     by the tabs (app.js applyBrowse). */
+  #viewToggle{ display:none !important; }
+  .browse-tabs{ display:flex; gap:.35rem; }
+  body.is-searching .browse-tabs{ display:none; }
+  .browse-tab{
+    min-height:42px; padding:.5rem 1.15rem; border:1px solid transparent; border-radius:999px;
+    background:none; color:var(--ink-dim); font:600 1rem/1 var(--font-body); cursor:pointer;
+  }
+  .browse-tab[aria-pressed="true"]{ background:var(--surface-3); border-color:var(--outline-strong); color:var(--ink); }
+  @media (hover:hover) and (pointer:fine){ .browse-tab:hover{ color:var(--ink); } }
+  .browse-tab:focus-visible{ outline:2px solid var(--accent-2); outline-offset:2px; }
+  body:not(.is-searching) .result-count.is-count{
+    position:absolute; width:1px; height:1px; margin:-1px; padding:0;
+    overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0;
+  }
+  .section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin:0 0 1rem; }
+  .section-title{
+    margin:0; font-family:var(--font-display); font-size:clamp(1.4rem, 2.4vw, 1.9rem); font-weight:800;
+    letter-spacing:-.02em; line-height:1.15; color:var(--ink);
+  }
+  .section-link{ padding:0; border:0; background:none; color:var(--accent-2); font:600 1rem/1.2 var(--font-body); cursor:pointer; }
+  @media (hover:hover) and (pointer:fine){ .section-link:hover{ text-decoration:underline; } }
+  .section-count{ font-size:.9rem; color:var(--ink-dim); }
+  .listing-head{ max-width:1180px; margin:0 auto 1rem; }
+  body.is-searching .listing-head{ display:none; }
+  .just-aired{ margin-bottom:2.2rem; }
+  @media (max-width:560px){
+    .browse-tab{ min-height:38px; padding:.45rem .9rem; font-size:.95rem; }
+    .section-head{ margin-bottom:.75rem; }
+  }
+  /* Just aired lines up with the listing below it at every width (same column, same gutter). */
+  .just-aired{ padding:0 var(--page-gutter); }
+  /* Phones: "Latest episode · 3h ago" took a whole line between the tabs and Just aired,
+     which shows the newest episodes itself. It waits for search results, where the
+     row is shared with the result count (Paul, 2026-09-28: push content up). */
+  @media (max-width:560px){
+    body:not(.is-searching) .result-meta .clock-btn{ display:none; }
   }

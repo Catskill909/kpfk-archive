@@ -205,6 +205,15 @@
 
     <div class="controls">
       <div class="result-meta">
+        <!-- Browse tabs (Paul, 2026-09-28, from Discovery): All = Just aired + shows,
+           Shows = the show grid, Episodes = every episode newest first. They take the
+           tally's place to push content up; the tally stays for screen readers and
+           shows in search results. Search keeps its own tabs. -->
+        <div class="browse-tabs" id="browseTabs" role="group" aria-label="Browse">
+          <button class="browse-tab" type="button" data-browse="all" aria-pressed="true">All</button>
+          <button class="browse-tab" type="button" data-browse="shows" aria-pressed="false">Shows</button>
+          <button class="browse-tab" type="button" data-browse="episodes" aria-pressed="false">Episodes</button>
+        </div>
         <span class="result-count" id="resultCount" role="status" aria-live="polite"></span>
         <div class="result-meta-right">
           <!-- Two phrasings of the same fact, one rendered per breakpoint by CSS
@@ -268,11 +277,18 @@
     <!-- Just aired: the newest programmes that have actually aired (public/just-aired.js has
        the rules). Painted by app.js renderJustAired(); hidden while searching. -->
     <section class="just-aired" id="justAired" aria-labelledby="justAiredTitle" hidden>
-      <h2 class="just-aired-title" id="justAiredTitle">Just aired</h2>
+      <div class="section-head">
+        <h2 class="section-title" id="justAiredTitle">Just aired</h2>
+        <button class="section-link" type="button" data-browse="episodes">Latest episodes</button>
+      </div>
       <div class="just-aired-list" id="justAiredList"></div>
     </section>
     <section id="searchResults" class="archive-search" aria-label="Search results" hidden></section>
     <section class="listing" id="listing">
+      <div class="section-head listing-head">
+        <h2 class="section-title" id="listingTitle">Explore shows</h2>
+        <span class="section-count" id="listingCount"></span>
+      </div>
       <div class="grid" id="grid">
         <div class="row head" role="row">
           <span role="columnheader"><button class="sortbtn" data-sort="title" data-active="true">Show <svg

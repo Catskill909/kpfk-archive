@@ -117,7 +117,12 @@ on. Sub-steps:
   items carry QIR headlines. Tap opens the show on that episode; the button plays it.
   Layout (Paul, 2026-09-28): Discovery's — three roomy cards, the episode title first, then
   "show · date · time · length".
-- ⬜ 4c All / Shows / Episodes tabs outside search too (browsing)
+- ✅ **4c All / Shows / Episodes tabs** (Paul, 2026-09-28) — in the tally's place under the search
+  box: All = Just aired + show grid, Shows = the grid, Episodes = every episode newest first
+  (`?tab=` in the address). They replace the list/gallery switch. Large "Just aired" (with a
+  "Latest episodes" link) and "Explore shows" / "All episodes" headings with counts. Just aired
+  cards: headline, then the show name bold in the accent colour, then date · time · length.
+  Phones drop the "Latest episode" line to push content up.
 - ✅ **4d Show card layout** — desktop: clean image, then category, show name, host and "Latest ·
   date" underneath (Discovery's cards), outside the light-mode mat so it frames only the image.
   Phones keep the title on the artwork, so more shows fit on screen. Search box, dropdowns and

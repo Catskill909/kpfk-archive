@@ -99,6 +99,7 @@
     if(state.query) q.push('q=' + encodeURIComponent(state.query));
     if(state.query && searchScope !== 'all') q.push('scope=' + searchScope);
     if(state.query && searchShow) q.push('match=' + encodeURIComponent(searchShow));
+    if(!state.query && state.browse && state.browse !== 'all') q.push('tab=' + state.browse);
     // An open popup is addressed by its permanent link (public/links.js), so the address
     // bar is always something that can be copied into a post or a web page.
     var open = sheetId && rowById(sheetId);
@@ -448,6 +449,37 @@
   });
   applyView();
 
+  // ---- Browse tabs: All / Shows / Episodes (Paul, 2026-09-28) ----
+  // They drive the layout: All and Shows are the show grid (All adds Just aired above
+  // it), Episodes is the episode list, newest first. They replace the list/gallery
+  // switch, which stays in the page (hidden) because its state is still the layout.
+  var browseTabs = document.getElementById('browseTabs');
+  var tabParam = param('tab');
+  state.browse = (tabParam === 'shows' || tabParam === 'episodes') ? tabParam : 'all';
+  function applyBrowse(){
+    state.view = state.browse === 'episodes' ? 'list' : 'grid';
+    applyView();
+    browseTabs.querySelectorAll('.browse-tab').forEach(function(b){
+      b.setAttribute('aria-pressed', b.dataset.browse === state.browse);
+    });
+  }
+  function setBrowse(tab){
+    if(tab === state.browse) return;
+    state.browse = tab;
+    // An A–Z list of every episode is not a useful default: Episodes opens newest first.
+    // The Sort menu can still change it.
+    if(tab === 'episodes'){ state.sortKey = 'date'; state.sortDir = 'desc'; renderSortTrigger(); }
+    applyBrowse();
+    render();
+    resetListScroll();
+    syncUrl();
+  }
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('[data-browse]');
+    if(t) setBrowse(t.dataset.browse);
+  });
+  applyBrowse();
+
   var rowsEl = document.getElementById('rows');
   var emptyEl = document.getElementById('emptyState');
   var loadingEl = document.getElementById('loadingState');
@@ -584,7 +616,7 @@
   var justAiredList = document.getElementById('justAiredList');
   function renderJustAired(){
     if(!justAiredEl) return;
-    var list = state.query ? [] : rows.filter(function(r){ return state.cat === 'all' || r.cat === state.cat; })
+    var list = (state.query || state.browse !== 'all') ? [] : rows.filter(function(r){ return state.cat === 'all' || r.cat === state.cat; })
       .sort(function(a, b){ return b.dt - a.dt; });
     var picks = list.length ? window.JustAired.pick(list, {timeZone: STATION.timezone, limit: 3}) : [];
     justAiredEl.hidden = !picks.length;
@@ -600,12 +632,14 @@
       var topic = window.ArchiveSearch.episodeTitle(r);
       var when = splitDateText(r.dateText);
       var mins = r.durationSec ? Math.round(r.durationSec / 60) + ' min' : '';
-      var details = [topic ? r.title : c.label, stationDate(new Date(r.dt * 1000)), when.time, mins].filter(Boolean).join(' · ');
+      // The show name gets its own bold line under the headline (Paul, 2026-09-28).
+      var details = [topic ? '' : c.label, stationDate(new Date(r.dt * 1000)), when.time, mins].filter(Boolean).join(' · ');
       return '<article class="ja-item">'+
         '<button class="ja-art show-open" type="button" data-id="'+esc(r.id)+'" tabindex="-1" aria-hidden="true">'+
           (photo ? '<img loading="lazy" alt="" src="'+esc(photo)+'">' : '')+'</button>'+
         '<button class="ja-text show-open" type="button" data-id="'+esc(r.id)+'" aria-label="More about '+esc(topic || r.title)+'">'+
           '<span class="ja-topic">'+esc(topic || r.title)+'</span>'+
+          (topic ? '<span class="ja-show">'+esc(r.title)+'</span>' : '')+
           '<span class="ja-when">'+esc(details)+'</span>'+
         '</button>'+
         '<button class="play-btn ja-play'+(isPlaying?' playing':'')+(isLoading?' loading':'')+'" '+playAttrs(r, subLine, photo, isLoading, isPlaying)+'>'+glyph(isLoading, isPlaying)+'</button>'+
@@ -613,9 +647,12 @@
     }).join('');
   }
 
+  var listingTitle = document.getElementById('listingTitle');
+  var listingCount = document.getElementById('listingCount');
   function render(){
     renderJustAired();
     var searching = !!state.query;
+    document.body.classList.toggle('is-searching', searching);
     searchResultsEl.hidden = !searching;
     document.getElementById('listing').hidden = searching;
     document.getElementById('viewToggle').hidden = searching;
@@ -645,6 +682,10 @@
     });
 
     loadingEl.hidden = true;
+    if(listingTitle){
+      listingTitle.textContent = state.view === 'grid' ? 'Explore shows' : 'All episodes';
+      listingCount.textContent = list.length + (state.view === 'grid' ? (list.length === 1 ? ' show' : ' shows') : (list.length === 1 ? ' episode' : ' episodes'));
+    }
     setCount(state.view==='grid'
       ? list.length + (list.length===1 ? ' show':' shows') + ' · ' + episodeCount + (episodeCount===1 ? ' episode':' episodes')
       : list.length + (list.length===1 ? ' episode':' episodes') + ' found', true);
