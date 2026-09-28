@@ -1,0 +1,108 @@
+# Design system — one look for the main side and the Discovery plugin
+
+Started 2026-09-28, integration step 2 ([INTEGRATION-PLAN.md](INTEGRATION-PLAN.md)).
+Every rule here applies to both sides of the app (main site `/` and Discovery `/discover`).
+
+## Where the styles live
+
+- **`public/styles.css`** — the one stylesheet: colours, type, spacing, buttons, popups,
+  player. Both sides load it (Discovery via `/discover/styles.css`, same file).
+- **`plugins/discovery/public/app.css`** — only what Discovery alone has (its `rv-*` classes).
+  Shrinks as Discovery's sections move onto the main components (step 4).
+- Until 2026-09-28 Discovery shipped `base.css`, an older copy of `styles.css` (every line was
+  also in it). Removed in step 2a.
+
+## Rule 1 — the player bar is always visible and usable (Paul, 2026-09-28)
+
+While something is playing, the bottom player bar stays on screen and clickable on every page,
+sheet and popup. Popups open **above** it and their dark overlay stops at its top edge. No
+popup carries its own copy of the player. Every popup has a clear way back (close, or Back
+for an inner page) and survives play, pause and changing episodes.
+
+## Rule 2 — popups use their width (Paul, 2026-09-28)
+
+No single column of stacked blocks with the right side empty. Buttons are sized to their
+label. What the listener came for (Play) is near the top, never last.
+
+- **Phone:** a compact header row — small artwork left; title, host and Play beside it —
+  then the content.
+- **Desktop (wide enough for two columns):** two columns — the show on the left, the
+  broadcast or episode list and Play on the right. The live player already works this way
+  and is the model.
+
+## The popup audit (repeatable proof)
+
+`tools/popup-audit/audit.cjs` opens every popup at phone (390 px) and desktop (1280 px) with
+an episode playing, saves a screenshot of each, and measures whether the player bar is on
+screen and clickable. How to run is in the file's header. Screenshots are the real evidence
+for layout; the script's "empty right" number counts divider lines as content, so it misses
+empty space beside short blocks.
+
+### Baseline, 2026-09-28 (before step 2b)
+
+Test copy with Discovery on, real feed and QIR, an episode playing.
+
+| Popup | Player bar (phone / desktop) | Layout (from the screenshots) |
+|---|---|---|
+| Show sheet | covered by the sheet's own copy of the player / covered by the dark overlay | Desktop: art and title in the left 40%; links, "selected broadcast" and Play each stack full width, right 60% empty. Phone: large centred art takes half the sheet; **Play last and partly cut off** |
+| Past episodes (inside the show sheet) | same as show sheet | list; fine |
+| Schedule | ✅ visible and usable | list rows; fine |
+| Live player | covered | ✅ two columns on desktop (the model); right third empty |
+| Live "about this show" | covered | short text card |
+| Side menu | covered | full-height panel |
+| Donate / privacy | covered | framed page |
+| Artwork lightbox | covered | full screen |
+| Discovery show popup | covered (browser's built-in modal blocks the whole page) | five blocks stack before the episode list (label bar, description, big Play, heading, subheading); empty beside the title |
+| Discovery episode popup | covered (same) | as show popup |
+| Discovery transcript panel | ✅ visible and usable | side panel |
+
+Result: **the player is usable in 2 of 11 popups.**
+
+Not a bug, noted so it is not chased again: one audit run reported the live player open after
+pressing the menu button. In isolation the menu opens correctly, playing or not; it was left
+over from the script's run order.
+
+### After step 2b, 2026-09-28
+
+Same audit, same test copy: **the player bar is visible and clickable in all 22 checks** (11
+popups × phone and desktop), up from 4 of 22. Checked by eye on the phone show sheet and the
+Discovery show popup: the real bar sits at the bottom and each popup ends right above it.
+
+Still to do (step 2c, layout): the show sheet's large centred artwork and low Play button; the
+Discovery popup's stacked blocks before the episode list; the "Resumed at … / Start over"
+notice, shown for a few seconds after playback resumes, floats over the bottom of the show sheet.
+
+### How rule 1 is built (step 2b)
+
+- **Main side** — one block at the end of `public/styles.css` ("PLAYER FRAME"). While
+  `body.has-player` is set (app.js, while the bar is up) and with `--player-h` (the bar's
+  measured height): the bar sits above every overlay layer; every backdrop stops at the bar;
+  phone bottom sheets end where the bar begins; desktop cards centre in the space above it.
+  This generalises what the schedule already did.
+- **The show sheet's copy of the player** is hidden (`.sheet-player-dock`). Its markup and
+  app.js wiring are removed in step 3, which reworks the player code.
+- **Discovery** — its detail popup opens with `dialog.show()` instead of `showModal()`: a
+  modal dialog sits in the browser's top layer, above everything including the player, and
+  nothing can go over it. `refreshScrollLock()` in `plugins/discovery/public/app.js` now does
+  what the modal did (dim the page via `body.detail-open`, make the page behind inert);
+  Escape closes it; `app.css` positions it above `--player-h`. Side effect, wanted: keyboard
+  users can Tab to the player while this popup is open.
+- **Offline guard** — `test/pacifica/player-frame.test.js` (in `npm test`) fails if any
+  backdrop or popup on the page is missing from the player-frame rule, if the bar is not
+  the top layer, or if Discovery uses `showModal()` again. Shown to fail against the code
+  before 2b (4 of 4 failing) and pass after.
+
+### Known limits and follow-ups
+
+- **Keyboard on the main side:** focus is trapped inside each popup, so Tab does not reach
+  the player bar while one is open. Mouse and touch are fine. Follow-up: add the bar to each
+  popup's Tab cycle (step 3, with the player work).
+- **Audit robustness:** a step that never finishes is now reported as `timeout` instead of
+  hanging the run (one run stalled on 2026-09-28 while files were being swapped for a test).
+
+## Changes log
+
+| Date | Step | Change | Audit after |
+|---|---|---|---|
+| 2026-09-28 | 2a | Discovery loads `styles.css`; its `base.css` copy removed | Discovery screenshots (baseline above) render normally with it; not compared side by side with the old copy |
+| 2026-09-28 | 2b | Player frame on both sides; Discovery popup non-modal; show sheet's player copy hidden; offline guard test | player usable in 22 of 22 (was 4 of 22) |

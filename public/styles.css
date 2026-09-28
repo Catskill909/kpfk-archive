@@ -3884,3 +3884,51 @@
 .search-expand{border:0; background:none; padding:0 .1rem; margin-left:.15rem; color:var(--accent-2); font:600 .8rem/1.4 var(--font-body); cursor:pointer; white-space:nowrap; min-height:24px;}
 .search-expand:hover{text-decoration:underline;}
 .search-expand:focus-visible{outline:2px solid var(--accent-2); outline-offset:2px; border-radius:4px;}
+
+  /* ================= PLAYER FRAME: the bar is never covered =================
+     Design rule 1 (docs/DESIGN-SYSTEM.md, Paul 2026-09-28): while something is
+     playing, the docked player bar stays on screen and clickable under every
+     popup. The schedule already worked this way (see "THE DOCKED PLAYER BAR
+     STAYS USABLE UNDER THIS ONE" above); this block applies the same pattern to
+     all of them, so there is one rule instead of one exception.
+
+     How: body.has-player is set by app.js while the bar is up, and --player-h is
+     the bar's measured height (0px otherwise). With a player showing:
+       1. the bar sits above every overlay layer (the highest, donate, is 300);
+       2. every scrim stops at the bar's top edge, so it is not dimmed or blocked;
+       3. phone bottom sheets end where the bar begins;
+       4. desktop cards centre in the space above the bar and never run under it.
+     The bar is body-level and never made inert (refreshOverlayState() inerts only
+     .appbar and main), so it takes taps once nothing sits on top of it.
+     Known limit: keyboard focus is still trapped inside each popup, so Tab does
+     not reach the bar while one is open (follow-up in DESIGN-SYSTEM.md). */
+  body.has-player .player-bar{ z-index:310; }
+  body.has-player :is(.menu-scrim, .sheet-scrim, .live-scrim, .sched-scrim, .donate-scrim,
+    .lp-info-scrim, .lp-alert-scrim, .live-choice-scrim){ bottom:var(--player-h, 0px); }
+  body.has-player .lightbox{ bottom:var(--player-h, 0px); }
+  body.has-player .menu-panel{ height:calc(100dvh - var(--player-h, 0px)); }
+  /* The sheet's own copy of the player is redundant now the real bar stays
+     visible above it. Hidden here; its markup and app.js wiring are removed in
+     integration step 3, which reworks the player code. */
+  .sheet-player-dock{ display:none !important; }
+  @media (min-width:561px){
+    body.has-player :is(.sheet, .live-player, .lp-info, .lp-alert, .live-choice, .sched-modal, .donate-modal){
+      top:calc((100dvh - var(--player-h, 0px)) / 2);
+    }
+    body.has-player :is(.sheet, .live-player, .lp-info, .lp-alert){
+      max-height:min(88dvh, calc(100dvh - var(--player-h, 0px) - 2rem));
+    }
+    body.has-player :is(.sched-modal, .donate-modal){
+      height:min(76dvh, 800px, calc(100dvh - var(--player-h, 0px) - 2rem));
+    }
+  }
+  @media (max-width:560px){
+    body.has-player :is(.sheet, .live-player, .donate-modal, .sched-modal, .lp-info){ bottom:var(--player-h, 0px); }
+    body.has-player .sheet{
+      max-height:calc(100dvh - var(--player-h, 0px) - max(var(--phone-sheet-gap), env(safe-area-inset-top,0px)));
+    }
+    body.has-player .lp-info{ max-height:calc(82dvh - var(--player-h, 0px)); }
+    /* The bar now sits under the sheet's last row instead of behind it, so the
+       footer no longer needs the home-indicator inset twice. */
+    body.has-player .sheet-foot{ padding-bottom:.9rem; }
+  }

@@ -67,6 +67,11 @@ sign-in page is retired; until step 5 its QIR switch is set in the settings file
 
 ### Step 2 — Design system and popup layout
 
+**Progress (2026-09-28):** ✅ 2a one stylesheet (Discovery loads `styles.css`) · ✅ 2b player
+frame: the bar is visible and usable under all 11 popups at phone and desktop (was 4 of 22
+checks) · ⬜ 2c popup layout · ⬜ 2d apply to the remaining popups. Rules, audit results and
+how it is built: [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md). Repeatable check: `tools/popup-audit/`.
+
 - Merge both stylesheets into one set of tokens: colours, type, spacing, button sizes, corner
   radii, popup widths.
 - One popup layout: side-by-side columns where there is room, compact buttons, one scroll

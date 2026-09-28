@@ -214,7 +214,10 @@
     if(!$('detail').open) trigger = document.activeElement;
     const wasOpen = $('detail').open;
     route = {kind,id}; paintDetail();
-    if(!wasOpen) $('detail').showModal();
+    // Non-modal (2026-09-28): a modal dialog sits in the browser's top layer, above the
+    // player bar, and blocks it. docs/DESIGN-SYSTEM.md rule 1; refreshScrollLock() does
+    // the dimming and inerting instead.
+    if(!wasOpen) $('detail').show();
     refreshScrollLock();
     $('close').focus();
     if(!fromPop) { syncUrl(!wasOpen); if(!wasOpen) modalHistory = true; }
@@ -281,14 +284,22 @@
   $('close').onclick = closeDetail;
   $('detail').addEventListener('cancel',event => { event.preventDefault();closeDetail(); });
   $('detail').addEventListener('close',() => { refreshScrollLock(); if(trigger?.isConnected) trigger.focus(); });
+  // The detail popup is non-modal (see openDetail), so Escape is ours to handle. The
+  // transcript panel handles its own Escape first and stops it (along.js).
+  document.addEventListener('keydown',event => { if(event.key==='Escape' && $('detail').open && !event.defaultPrevented){ event.preventDefault(); closeDetail(); } });
   // One owner for "is anything covering the page?". The lock must sit on <html>: with
   // html{overflow-x:clip} the root is the scroll container and body{overflow:hidden}
   // does nothing (the podcast template's touch-dev.md F7 trap). The wide-screen
   // push drawer leaves the page usable, so only covering layouts lock.
   const wide = matchMedia('(min-width:1100px)');
   function refreshScrollLock() {
-    const covering = $('detail').open || (window.ListenAlong.isOpen() && !wide.matches);
+    const open = $('detail').open;
+    const covering = open || (window.ListenAlong.isOpen() && !wide.matches);
     document.documentElement.classList.toggle('scroll-lock', covering);
+    // What showModal() used to do for us: dim the page and make it unreachable. The
+    // player bar and transcript panel are left out, so they stay usable (design rule 1).
+    document.body.classList.toggle('detail-open', open);
+    for (const el of document.querySelectorAll('.rv-skip, .rv-reviewbar, .rv-header, #main')) el.inert = open;
   }
   wide.addEventListener('change', refreshScrollLock);
   $('detail').addEventListener('click',event => { if(event.target === $('detail')) { const r=$('detail').getBoundingClientRect();if(event.clientX<r.left || event.clientX>r.right || event.clientY<r.top || event.clientY>r.bottom) closeDetail(); } });
