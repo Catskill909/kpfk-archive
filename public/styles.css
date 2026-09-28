@@ -4107,19 +4107,26 @@
      --player-h (app.js) is measured from the card's top to the screen's bottom, so
      popups, the transcript panel and Back to top still stop above it, gap included.
      With the transcript panel pushing the page (1100px+), the card moves with the page. */
+  /* Slimmer than the content column (Paul, 2026-09-28: the card's edges clashed with the
+     grid's): inset --player-inset inside the column edges, with a softer edge and shadow.
+     The column edge is max(gutter, centred 1180 column + gutter); with the transcript panel
+     pushing the page, the column is centred in the space left of the panel. */
+  :root{ --player-inset:.75rem; }
+  @media (min-width:1000px){ :root{ --player-inset:1.5rem; } }
   @media (min-width:701px){
     .player-bar{
-      left:max(var(--page-gutter, 1rem), calc((100% - 1180px) / 2 + var(--page-gutter, 1rem)));
-      right:max(var(--page-gutter, 1rem), calc((100% - 1180px) / 2 + var(--page-gutter, 1rem)));
+      left:calc(max(var(--page-gutter, 1rem), (100% - 1180px) / 2 + var(--page-gutter, 1rem)) + var(--player-inset));
+      right:calc(max(var(--page-gutter, 1rem), (100% - 1180px) / 2 + var(--page-gutter, 1rem)) + var(--player-inset));
       bottom:12px;
-      padding:.6rem 1.1rem;
-      border:1px solid var(--outline-strong); border-radius:18px;
-      box-shadow:0 14px 44px rgba(0,0,0,.28), 0 2px 8px rgba(0,0,0,.12);
+      padding:.55rem 1rem;
+      border:1px solid color-mix(in srgb, var(--outline-strong) 70%, transparent); border-radius:16px;
+      box-shadow:0 10px 30px rgba(0,0,0,.18), 0 1px 3px rgba(0,0,0,.10);
     }
   }
   @media (min-width:1100px){
     body.along-open .player-bar{
-      right:calc(min(var(--along-w, 420px), 92vw) + 12px);
-      left:max(12px, calc((100% - min(var(--along-w, 420px), 92vw) - 1180px) / 2 + var(--page-gutter, 1rem)));
+      --col-edge:max(var(--page-gutter, 1rem), (100% - min(var(--along-w, 420px), 92vw) - 1180px) / 2 + var(--page-gutter, 1rem));
+      left:calc(var(--col-edge) + var(--player-inset));
+      right:calc(min(var(--along-w, 420px), 92vw) + var(--col-edge) + var(--player-inset));
     }
   }
