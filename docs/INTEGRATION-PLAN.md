@@ -69,7 +69,8 @@ sign-in page is retired; until step 5 its QIR switch is set in the settings file
 
 **Progress (2026-09-28):** ✅ 2a one stylesheet (Discovery loads `styles.css`) · ✅ 2b player
 frame: the bar is visible and usable under all 11 popups at phone and desktop (was 4 of 22
-checks) · ⬜ 2c popup layout · ⬜ 2d apply to the remaining popups. Rules, audit results and
+checks) · ✅ 2c popup layout on the show sheet and Discovery popup (two columns on desktop, Play
+in the header on phones) · ⬜ 2d apply to the remaining popups. Rules, audit results and
 how it is built: [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md). Repeatable check: `tools/popup-audit/`.
 
 - Merge both stylesheets into one set of tokens: colours, type, spacing, button sizes, corner

@@ -40,7 +40,12 @@ const MEASURE = box => `
   let playerState='no player bar shown';
   if(pr){const x=pr.left+pr.width/2,y=pr.top+pr.height/2,hit=document.elementFromPoint(x,y);
     playerState=(pr.bottom>vh+1||pr.top>=vh)?'off screen':(hit&&player.contains(hit))?'visible and clickable':'covered by '+(hit?(hit.id||hit.className||hit.tagName):'nothing')}
-  const out={open:!!r,box:r&&{w:Math.round(r.width),h:Math.round(r.height),top:Math.round(r.top),bottom:Math.round(r.bottom)},viewport:[vw,vh],player:playerState};
+  // Popups that show an episode must keep a visible Play/Pause of their own (2026-09-28:
+  // hiding the sheet's player copy also hid the sheet's Pause).
+  // Tappable = drawn AND the button itself is what a tap at its centre reaches.
+  const tappable=b=>{const q=vis(b);if(!q)return false;const hit=document.elementFromPoint(q.left+q.width/2,q.top+q.height/2);return !!hit&&b.contains(hit)};
+  const play=box&&[...box.querySelectorAll('.sheet-play, .rv-detailplay')].find(tappable);
+  const out={playControl:box&&box.querySelector('.sheet-play, .rv-detailplay')?(play?'tappable':'HIDDEN OR COVERED'):'n/a',open:!!r,box:r&&{w:Math.round(r.width),h:Math.round(r.height),top:Math.round(r.top),bottom:Math.round(r.bottom)},viewport:[vw,vh],player:playerState};
   if(r){
     // Buttons at least 1.8x wider than their text and 120px+ wide.
     out.wideButtons=[...box.querySelectorAll('button,a.btn,[role=button]')].map(b=>{const br=vis(b);if(!br)return null;const range=document.createRange();range.selectNodeContents(b);const tw=range.getBoundingClientRect().width;return {label:(b.textContent||b.getAttribute('aria-label')||'').trim().replace(/\\s+/g,' ').slice(0,30),w:Math.round(br.width),text:Math.round(tw),h:Math.round(br.height)}}).filter(b=>b&&b.w>=120&&b.text>0&&b.w>b.text*1.8);
@@ -71,7 +76,7 @@ const MEASURE = box => `
       const shot = await c.send('Page.captureScreenshot', { format: 'png' });
       const file = `${k.name}-${label}.png`; fs.writeFileSync(path.join(OUT, file), Buffer.from(shot.data, 'base64'));
       results.push({ popup: k.name, width: label, steps, ...m, file });
-      console.log(k.name, label, JSON.stringify(steps), m.open ? `open ${m.box.w}x${m.box.h}` : 'NOT OPEN', '| player:', m.player, '| empty right:', m.emptyRight, 'px', m.emptyRightPct + '%', '| wide buttons:', (m.wideButtons || []).map(b => `${b.label} ${b.w}/${b.text}`).join('; '));
+      console.log(k.name, label, JSON.stringify(steps), m.open ? `open ${m.box.w}x${m.box.h}` : 'NOT OPEN', '| player:', m.player, '| play control:', m.playControl, '| empty right:', m.emptyRight, 'px', m.emptyRightPct + '%', '| wide buttons:', (m.wideButtons || []).map(b => `${b.label} ${b.w}/${b.text}`).join('; '));
     }
   }
   fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify(results, null, 2));

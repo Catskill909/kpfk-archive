@@ -68,9 +68,12 @@ Same audit, same test copy: **the player bar is visible and clickable in all 22 
 popups × phone and desktop), up from 4 of 22. Checked by eye on the phone show sheet and the
 Discovery show popup: the real bar sits at the bottom and each popup ends right above it.
 
-Still to do (step 2c, layout): the show sheet's large centred artwork and low Play button; the
+Left for step 2c at the time: the show sheet's large centred artwork and low Play button; the
 Discovery popup's stacked blocks before the episode list; the "Resumed at … / Start over"
-notice, shown for a few seconds after playback resumes, floats over the bottom of the show sheet.
+notice floating over the bottom of the show sheet. All three addressed in 2c below.
+
+Also confirmed on the live site after Paul's redeploy (podcasts.kpfk.org, 2026-09-28): all 8
+main-side popups keep the player visible and clickable at phone and desktop (16 of 16).
 
 ### How rule 1 is built (step 2b)
 
@@ -92,6 +95,35 @@ notice, shown for a few seconds after playback resumes, floats over the bottom o
   the top layer, or if Discovery uses `showModal()` again. Shown to fail against the code
   before 2b (4 of 4 failing) and pass after.
 
+### How rule 2 is built (step 2c: show sheet and Discovery popup)
+
+- **Show sheet, desktop** (`styles.css`, "POPUP LAYOUT" block): two columns. The body (art,
+  title, host, Past episodes, description, links; still the one scroll area) on the left; the
+  selected broadcast and Play/Pause become a 280 px right-hand column instead of a strip
+  under everything. The "Past episodes" view empties the footer, so `:has()` keeps that view
+  one column. The scroll hint is centred under the left column. Card height 382 → ~270 px.
+- **Show sheet, phone:** compact header row, 88 px art left and the titles left-aligned
+  beside it (was a ~184 px centred tile). Card height 571 → ~390 px: the selected broadcast and
+  Pause are on screen above the player bar instead of cut off.
+- **Discovery popup** (`plugins/discovery/public/app.js` paintDetail + `app.css`): Play
+  moves into the header under the title; the two headings over the list become one line
+  ("10 episodes · newest first"). Desktop: 960 px wide, two columns, the show side (art,
+  title, Play, description) kept in view while the episode list or episode notes scroll
+  beside it. Phone: one column, Play in the header row, the list right after it.
+
+**Bug found and fixed in 2c (introduced in 2b).** The show sheet's own Play/Pause hid itself
+whenever the in-sheet player copy held that episode (`btn.hidden = loadedInDock`, app.js).
+Hiding the copy in 2b left the sheet with no Pause of its own while that episode played. Swept
+every other dependent on the copy (the "instead" hint follows the real bar and is right; the
+`has-sheet-player` class only sets padding): this was the only one. The line and its helper are
+removed. The popup audit now also reports **play control**: every popup showing an episode must
+have its own Play/Pause that is *tappable* (drawn, and what a tap at its centre reaches).
+
+**Also fixed:** the "Resumed at … / Start over" notice above the player bar covered the
+bottom row of an open popup (the show sheet's Pause on phones). It waits while a popup is
+open; every popup showing an episode has its own Start over and position. The "Past episodes"
+button's label no longer wraps in the narrower left column.
+
 ### Known limits and follow-ups
 
 - **Keyboard on the main side:** focus is trapped inside each popup, so Tab does not reach
@@ -106,3 +138,4 @@ notice, shown for a few seconds after playback resumes, floats over the bottom o
 |---|---|---|---|
 | 2026-09-28 | 2a | Discovery loads `styles.css`; its `base.css` copy removed | Discovery screenshots (baseline above) render normally with it; not compared side by side with the old copy |
 | 2026-09-28 | 2b | Player frame on both sides; Discovery popup non-modal; show sheet's player copy hidden; offline guard test | player usable in 22 of 22 (was 4 of 22) |
+| 2026-09-28 | 2c | Show sheet two columns (desktop) / compact header (phone); Discovery popup Play in header, two columns on desktop; sheet Pause restored; resume notice waits under popups; audit checks play control is tappable | player usable 22 of 22; Play/Pause tappable in all 6 episode views; checked by eye (phone and desktop) |

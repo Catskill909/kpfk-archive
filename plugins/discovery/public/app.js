@@ -184,14 +184,24 @@
     $('dialogBack').hidden = !row;
     $('dialogBack').dataset.show = show.id;
     const selected = row || show.latest;
-    let html = `<div class="rv-detailhead">${art(selected,true)}<div>${row ? action('show',show.id,show.name+' →','rv-showlink') : `<p class="rv-eyebrow">${esc(labels[show.cat])}</p>`}<h2 id="detailTitle">${esc(row ? title(row) : show.name)}</h2><p class="rv-detailmeta">${esc(row ? date(row)+' · '+time(row)+(duration(row) ? ' · '+duration(row) : '')+pendingNote(row) : show.host || '')}</p></div></div>`;
+    // Layout (2026-09-28, docs/DESIGN-SYSTEM.md rule 2): Play sits in the header beside the
+    // title, never below a stack of blocks. Two parts: the side (header, description) and
+    // the main part (episode list, or the episode's notes and transcript). On desktop they
+    // are two columns (app.css); on phones they stack, Play still in the header row.
+    const actions = row
+      ? `${detailPlay(row.id,'▶ Play episode')}${action('show',show.id,`All ${show.episodes.length} episodes`)}`
+      : detailPlay(show.latest.id,'▶ Play latest');
+    const head = `<div class="rv-detailhead">${art(selected,true)}<div>${row ? action('show',show.id,show.name+' →','rv-showlink') : `<p class="rv-eyebrow">${esc(labels[show.cat])}</p>`}<h2 id="detailTitle">${esc(row ? title(row) : show.name)}</h2><p class="rv-detailmeta">${esc(row ? date(row)+' · '+time(row)+(duration(row) ? ' · '+duration(row) : '')+pendingNote(row) : show.host || '')}</p><div class="rv-detailactions">${actions}</div></div></div>`;
+    let side = head, main = '';
     if(row) {
-      html += `<div class="rv-detailactions">${detailPlay(row.id,'▶ Play episode')}${action('show',show.id,`All ${show.episodes.length} episodes`)}</div><h3>About this episode</h3><p class="rv-bodytext">${esc(row.episodeDesc || 'Episode notes are not available for this broadcast.')}</p><details><summary>About ${esc(show.name)}</summary><p class="rv-bodytext">${esc(show.description || 'Show description unavailable.')}</p></details>`;
+      main += `<h3>About this episode</h3><p class="rv-bodytext">${esc(row.episodeDesc || 'Episode notes are not available for this broadcast.')}</p><details><summary>About ${esc(show.name)}</summary><p class="rv-bodytext">${esc(show.description || 'Show description unavailable.')}</p></details>`;
     } else {
-      html += `<p class="rv-bodytext">${esc(show.description || 'Explore the available broadcasts of this show.')}</p><div class="rv-detailactions">${detailPlay(show.latest.id,'▶ Play latest episode')}</div><h3>${show.episodes.length} available episodes</h3><p class="rv-dialognote">Newest first · Recordings currently published in the archive</p>${show.episodes.map(r => episodeHtml(r)).join('')}`;
+      if(show.description) side += `<p class="rv-bodytext">${esc(show.description)}</p>`;
+      main += `<h3>${show.episodes.length} ${show.episodes.length === 1 ? 'episode' : 'episodes'} <span class="rv-dialognote">· newest first</span></h3>${show.episodes.map(r => episodeHtml(r)).join('')}`;
     }
     // Every way to listen along this episode offers, default first (music: Songs).
-    for(const along of row ? window.ListenAlong.kindsOf(row) : []) html += `<section class="rv-transcript"><h3>${along === 'transcript' ? 'Transcript' : 'Songs in this episode'}</h3><p class="rv-dialognote">${along === 'transcript' ? 'Read along with the audio, search inside it and play from any line.' : 'The songs played, with times. Tap one to play from there.'}</p><button type="button" class="rv-quiet" data-along="${esc(row.id)}" data-along-kind="${along}">${along === 'transcript' ? 'Read transcript' : 'Show songs'} →</button></section>`;
+    for(const along of row ? window.ListenAlong.kindsOf(row) : []) main += `<section class="rv-transcript"><h3>${along === 'transcript' ? 'Transcript' : 'Songs in this episode'}</h3><p class="rv-dialognote">${along === 'transcript' ? 'Read along with the audio, search inside it and play from any line.' : 'The songs played, with times. Tap one to play from there.'}</p><button type="button" class="rv-quiet" data-along="${esc(row.id)}" data-along-kind="${along}">${along === 'transcript' ? 'Read transcript' : 'Show songs'} →</button></section>`;
+    const html = `<div class="rv-detailside">${side}</div><div class="rv-detailmain">${main}</div>`;
     $('detailBody').innerHTML = html;
     $('detailBody').scrollTop = 0;
   }

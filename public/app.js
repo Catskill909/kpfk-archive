@@ -933,9 +933,6 @@
   // its front-card context got lost. Only the sheet renders .play-label, so card
   // buttons keep their compact icon treatment.
   var sheetEpAlt = '';
-  function sheetPlayerOwns(mp3){
-    return !!mp3 && barMode === 'archive' && !playerBar.hidden && nowPlaying.mp3 === mp3;
-  }
   function sheetHasDifferentPlayer(mp3){
     if(!mp3 || playerBar.hidden) return false;
     if(barMode === 'live') return true;
@@ -1064,12 +1061,14 @@
       var playing = (mp3 === nowPlaying.mp3) && !audio.paused && !audio.ended && !loading;
       var sheetAction = btn.classList.contains('sheet-play');
       var episodeAction = btn.classList.contains('sheet-episode-play');
-      var loadedInDock = sheetAction && sheetPlayerOwns(mp3);
       var alternate = (sheetAction || episodeAction) && sheetHasDifferentPlayer(mp3);
       btn.classList.toggle('playing', playing);
       btn.classList.toggle('loading', loading);
       btn.classList.toggle('is-alternate', alternate);
-      if(sheetAction) btn.hidden = loadedInDock;
+      // The sheet's Play/Pause used to hide while the in-sheet player copy held this
+      // episode. That copy is hidden since 2026-09-28 (the real bar stays visible under
+      // every popup, docs/DESIGN-SYSTEM.md), and hiding the button with it left the sheet
+      // with no control of its own (found in the step 2c audit). It always shows now.
       var g = btn.querySelector('.play-glyph');
       if(g) g.innerHTML = loading ? svgSpin() : (playing ? svgPause() : svgPlay());
       // the info sheet's button is the only one that spells its state out in words

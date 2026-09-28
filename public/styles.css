@@ -3932,3 +3932,49 @@
        footer no longer needs the home-indicator inset twice. */
     body.has-player .sheet-foot{ padding-bottom:.9rem; }
   }
+
+  /* ================= POPUP LAYOUT: use the width, Play near the top =================
+     Design rule 2 (docs/DESIGN-SYSTEM.md, Paul 2026-09-28): no single column of
+     stacked blocks with the right side empty; what the listener came for (Play)
+     is near the top, never last. Layout only: the markup and app.js are unchanged.
+
+     SHOW SHEET, desktop: two columns. The body (art, title, host, past episodes,
+     description, links; the one scroll area) on the left; the footer (selected
+     broadcast + Play) becomes a right-hand column instead of a full-width strip
+     under everything. The "Past episodes" view empties the footer, so :has()
+     keeps that view in one column. The close button sits over the top of the
+     right column, so that column starts below it. */
+  @media (min-width:761px){
+    .sheet:has(.sheet-foot:not(:empty)){
+      display:grid; grid-template-columns:minmax(0, 1fr) 280px; grid-template-rows:auto minmax(0, 1fr);
+    }
+    .sheet:has(.sheet-foot:not(:empty)) .sheet-routebar{ grid-column:1 / -1; grid-row:1; }
+    .sheet:has(.sheet-foot:not(:empty)) .sheet-body{ grid-column:1; grid-row:2; }
+    .sheet:has(.sheet-foot:not(:empty)) .sheet-foot{
+      grid-column:2; grid-row:2; justify-content:flex-start;
+      border-top:0; border-left:1px solid var(--outline); border-radius:0 0 17px 0;
+      padding:4.4rem 1.4rem 1.4rem;
+    }
+    /* The left column is narrower than the old full-width sheet: the button's label
+       stays on one line and only the "in progress" note shortens (… ellipsis). */
+    .sheet:has(.sheet-foot:not(:empty)) .sheet-archive-primary{ flex:none; }
+    .sheet-archive-label{ white-space:nowrap; }
+    /* The scroll hint belongs to the body: centre it under the left column. */
+    .sheet:has(.sheet-foot:not(:empty)) .sheet-scroll-cue{ left:calc((100% - 280px) / 2); }
+  }
+  /* SHOW SHEET, phone: a compact header row, small art left and the titles beside
+     it, instead of a large centred tile that pushed the selected broadcast and
+     Play to the bottom of the screen, partly cut off (2026-09-28 audit). */
+  @media (max-width:560px){
+    .sheet-head{ flex-direction:row; align-items:flex-start; text-align:left; gap:.95rem; padding-right:3rem; }
+    .sheet-art{ width:88px; height:88px; border-radius:12px; }
+    .sheet-titles{ align-items:flex-start; gap:.35rem; }
+    .sheet-eyebrow, .sheet-archive-open{ align-self:flex-start; }
+    .sheet-links{ justify-content:flex-start; }
+  }
+
+  /* "Resumed at … / Start over" sits just above the player bar. With a popup open it
+     covered the popup's own last row (the show sheet's Pause on phones, 2026-09-28
+     audit). Every popup that shows an episode has its own Start over and position,
+     so the notice waits while one is open (html.scroll-lock = a popup is open). */
+  html.scroll-lock .resume-toast{ display:none; }
