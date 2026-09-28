@@ -372,36 +372,6 @@
       </svg>
     </button>
     <div class="sheet-foot" id="sheetFoot"></div>
-    <!-- The sheet covers the page player, so it provides one stable transport of
-       its own. It represents the global archive audio even while another show or
-       episode is being browsed and never lives inside the changing footer. -->
-    <div class="sheet-player-dock" id="sheetPlayerDock" hidden>
-      <div class="sheet-player-row">
-        <span class="sheet-player-art" aria-hidden="true">
-          <img id="sheetPlayerArt" alt="">
-        </span>
-        <button class="sheet-player-open" id="sheetPlayerOpen" type="button" aria-label="Show the episode in the player">
-          <span class="sheet-player-state">
-            <span class="sheet-player-eq" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="sheet-player-live" id="sheetPlayerLive" hidden><i aria-hidden="true"></i>Live</span>
-            <span id="sheetPlayerState">Playing now</span>
-          </span>
-          <span class="sheet-player-copy">
-            <span class="sheet-player-title" id="sheetPlayerTitle"></span>
-            <span class="sheet-player-episode" id="sheetPlayerEpisode"></span>
-          </span>
-        </button>
-        <button class="sheet-player-toggle" id="sheetPlayerToggle" type="button" aria-label="Pause">
-          <span id="sheetPlayerGlyph" aria-hidden="true"></span>
-        </button>
-      </div>
-      <div class="player-scrub sheet-player-scrub">
-        <span class="player-time" id="sheetCurrent">0:00</span>
-        <input class="player-range" id="sheetRange" type="range" min="0" max="0" value="0" step="1"
-          aria-label="Seek within the episode in the player" disabled>
-        <span class="player-time" id="sheetDuration">0:00</span>
-      </div>
-    </div>
   </div>
 
   <!-- Artwork lightbox: opened by tapping the show art in the sheet, so a listener

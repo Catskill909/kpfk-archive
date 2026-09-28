@@ -297,6 +297,20 @@
   // The detail popup is non-modal (see openDetail), so Escape is ours to handle. The
   // transcript panel handles its own Escape first and stops it (along.js).
   document.addEventListener('keydown',event => { if(event.key==='Escape' && $('detail').open && !event.defaultPrevented){ event.preventDefault(); closeDetail(); } });
+  // Tab stays in the popup and the player bar, in that order, and wraps (design rule 1:
+  // the keyboard reaches the player too). Without this, Tab past the player fell onto the
+  // empty page before coming back, because a non-modal dialog has no loop of its own.
+  const takesFocus = el => el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
+  document.addEventListener('keydown',event => {
+    if(event.key !== 'Tab' || !$('detail').open || event.defaultPrevented) return;
+    if(!$('along').hidden && $('along').contains(document.activeElement)) return; // the transcript panel has its own order
+    const sel = 'a[href], button:not([disabled]):not([tabindex="-1"]), input:not([disabled]), summary';
+    const list = [...$('detail').querySelectorAll(sel), ...($('player').hidden ? [] : $('player').querySelectorAll(sel))].filter(takesFocus);
+    if(!list.length) return;
+    const i = list.indexOf(document.activeElement);
+    event.preventDefault();
+    list[i === -1 ? 0 : (i + (event.shiftKey ? list.length - 1 : 1)) % list.length].focus();
+  });
   // One owner for "is anything covering the page?". The lock must sit on <html>: with
   // html{overflow-x:clip} the root is the scroll container and body{overflow:hidden}
   // does nothing (the podcast template's touch-dev.md F7 trap). The wide-screen

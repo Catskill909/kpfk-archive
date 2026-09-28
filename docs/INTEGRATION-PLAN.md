@@ -82,6 +82,10 @@ how it is built: [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md). Repeatable check: `tools/
 
 ### Step 3 — The player
 
+**Progress (2026-09-28):** ✅ 3a the show sheet's copy of the player removed · ✅ 3b keyboard
+reaches the player bar from every popup · ⬜ 3c Now Playing sheet (tap the bar) with Transcript
+in it. Details: [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md).
+
 - One bottom bar (based on the main side's: ±15 s, scrubber, tap to open), always on screen.
 - Transcript as an icon in the bar, so titles are not cut short.
 - Tapping the bar opens a **Now Playing** sheet above the bar: Transcript/Songs · About ·

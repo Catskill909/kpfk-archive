@@ -144,11 +144,34 @@ site reopens what the saved history entry says was open (a reload with the live 
 reopens it, by design), and the audit reloaded the same address between cases, carrying the
 previous case's live player into the menu case. Each case now starts from a blank page.
 
+### Step 3a–3b (2026-09-28): the sheet's player copy removed; the keyboard reaches the player
+
+- **3a — the show sheet's copy of the player is gone** (markup, ~120 lines of app.js wiring,
+  ~70 lines of CSS). Its update function also refreshed two things the sheet still needs (the
+  "Playing now / Paused" line and the scroll fade); those stay, as `syncSheetSelected()`.
+  Comments that described the copy now describe the real bar, which is what they refer to:
+  tapping the bar's title while a sheet is open still hands back to the Live Player.
+- **3b — Tab reaches the player bar from every popup.** Each of the nine main-side popups had
+  its own copy of a "keep Tab inside" loop. They now share one helper, `cycleTab()` in app.js:
+  the popup's visible controls, then the bar's, then back. Discovery's popup got the same loop
+  (a non-modal dialog has none of its own, and Tab past the player fell onto the empty page).
+- **Bug found by the check, fixed in the helper:** focus stuck on the show sheet's close
+  button. The helper moves focus to the next control itself, and the sheet's list includes
+  controls that are hidden at that moment (the past-episodes Back button, the scroll hint);
+  focusing a hidden element silently does nothing. The helper now steps only through controls
+  that are on screen — a fix for every popup, not just the sheet.
+- **The popup audit now presses Tab for real** (DevTools key events) from inside each popup and
+  reports whether focus reaches the player bar and comes back without wandering elsewhere.
+  Limit: Discovery's transcript panel lists hundreds of lines, so 40 presses never leave it; it
+  is a side panel, not a popup that traps focus, and the bar is reachable with Shift-Tab.
+- **Process note (2026-09-28):** the first attempt at 3b used a text pattern that was too loose
+  and damaged app.js in two places. It was caught at once by the syntax check, never committed
+  or deployed; app.js was rebuilt from the last commit plus the 3a steps, and a line-by-line
+  comparison showed no other differences before 3b was applied again, one loop at a time.
+
 ### Known limits and follow-ups
 
-- **Keyboard on the main side:** focus is trapped inside each popup, so Tab does not reach
-  the player bar while one is open. Mouse and touch are fine. Follow-up: add the bar to each
-  popup's Tab cycle (step 3, with the player work).
+- ~~**Keyboard on the main side:** focus trapped inside each popup~~ — fixed in 3b.
 - **Audit robustness:** a step that never finishes is now reported as `timeout` instead of
   hanging the run (one run stalled on 2026-09-28 while files were being swapped for a test).
 
@@ -160,3 +183,4 @@ previous case's live player into the menu case. Each case now starts from a blan
 | 2026-09-28 | 2b | Player frame on both sides; Discovery popup non-modal; show sheet's player copy hidden; offline guard test | player usable in 22 of 22 (was 4 of 22) |
 | 2026-09-28 | 2c | Show sheet two columns (desktop) / compact header (phone); Discovery popup Play in header, two columns on desktop; sheet Pause restored; resume notice waits under popups; audit checks play control is tappable | player usable 22 of 22; Play/Pause tappable in all 6 episode views; checked by eye (phone and desktop) |
 | 2026-09-28 | 2d | Remaining popups reviewed; live player desktop card 760 → 680 px; audit cases start from a blank page | all 11 popups: player usable at both widths; screenshots judged by eye |
+| 2026-09-28 | 3a–3b | Sheet's player copy removed; one shared Tab loop (popup → player bar → popup) for all nine popups and Discovery's popup; hidden controls skipped | player usable 22/22; keyboard reaches the bar and returns in 20/22 (Discovery transcript panel: probe limit, see above); npm test 162/162 |

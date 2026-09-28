@@ -103,8 +103,8 @@
     return location.pathname + (q.length ? '?' + q.join('&') : '');
   }
   var canHistory = !!(window.history && history.replaceState);
-  // A source identity in the in-sheet dock can deliberately hand the sheet back
-  // to the full Live Player. History still owns the close; this callback runs
+  // Tapping the player bar's title while a sheet is open (the bar stays visible above
+  // every popup) can deliberately hand the sheet back to the full Live Player. History still owns the close; this callback runs
   // only after that sheet entry has actually been consumed.
   var sheetAfterDismiss = null;
   // Filters never add a history entry — only modal destinations do, so Back
@@ -490,6 +490,34 @@
   //
   // Call after toggling .show — and in close handlers, BEFORE returning focus,
   // so a trigger in the (now un-inert) header is focusable again.
+  // KEYBOARD CAN REACH THE PLAYER. Design rule 1 (docs/DESIGN-SYSTEM.md): while a
+  // popup is open the player bar stays visible and usable, and that includes the
+  // keyboard. Every popup keeps Tab inside itself; this one helper is that loop for
+  // all of them, with the bar's visible controls added after the popup's own, so Tab
+  // goes popup -> bar -> popup. Each popup's keydown handler listens on document, so
+  // a Tab pressed while focus is on the bar still reaches the open popup's handler.
+  // (Until 2026-09-28 each popup had its own copy of the loop, without the bar.)
+  // Only controls that are actually on screen: this loop moves focus to the next
+  // item itself, and focusing a hidden one silently does nothing, which left focus
+  // stuck (the show sheet lists its hidden Back button and scroll hint; 2026-09-28).
+  function canTakeFocus(el){
+    return el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
+  }
+  function playerBarFocusables(){
+    if(playerBar.hidden) return [];
+    return [].filter.call(
+      playerBar.querySelectorAll('button:not([disabled]):not([tabindex="-1"]), input:not([disabled])'),
+      canTakeFocus
+    );
+  }
+  function cycleTab(e, popupControls){
+    var list = [].filter.call(popupControls, canTakeFocus).concat(playerBarFocusables());
+    if(!list.length) return;
+    var i = list.indexOf(document.activeElement);
+    e.preventDefault();
+    list[i === -1 ? 0 : (i + (e.shiftKey ? list.length - 1 : 1)) % list.length].focus();
+  }
+
   function refreshOverlayState(){
     var anyOpen = document.querySelector(
       '.menu-panel.show, .sheet.show, .lightbox.show, .live-player.show, .donate-modal.show, .sched-modal.show, .live-choice.show'
@@ -940,7 +968,7 @@
   }
   // The label names the action and the broadcast, and nothing else. It used to
   // append " instead" whenever other audio was loaded, warning that pressing it
-  // would replace what was playing — but the dock sits directly below this
+  // would replace what was playing — but the player bar sits directly below this
   // button, already showing that episode by name with its own pause control.
   // The warning restated something visible two inches away, on the one control
   // the sheet exists to offer. The date stays in every state, so the label keeps
@@ -954,17 +982,11 @@
     return alt ? 'Play · ' + alt : 'Play episode';
   }
 
-  // Every scrubber wired to the same <audio>: the docked player bar always, plus
-  // the info sheet's while it is open on the episode that is playing.
+  // Every scrubber wired to the <audio>: the docked player bar. (The show sheet had
+  // its own copy of the player until 2026-09-28; the bar now stays visible above every
+  // popup instead, docs/DESIGN-SYSTEM.md rule 1.)
   function scrubs(){
-    var list = [{range:playerRange, current:playerCurrent, duration:playerDuration}];
-    var sr = document.getElementById('sheetRange');
-    if(sr) list.push({
-      range: sr,
-      current: document.getElementById('sheetCurrent'),
-      duration: document.getElementById('sheetDuration')
-    });
-    return list;
+    return [{range:playerRange, current:playerCurrent, duration:playerDuration}];
   }
   function setScrubFill(){
     scrubs().forEach(function(s){
@@ -1083,7 +1105,7 @@
           (episodeAction && alternate && !loading && !playing ? ' instead' : ''));
     });
     refreshToggleIcon();
-    syncSheetPlayer();
+    syncSheetSelected();
     syncSheetRestart();
     syncEpMarks();          // pausing or finishing changes archive/history state
     paintSheetCloseBtn();   // what closing the sheet now means changed with it
@@ -1168,7 +1190,6 @@
     }
   });
   bindRange(playerRange);
-  bindRange(document.getElementById('sheetRange'));
   audio.addEventListener('waiting', function(){ setStatus('Buffering…'); });
   audio.addEventListener('error', function(){
     loadingMp3 = null;
@@ -1485,7 +1506,7 @@
       var infoBtn = document.getElementById('playerInfoBtn');
       if(infoBtn) infoBtn.setAttribute('aria-label', 'Open Live Player for '+title+' — live stream '+stateWord.toLowerCase());
     }
-    if(typeof syncSheetPlayer === 'function') syncSheetPlayer();
+    if(typeof syncSheetSelected === 'function') syncSheetSelected();
   }
 
   function setLiveIcon(playing){
@@ -1612,14 +1633,10 @@
   function onLiveAlertKey(e){
     if(e.key === 'Escape'){ e.stopPropagation(); dismissLiveAlert(); return; }
     if(e.key !== 'Tab') return;
-    var f = [].filter.call(
+    cycleTab(e, [].filter.call(
       lpAlert.querySelectorAll('a[href], button:not([disabled])'),
       function(el){ return el.offsetParent !== null; }
-    );
-    if(!f.length) return;
-    var first = f[0], last = f[f.length-1];
-    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    ));
   }
   function dismissLiveAlert(){
     hideLiveAlert();
@@ -1748,14 +1765,10 @@
   function onLiveInfoKey(e){
     if(e.key === 'Escape'){ e.stopPropagation(); closeLiveInfo(); return; }
     if(e.key !== 'Tab') return;
-    var f = [].filter.call(
+    cycleTab(e, [].filter.call(
       lpInfoPanel.querySelectorAll('a[href], button:not([disabled])'),
       function(el){ return el.offsetParent !== null; }
-    );
-    if(!f.length) return;
-    var first = f[0], last = f[f.length-1];
-    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    ));
   }
   lpInfoBtn.addEventListener('click', openLiveInfo);
   lpInfoClose.addEventListener('click', closeLiveInfo);
@@ -2295,8 +2308,8 @@
   function openLivePlayer(fromHistory){
     if(livePlayer.classList.contains('show')) return;
     if(typeof closeSheet === 'function' && sheet && sheet.classList.contains('show')){
-      // Live -> show/archive owns a real two-entry trail. Its dock identity is
-      // therefore ordinary Back, not a fresh Live entry; popstate performs the
+      // Live -> show/archive owns a real two-entry trail. Tapping the bar's live
+      // identity is therefore ordinary Back, not a fresh Live entry; popstate performs the
       // visual handoff. An unrelated sheet still closes first and then opens a
       // new Live destination through the callback below.
       if(fromHistory !== true && canHistory && history.state && history.state.liveOrigin){
@@ -2435,14 +2448,10 @@
     if(!lpInfoPanel.hidden) return;      // so does the about-this-show panel
     if(e.key === 'Escape'){ closeLivePlayer(); return; }
     if(e.key !== 'Tab') return;
-    var f = [].filter.call(
+    cycleTab(e, [].filter.call(
       livePlayer.querySelectorAll('a[href], button:not([disabled]), input:not([disabled])'),
       function(el){ return el.offsetParent !== null; }
-    );
-    if(!f.length) return;
-    var first = f[0], last = f[f.length-1];
-    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    ));
   }
 
   onAirBtn.addEventListener('click', openLivePlayer);
@@ -2947,11 +2956,6 @@
   var sheetRouteBack = document.getElementById('sheetRouteBack');
   var sheetScrollCue = document.getElementById('sheetScrollCue');
   var sheetScrollCueLabel = document.getElementById('sheetScrollCueLabel');
-  var sheetPlayerDock = document.getElementById('sheetPlayerDock');
-  var sheetPlayerToggle = document.getElementById('sheetPlayerToggle');
-  var sheetPlayerOpen = document.getElementById('sheetPlayerOpen');
-  var sheetPlayerArt = document.getElementById('sheetPlayerArt');
-  var sheetPlayerLive = document.getElementById('sheetPlayerLive');
   var sheetReturnFocus = null;
   var sheetRowId = null;        // which archive row the sheet is currently showing
   var sheetMp3 = null;
@@ -3039,7 +3043,7 @@
   // own internal focus), so trap Tab on the close button and let Escape close.
   function onDonateKey(e){
     if(e.key === 'Escape'){ e.preventDefault(); closeDonate(); }
-    else if(e.key === 'Tab'){ e.preventDefault(); donateClose.focus(); }
+    else if(e.key === 'Tab') cycleTab(e, [donateClose]);
   }
   if(donateBtn) donateBtn.addEventListener('click', openDonate);
   donateClose.addEventListener('click', closeDonate);
@@ -3740,11 +3744,7 @@
   function onLiveChoiceKey(e){
     if(e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); closeLiveChoice(); return; }
     if(e.key !== 'Tab') return;
-    var f = liveChoice.querySelectorAll('button:not([disabled])');
-    if(!f.length) return;
-    var first = f[0], last = f[f.length - 1];
-    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    cycleTab(e, liveChoice.querySelectorAll('button:not([disabled])'));
   }
   liveChoiceScrim.addEventListener('click', closeLiveChoice);
   liveChoiceCancel.addEventListener('click', closeLiveChoice);
@@ -3837,11 +3837,7 @@
     if(liveChoiceOpen()) return;                   // and so does the chooser, which is above both
     if(e.key === 'Escape'){ e.preventDefault(); closeSchedule(); return; }
     if(e.key === 'Tab'){
-      var f = schedModal.querySelectorAll('button:not([tabindex="-1"]), select, summary, [tabindex="0"]');
-      if(!f.length) return;
-      var first = f[0], last = f[f.length - 1];
-      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+      cycleTab(e, schedModal.querySelectorAll('button:not([tabindex="-1"]), select, summary, [tabindex="0"]'));
       return;
     }
     // roving tabs: arrows move between days, the listing pattern for tablists
@@ -4397,83 +4393,10 @@
     wrap.appendChild(btn);
   }
 
-  // The modal covers the page player, so this dock projects whichever global
-  // source owns it. It is not a second player: both modes call the same transport
-  // functions as the page bar, and it never lives in the repainting body/footer.
-  function syncSheetPlayer(){
-    if(!sheetPlayerDock) return;
-    var row = barMode === 'archive' && nowPlaying.mp3 ? rowByMp3(nowPlaying.mp3) : null;
-    var live = barMode === 'live' && !playerBar.hidden;
-    var active = (live || !!row) && !playerBar.hidden;
-    sheetPlayerDock.hidden = !active;
-    sheet.classList.toggle('has-sheet-player', active);
-    if(!active){
-      sheetPlayerDock.classList.remove('live');
-      sheetPlayerDock.classList.remove('is-playing');
-      if(sheetPlayerLive) sheetPlayerLive.hidden = true;
-      syncSelectedListening();
-      syncSheetFade();
-      return;
-    }
-    if(live){
-      var livePlaying = livePlayingNow();
-      var liveWord = liveStateWord();
-      var liveTitle = (liveCurrent && liveCurrent.name) || (STATION.label);
-      var liveArt = (liveCurrent && liveCurrent.photo) || '';
-      sheetPlayerDock.classList.add('live');
-      sheetPlayerDock.classList.toggle('is-playing', livePlaying);
-      if(sheetPlayerLive) sheetPlayerLive.hidden = false;
-      document.getElementById('sheetPlayerState').textContent = liveWord;
-      document.getElementById('sheetPlayerTitle').textContent = liveTitle;
-      document.getElementById('sheetPlayerEpisode').textContent = (STATION.label);
-      if(sheetPlayerArt){
-        if(liveArt && sheetPlayerArt.getAttribute('src') !== liveArt){
-          sheetPlayerArt.classList.remove('failed');
-          sheetPlayerArt.src = liveArt;
-        } else if(!liveArt){
-          sheetPlayerArt.classList.remove('failed');
-          sheetPlayerArt.removeAttribute('src');
-        }
-      }
-      document.getElementById('sheetPlayerGlyph').innerHTML = liveLoading ? svgSpin() : (livePlaying ? svgPause() : svgPlay());
-      sheetPlayerToggle.disabled = liveLoading;
-      sheetPlayerToggle.setAttribute('aria-label', liveLoading
-        ? 'Live stream '+liveWord.toLowerCase()
-        : (livePlaying ? 'Pause live stream — playing' : 'Play live stream — '+liveWord.toLowerCase()));
-      delete sheetPlayerOpen.dataset.id;
-      sheetPlayerOpen.setAttribute('aria-label', 'Open Live Player for '+liveTitle+' — live stream '+liveWord.toLowerCase());
-      syncSelectedListening();
-      syncSheetFade();
-      return;
-    }
-    sheetPlayerDock.classList.remove('live');
-    if(sheetPlayerLive) sheetPlayerLive.hidden = true;
-    var loading = row.mp3 === loadingMp3;
-    var playing = !loading && !audio.paused && !audio.ended;
-    var word = loading ? 'Loading' : (playing ? 'Playing now' : (audio.ended ? 'Finished' : 'Paused'));
-    var date = epLabel(row).date;
-    sheetPlayerDock.classList.toggle('is-playing', playing);
-    document.getElementById('sheetPlayerState').textContent = word;
-    document.getElementById('sheetPlayerTitle').textContent = row.title || nowPlaying.title;
-    document.getElementById('sheetPlayerEpisode').textContent = date;
-    var art = row.photo || ((showInfo[row.sho] || {}).photo) || nowPlaying.photo || '';
-    if(sheetPlayerArt){
-      if(art && sheetPlayerArt.getAttribute('src') !== art){
-        sheetPlayerArt.classList.remove('failed');
-        sheetPlayerArt.src = art;
-      } else if(!art){
-        sheetPlayerArt.classList.remove('failed');
-        sheetPlayerArt.removeAttribute('src');
-      }
-    }
-    document.getElementById('sheetPlayerGlyph').innerHTML = loading ? svgSpin() : (playing ? svgPause() : svgPlay());
-    sheetPlayerToggle.disabled = loading;
-    sheetPlayerToggle.setAttribute('aria-label', (loading ? 'Loading ' : (playing ? 'Pause ' : 'Resume '))+(row.title || 'episode')+' '+date);
-    sheetPlayerOpen.dataset.id = row.id;
-    sheetPlayerOpen.setAttribute('aria-label', 'Show '+(row.title || 'the episode')+' '+date+', in the player');
-    var range = document.getElementById('sheetRange');
-    if(range) range.setAttribute('aria-label', 'Seek within '+(row.title || 'the episode')+' '+date);
-    if(!seeking){ applyDuration(); paintScrubTime(); }
+  // The sheet's playback-dependent parts: the "Playing now / Paused" line under the
+  // selected broadcast and the scroll fade. (Until 2026-09-28 this also painted the
+  // sheet's own copy of the player; the real bar now stays visible above the sheet.)
+  function syncSheetSelected(){
     syncSelectedListening();
     syncSheetFade();
   }
@@ -4490,8 +4413,8 @@
   // whenever the docked bar is holding *this* episode the control says
   // chevron-down instead of ✕.
   //
-  // With the persistent dock visible, closing always hands that transport back
-  // to the page player — even if a different show's profile is being browsed.
+  // The player bar stays visible above the sheet, so closing always hands that
+  // transport back to it — even if a different show's profile is being browsed.
   function sheetWillMinimize(){
     return !playerBar.hidden && (barMode === 'live' || (barMode === 'archive' && !!nowPlaying.mp3));
   }
@@ -4570,7 +4493,7 @@
   function openLiveShowProfile(altid){ openLiveShowRoute(altid, 'show'); }
 
   // Paint exactly one modal route. The archive replaces the profile body and
-  // empties its footer; the player dock sits outside both and is never rebuilt.
+  // empties its footer; the player bar sits outside the sheet and is never rebuilt.
   function paintSheet(r, keepScroll){
     if(enteringPanel === sheet) endEnter();
     var top = keepScroll ? sheetBody.scrollTop : 0;
@@ -4752,7 +4675,7 @@
     // Escape closes the image (not the sheet), and Tab is trapped on its one control.
     if(lightboxOpen()){
       if(e.key === 'Escape'){ e.preventDefault(); closeLightbox(); }
-      else if(e.key === 'Tab'){ e.preventDefault(); lightboxClose.focus(); }
+      else if(e.key === 'Tab') cycleTab(e, [lightboxClose]);
       return;
     }
     if(e.key === 'Escape'){
@@ -4766,11 +4689,7 @@
     }
     if(e.key !== 'Tab') return;
     // Keep keyboard focus inside the one dialog while it is open.
-    var f = sheet.querySelectorAll('a[href], button:not([disabled]):not([tabindex="-1"])');
-    if(!f.length) return;
-    var first = f[0], last = f[f.length-1];
-    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    cycleTab(e, sheet.querySelectorAll('a[href], button:not([disabled]):not([tabindex="-1"])'));
   }
 
   sheetClose.addEventListener('click', closeSheet);
@@ -4793,13 +4712,6 @@
     if(art){ openLightbox(art.dataset.photo, art); return; }
     var btn = e.target.closest('.sheet-play, .sheet-episode-play');
     if(btn){ togglePlayFrom(btn); return; }
-    if(e.target.closest('.sheet-player-toggle')){ togglePlayback(); return; }
-    var playerOpen = e.target.closest('.sheet-player-open');
-    if(playerOpen){
-      if(barMode === 'live') openLivePlayer();
-      else selectEpisode(playerOpen.dataset.id);
-      return;
-    }
     var episode = e.target.closest('.sheet-episode-open');
     if(episode){ selectEpisode(episode.dataset.id); return; }
     if(e.target.closest('.sheet-restart')){ restartSheetEpisode(); return; }
@@ -4823,9 +4735,6 @@
   sheetBody.addEventListener('error', function(e){
     if(e.target && e.target.tagName === 'IMG') e.target.classList.add('failed');
   }, true);
-  if(sheetPlayerArt) sheetPlayerArt.addEventListener('error', function(){
-    sheetPlayerArt.classList.add('failed');
-  });
 
   fetchShowInfo();
   // slow poll: the harvest only gains an entry when the schedule rolls over
@@ -4865,11 +4774,7 @@
       if(e.key === 'Escape'){ closeMenu(); return; }
       if(e.key !== 'Tab') return;
       // keep keyboard focus inside the open drawer
-      var f = panel.querySelectorAll('a[href], button:not([disabled])');
-      if(!f.length) return;
-      var first = f[0], last = f[f.length-1];
-      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+      cycleTab(e, panel.querySelectorAll('a[href], button:not([disabled])'));
     }
 
     btn.addEventListener('click', openMenu);

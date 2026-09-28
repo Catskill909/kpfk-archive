@@ -59,6 +59,20 @@ const MEASURE = box => `
   }
   return out;`;
 
+// Keyboard: real Tab presses (DevTools input events) from inside the open popup. Passes when
+// focus reaches the player bar and then comes back into the popup without wandering
+// anywhere else (2026-09-28: every popup trapped Tab inside itself, so keyboard users could
+// not reach the player while one was open).
+async function keyboardProbe(c, box) {
+  let sawBar = false, sawBack = false; const strays = [];
+  for (let i = 0; i < 40 && !sawBack; i++) {
+    for (const type of ['keyDown', 'keyUp']) await c.send('Input.dispatchKeyEvent', { type, key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
+    const where = await c.eval(`const a=document.activeElement,b=document.querySelector(${JSON.stringify(box)}),p=document.querySelector('#playerBar:not([hidden]), #player:not([hidden])');return a&&p&&p.contains(a)?'bar':(a&&b&&b.contains(a)?'popup':(a?(a.id||String(a.className).split(' ')[0]||a.tagName):'none'))`);
+    if (where === 'bar') sawBar = true; else if (where === 'popup') { if (sawBar) sawBack = true; } else strays.push(where);
+  }
+  return sawBar && sawBack && !strays.length ? 'reaches the bar and returns' : `bar:${sawBar} back:${sawBack}${strays.length ? ' strays:' + [...new Set(strays)].slice(0, 3).join(',') : ''}`;
+}
+
 (async () => {
   const c = await connect(9333);
   await c.send('Page.enable'); await c.send('Runtime.enable');
@@ -77,10 +91,11 @@ const MEASURE = box => `
       const timed = p => Promise.race([p, sleep(15000).then(() => 'timeout')]);
       for (const s of k.open) { try { steps.push(await timed(c.eval(s))); } catch (e) { steps.push('threw: ' + e.message.slice(0, 80)); } await sleep(1500); }
       let m; try { m = await Promise.race([c.eval(MEASURE(k.box)), sleep(15000).then(() => ({ error: 'measure timeout' }))]); } catch (e) { m = { error: e.message.slice(0, 120) }; }
+      if (m.open) { try { m.keyboard = await Promise.race([keyboardProbe(c, k.box), sleep(30000).then(() => 'timeout')]); } catch (e) { m.keyboard = 'threw: ' + e.message.slice(0, 60); } }
       const shot = await c.send('Page.captureScreenshot', { format: 'png' });
       const file = `${k.name}-${label}.png`; fs.writeFileSync(path.join(OUT, file), Buffer.from(shot.data, 'base64'));
       results.push({ popup: k.name, width: label, steps, ...m, file });
-      console.log(k.name, label, JSON.stringify(steps), m.open ? `open ${m.box.w}x${m.box.h}` : 'NOT OPEN', '| player:', m.player, '| play control:', m.playControl, '| empty right:', m.emptyRight, 'px', m.emptyRightPct + '%', '| wide buttons:', (m.wideButtons || []).map(b => `${b.label} ${b.w}/${b.text}`).join('; '));
+      console.log(k.name, label, JSON.stringify(steps), m.open ? `open ${m.box.w}x${m.box.h}` : 'NOT OPEN', '| player:', m.player, '| play control:', m.playControl, '| keyboard:', m.keyboard, '| empty right:', m.emptyRight, 'px', m.emptyRightPct + '%', '| wide buttons:', (m.wideButtons || []).map(b => `${b.label} ${b.w}/${b.text}`).join('; '));
     }
   }
   fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify(results, null, 2));
