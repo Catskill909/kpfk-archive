@@ -19,7 +19,7 @@ Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-28.**
 | 3 | The player (spare copy removed, keyboard reaches it) | ✅ Done | Yes |
 | 4 | Discovery's sections on the main page | 🟡 5 of 6 parts done | Mostly — see below |
 | 5 | Discovery admin as a studio tab | 🟡 5a done, 5b to do | 5a with the next deploy |
-| 6 | Stats for both sides in the studio | ⬜ Not started | — |
+| 6 | Stats for both sides in the studio | ✅ Done (pushed 2026-09-28, needs redeploy) | Studio → Listening → Feature clicks |
 | 7 | Import / export cover everything | ⬜ Not started | — |
 | 8 | Production release (retire the separate Discovery site) | ⬜ Not started | — |
 
@@ -205,7 +205,13 @@ shares the main top bar, search, player and popups, and adds its data where the 
 - ⬜ **5b** Station template: edit a station's feeds, logo, colours and text in the studio, preview,
   apply, with a way back.
 
-### Step 6 — Stats for both sides in the studio ⬜
+### Step 6 — Stats for both sides in the studio ✅
+
+Done 2026-09-28: `ui` beacon with a closed list of names (server `UI_COUNTERS`), shown as
+"Feature clicks" tiles in the studio (Discovery tiles only while Discovery is on). Tests:
+`test/pacifica/ui-counters.test.js` (every name the page sends is counted) and the http test.
+Not added: desktop "Copy link" (no such button yet; shares count only where the browser has a share menu).
+
 
 Existing counters stay. New counters, only where Discovery is on: transcript opened; transcript line
 clicked (jump to that moment); summary opened; Discovery search used (count only, never the words);

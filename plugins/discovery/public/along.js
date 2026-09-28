@@ -23,6 +23,8 @@
 
   const TRANSCRIPT_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 6h14M5 10h14M5 14h9M5 18h6"/></svg>';
   const SONGS_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>';
+  const tally = k => window.ArchiveStats?.count(k); // stats step 6: named counters only
+  let findCounted = false;
   let api = null, panel, list, find, note = '', openId = '', lines = [], plainText = '', kind = '', following = true, nowIndex = -1, matches = [], matchAt = -1, pushed = false, loadToken = 0;
   // The host's audio element, player bar and Transcript button, and which episode is playing
   // (integration step 4e: Discovery's page passes nothing and keeps its own; the main page
@@ -54,16 +56,16 @@
     document.body.appendChild(panel);
     list = $('alongList'); find = $('alongFind');
     $('alongClose').onclick = () => close();
-    $('alongSwitch').onclick = e => { const b = e.target.closest('button[data-kind]'); if(b && b.dataset.kind !== kind) show(openId, {query: find.value, kind: b.dataset.kind}); };
+    $('alongSwitch').onclick = e => { const b = e.target.closest('button[data-kind]'); if(b && b.dataset.kind !== kind) { show(openId, {query: find.value, kind: b.dataset.kind}); tallyKind(); } };
     $('alongMore').onclick = () => setExpanded(!aboutOpen());
     // Escape and a tap outside the About card close the card first, then the panel.
     panel.addEventListener('keydown', e => { if(e.key === 'Escape') { e.stopPropagation(); if(aboutOpen()) { setExpanded(false); $('alongMore').focus(); } else close(); } });
     panel.addEventListener('pointerdown', e => { if(aboutOpen() && !e.target.closest('#alongAbout, #alongMore')) setExpanded(false); });
-    find.addEventListener('input', () => { paintLines(); stepMatch(0); });
+    find.addEventListener('input', () => { paintLines(); stepMatch(0); if(!findCounted && find.value.trim().length >= 2) { findCounted = true; tally('transcriptFind'); } });
     find.addEventListener('keydown', e => { if(e.key === 'Enter') { e.preventDefault(); stepMatch(e.shiftKey ? -1 : 1); } });
     $('alongNext').onclick = () => stepMatch(1); $('alongPrev').onclick = () => stepMatch(-1);
     $('alongOnly').onchange = () => { paintLines(); stepMatch(0); };
-    list.addEventListener('click', e => { const b = e.target.closest('[data-at]'); if(b) { following = true; api.seek(openId, Number(b.dataset.at)); } });
+    list.addEventListener('click', e => { const b = e.target.closest('[data-at]'); if(b) { following = true; api.seek(openId, Number(b.dataset.at)); tally(kind === 'songs' ? 'songJump' : 'lineJump'); } });
     // Any deliberate scroll by the reader stops auto-follow until "Back to now".
     for(const type of ['wheel','touchmove','keydown']) list.addEventListener(type, e => { if(type !== 'keydown' || /^(Arrow|Page|Home|End)/.test(e.key)) { following = false; paintNowPill(); } }, {passive:true});
     $('alongNow').onclick = () => { following = true; scrollToNow(true); paintNowPill(); };
@@ -212,7 +214,7 @@
     const art = api.art ? api.art(row) : ''; $('alongArt').hidden = !art; if(art) $('alongArt').src = art;
     paintAbout(api.about ? api.about(row) : '');
     note = kind === 'transcript' ? 'Machine transcript from QIR — names and words may be wrong. Tap any line to play from there.' : kind === 'songs' ? 'From the station’s playlist log. Tap a song to play from there.' : '';
-    find.value = query; $('alongOnly').checked = false; $('alongOnlyLabel').hidden = !query;
+    findCounted = false; find.value = query; $('alongOnly').checked = false; $('alongOnlyLabel').hidden = !query;
     const token = ++loadToken;
     if(!kind) { lines = []; plainText = ''; list.innerHTML = '<p class="rv-along-empty">No transcript or song list is available for this episode.</p>'; paintAvailability(); return; }
     list.removeAttribute('lang');
@@ -226,6 +228,9 @@
     } catch(error) { if(token === loadToken) { lines = []; list.innerHTML = `<p class="rv-along-empty">${esc(error.message)}</p>`; console.warn('Listen along load failed:', error.message); } }
     paintAvailability();
   }
+  // show() settles `kind` before its first await, so this reads the panel just opened.
+  // Only user opens and the Transcript/Songs switch count — not the automatic re-follow.
+  function tallyKind() { if(kind) tally(kind === 'songs' ? 'songsOpen' : 'transcriptOpen'); }
   function open(id, options) {
     if(!panel) build();
     const wasHidden = panel.hidden;
@@ -235,7 +240,7 @@
     requestAnimationFrame(() => panel.classList.add('shown'));
     // The phone Back button closes the panel rather than leaving the page.
     if(!pushed) { history.pushState({...(history.state || {}), along: true}, '', location.href); pushed = true; }
-    show(id, options); api.onChange?.();
+    show(id, options); tallyKind(); api.onChange?.();
     $('alongTitle').focus({preventScroll: true});
   }
   function hide() {

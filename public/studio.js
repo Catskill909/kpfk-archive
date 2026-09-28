@@ -892,6 +892,32 @@
         k.appendChild(tile);
       });
 
+      // Feature clicks (integration step 6). Discovery's counters only mean something
+      // while its buttons exist, so with Discovery off only Just aired is shown.
+      var c = document.getElementById('usageClicks');
+      var cNote = document.getElementById('usageClicksNote');
+      c.textContent = '';
+      var clicks = u.clicks || {};
+      var CLICKS = [
+        ['justAiredPlay', 'Just aired plays', false],
+        ['transcriptOpen', 'Transcript opened', true],
+        ['lineJump', 'Transcript line played', true],
+        ['transcriptFind', 'Find in episode', true],
+        ['songsOpen', 'Song list opened', true],
+        ['songJump', 'Song played from list', true],
+        ['summaryShown', 'Summaries seen', true],
+        ['pendingShown', '"Processing" seen', true],
+      ];
+      CLICKS.forEach(function (t) {
+        if (t[2] && !u.discoveryOn) return;
+        var tile = el('div', 'kpi');
+        tile.appendChild(el('div', 'kpi-value', num(clicks[t[0]] || 0)));
+        tile.appendChild(el('div', 'kpi-label', t[1]));
+        c.appendChild(tile);
+      });
+      cNote.hidden = !!u.discoveryOn;
+      cNote.textContent = u.discoveryOn ? '' : 'Transcript, song list and summary counters appear when Discovery is switched on.';
+
       // Reuse the air-date histogram: same shape of question, same mark. It
       // already draws a measured zero as a baseline tick, which matters more
       // here — a quiet day and a broken collector must not look alike.

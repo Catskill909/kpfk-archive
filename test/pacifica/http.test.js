@@ -190,6 +190,16 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   assert.equal(login.status, 200);
   const cookie = login.headers.get('set-cookie').split(';')[0];
   const studio = async p => { const r = await fetch(url + p, { headers: { Cookie: cookie } }); assert.equal(r.status, 200, p); return r.json(); };
+  // Feature clicks (step 6): every named counter lands in the report once per beacon;
+  // a name off the list is dropped, not stored.
+  const uiNames = JSON.parse(/const UI_COUNTERS = (\[[^\]]+\])/.exec(fs.readFileSync(path.join(root, 'server.js'), 'utf8'))[1].replace(/'/g, '"'));
+  for (const k of uiNames) assert.equal((await beacon({ t: 'ui', k })).status, 204);
+  assert.equal((await beacon({ t: 'ui', k: 'somethingElse' })).status, 204);
+  await sleep(50);
+  const usage = await studio('/api/studio/usage');
+  assert.deepEqual(Object.keys(usage.clicks).sort(), [...uiNames].sort(), 'every counter reported, none extra');
+  for (const k of uiNames) assert.equal(usage.clicks[k], 1, 'counted: ' + k);
+  assert.equal(typeof usage.discoveryOn, 'boolean');
   const stats = await studio('/api/studio/stats');
   const named = [
     ...(await studio('/api/studio/usage')).topShows.map(s => ['usage.topShows', s]),

@@ -257,5 +257,18 @@
   document.addEventListener('click', function (ev) {
     var t = ev.target;
     if (t && t.closest && t.closest('.sheet-share')) send({ t: 'share' });
+    // A Just aired card started (not paused): its button has no .playing yet.
+    var ja = t && t.closest && t.closest('.ja-play');
+    if (ja && !ja.classList.contains('playing')) count('justAiredPlay');
   }, true);
+
+  // ---- feature clicks (integration step 6) ---------------------------------
+  //
+  // A fixed list of named counters — the server ignores any name not on it, so
+  // this cannot become a free-text channel. Same promise as everything above:
+  // a name and nothing else, no episode, no words, no identifier. Plugins call
+  // window.ArchiveStats.count(name); a missing ArchiveStats (tracking off, or
+  // this file failed) is a no-op for them.
+  function count(name) { send({ t: 'ui', k: String(name).slice(0, 32) }); }
+  window.ArchiveStats = { count: count };
 })();

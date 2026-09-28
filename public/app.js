@@ -1168,6 +1168,7 @@
   // state, so those words stay off the bar; only things the listener needs to
   // know about — loading, buffering, blocked, unavailable — are shown here.
   var QUIET_STATES = { 'Playing':1, 'Paused':1, 'Ready':1, 'Finished':1 };
+  var sheetCounted = {};   // episode ids whose summary / processing note was counted this visit
   function setStatus(html){ playerStatus.innerHTML = QUIET_STATES[html] ? '' : html; }
 
   function refreshToggleIcon(){
@@ -4540,6 +4541,12 @@
       ? (r.qirPending ? (r.qirPending.skipped ? 'No summary or transcript for this episode.' : 'Transcript processing — the summary and transcript usually appear within a few hours of the broadcast.')
         : 'No episode notes for this broadcast.')
       : '';
+    // Stats step 6: a QIR summary or the "processing" note was shown. Once per episode per
+    // visit (the sheet repaints when data arrives); the counter carries no episode.
+    if(window.ArchiveStats){
+      var shown = r.qirEpisode && selNotes ? 'summaryShown' : (r.qirPending && !r.qirPending.skipped && selEmpty ? 'pendingShown' : '');
+      if(shown && !sheetCounted[shown+' '+r.id]){ sheetCounted[shown+' '+r.id] = 1; window.ArchiveStats.count(shown); }
+    }
     var episodeBlock =
       (selEmpty ? '<p class="sheet-selected-empty">'+esc(selEmpty)+'</p>' : '')+
       (selTopic ? '<p class="sheet-selected-topic">'+esc(selTopic)+'</p>' : '')+

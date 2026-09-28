@@ -2380,7 +2380,12 @@ const STATS_FLUSH_MS = 5 * 1000;
 // count already fired on the shorter timer. Splitting them is what stops a
 // mid-word pause from recording a truncated stem. See track.js.
 // No `searchterm`: the words are not collected. See the note above.
-const EVENT_TYPES = ['pageview', 'play', 'live', 'listen', 'search', 'share'];
+const EVENT_TYPES = ['pageview', 'play', 'live', 'listen', 'search', 'share', 'ui'];
+// Feature clicks (integration step 6). A closed list: `ui` events naming anything
+// else are dropped, so the beacon can never carry free text. Counts only — no
+// episode, no words. Most exist only where Discovery is on.
+const UI_COUNTERS = ['transcriptOpen', 'songsOpen', 'lineJump', 'songJump', 'transcriptFind',
+  'summaryShown', 'pendingShown', 'justAiredPlay'];
 
 /**
  * Reach, without geolocation — the three buckets a pageview's timezone becomes.
@@ -2490,7 +2495,7 @@ function statsDay() {
   const day = statsStore.days[d] || (statsStore.days[d] = {});
   const NUMBERS = ['pageviews', 'plays', 'live', 'searches', 'shares',
     'listenSeconds', 'liveSeconds'];
-  const MAPS = ['byShow', 'secondsByShow', 'byZone'];
+  const MAPS = ['byShow', 'secondsByShow', 'byZone', 'clicks'];
   for (const k of NUMBERS) if (typeof day[k] !== 'number' || !Number.isFinite(day[k])) day[k] = 0;
   for (const k of MAPS) if (!day[k] || typeof day[k] !== 'object') day[k] = {};
   return day;
@@ -2568,6 +2573,9 @@ async function ingestEvent(req, res) {
     }
     case 'live': day.live++; break;
     case 'share': day.shares++; break;
+    case 'ui':
+      if (UI_COUNTERS.indexOf(body.k) >= 0) day.clicks[body.k] = (day.clicks[body.k] || 0) + 1;
+      break;
     case 'search':
       // Only that a search happened. `body.q` from an older cached client is
       // ignored on purpose rather than merely unused — a stale page must not be
@@ -2712,6 +2720,7 @@ function usageReport(days = 30) {
   // Reach. Goes through sumBySlug for the same reason every other total does —
   // reading statsStore.days directly falls off the cliff at the month rollover.
   const byZone = sumBySlug(window, 'byZone');
+  const clicks = sumBySlug(window, 'clicks');
   const zoneTotal = ZONE_BUCKETS.reduce((n, b) => n + (byZone.get(b) || 0), 0);
   const firstWithData = window.find((w) => w.rec);
   return {
@@ -2737,6 +2746,10 @@ function usageReport(days = 30) {
         pct: zoneTotal ? Math.round(((byZone.get(b) || 0) / zoneTotal) * 1000) / 10 : 0,
       })),
     },
+    // Feature clicks, every counter present (zero included) so the studio can tell
+    // "nobody clicked" from "not collected". `discovery` says whether its buttons exist.
+    clicks: Object.fromEntries(UI_COUNTERS.map((k) => [k, clicks.get(k) || 0])),
+    discoveryOn: !!(discovery && discovery.enabled()),
     days: out,
     totals: out.reduce((t, d) => ({
       pageviews: t.pageviews + d.pageviews,
