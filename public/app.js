@@ -614,12 +614,20 @@
   // from QIR where the Discovery plugin has added them (step 4a).
   var justAiredEl = document.getElementById('justAired');
   var justAiredList = document.getElementById('justAiredList');
-  function renderJustAired(){
+  var justAiredNews = document.getElementById('justAiredNews');
+  var justAiredShown = [];   // ids on screen, so a live update can slide in only what is new
+  // animate: a live update (new episodes, or new QIR headlines) — new cards slide in and are
+  // announced to screen readers. Ordinary renders (filters, first load) do neither.
+  function renderJustAired(animate){
     if(!justAiredEl) return;
     var list = (state.query || state.browse !== 'all') ? [] : rows.filter(function(r){ return state.cat === 'all' || r.cat === state.cat; })
       .sort(function(a, b){ return b.dt - a.dt; });
     var picks = list.length ? window.JustAired.pick(list, {timeZone: STATION.timezone, limit: 3}) : [];
     justAiredEl.hidden = !picks.length;
+    var before = justAiredShown;
+    justAiredShown = picks.map(function(r){ return r.id; });
+    var fresh = animate ? picks.filter(function(r){ return before.indexOf(r.id) === -1; }) : [];
+    if(fresh.length && justAiredNews) justAiredNews.textContent = 'New in Just aired: ' + fresh.map(function(r){ return window.ArchiveSearch.episodeTitle(r) || r.title; }).join(', ');
     justAiredList.innerHTML = picks.map(function(r){
       var c = CAT_BY_KEY[r.cat] || {label:''};
       var isLoading = (loadingMp3===r.mp3);
@@ -634,7 +642,7 @@
       var mins = r.durationSec ? Math.round(r.durationSec / 60) + ' min' : '';
       // The show name gets its own bold line under the headline (Paul, 2026-09-28).
       var details = [topic ? '' : c.label, stationDate(new Date(r.dt * 1000)), when.time, mins].filter(Boolean).join(' · ');
-      return '<article class="ja-item">'+
+      return '<article class="ja-item'+(fresh.indexOf(r) !== -1 ? ' ja-in' : '')+'">'+
         '<button class="ja-art show-open" type="button" data-id="'+esc(r.id)+'" tabindex="-1" aria-hidden="true">'+
           (photo ? '<img loading="lazy" alt="" src="'+esc(photo)+'">' : '')+'</button>'+
         '<button class="ja-text show-open" type="button" data-id="'+esc(r.id)+'" aria-label="More about '+esc(topic || r.title)+'">'+
@@ -2931,7 +2939,10 @@
       playTrack(r.mp3, r.title, c.label + (r.host ? ' · with '+r.host : ''), r.photo || '', true);
       pendingResume = seconds; resumeIsJump = true;
     },
-    closeSheet: function(){ closeSheet(); }
+    closeSheet: function(){ closeSheet(); },
+    // A plugin's own live data arrived (new QIR headlines): redo the rows' extra fields
+    // and redraw Just aired only; the listing never moves under the reader.
+    refreshJustAired: function(){ enrichRows(); rebuildSearchIndex(); renderJustAired(true); }
   };
   // Buttons a plugin adds to the show sheet's selected broadcast (step 4e: Transcript,
   // Songs). Each returns markup whose buttons carry data-plugin-action and data-id.
@@ -2945,6 +2956,7 @@
   function ingest(list, updated, revision, directory){
     if(directory) { showInfo = directory; detailAsked = {}; }
     rows = list;
+    renderedCount = list.length;
     enrichRows();
     rebuildSearchIndex();
     if(updated) archiveUpdated = updated;
@@ -3025,7 +3037,11 @@
   // Upstream is scraped at most every 10 min server-side, so a 5-minute poll of
   // a ~60-byte response is the cheapest thing that never lags the source by more
   // than one cache window.
-  var FRESH_POLL_MS = 5 * 60 * 1000;
+  // 2 minutes (was 5): Just aired updates itself from this poll (Paul, 2026-09-28, as
+  // Discovery did); the probe is ~60 bytes and the full listing is fetched only on change.
+  var FRESH_POLL_MS = 2 * 60 * 1000;
+  var quietSig = '';          // newest listing already taken in quietly (Just aired only)
+  var renderedCount = 0;      // episodes in the listing actually on screen
   var archiveSig = '';        // count:latestDt of what is currently rendered
   var pendingSig = '';        // signature the pill is offering, if shown
   var refreshBusy = false;
@@ -3036,7 +3052,7 @@
   function showRefreshPill(sig, count){
     if(pendingSig === sig) return;
     pendingSig = sig;
-    var added = count - rows.length;
+    var added = count - renderedCount;
     refreshBtnText.textContent = added > 0
       ? (added === 1 ? '1 new episode' : added + ' new episodes')
       : 'Archive updated';
@@ -3066,9 +3082,29 @@
         // screen. The pill is what offers the newer one.
         if(d.updated){ archiveUpdated = d.updated; setClock(); }
         var sig = d.revision || (d.count + ':' + d.latest);
-        if(sig !== archiveSig) showRefreshPill(sig, d.count);
+        if(sig !== archiveSig){ showRefreshPill(sig, d.count); quietUpdate(sig); }
       })
       .catch(function(){ /* transient; the next poll tries again */ });
+  }
+
+  // New episodes: take the new list in quietly and redraw Just aired only, with the new
+  // cards sliding in. The listing on screen stays as it is until the reader asks for it
+  // (the pill); rows is the new list, so a new card opens and plays like any other.
+  function quietUpdate(sig){
+    if(quietSig === sig || refreshBusy) return;
+    quietSig = sig;
+    fetch('/api/archive', {cache:'no-store'})
+      .then(function(r){ if(!r.ok) throw new Error('archive '+r.status); return r.json(); })
+      .then(function(data){
+        if(refreshBusy || !data || !data.shows) return;
+        if(data.directory) showInfo = data.directory;
+        rows = data.shows;
+        enrichRows();
+        rebuildSearchIndex();
+        renderJustAired(true);
+      })
+      // Caught: offline or the server restarting. Forget the signature so the next poll tries again.
+      .catch(function(e){ quietSig = ''; console.warn('Just aired update failed:', e.message); });
   }
 
   // Swap the new listing in without a page reload: playback, the open sheet and

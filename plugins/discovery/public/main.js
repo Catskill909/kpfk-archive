@@ -106,11 +106,39 @@
     function load(){
       win.fetch('/api/plugins/qir/catalog', {cache: 'no-store'})
         .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-        .then(function(catalog){ byMp3 = index(catalog); app.refresh(); if(along) along.refresh(); })
+        .then(function(catalog){ byMp3 = index(catalog); app.refresh(); if(along) along.refresh(); recentTimer = win.setInterval(checkRecent, RECENT_MS); })
         // Caught: QIR switched off, down or slow. The archive works without it; say so once.
         .catch(function(e){ console.warn('Discovery: QIR catalog unavailable (' + e.message + '); the archive works without it.'); });
     }
     if('requestIdleCallback' in win) win.requestIdleCallback(load, {timeout: 3000}); else win.setTimeout(load, 1500);
+    // Late headlines (2026-09-28, as on Discovery's page): QIR processes a show some time
+    // after it airs, so every 2 minutes ask for the last two days' QIR episodes (a few KB,
+    // /api/plugins/qir/recent) and redraw Just aired if any headline is new. The listing
+    // is never redrawn under the reader. Stops if Discovery is switched off (404).
+    var RECENT_MS = 2 * 60 * 1000, recentTimer = null;
+    function stationDate(ms){
+      var p = {};
+      new Intl.DateTimeFormat('en-CA', {timeZone: (win.StationConfig || {}).timezone || 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit'})
+        .formatToParts(new Date(ms)).forEach(function(x){ p[x.type] = x.value; });
+      return p.year + '-' + p.month + '-' + p.day;
+    }
+    function checkRecent(){
+      if(win.document.hidden || !byMp3) return;
+      var since = stationDate(Date.now() - 2 * 86400000) + ' 00:00:00';
+      win.fetch('/api/plugins/qir/recent?since=' + encodeURIComponent(since), {cache: 'no-store'})
+        .then(function(r){ if(r.status === 404) throw Object.assign(new Error('switched off'), {stop: true}); if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function(d){
+          var changed = false;
+          (d.episodes || []).forEach(function(e){
+            if(!e || !e.mp3_url || e.pending) return;
+            var had = byMp3.get(e.mp3_url);
+            if(!had || had.headline !== e.headline || had.summary !== e.summary){ byMp3.set(e.mp3_url, e); changed = true; }
+          });
+          if(changed){ app.refreshJustAired(); if(along) along.refresh(); }
+        })
+        // Caught: offline, or Discovery switched off since the page loaded (then stop asking).
+        .catch(function(e){ if(e.stop && recentTimer) win.clearInterval(recentTimer); });
+    }
   }
   return {index: index, enrich: enrich, start: start};
 });

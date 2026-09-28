@@ -42,6 +42,10 @@ Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-28.**
   in the player bar and in the show popup; read along, find in the episode, tap a line to play
   from there. The show popup also shows the episode's headline and summary.
 - **Headlines in the Episodes tab** and slightly smaller section headings (next deploy).
+- **Show popup layout** (next deploy): "This episode" and "About the show" in the wide column,
+  controls on the right; popups open beside the transcript panel; cards wrap instead of squeezing.
+- **Just aired updates itself** (next deploy): every 2 minutes; new episodes slide in, and with
+  Discovery on, late QIR headlines update the cards. The listing waits for "New episodes".
 
 ## Next up
 
@@ -220,3 +224,4 @@ same site, same stats).
 | 2026-09-28 | Step 4: QIR data on the main page, permanent links, Just aired, All / Shows / Episodes tabs, show card layout. |
 | 2026-09-28 | Step 5a: studio Discovery tab with live on/off switches. Plan reorganised for project tracking. |
 | 2026-09-28 | Studio: real tabs, in-app confirmations (never browser pop-ups). Step 4e: Transcript and Songs on the main site; headlines in the Episodes tab and the show popup. |
+| 2026-09-28 | Show popup layout reworked; popups beside the transcript; cards wrap; Just aired updates itself (2-minute check, cards slide in). |

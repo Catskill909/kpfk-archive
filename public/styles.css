@@ -4055,3 +4055,8 @@
   @media (min-width:561px){
     body.view-grid #rows{ grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); }
   }
+
+  /* Just aired live update: new cards slide in (app.js renderJustAired(true)). */
+  @keyframes jaIn{ from{ opacity:0; transform:translateY(-10px) scale(.98); } to{ opacity:1; transform:none; } }
+  .ja-item.ja-in{ animation:jaIn .55s cubic-bezier(.2,.8,.2,1) both; }
+  @media (prefers-reduced-motion:reduce){ .ja-item.ja-in{ animation:none; } }
