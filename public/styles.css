@@ -4141,6 +4141,16 @@
     --player-float-bg:color-mix(in srgb, var(--surface-1) 97%, transparent);
     --player-float-shadow:0 16px 40px -10px rgba(60,35,20,.28), 0 2px 8px rgba(60,35,20,.10);
   }
+  /* Bottom fade (Paul, 2026-09-28: content sliding through the gap under the floating card
+     was distracting). A click-through band behind the card: clear 28px above it, fading to
+     the page colour, solid through the gap below. Under popups and the transcript panel. */
+  @media (min-width:701px){
+    body.has-player::after{
+      content:""; position:fixed; left:0; right:0; bottom:0; z-index:79; pointer-events:none;
+      height:calc(var(--player-h, 90px) + 28px);
+      background:linear-gradient(to bottom, transparent, var(--surface-0) 28px);
+    }
+  }
   @media (min-width:1100px){
     body.along-open .player-bar{
       --col-edge:max(var(--page-gutter, 1rem), (100% - min(var(--along-w, 420px), 92vw) - 1180px) / 2 + var(--page-gutter, 1rem));
