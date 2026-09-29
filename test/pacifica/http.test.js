@@ -68,6 +68,10 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   // Discovery allowed here (the shipped KPFK profile allows it too since 2026-09-28); the
   // studio switch turns it on and off below, and the reboot further down disallows it.
   profile.plugins = { ...(profile.plugins || {}), discovery: true };
+  // This server runs on today's clock against the 2026-09-14 fixture, so the music window
+  // would hide all of its music; membership is what is counted here. The window is tested in
+  // service.test.js ("music window").
+  delete profile.musicWindowDays;
   const profileFile = path.join(dir, 'profile.json'); fs.writeFileSync(profileFile, JSON.stringify(profile));
   const preload = path.join(dir, 'network.cjs');
   fs.writeFileSync(preload, `const original=global.fetch;global.fetch=(url,options)=>{if(new URL(url).origin!==${JSON.stringify(base)}){console.error('UNEXPECTED_UPSTREAM '+url);throw new Error('Unexpected upstream');}return original(url,options)};`);
@@ -137,10 +141,10 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const homeOn = await (await fetch(url)).text();
   assert.match(homeOn, /<script src="\/discover\/main\.js\?v=[^"]+" defer><\/script>/);
   assert.doesNotMatch(homeOn, /<!-- plugins:/);
-  assert.match(homeOn, /href="\/discover"/, 'the menu links to Discover while it is on');
-  const discover = await fetch(url + '/discover');
-  assert.equal(discover.status, 200);
-  assert.match(await discover.text(), /KPFK Discovery/);
+  assert.doesNotMatch(homeOn, /href="\/discover"/, 'no menu link to the retired Discover page');
+  const discover = await fetch(url + '/discover?q=jazz', { redirect: 'manual' });
+  assert.equal(discover.status, 302, 'the old page sends people to the main page');
+  assert.equal(discover.headers.get('location'), '/?q=jazz', 'search kept');
   assert.equal((await fetch(url + '/discover/app.js')).status, 200);
   const qirStatus = await (await fetch(url + '/api/plugins/qir/status')).json();
   assert.equal(qirStatus.state, 'not_configured');

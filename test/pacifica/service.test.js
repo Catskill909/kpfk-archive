@@ -224,3 +224,63 @@ test('artwork is fetched once, shared while in flight, served stale while refres
   assert.equal(warmed.cached, warmed.requested); assert.equal(images(), 2 + warmed.requested);
   await r.service.artwork(ids[1]); assert.equal(images(), 2 + warmed.requested, 'warmed images need no fetch');
 });
+
+// Station feed rules on the listener archive (2026-09-29). Discovery applied both; the
+// archive list (and, through /api/archive, the Flutter app) never had. The class: a rule
+// in the profile that only some consumers apply. Each test runs the real archive() view.
+function ruleService(t, stationProfile, clock) {
+  const dir = path.join(__dirname, '../../docs/fixtures/pacifica-kpfk-2026-09-14');
+  const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'kpfk-rules-'));
+  t.after(() => fs.rmSync(dataDir, { recursive: true, force: true }));
+  return createService({ profile: stationProfile, dataDir, writeJsonAtomic: write, now: () => clock,
+    fetchImpl: async url => json(JSON.parse(fs.readFileSync(path.join(dir, path.basename(new URL(url).pathname)), 'utf8'))) });
+}
+test('music window: music past musicWindowDays is hidden and named; talk the feed types "Music" is not', async t => {
+  const clock = (1789435100 + 10 * 86400) * 1000, cutoff = clock / 1000 - profile.musicWindowDays * 86400;
+  const listed = new Set(['specialmusicprogramm', 'alanwatts']);
+  const service = ruleService(t, { ...profile, musicShows: [...listed] }, clock);
+  const catalog = await service.catalog(), view = await service.archive();
+  const served = new Set(view.shows.map(r => r.id)), listedKeys = new Set(view.shows.map(r => r.sho).concat(view.filter.musicExpired.map(x => `kpfk.kpfk.${x.show}`)));
+  const inView = r => listedKeys.has(r.sho);
+  const oldMusic = catalog.shows.filter(r => inView(r) && r.cat === 'music' && r.dt < cutoff);
+  const newMusic = catalog.shows.filter(r => inView(r) && r.cat === 'music' && r.dt >= cutoff && r.dt <= clock / 1000);
+  const listedShow = catalog.shows.filter(r => inView(r) && listed.has(r.upstreamAltId) && r.cat !== 'music' && r.dt < cutoff);
+  const typedMusicTalk = catalog.shows.filter(r => inView(r) && r.cat !== 'music' && r.type === 'Music' && !listed.has(r.upstreamAltId) && r.dt < cutoff);
+  // Positive controls: every side of the rule is present in the fixture at this clock.
+  assert.ok(oldMusic.length > 0 && newMusic.length > 0 && listedShow.length > 0 && typedMusicTalk.length > 0);
+  assert.ok(oldMusic.every(r => !served.has(r.id)), 'music past the window is hidden');
+  assert.ok(listedShow.every(r => !served.has(r.id)), 'a musicShows show past the window is hidden, whatever its category');
+  assert.ok(newMusic.every(r => served.has(r.id)), 'music inside the window stays');
+  assert.ok(typedMusicTalk.every(r => served.has(r.id)), 'the feed\'s episode type is not the rule');
+  // KPFK's real corrections re-file two fixture On Contact hours to Alan Watts, listed here:
+  // corrections apply first, so they are hidden as Alan Watts.
+  const refiled = view.filter.episodeCorrected.filter(x => listed.has(x.show) && x.dt < cutoff).map(x => x.id);
+  assert.ok(refiled.length > 0, 'fixture has a re-filed episode past the window');
+  assert.deepEqual(view.filter.musicExpired.map(x => x.id).sort(), oldMusic.concat(listedShow).map(r => r.id).concat(refiled).sort(), 'every hidden one is named');
+  assert.equal(view.filter.musicWindowDays, 14);
+  assert.equal((await service.catalog()).count, catalog.count, 'catalog mirror is untouched');
+  assert.ok(service.anomalies().items.some(i => i.kind === 'music'), 'reported in the studio');
+  // No window configured: nothing is hidden by it.
+  const open = await ruleService(t, { ...profile, musicWindowDays: null }, clock).archive();
+  assert.equal(open.filter.musicExpired.length, 0);
+  assert.ok(oldMusic.every(r => open.shows.some(s => s.id === r.id)));
+});
+test('episode corrections: a re-filed recording takes the real show\'s name, picture, host and category', async t => {
+  const plain = await ruleService(t, profile, 1789435100000).catalog();
+  const target = plain.shows.find(r => r.upstreamAltId === 'onconta');
+  const file = target.mp3.split('/').pop(), stray = plain.shows.find(r => r.upstreamAltId === 'onconta' && r.id !== target.id);
+  const service = ruleService(t, { ...profile, episodeCorrections: [
+    { file, show: 'alanwatts', note: 'test' }, { file: stray.mp3.split('/').pop(), show: 'nosuchshow', note: 'test' }] }, 1789435100000);
+  const catalog = await service.catalog(), view = await service.archive();
+  const real = view.directory['kpfk.kpfk.alanwatts'], ep = view.shows.find(r => r.id === target.id);
+  assert.ok(real && ep, 'fixture has both shows and the episode is served');
+  assert.equal(ep.sho, 'kpfk.kpfk.alanwatts'); assert.equal(ep.upstreamAltId, 'alanwatts'); assert.equal(ep.title, real.name);
+  assert.equal(ep.photo, real.photo); assert.notEqual(ep.photo, target.photo, 'picture moved with it');
+  assert.equal(ep.host, real.dj); assert.equal(ep.cat, real.cat); assert.equal(ep.categoryLabel, real.categoryLabel);
+  assert.ok(ep.episodeTitle.startsWith(real.name + ' — ')); assert.equal(ep.correctedFrom, 'kpfk.kpfk.onconta');
+  assert.deepEqual(view.filter.episodeCorrected.map(x => x.id), [target.id], 'named, and only the matching file');
+  assert.equal(view.shows.find(r => r.id === stray.id).sho, 'kpfk.kpfk.onconta', 'unknown show: left as filed');
+  assert.equal(view.shows.filter(r => r.sho === 'kpfk.kpfk.onconta').length, plain.shows.filter(r => r.sho === 'kpfk.kpfk.onconta' && r.dt <= 1789435100).length - 1);
+  assert.equal(catalog.shows.find(r => r.id === target.id).sho, 'kpfk.kpfk.onconta', 'catalog mirror is untouched');
+  assert.ok(service.anomalies().items.some(i => i.kind === 'corrected' && /On Contact/i.test(i.detail)), 'reported in the studio');
+});

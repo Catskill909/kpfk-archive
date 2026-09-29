@@ -1519,6 +1519,7 @@
     // ---- feed anomalies (2026-09-27): what the feed rules hid, corrected, held or skipped.
     var ANOMALY_KINDS = [
       ['failed', 'Failed recording'], ['duration', 'Duration corrected'], ['held', 'Held until air'],
+      ['corrected', 'Episode re-filed'], ['music', 'Music past its window'],
       ['skipped', 'Record left out'], ['type', 'Show type corrected'], ['schedule', 'Schedule entry left out'],
     ];
     var anomalyText = '';
