@@ -1,13 +1,16 @@
 # Exports — specification
 
-> **2026-09-29 — dialog reworked (Paul): "Import / Export".** Two sections only:
-> **1. Back up or move this site** (Download full backup; Restore from a backup → preview →
-> restore → undo) and **2. Stats for Pacifica and the station** (dates; **Download stats (.zip)**:
-> daily, shows, reach and the new **features** table as CSV + JSON + read-me; Printable report).
-> Single files and program data (archive, coverage, station profile) are folded underneath.
-> The backup now carries feature clicks: day fields come from one list, `lib/usage-fields.js`
-> (before, the backup's own copy lacked `clicks`, so a move lost them). The tab and card
-> layout described below is history.
+> **2026-09-29 — reworked (Paul): "Import / Export".** Two sections only.
+> **1. Back up or move this site:** Download full backup (every stats month, feature clicks included,
+> plus `settings.discovery = { enabled, qir }`); Restore → preview (months and switches) → restore →
+> undo. Day fields come from one list, `lib/usage-fields.js` (the backup's own copy once lacked
+> `clicks`, so a move lost them).
+> **2. Stats for Pacifica and the station:** dates; **Download everything (.zip)** — every dataset
+> (listening incl. `features` and `features_daily`, archive, coverage, profile) as CSV + JSON +
+> read-me, a README-FIRST, and the **master spreadsheet** `<station>-everything-<span>.xlsx` (one tab
+> per table + Read me + Columns; also its own download, `format=xlsx`); **Printable report** (now with
+> Feature use). Single files and program data listed below, always visible.
+> The tab-and-card layout described below is history.
 
 **Status: every phase built and verified live, 2026-09-16** (Paul tested the deployed
 studio; the HTTP audit of that deploy is in HANDOFF). Listening (1), date spans (1b), backup and restore

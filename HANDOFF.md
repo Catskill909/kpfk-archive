@@ -1,6 +1,6 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-29 (music limit, Alan Watts, /discover retired).  **This folder is the active KPFK podcast-template project.**
+**Updated:** 2026-09-29 (archive rules, /discover retired, Import / Export + master spreadsheet).  **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
@@ -8,28 +8,44 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 
 ## Remind Paul first (say these at the start of every session)
 
-1. **Live:** the player is done and live on podcasts.kpfk.org (floating card; settled — do not
-   re-raise). Redeploy of `ec68584` confirmed 2026-09-29; `storage.instanceId` =
-   `73039ae5-6589-4ec2-9df5-354de84c0989`. podcasts.kpfk.org and podcast.kpfk.org are the same app.
-2. **Ace email sent 2026-09-28** (`kpfk-discovery-plugin/.local-notes/ace-email-2026-09-28.html`):
-   7 show keys + World Massive Sep 26 still open in QIR; heads-up that Discovery moved here; studio
-   tour. Paul sent Ace his Coolify login and the studio password. **Any reply?** Recheck QIR.
-3. **2026-09-29 done and live (checked):** music 14-day limit, Alan Watts corrections, old `/discover`
-   page retired (see "Done 2026-09-29" in [docs/INTEGRATION-PLAN.md](docs/INTEGRATION-PLAN.md)).
-   Next: 7 → 8 → 5b. QIR (checked 2026-09-29): Ace has not fixed the 7 show keys or World Massive Sep 26 yet.
-4. **Import / Export (2026-09-29, pushed, needs redeploy):** studio button renamed; two sections —
-   full backup / restore, and one-click stats .zip (daily, shows, reach, feature clicks). Fixed: the
-   backup had been dropping feature clicks (day fields now one list, `lib/usage-fields.js`). The backup also
-   carries the two Discovery switches (restore shows them, sets them, undo puts them back). **Move test passed
-   2026-09-29:** live backup restored onto a fresh local server — stats, clicks, archive filters identical. After the
-   redeploy: open Import / Export, Download stats, open the .zip. **Known, not from this change:**
-   `test/studio/layout-tests.js` self-test "with both defences removed the probe reports the overflow"
-   fails on 2026-09-28 code too (stale self-test; real layout checks pass).
-5. **Parked:** desktop "Copy link" share button (so desktop shares count); Coolify SMTP and
-   "Instance's Domain" (invite links); queued Ace items in the Discovery HANDOFF (hold).
+1. **Live and checked (2026-09-29):** everything below is deployed; `storage.instanceId` =
+   `73039ae5-6589-4ec2-9df5-354de84c0989`, `freshVolume:false`. Player settled (floating card — do not
+   re-raise). podcasts.kpfk.org and podcast.kpfk.org are the same app.
+2. **Ace / QIR:** email sent 2026-09-28. As of 2026-09-29 the 7 show keys (All Of The Above, Nightscapes,
+   The Aware Show, Reggae Central, CodePINK, Making Contact, CinemaScore) and World Massive Sep 26 are
+   still not processed in QIR. **Any reply?** Recheck with the live `/api/plugins/qir/catalog`.
+3. **Next:** step 8 (retire kpfk-discovery.pacifica.audio) → 5b (station template in the studio).
+   Step 7 is done except that a moved site still needs its QIR key set in Coolify (env, not data).
+4. **Auto mode outage (Anthropic, since 2026-09-28 ~06:30 UTC):** "server-side auto mode classifier gave
+   no verdict" blocks commands in bursts, for everyone ([#97870](https://github.com/anthropics/claude-code/issues/97870)).
+   Not this project. Paul chose to stay on auto; when it bursts, wait or switch to "Edit automatically".
+   Allow lists do not help in auto mode during the outage. Claude may not edit its own permissions.
+5. **Parked:** desktop "Copy link" share button; Coolify SMTP and "Instance's Domain"; queued Ace items
+   in the Discovery HANDOFF (hold). Known stale self-test: `test/studio/layout-tests.js` "with both
+   defences removed…" fails on 2026-09-28 code too (real layout checks pass).
 6. **How Paul works:** short plain wrap-ups + "Paul — your action points"; copy-paste text on a
    page with Copy buttons; ask before opening a browser or touching his app on port 8081;
-   announce every push. Paul was worn out at the end of 2026-09-28 — keep the start light.
+   announce every push. Root causes, not workarounds ("no duct tape").
+
+## 2026-09-29 — archive rules, /discover retired, Import / Export for moving the site
+
+All pushed and live (Paul redeployed; each checked on podcasts.kpfk.org). `npm test` 186/186.
+
+| Commit | What |
+|---|---|
+| `e1ff67e` | Archive list applies the station rules Discovery already had: **music 14-day limit** (category Music or `musicShows`; not the feed's episode type, which marks talk like Something's Happening as Music) and **episode corrections** (three Alan Watts hours filed as On Contact now show as Alan Watts). Reaches the Flutter app via `/api/archive`. The 8:00/8:30 halves are not joined here |
+| `c93ea94` | Old standalone `/discover` page retired: 302 to the main page (search kept), "Discover shows" menu link removed. `/discover/<file>` assets stay (the main page loads them). `/discovery` was never a route — any unknown path shows the home page |
+| `9bd53c2` | Studio **Import / Export** (was "Export"): 1. Back up or move this site, 2. Stats for Pacifica and the station. **Bug fixed:** the backup dropped feature clicks and restore refused them — the day fields were listed twice (server, backup); now one list, `lib/usage-fields.js`. New `features` table; zip writer `lib/export/zip.js` |
+| `e490723` | File lists always shown, never folded (Paul: hidden content is bad UI) |
+| `ee69216` | Backup carries the **Discovery switches** (`settings.discovery = {enabled, qir}`); restore previews, sets, and undo puts them back. The site writes only stats, the switches and its own identity (never moved) |
+| `e74c551` | **Download everything (.zip)**: every dataset (stats, archive, coverage, profile) + `features_daily` + README-FIRST |
+| `dfa4132` | Printable report gains **Feature use** |
+| `077aee0` | **Master spreadsheet (.xlsx)**: every table, one tab each, plus Read me and Columns tabs (`lib/export/xlsx.js`, no dependency; opened with openpyxl on real data) |
+
+**Move test (Paul, 2026-09-29):** live full backup restored onto a fresh local server — every
+listening figure, all 8 feature counters and (after its audio check caught up) the archive filters
+identical. A fresh server checks audio 400 files per archive load, so it needs a few visits; Discovery
+switches now travel with the backup.
 
 ## 2026-09-28 — one app: Discovery moved into the podcast site (read this first)
 

@@ -20,7 +20,7 @@ Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-29.**
 | 4 | Discovery's sections on the main page | ✅ Done (4f 2026-09-29) | Yes |
 | 5 | Discovery admin as a studio tab | 🟡 5a done, 5b to do | 5a yes |
 | 6 | Stats for both sides in the studio | ✅ Done | Yes — Studio → Listening → Feature clicks |
-| 7 | Import / export cover everything | 🟡 Reworked 2026-09-29 (backup lossless, stats .zip); full-restore rehearsal left | After redeploy |
+| 7 | Import / export cover everything | ✅ Done 2026-09-29 (move test passed with live data) | Yes |
 | 8 | Production release (retire the separate Discovery site) | ⬜ Not started | — |
 
 **Legend:** ✅ done · 🟡 in progress · ⬜ not started
@@ -48,34 +48,27 @@ Still running, but every visitor sees a "Discovery has moved" notice with one bu
 podcasts.kpfk.org and no way to dismiss it. It still calls QIR in the background until it is
 retired (step 8). Nothing else is developed there.
 
-## Done 2026-09-29 — live (checked after Paul's redeploy)
+## Done 2026-09-29 — live (checked after Paul's redeploys)
 
-- **Music 14-day limit on the podcast site:** music (category Music, plus `musicShows`) is hidden
-  `musicWindowDays` after air. The feed's episode *type* is not used — it marks talk such as
-  Something's Happening as Music (Paul: category only). Hides nothing today (the feed already
-  expires music at 14 days); guards against it stopping. `/healthz` `archiveFilter.musicExpired`.
-- **Episode corrections on the podcast site:** the three Alan Watts hours (Jul 26, Aug 2, Sep 27)
-  show as Alan Watts (name, picture, host, category), not On Contact. `archiveFilter.episodeCorrected`.
-  Reaches the Flutter app through `/api/archive`. The 8:00 and 8:30 halves are not joined into one
-  episode here (Discovery joins them).
-- Both listed in Studio → Feed anomalies.
-- **Old standalone `/discover` page retired** (Paul): `/discover` redirects to the main page (search
-  kept); the "Discover shows" menu link is gone. `/discover/<file>` addresses stay — the main page
-  loads Discovery's transcript/songs files from them.
+- **Music 14-day limit and Alan Watts corrections** on the archive list (station rules, profile).
+- **4f:** `/discover` redirects to the main page; "Discover shows" menu link removed.
+- **Step 7:** studio **Import / Export** — full backup (every stat, feature clicks, the Discovery
+  switches) with preview / restore / undo; **Download everything (.zip)** and a **master spreadsheet
+  (.xlsx)**, one tab per table; printable report has Feature use. Move test with the live backup onto a
+  fresh local server: identical. Not in a backup by design: feed copies and audio checks (rebuilt), the
+  server's identity, and env secrets such as `QIR_API_KEY` (set in Coolify on the new server).
 
 ## Next up
 
-1. **5b** Station template in the studio: edit a station's feeds, logo, colours and text, preview,
-   apply, with a way back.
-3. **6** Stats: transcript and summary clicks, Discovery searches (counts only).
-4. **7** Import / export include Discovery's settings; prove a full restore.
-5. **8** Production release.
+1. **8** Production release: point kpfk-discovery.pacifica.audio at podcasts.kpfk.org, stop that
+   Coolify app (it still calls QIR), archive the `kpfk-discovery-plugin` repo, update APP-FAMILY.md.
+2. **5b** Station template in the studio: edit a station's feeds, logo, colours and text, preview,
+   apply, with a way back (station settings would then join the backup).
 
 ## Paul — to do and decisions
 
-- [ ] Add `QIR_API_KEY` to the podcast site app in Coolify (copy it from the Discovery app), then redeploy. *(in progress)*
-- [ ] Try it: Studio → **Discovery** tab → switch Discovery on → look at the site → switch off.
-- [ ] Decide when to switch Discovery on for listeners.
+- [x] `QIR_API_KEY` set on the podcast site app in Coolify (QIR catalog live, checked 2026-09-29).
+- [x] Discovery switched on for listeners (feature clicks counting on the live site).
 - [ ] Pick the remaining sections (table in Step 4): search results (4.6), show popup (4.7), episode + transcript (4.8).
 - [ ] Say what the station template (5b) must let staff change first (logo? colours? feeds? text?).
 
@@ -150,7 +143,7 @@ next, because every section sits on them; admin, stats and backup after the scre
 - The "Now Playing sheet" idea is folded into 4e: tapping the bar already opens the show popup for
   what is playing; Transcript and Songs get added there.
 
-### Step 4 — Discovery's sections on the main page 🟡
+### Step 4 — Discovery's sections on the main page ✅
 
 **Approach (Paul, 2026-09-28):** Discovery becomes part of the main page, not a separate page. It
 shares the main top bar, search, player and popups, and adds its data where the station has it on.
@@ -215,11 +208,13 @@ clicked (jump to that moment); summary opened; Discovery search used (count only
 Just aired card played; "Transcript pending" shown; song list opened. Shown in the studio stats with
 a Discovery column. README updated in the same commit.
 
-### Step 7 — Import and export cover everything ⬜
+### Step 7 — Import and export cover everything ✅
 
-The studio already has export, full backup, and import with preview / apply / undo. Add Discovery's
-settings to them, then prove a full restore onto a fresh install (empty volume → import backup →
-same site, same stats).
+Done 2026-09-29. Studio **Import / Export**: full backup (every stats month incl. feature clicks, and
+the Discovery switches) with preview / restore / undo; **Download everything (.zip)** and a **master
+spreadsheet (.xlsx)**. Proven: Paul restored the live backup onto a fresh local server — identical
+figures, clicks and archive filters. Env secrets (`QIR_API_KEY`, `STUDIO_PASSWORD`) are set in Coolify
+on a new server; they are never in a backup.
 
 ### Step 8 — Production release ⬜
 

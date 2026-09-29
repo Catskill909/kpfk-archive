@@ -168,7 +168,8 @@ No VPS access needed — it is all in the studio (**Import / Export → Back up 
 4. Click **Restore N months**. The new server's own copies of any replaced months
    are saved first under `stats/pre-import-<time>/`; **Undo this restore** puts them
    back. Nothing is ever deleted.
-5. Check **Import / Export → Download stats** on both servers for the same dates: the files match.
+5. Check **Import / Export → Master spreadsheet (.xlsx)** on both servers for the same dates: the figures match.
+   Discovery switches come across with the backup; set `QIR_API_KEY` in Coolify on the new server (env is not in a backup).
 
 What does not move, on purpose: `.instance.json` (the new volume keeps its own
 `storage.instanceId`), and the feed snapshots in `pacifica/`. A backup from
