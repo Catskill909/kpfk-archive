@@ -10,6 +10,12 @@
  * Adding a colour literal to this file breaks that. Don't.
  */
 
+/* `hidden` always wins. Any rule that sets `display` (grid, flex, block) beats the browser's
+   own [hidden] style, so an element the page hides stayed on screen: the Stats area showed
+   under the Discovery tab (2026-09-29), after four one-off `.x[hidden]` patches for the same
+   thing. One rule for every element instead. */
+[hidden] { display: none !important; }
+
 .studio-body {
   margin: 0;
   background: var(--surface-0);
@@ -858,7 +864,6 @@
   gap: 1rem;
 }
 /* `display: grid` would otherwise override the hidden attribute. */
-.export-step[hidden], .export-preview[hidden], .export-undo[hidden] { display: none; }
 /* The two sections scroll between the header and the pinned footer. */
 .export-body { display: grid; gap: 1.75rem; }
 .export-undo { display: grid; gap: 0.75rem; }
@@ -980,7 +985,6 @@
 .export-sub { margin: 0; font-size: 0.95rem; font-weight: 600; color: var(--ink); }
 /* The restore preview's switches: one line each, beside the months. */
 .export-switches { display: grid; gap: 0.5rem; }
-.export-switches[hidden] { display: none; }
 .export-files { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.1rem; }
 .export-files li {
   display: flex;
@@ -1241,10 +1245,8 @@ th[aria-sort="ascending"] .th-sort::after { content: "\25B2"; }    /* ▲ */
 .studio-tab[aria-pressed="true"]::after { background: var(--accent); }
 .studio-tab[aria-pressed="true"] svg { color: var(--accent); }
 @media (hover: hover) and (pointer: fine) { .studio-tab:hover { color: var(--ink); background: var(--surface-2); } }
-.studio-tab[hidden] { display: none; }
 .studio-tab:focus-visible { outline: 2px solid var(--accent-2); outline-offset: -2px; }
 @media (max-width: 560px) { .studio-tab { padding: .8rem .9rem .7rem; font-size: .92rem; } }
-.studio-discovery[hidden] { display: none; }
 .studio-note { color: var(--ink-dim); font-size: .9rem; line-height: 1.55; margin: .25rem 0 1rem; max-width: 70ch; }
 .disc-setting {
   display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem;

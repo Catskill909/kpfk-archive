@@ -93,6 +93,37 @@ const OVERFLOW_PROBE = `(() => {
   ok('signed in and rendering the dashboard', isDash);
   if (!isDash) { console.log('\ncannot continue'); process.exit(1); }
 
+  // ---- 1b. Tabs (2026-09-29): the Stats area stayed on screen under the Discovery tab, because
+  // `.studio-main { display: grid }` beat the hidden attribute. The class: ANY element the page
+  // marks hidden must be off screen, so the sweep checks every [hidden] element, not just #main.
+  console.log('\n1b. tabs show only their own content');
+  const clickTab = async (name) => {
+    const r = JSON.parse(await ev(`JSON.stringify((() => { const b = document.querySelector('[data-studio-tab="${name}"]');
+      if (!b || b.hidden) return null; const x = b.getBoundingClientRect(); return { x: x.x + x.width / 2, y: x.y + x.height / 2 }; })())`));
+    if (!r) return false;
+    for (const type of ['mousePressed', 'mouseReleased']) await c.send('Input.dispatchMouseEvent', { type, x: r.x, y: r.y, button: 'left', clickCount: 1 });
+    await new Promise((res) => setTimeout(res, 600));
+    return true;
+  };
+  const tabState = async () => JSON.parse(await ev(`JSON.stringify({
+    stats: document.getElementById('main').getClientRects().length > 0,
+    discovery: document.getElementById('discoveryPanel').getClientRects().length > 0,
+    shownButHidden: [...document.querySelectorAll('[hidden]')].filter((el) => el.getClientRects().length > 0)
+      .map((el) => el.tagName.toLowerCase() + (el.id ? '#' + el.id : '.' + String(el.className).split(' ')[0])).slice(0, 5) })`));
+  const onStats = await tabState();
+  ok('Stats tab: the stats are on screen and Discovery is not (the probe can see both)', onStats.stats && !onStats.discovery, JSON.stringify(onStats));
+  if (await clickTab('discovery')) {
+    const onDisc = await tabState();
+    ok('Discovery tab: its panel is on screen', onDisc.discovery, JSON.stringify(onDisc));
+    ok('Discovery tab: the stats are NOT on screen', !onDisc.stats, JSON.stringify(onDisc));
+    ok('nothing marked hidden is on screen', onDisc.shownButHidden.length === 0, JSON.stringify(onDisc.shownButHidden));
+    await clickTab('stats');
+    const back = await tabState();
+    ok('back on Stats: stats shown, Discovery gone', back.stats && !back.discovery && back.shownButHidden.length === 0, JSON.stringify(back));
+  } else {
+    console.log('  (this station has no Discovery tab — tab checks skipped)');
+  }
+
   // The charts must have actually drawn — an empty page trivially fits.
   console.log('\n2. it fits every width it claims to support');
   for (const w of [1280, 1100, 768, 430, 390, 360]) {
