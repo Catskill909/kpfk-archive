@@ -120,6 +120,8 @@ test('real HTTP: an edit reaches every place the station is shown, at once; undo
       volunteerInMenu: /Volunteer/.test(page),
       frameSrc: (csp.match(/frame-src ([^;]*)/) || [])[1],
       logo: (page.match(/<img[^>]+src="(\/station-assets\/[^"?]+)/) || [])[1] || null,
+      cssLinked: /<link rel="stylesheet" href="\/station\.css/.test(page),
+      colour: ((await (await fetch(srv.url + '/station.css')).text()).match(/:root\{--accent:(#[0-9a-f]{6})/) || [])[1] || null,
     };
   }
 
@@ -129,6 +131,7 @@ test('real HTTP: an edit reaches every place the station is shown, at once; undo
   assert.match(before.title, /^KPFK 90\.7 FM/); assert.equal(before.api, 'KPFK'); assert.ok(before.volunteerInMenu);
   assert.match(before.manifest, /KPFK/); assert.match(before.ogSite, /KPFK/); assert.equal(before.stationJs, false);
   assert.match(before.frameSrc, /docs\.pacifica\.org/);
+  assert.equal(before.cssLinked, true, 'the listener page loads /station.css'); assert.equal(before.colour, null, 'no colour set');
 
   assert.equal((await fetch(A.url + '/api/studio/station')).status, 401, 'signed-in only');
   assert.equal((await fetch(A.url + '/api/studio/station/apply', { method: 'POST', body: '{}' })).status, 401);
@@ -136,7 +139,7 @@ test('real HTTP: an edit reaches every place the station is shown, at once; undo
   const logo = await (await A.post('/api/studio/station/logo', png(7), 'image/png')).json();
   assert.ok(logo.ok, JSON.stringify(logo));
   assert.equal((await A.post('/api/studio/station/logo', Buffer.from('<svg/>'), 'image/png')).status, 422, 'not an image: refused whatever it claims');
-  const edit = { name: 'KPFK-TEST-NAME', links: { volunteer: '', donate: 'https://donate.example.org/give' }, logo: logo.logo };
+  const edit = { name: 'KPFK-TEST-NAME', links: { volunteer: '', donate: 'https://donate.example.org/give' }, logo: logo.logo, accent: '#1e88e5' };
   const preview = await (await A.post('/api/studio/station/preview', JSON.stringify(edit))).json();
   assert.ok(preview.ok && preview.preview.name === 'KPFK-TEST-NAME', JSON.stringify(preview));
   assert.equal((await shown(A)).api, 'KPFK', 'a preview changes nothing');
@@ -152,6 +155,8 @@ test('real HTTP: an edit reaches every place the station is shown, at once; undo
   assert.equal(after.volunteerInMenu, false, 'a removed link leaves the menu');
   assert.match(after.frameSrc, /https:\/\/donate\.example\.org/, 'the Donate frame follows the new link');
   assert.equal(after.logo, logo.logo, 'the header shows the uploaded logo');
+  assert.equal(after.colour, '#1e88e5', 'the brand colour is in /station.css');
+  assert.match(await (await A.get('/studio')).text(), /href="\/station\.css/, 'the studio loads it too');
   const img = await fetch(A.url + logo.logo);
   assert.equal(img.status, 200); assert.equal(img.headers.get('content-type'), 'image/png');
   assert.deepEqual(Buffer.from(await img.arrayBuffer()), png(7), 'served exactly as uploaded');
@@ -163,7 +168,7 @@ test('real HTTP: an edit reaches every place the station is shown, at once; undo
   const pv = await (await B.post('/api/studio/import/preview', backup)).json();
   assert.ok(pv.ok, JSON.stringify(pv));
   const row = pv.settings.find(x => x.group === 'station');
-  assert.deepEqual([row.backup, row.server, row.action], [3, 0, 'set'], JSON.stringify(row));   // name, links, logo
+  assert.deepEqual([row.backup, row.server, row.action], [4, 0, 'set'], JSON.stringify(row));   // name, links, logo, accent
   const restored = await (await B.post('/api/studio/import/apply', backup, 'application/json', { 'X-Import-Token': pv.token })).json();
   assert.ok(restored.ok && restored.settings.station, JSON.stringify(restored));
   const onB = await shown(B);
@@ -179,4 +184,32 @@ test('real HTTP: an edit reaches every place the station is shown, at once; undo
   const back = await (await A.post('/api/studio/station/undo', '')).json();
   assert.ok(back.ok, JSON.stringify(back));
   assert.deepEqual(await shown(A), before, 'every place shows the profile again');
+});
+
+// Slice 3 (2026-09-29): the brand colour. Checked with a contrast formula written here from WCAG,
+// not the module's, over a sweep of colours — so a mistake in the module cannot grade itself.
+test('colour: every derived theme colour is readable (WCAG AA), for a sweep of colours', () => {
+  const C = require('../../lib/station-colors');
+  const lin = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+  const lum = h => { const n = parseInt(h.slice(1), 16); return 0.2126 * lin((n >> 16) & 255) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255); };
+  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+  const steps = ['00', '33', '66', '99', 'cc', 'ff'], colours = [];
+  for (const r of steps) for (const g of steps) for (const b of steps) colours.push(`#${r}${g}${b}`);
+  colours.push('#e14a2e', '#c8371e', '#4fb6ac', '#1e88e5', '#ffd700', '#7b1fa2', '#808080');
+  for (const c of colours) {
+    const d = C.derive(c);
+    for (const [theme, surface] of [['dark', '#1c1615'], ['light', '#ffffff']]) {
+      assert.ok(ratio(d[theme].accent, surface) >= 3, `${c} ${theme}: ${d[theme].accent} on the page ${ratio(d[theme].accent, surface).toFixed(2)}`);
+      assert.ok(ratio(d[theme].accent, d[theme].ink) >= 4.5, `${c} ${theme}: text ${d[theme].ink} on ${d[theme].accent} ${ratio(d[theme].accent, d[theme].ink).toFixed(2)}`);
+    }
+  }
+  assert.equal(C.derive('#1e88e5').dark.accent, '#1e88e5', 'a colour that already passes is used as it is');
+  assert.doesNotMatch(C.css(validateProfile(raw())), /--accent/, 'no colour set: the design\'s own colours');
+  const css = C.css(validateProfile({ ...raw(), colors: { accent: '#1E88E5' } }));
+  for (const sel of [':root{', '@media (prefers-color-scheme: light){:root{', ':root[data-theme="dark"]{', ':root[data-theme="light"]{'])
+    assert.ok(css.includes(sel + '--accent:'), `every theme state is covered: ${sel}`);
+  assert.throws(() => validateProfile({ ...raw(), colors: { accent: 'red' } }), /#rrggbb/);
+  assert.throws(() => validateProfile({ ...raw(), colors: { accent: '#123456', text: '#fff' } }), /only hold accent/);
+  assert.deepEqual(O.checkValues({ accent: '#1E88E5' }), { ok: true, values: { accent: '#1e88e5' } });
+  assert.equal(O.checkValues({ accent: 'url(x)' }).ok, false);
 });

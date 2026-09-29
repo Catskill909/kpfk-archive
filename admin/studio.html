@@ -11,6 +11,8 @@
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" href="/assets/icon-256.png">
 <link rel="stylesheet" href="/styles.css">
+<!-- The station's brand colour (studio → Station & appearance), after styles.css so it wins. -->
+<link rel="stylesheet" href="/station.css">
 <link rel="stylesheet" href="/studio.css">
 <script src="/theme-boot.js"></script>
 </head>
@@ -31,11 +33,11 @@
     </h1>
     <div class="studio-bar-actions">
       <!-- Import / Export opens a dialog: it is an action, not a report. -->
-      <button class="studio-btn studio-btn--export" id="exportOpen" type="button" aria-haspopup="dialog">
+      <button class="studio-btn studio-btn--export" id="exportOpen" type="button" aria-haspopup="dialog" aria-label="Import / Export">
         <svg class="export-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
           <path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        Import / Export
+        <span class="btn-label">Import / Export</span>
       </button>
       <!-- Same markup and behaviour as the listener app's toggle: the icon is
            driven entirely by the --sun token in styles.css, so it is already
@@ -133,6 +135,18 @@
           <button class="export-link" id="stLogoReset" type="button">Use the profile&rsquo;s logo</button>
         </div>
         <p class="st-hint">PNG, JPEG or WebP, up to 1 MB. Shown in the listener site&rsquo;s header.</p>
+      </fieldset>
+      <fieldset class="st-group">
+        <legend class="st-legend">Colour</legend>
+        <div class="st-logo-row">
+          <label class="st-colour"><input id="stAccent" type="color" aria-describedby="stAccentHint"><span id="stAccentHex"></span></label>
+          <button class="export-link" id="stAccentReset" type="button">Use the design&rsquo;s own colour</button>
+        </div>
+        <div class="st-swatches" id="stSwatches" hidden>
+          <span class="st-swatch st-swatch--dark"><span class="st-swatch-btn" id="stSwatchDark">Dark theme</span></span>
+          <span class="st-swatch st-swatch--light"><span class="st-swatch-btn" id="stSwatchLight">Light theme</span></span>
+        </div>
+        <p class="st-hint" id="stAccentHint">Buttons, badges and highlights. The site makes a readable version for the dark and the light theme (shown after Preview).</p>
       </fieldset>
       <fieldset class="st-group">
         <legend class="st-legend">Side-menu links</legend>

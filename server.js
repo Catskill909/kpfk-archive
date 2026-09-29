@@ -25,6 +25,7 @@ const { toCsv } = require('./lib/export/csv');
 const listeningExport = require('./lib/export/listening');
 const zipExport = require('./lib/export/zip');
 const stationOverridesLib = require('./lib/station-overrides');
+const stationColors = require('./lib/station-colors');
 const xlsxExport = require('./lib/export/xlsx');
 const backupLib = require('./lib/export/backup');
 const inventoryExport = require('./lib/export/inventory');
@@ -4020,7 +4021,8 @@ async function studioDiscoveryPost(req, res) {
 // ---- Station & appearance (step 5b, slice 1): lib/station-overrides.js does the work.
 /** What the studio's Station & appearance form shows. */
 function stationEditState() {
-  const pick = (p) => ({ name: p.name, frequency: p.frequency, city: p.city, links: { ...p.links }, social: { ...p.social }, logo: p.assets.logo });
+  const pick = (p) => ({ name: p.name, frequency: p.frequency, city: p.city, links: { ...p.links }, social: { ...p.social }, logo: p.assets.logo,
+    accent: p.colors ? p.colors.accent : null });
   return { available: !!stationEdits, profile: pick(baseStation), current: pick(station), edits: stationEdits.values(),
     updatedAt: stationEdits.updatedAt(), history: stationEdits.history(), bootError: stationEdits.bootError(),
     keys: { links: LINK_KEYS, social: SOCIAL_KEYS }, logoMaxBytes: stationOverridesLib.LOGO_MAX_BYTES,
@@ -4049,7 +4051,7 @@ async function studioStationPost(req, res, pathOnly) {
     if (!r.ok) return sendStudioJson(res, r, 422);
     const p = r.station;
     return sendStudioJson(res, { ok: true, preview: { name: p.name, frequency: p.frequency, city: p.city, logo: p.assets.logo,
-      menu: stationView.menu(p) } });
+      menu: stationView.menu(p), colors: p.colors ? { ...stationColors.derive(p.colors.accent), surfaces: stationColors.SURFACE } : null } });
   }
   if (pathOnly === '/api/studio/station/apply') {
     const r = stationEdits.apply(input);
@@ -4252,6 +4254,13 @@ const server = http.createServer(async (req, res) => {
         return res.end(stationView.script(liveStation()));
       }
       if (pathOnly === '/manifest.webmanifest') return sendJson(res, stationView.manifest(station), 200, 0);
+      // The station's colour (step 5b slice 3): a same-origin stylesheet, since the CSP forbids
+      // inline styles. Loaded after styles.css on every page; empty when no colour is set.
+      if (pathOnly === '/station.css') {
+        const body = Buffer.from(stationColors.css(station), 'utf8');
+        res.writeHead(200, { 'Content-Type': 'text/css; charset=utf-8', 'Content-Length': body.length, 'Cache-Control': 'no-cache', ...securityHeaders() });
+        return res.end(req.method === 'HEAD' ? undefined : body);
+      }
       // Logos uploaded in the studio (step 5b). Named by content hash, so they never change: cache hard.
       if (pathOnly.startsWith('/station-assets/') && stationEdits) {
         const f = stationEdits.assetFile(pathOnly.slice('/station-assets/'.length));
