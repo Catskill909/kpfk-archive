@@ -17,7 +17,7 @@ Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-29.**
 | 1 | Move Discovery into the podcast site | ✅ Done | Yes — Discovery ON for KPFK |
 | 2 | One design system; popups never cover the player | ✅ Done | Yes |
 | 3 | The player (spare copy removed, keyboard reaches it) | ✅ Done | Yes |
-| 4 | Discovery's sections on the main page | 🟡 5 of 6 parts done | Mostly — see below |
+| 4 | Discovery's sections on the main page | ✅ Done (4f 2026-09-29) | Yes |
 | 5 | Discovery admin as a studio tab | 🟡 5a done, 5b to do | 5a yes |
 | 6 | Stats for both sides in the studio | ✅ Done | Yes — Studio → Listening → Feature clicks |
 | 7 | Import / export cover everything | ⬜ Not started | — |
@@ -25,9 +25,9 @@ Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-29.**
 
 **Legend:** ✅ done · 🟡 in progress · ⬜ not started
 
-## Live now on podcasts.kpfk.org (checked 2026-09-28, late)
+## Live now on podcasts.kpfk.org (checked 2026-09-29)
 
-Everything built on 2026-09-28 is live **except the two items under "Waiting for the next redeploy"**.
+Everything built on 2026-09-28 and 2026-09-29 is live, including the LIVE badge and transcript spacing.
 Storage intact (`/healthz` `instanceId` 73039ae5-…). Discovery is ON for KPFK, QIR key set.
 
 - **Player:** always visible and usable under every popup; no Close; floating card on wider
@@ -42,19 +42,13 @@ Storage intact (`/healthz` `instanceId` 73039ae5-…). Discovery is ON for KPFK,
 - **Permanent links** to shows and episodes, with social previews ([how to link](LINKS.md)).
 - **Studio:** Discovery tab (live switches), Feature clicks stats, Feed anomalies, in-app dialogs.
 
-## Waiting for the next redeploy
-
-- **LIVE badge** on the live-stream player (tablet/desktop): slow, subtle sound bars while playing.
-- **Transcript spacing:** time column sized to the episode and right-aligned, so the time sits
-  next to its text (the wide gap had come back).
-
 ## The old Discovery site (kpfk-discovery.pacifica.audio)
 
 Still running, but every visitor sees a "Discovery has moved" notice with one button to
 podcasts.kpfk.org and no way to dismiss it. It still calls QIR in the background until it is
 retired (step 8). Nothing else is developed there.
 
-## Done 2026-09-29 (needs a Coolify redeploy)
+## Done 2026-09-29 — live (checked after Paul's redeploy)
 
 - **Music 14-day limit on the podcast site:** music (category Music, plus `musicShows`) is hidden
   `musicWindowDays` after air. The feed's episode *type* is not used — it marks talk such as
@@ -254,3 +248,4 @@ same site, same stats).
 | 2026-09-28 | Show popup layout reworked; popups beside the transcript; cards wrap; Just aired updates itself (2-minute check, cards slide in). |
 | 2026-09-28 | Popup tabs (Episode info / Show info); live-stream Transcript button fix; persistent player (no Close); floating player card; "Transcript processing". Checked what is left before closing the Discovery site (see "Start here tomorrow"). |
 | 2026-09-28 (late) | Step 6 stats; player no outline + bottom fade; Transcript button on/off look; LIVE badge; Discovery site forces visitors to podcasts.kpfk.org; Ace follow-up sent; status sections rewritten to match what is live. |
+| 2026-09-29 | Music 14-day limit and Alan Watts corrections on the archive list; old `/discover` page retired (4f). Redeployed and checked live. |
