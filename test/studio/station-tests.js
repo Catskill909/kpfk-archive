@@ -62,7 +62,7 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     social: document.querySelectorAll('#stSocialView .st-row').length,
     bar: !document.getElementById('stBar').hidden, barText: stBarText.textContent,
     undo: !document.getElementById('stUndo').hidden,
-    fixed: stFixed.textContent, words: document.getElementById('stationSection').textContent,
+    sources: [...document.querySelectorAll('#stSourcesView .st-row')].map((li) => li.textContent), words: document.getElementById('stationSection').textContent,
     stats: document.getElementById('main').getClientRects().length > 0 })`));
 
   // ---- sign in, open the tab
@@ -80,7 +80,10 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   ok('Links card lists the links in use, one row each', start.links.length >= 5 && start.links.some((t) => /^Station website/.test(t)), JSON.stringify(start.links));
   ok('Social card lists the accounts in use', start.social >= 1);
   ok('no bar while nothing has changed; the stats are not on this tab', !start.bar && !start.stats, JSON.stringify(start));
-  ok('plain words: no "profile" jargon, the fixed settings in one line', !/profile/i.test(start.words) && /Set when the site was installed: time zone/.test(start.fixed), start.fixed);
+  ok('plain words: no "profile" jargon', !/profile/i.test(start.words));
+  ok('Data sources lists every endpoint, marked not editable yet', /Not editable yet/.test(start.words)
+    && ['Catalog feed', 'Channels feed', 'Live stream', 'Time zone', 'Allowed hosts'].every((l) => start.sources.some((t) => t.startsWith(l)))
+    && start.sources.some((t) => /^Catalog feedhttps:\/\/\S+\.json$/.test(t)), JSON.stringify(start.sources));
   await ev(`document.getElementById('stationSection').scrollIntoView({ block: 'start' })`); await wait(300);
   await shot('1-cards');
   const before = await listener();

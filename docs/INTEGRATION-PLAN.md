@@ -18,10 +18,10 @@ Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-29.**
 | 2 | One design system; popups never cover the player | ✅ Done | Yes |
 | 3 | The player (spare copy removed, keyboard reaches it) | ✅ Done | Yes |
 | 4 | Discovery's sections on the main page | ✅ Done (4f 2026-09-29) | Yes |
-| 5 | Discovery admin as a studio tab | 🟡 5a done, 5b to do | 5a yes |
+| 5 | Discovery admin + station settings in the studio | ✅ 5a · 🟡 5b slice 1 built, rest parked | Yes (after redeploy) |
 | 6 | Stats for both sides in the studio | ✅ Done | Yes — Studio → Listening → Feature clicks |
 | 7 | Import / export cover everything | ✅ Done 2026-09-29 (move test passed with live data) | Yes |
-| 8 | Production release (retire the separate Discovery site) | ⬜ Not started | — |
+| 8 | Production release (retire the separate Discovery site) | ✅ Old app stopped 2026-09-29; kept as staging | — |
 
 **Legend:** ✅ done · 🟡 in progress · ⬜ not started
 
@@ -60,11 +60,9 @@ retired (step 8). Nothing else is developed there.
 
 ## Next up
 
-1. **8** Production release: Paul **stops** the old Discovery app in Coolify (it still calls QIR). No
-   redirect: the app and kpfk-discovery.pacifica.audio are kept as a future staging app (Paul,
-   2026-09-29). Then update APP-FAMILY.md.
-2. **5b** Station template in the studio: edit a station's feeds, logo, colours and text, preview,
-   apply, with a way back (station settings would then join the backup).
+1. **The listener site (front interface)** — Paul, 2026-09-29: the priority now.
+2. Station template, remaining slices (feeds with a test before switching, stream, time zone,
+   colour, images): `docs/kpfk/station-admin-template-plan.md`, Status at the top. Parked.
 
 ## Paul — to do and decisions
 
@@ -247,3 +245,5 @@ on a new server; they are never in a backup.
 | 2026-09-29 | Music 14-day limit and Alan Watts corrections on the archive list; old `/discover` page retired (4f). Redeployed and checked live. |
 | 2026-09-29 | Step 7: studio Import / Export reworked (two sections); backup now keeps feature clicks; stats .zip with feature-clicks table. |
 | 2026-09-29 | Step 8 decided: stop the old Discovery app, keep it as staging (no redirect). Studio tab bug fixed (stats showed under Discovery & settings). |
+
+| 2026-09-29 | 5b slice 1: Station & appearance (cards, edit panels, publish bar, undo, in backup); Data sources read-only. Step 8: old Discovery app stopped. Next: listener site. |

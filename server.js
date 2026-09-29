@@ -4024,7 +4024,10 @@ function stationEditState() {
   return { available: !!stationEdits, profile: pick(baseStation), current: pick(station), edits: stationEdits.values(),
     updatedAt: stationEdits.updatedAt(), history: stationEdits.history(), bootError: stationEdits.bootError(),
     keys: { links: LINK_KEYS, social: SOCIAL_KEYS }, logoMaxBytes: stationOverridesLib.LOGO_MAX_BYTES,
-    fixed: { timezone: station.timezone, provider: station.provider, feeds: { ...station.feeds } } };
+    // Read-only for now: placeholders for the full station template (feeds, stream, hosts).
+    fixed: { id: station.id, timezone: station.timezone, provider: station.provider, primaryChannel: station.primaryChannel,
+      siteUrl: station.siteUrl, liveStream: station.liveStream, feeds: { ...station.feeds },
+      origins: { feeds: [...station.origins.feeds], audio: [...station.origins.audio], artwork: [...station.origins.artwork] } } };
 }
 async function studioStationPost(req, res, pathOnly) {
   if (!studioAuthed(req)) return sendStudioJson(res, { error: 'unauthorized' }, 401);

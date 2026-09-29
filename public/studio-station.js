@@ -97,10 +97,23 @@
     draft = copy(d.current);
     tabs.querySelector('[data-studio-tab="discovery"]').hidden = false;
     section.hidden = false;
-    var f = d.fixed || {}, hosts = Object.keys(f.feeds || {}).map(function (k) { try { return new URL(f.feeds[k]).host; } catch (e) { return ''; } })
-      .filter(function (h, i, a) { return h && a.indexOf(h) === i; });
-    $('stFixed').textContent = 'Set when the site was installed: time zone ' + (f.timezone || '?') + ' · programme data from ' + (hosts.join(', ') || 'Pacifica') + '.'
-      + (d.bootError ? ' Saved changes are not in use because they no longer fit these settings: ' + d.bootError : '');
+    // Data sources: read-only placeholders for the full station template.
+    var f = d.fixed || {}, o = f.origins || {}, src = $('stSourcesView');
+    src.textContent = '';
+    [['Catalog feed', (f.feeds || {}).catalog], ['Channels feed', (f.feeds || {}).channels],
+      ['Schedule & now playing', 'From the channels feed'], ['Live stream', f.liveStream],
+      ['Site address', f.siteUrl || 'Not set'], ['Time zone', f.timezone], ['Station ID', (f.id || '') + (f.primaryChannel && f.primaryChannel !== f.id ? ' · channel ' + f.primaryChannel : '')],
+      ['Data format', f.provider === 'pacifica-json' ? 'Pacifica JSON feeds' : f.provider],
+      ['Allowed hosts', ['feeds', 'audio', 'artwork'].map(function (k) { return k + ': ' + (o[k] || []).map(shortUrl).join(', '); }).join(' · ')]]
+      .forEach(function (r) {
+        var li = el('li', 'st-row');
+        li.appendChild(el('span', 'st-row-label', r[0]));
+        var v = el('span', 'st-row-value st-row-value--wrap', r[1] || '');
+        v.title = r[1] || '';
+        li.appendChild(v);
+        src.appendChild(li);
+      });
+    if (d.bootError) say($('stStatus'), 'Saved changes are not in use because they no longer fit the install settings: ' + d.bootError, 'bad');
     render();
   }
   function load() {
