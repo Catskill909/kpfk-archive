@@ -91,7 +91,9 @@
   }
   // Only the shape of the state goes in, never a value we didn't put there:
   // `cat` is checked against our own table rather than trusted from the URL.
-  function urlFor(sheetId){
+  // view 'show' addresses the Show view by the show's own link (/show/<code>); anything else
+  // (the Episode view) by the episode's (/show/<code>/<episode>). docs/LINKS.md.
+  function urlFor(sheetId, view){
     var q = [];
     if(state.cat !== 'all' && CAT_BY_KEY[state.cat]) q.push('cat=' + encodeURIComponent(state.cat));
     var sortName = currentSort();
@@ -103,7 +105,8 @@
     // An open popup is addressed by its permanent link (public/links.js), so the address
     // bar is always something that can be copied into a post or a web page.
     var open = sheetId && rowById(sheetId);
-    return (open ? window.ShowLinks.episodePath(open) : '/') + (q.length ? '?' + q.join('&') : '');
+    var path = !open ? '/' : view === 'show' ? window.ShowLinks.showPath(open.sho) : window.ShowLinks.episodePath(open);
+    return path + (q.length ? '?' + q.join('&') : '');
   }
   var canHistory = !!(window.history && history.replaceState);
   // Tapping the player bar's title while a sheet is open (the bar stays visible above
@@ -115,7 +118,10 @@
   function syncUrl(){
     if(!canHistory) return;
     var open = sheetRowId || null;
-    var st = open ? {sheetId:open} : null;
+    // Keep the panel's own history fields (view, depth, live origin): close and Back count on them.
+    var cur = history.state || {};
+    var st = open ? {sheetId:open, sheetView:sheetView, sheetDepth:cur.sheetDepth || 1} : null;
+    if(open && cur.liveOrigin) st.liveOrigin = 1;
     // Never clobber the schedule's flag: the sheet closes ON TOP of the
     // schedule (its dialog stacks above, see openSchedule), and this replace
     // runs from dismissSheet mid-popstate — wiping {sched:1} here made Back
@@ -125,7 +131,7 @@
     // runs during that popstate, so keep the destination's claim intact rather
     // than replacing it with a plain listing entry mid-transition.
     if(history.state && history.state.live){ st = st || {}; st.live = 1; }
-    try { history.replaceState(st, '', urlFor(open)); } catch(e){}
+    try { history.replaceState(st, '', urlFor(open, open ? sheetView : null)); } catch(e){}
   }
 
   function retentionClass(d){
@@ -776,9 +782,8 @@
     var button = e.target.closest('button'); if(!button) return;
     if(button.classList.contains('search-expand')){ toggleExpand(button); return; }
     if(button.hasAttribute('data-search-show')){
-      openSheetById(button.dataset.searchShow, button);
-      setSheetView('archive');
-    } else if(button.hasAttribute('data-search-episode')) openSheetById(button.dataset.searchEpisode, button);
+      openSheetById(button.dataset.searchShow, button, false, 'show');
+    } else if(button.hasAttribute('data-search-episode')) openSheetById(button.dataset.searchEpisode, button, false, 'episode');
     else if(button.classList.contains('play-btn')) togglePlayFrom(button);
     else if(button.hasAttribute('data-search-matches')){searchShow=button.dataset.searchMatches;searchScope='episodes';searchLimit=12;syncUrl();renderSearch();searchResultsEl.querySelector('[aria-pressed="true"]').focus();}
     else if(button.hasAttribute('data-search-scope')){ searchShow='';searchScope=button.dataset.searchScope;searchLimit=12;syncUrl();renderSearch();searchResultsEl.querySelector('[aria-pressed="true"]').focus(); }
@@ -1217,9 +1222,15 @@
       var lbl = btn.querySelector('.play-label');
       var insteadLbl = btn.querySelector('.sheet-episode-instead');
       var action = playLabelFor(mp3, loading, playing);
+      // The show header's button speaks of the show's latest episode, not a date.
+      var latestBtn = !!lbl && lbl.hasAttribute('data-label-latest');
+      if(latestBtn){
+        var lr = rowByMp3(mp3), ls = lr ? listenState(lr) : {kind:'none'};
+        action = loading ? 'Loading' : playing ? 'Pause' : ((mp3 === nowPlaying.mp3 && barMode === 'archive') || ls.kind === 'part') ? 'Resume latest' : 'Play latest';
+      }
       if(lbl) lbl.textContent = action;
       if(insteadLbl) insteadLbl.hidden = !alternate || loading || playing;
-      btn.setAttribute('aria-label', sheetAction
+      btn.setAttribute('aria-label', (sheetAction || latestBtn)
         ? action.replace(' · ', ' ')+' — '+btn.dataset.title
         : (loading?'Loading ':(playing?'Pause ':'Play ')) + btn.dataset.title +
           (episodeAction && alternate && !loading && !playing ? ' instead' : ''));
@@ -1324,8 +1335,9 @@
   function activateRowTarget(target){
     // the title/category block and the "More" link under it open the info sheet;
     // the play control keeps working exactly as before
+    // A gallery card is a show; a list row or a Just aired item is one broadcast.
     var opener = target.closest('.more-link, .show-open');
-    if(opener){ openSheetById(opener.dataset.id, opener); return; }
+    if(opener){ openSheetById(opener.dataset.id, opener, false, opener.closest('.card-wrap') ? 'show' : 'episode'); return; }
 
     var btn = target.closest('.play-btn');
     if(btn){
@@ -1333,7 +1345,7 @@
       // it opens the info sheet. It does *not* autoplay; playback is started
       // deliberately from the sheet's Play button. List-view play buttons play.
       if(btn.classList.contains('card-art') && btn.dataset.id){
-        openSheetById(btn.dataset.id, btn);
+        openSheetById(btn.dataset.id, btn, false, 'show');
         return;
       }
       togglePlayFrom(btn);
@@ -1351,7 +1363,7 @@
       // A drag that selected text ends in a click too; that isn't a tap.
       var sel = window.getSelection && window.getSelection();
       if(sel && sel.toString() && !sel.isCollapsed) return;
-      openSheetById(row.dataset.id, row.querySelector('.show-text .show-open'));
+      openSheetById(row.dataset.id, row.querySelector('.show-text .show-open'), false, 'episode');
     }
   }
 
@@ -1518,7 +1530,7 @@
         return;
       }
       var r = nowPlaying.mp3 && rowByMp3(nowPlaying.mp3);
-      if(r) openSheetById(r.id, infoBtn);
+      if(r) openSheetById(r.id, infoBtn, false, 'episode');
     }
     document.querySelectorAll('.player-open').forEach(function(el){
       el.addEventListener('click', openForPlaying);
@@ -2990,7 +3002,7 @@
         return rows.filter(function(x){ return x.sho === row.sho && x.id !== row.id; })
           .sort(function(a, b){ return b.dt - a.dt; }).slice(0, limit || 5);
       },
-      openShow: function(id, trigger){ openSheetById(id, trigger); },
+      openShow: function(id, trigger){ openSheetById(id, trigger, false, 'show'); },
       episodeTitle: function(r){ return (window.ArchiveSearch && window.ArchiveSearch.episodeTitle(r)) || r.title; },
       shareUrl: function(r){ return location.origin + window.ShowLinks.episodePath(r); },
       stationLabel: function(){ return STATION.label; }
@@ -2999,40 +3011,11 @@
     // and redraw Just aired only; the listing never moves under the reader.
     refreshJustAired: function(){ enrichRows(); rebuildSearchIndex(); renderJustAired(true); repaintOpenSheet(); }
   };
-  // ---- Sheet info tabs: "Episode info" | "Show info" (Paul, 2026-09-28) ----
-  // Which opens first: Episode info, except a shared SHOW link (/show/<code>, no episode),
-  // which opens on Show info. The choice holds while the sheet repaints (late QIR data) and
-  // resets when it closes or another episode is picked.
-  var sheetInfoTab = 'episode';
-  function infoTabs(episodeHtml, showHtml){
-    var tab = function(key, label){
-      var on = sheetInfoTab === key;
-      return '<button class="sheet-info-tab" type="button" role="tab" id="sheetInfoTab-'+key+'" data-sheet-info="'+key+'" aria-controls="sheetInfo-'+key+'" aria-selected="'+on+'" tabindex="'+(on ? 0 : -1)+'">'+label+'</button>';
-    };
-    var panel = function(key, html){
-      return '<div class="sheet-info-panel" role="tabpanel" id="sheetInfo-'+key+'" aria-labelledby="sheetInfoTab-'+key+'"'+(sheetInfoTab === key ? '' : ' hidden')+'>'+html+'</div>';
-    };
-    return '<div class="sheet-info"><div class="sheet-info-tabs" role="tablist" aria-label="Information">'+
-      tab('episode', 'Episode info')+tab('show', 'Show info')+'</div>'+
-      panel('episode', episodeHtml)+panel('show', showHtml)+'</div>';
-  }
-  function setInfoTab(key, focus){
-    sheetInfoTab = key;
-    sheetBody.querySelectorAll('.sheet-info-tab').forEach(function(b){
-      var on = b.dataset.sheetInfo === key;
-      b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
-      if(on && focus) b.focus();
-    });
-    sheetBody.querySelectorAll('.sheet-info-panel').forEach(function(p){ p.hidden = p.id !== 'sheetInfo-' + key; });
-    setupDescClamp();   // a description measured while hidden offered no "Show more"
-    syncSheetFade();
-  }
-
   // A plugin's data can arrive after a sheet is already open (a shared /show/ link lands on
   // the sheet before the QIR catalog loads): repaint it in place so its headline, summary and
   // Transcript / Songs appear without closing it (2026-09-28). Keeps its scroll position.
   function repaintOpenSheet(){
-    if(!sheet || !sheet.classList.contains('show') || sheetView !== 'show') return;
+    if(!sheet || !sheet.classList.contains('show')) return;
     var open = rowById(sheetRowId);
     if(open) paintSheet(open, true);
   }
@@ -3080,8 +3063,6 @@
     // Permanent link: /show/<code>[/<episode>] (public/links.js).
     var link = window.ShowLinks.parse(location.pathname);
     sheetLinkNote = '';
-    // A show link opens on Show info; an episode link on Episode info.
-    if(link) sheetInfoTab = link.episode ? 'episode' : 'show';
     if(link){
       var found = window.ShowLinks.resolve(link, rows, showInfo);
       var notice = document.getElementById('linkNotice');
@@ -3095,7 +3076,8 @@
       if(canHistory){ try { history.replaceState(null, '', urlFor(null)); } catch(e){} }
       // Rotated out: say so inside the popup too; the page's note sits behind its backdrop.
       if(found && found.rotated) sheetLinkNote = 'The episode in that link has rotated out of the archive. This is the latest one.';
-      if(found) openSheetById(found.row.id);
+      // A show link opens the Show view; an episode link (or a rotated one) the Episode view.
+      if(found) openSheetById(found.row.id, null, false, link.episode ? 'episode' : 'show');
       return;
     }
     var id = param('show');
@@ -3109,7 +3091,7 @@
     // Rewrite the landing entry to the plain listing first, so the sheet's own
     // entry sits on top of it and Back closes the sheet instead of leaving.
     if(canHistory){ try { history.replaceState(null, '', urlFor(null)); } catch(e){} }
-    openSheetById(id);
+    openSheetById(id, null, false, 'episode');
   }
 
   function loadArchive(){
@@ -3248,15 +3230,12 @@
   var sheetScrim = document.getElementById('sheetScrim');
   var sheetClose = document.getElementById('sheetClose');
   var sheetBody = document.getElementById('sheetBody');
-  var sheetFoot = document.getElementById('sheetFoot');
-  var sheetRoutebar = document.getElementById('sheetRoutebar');
-  var sheetRouteBack = document.getElementById('sheetRouteBack');
   var sheetScrollCue = document.getElementById('sheetScrollCue');
   var sheetScrollCueLabel = document.getElementById('sheetScrollCueLabel');
   var sheetReturnFocus = null;
   var sheetRowId = null;        // which archive row the sheet is currently showing
   var sheetMp3 = null;
-  var sheetView = 'show';       // 'show' profile | 'archive' episode browser
+  var sheetView = 'show';       // 'show': the show and its episodes | 'episode': one broadcast
 
   // Artwork lightbox: layered above the open sheet so a listener can tap the show
   // art for a full-size look. Opens from within the sheet only.
@@ -4048,7 +4027,7 @@
   liveChoiceArchive.addEventListener('click', function(){
     var id = liveChoiceId;
     closeLiveChoice();
-    if(id) openSheetById(id);      // stacks over the schedule, exactly as before
+    if(id) openSheetById(id, null, false, 'show');      // stacks over the schedule, exactly as before
   });
   liveChoiceLive.addEventListener('click', function(){
     closeLiveChoice();
@@ -4182,7 +4161,7 @@
       }
       return;
     }
-    openSheetById(btn.dataset.id, btn);
+    openSheetById(btn.dataset.id, btn, false, 'show');
   });
   // artwork that 404s falls back to the station icon behind it — the same
   // failed-image rule the listing rows and the sheet use
@@ -4404,46 +4383,156 @@
     return 'Show '+lb.day+' '+lb.date+(status ? ', '+status.toLowerCase() : '');
   }
 
-  function archiveHtml(r){
+  // ---- Show view and Episode view (2026-09-29; plan: docs/kpfk/show-view-plan.md) ----
+  // One panel, the Spotify / Apple Podcasts model. Show view: the show (art, name, host,
+  // Play latest, about, links) and its episodes right there, newest first. Episode view: one
+  // broadcast (title, play, Start over, Transcript/Songs, notes) with a way back to the show.
+  // Phone: one column. Desktop: show left, episodes / episode right (DESIGN-SYSTEM Rule 2).
+  var SHEET_PAGE = 20;          // episodes listed at first; "Show 20 more" adds the next ones
+  var sheetShown = SHEET_PAGE;
+  function episodeRowHtml(e, photo){
+    var dp = splitDateText(e.dateText || '');
+    var lb = epLabel(e);
+    var s = listenState(e);
+    var loading = e.mp3 === loadingMp3;
+    var playing = !loading && barMode === 'archive' && e.mp3 === nowPlaying.mp3 && !audio.paused && !audio.ended;
+    var subLine = ((CAT_BY_KEY[e.cat] || {}).label || '') + (e.host ? ' · with '+e.host : '');
+    var status = loading ? 'Loading' : (playing ? 'Playing' : (barMode === 'archive' && e.mp3 === nowPlaying.mp3 && !audio.ended ? 'Paused' : s.short));
+    var topic = window.ArchiveSearch.episodeTitle(e);
+    var notes = e.episodeDesc || '';
+    return '<div class="sheet-episode'+(playing || loading ? ' is-playing' : '')+(barMode === 'archive' && e.mp3 === nowPlaying.mp3 ? ' is-current' : '')+'" role="listitem" data-id="'+esc(e.id)+'">'+
+        '<button class="sheet-episode-play play-btn'+(playing?' playing':'')+(loading?' loading':'')+'" type="button" '+
+          playAttrs(e, subLine, e.photo || photo, loading, playing)+'>'+glyph(loading, playing)+'</button>'+
+        '<button class="sheet-episode-open" type="button" data-id="'+esc(e.id)+'" aria-label="'+esc(episodeOpenLabel(e, status))+'">'+
+          '<span class="sheet-episode-when">'+
+            '<span class="sheet-episode-date">'+esc(lb.day+', '+lb.date)+'</span>'+
+            (dp.time ? '<span class="sheet-episode-time">'+esc(dp.time)+'</span>' : '')+
+            (e.length ? '<span class="mono">'+esc(e.length)+'</span>' : '')+
+            '<span class="sheet-episode-status"'+(status ? '' : ' hidden')+'>'+esc(status)+'</span>'+
+            retentionBadge(e)+
+          '</span>'+
+          (topic ? '<span class="sheet-episode-topic">'+esc(topic)+'</span>' : '')+
+          (notes ? '<span class="sheet-episode-notes">'+esc(notes)+'</span>' : '')+
+          '<span class="listen-progress sheet-episode-progress"'+(s.kind === 'part' && !playing && !loading ? '' : ' hidden')+' aria-hidden="true"></span>'+
+        '</button>'+
+      '</div>';
+  }
+  // The show column: identity, Play latest, about, links.
+  function showColHtml(r){
+    var info = showInfo[r.sho] || {};
+    var prog = programFor(r.title) || {};
+    var c = CAT_BY_KEY[r.cat] || {label:''};
+    var host = r.host || info.dj || prog.host || '';
+    var desc = info.desc || prog.desc || info.shortdesc || '';
+    var photo = r.photo || info.photo || '';
     var list = episodesFor(r);
+    var latest = list[0];
+    var links = '';
+    if(showRss(r)) links += sheetLink(RSS_BASE+encodeURIComponent(r.sho), svgRss(), 'RSS feed');
+    var site = safeUrl(info.url || prog.url);
+    if(site) links += sheetLink(site, svgLink(), 'Website');
+    var fb = safeUrl(info.facebook || prog.facebook);
+    if(fb) links += sheetLink(fb, svgFacebook(), 'Facebook');
+    var tw = safeUrl(info.twitter || prog.twitter);
+    if(tw) links += sheetLink(tw, svgLink(), 'Twitter');
+    var play = '';
+    if(latest && latest.mp3){
+      var lLoading = latest.mp3 === loadingMp3;
+      var lCurrent = barMode === 'archive' && latest.mp3 === nowPlaying.mp3;
+      var lPlaying = lCurrent && !lLoading && !audio.paused && !audio.ended;
+      var lState = listenState(latest);
+      var label = lPlaying ? 'Pause' : (lCurrent || lState.kind === 'part') ? 'Resume latest' : 'Play latest';
+      var lSub = ((CAT_BY_KEY[latest.cat] || {}).label || '') + (latest.host ? ' · with '+latest.host : '');
+      play = '<button class="sheet-head-play play-btn'+(lPlaying?' playing':'')+(lLoading?' loading':'')+'" type="button" '+
+        playAttrs(latest, lSub, latest.photo || photo, lLoading, lPlaying)+'>'+glyph(lLoading, lPlaying)+
+        '<span class="play-label" data-label-latest>'+esc(label)+'</span></button>';
+    }
+    var share = navigator.share ? '<button class="sheet-link sheet-share sheet-icon-btn" type="button" data-share-show aria-label="Share this show">'+svgShare()+'</button>' : '';
+    return '<div class="sheet-head">'+
+        (photo
+          ? '<button type="button" class="sheet-art sheet-art-zoom" data-photo="'+esc(photo)+'" aria-label="View larger artwork for '+esc(r.title)+'">'+
+              '<img alt="" src="'+esc(photo)+'"></button>'
+          : '<span class="sheet-art" aria-hidden="true"></span>')+
+        '<div class="sheet-titles">'+
+          (c.label ? '<span class="sheet-eyebrow">'+catIcon(r.cat)+esc(c.label)+'</span>' : '')+
+          '<h2 id="sheetTitle">'+esc(r.title)+'</h2>'+
+          (host ? '<div class="sheet-host">with '+esc(host)+'</div>' : '')+
+          (play || share ? '<div class="sheet-head-actions">'+play+share+'</div>' : '')+
+        '</div>'+
+      '</div>'+
+      (desc ? '<div class="sheet-desc-wrap"><p class="sheet-desc" id="sheetDesc">'+esc(desc)+'</p></div>' : '')+
+      (links ? '<div class="sheet-links sheet-profile-links">'+links+'</div>' : '');
+  }
+  // The episodes, newest first: SHEET_PAGE at a time, "Show N more" at the end of the list.
+  function listHtml(r){
     var info = showInfo[r.sho] || {};
     var photo = r.photo || info.photo || '';
+    var list = episodesFor(r);
     var summary = listeningSummary(list);
-    var items = list.map(function(e){
-      var dp = splitDateText(e.dateText || '');
-      var lb = epLabel(e);
-      var s = listenState(e);
-      var loading = e.mp3 === loadingMp3;
-      var playing = !loading && barMode === 'archive' && e.mp3 === nowPlaying.mp3 && !audio.paused && !audio.ended;
-      var subLine = ((CAT_BY_KEY[e.cat] || {}).label || '') + (e.host ? ' · with '+e.host : '');
-      var status = loading ? 'Loading' : (playing ? 'Playing' : (barMode === 'archive' && e.mp3 === nowPlaying.mp3 && !audio.ended ? 'Paused' : s.short));
-      return '<div class="sheet-episode'+(playing || loading ? ' is-playing' : '')+'" role="listitem" data-id="'+esc(e.id)+'">'+
-          '<button class="sheet-episode-open" type="button" data-id="'+esc(e.id)+'" aria-label="'+esc(episodeOpenLabel(e, status))+'">'+
-            '<span class="sheet-episode-date-line">'+
-              '<span class="sheet-episode-date">'+esc(lb.day+', '+lb.date)+'</span>'+
-              (dp.time ? '<span class="sheet-episode-time">'+esc(dp.time)+'</span>' : '')+
-            '</span>'+
-            '<span class="sheet-episode-meta">'+
-              (e.length ? '<span class="mono">'+esc(e.length)+'</span>' : '')+
-              '<span class="sheet-episode-status"'+(status ? '' : ' hidden')+'>'+esc(status)+'</span>'+
-              retentionBadge(e)+
-            '</span>'+
-            '<span class="listen-progress sheet-episode-progress"'+(s.kind === 'part' && !playing && !loading ? '' : ' hidden')+' aria-hidden="true"></span>'+
-          '</button>'+
-          '<button class="sheet-episode-play play-btn'+(playing?' playing':'')+(loading?' loading':'')+'" type="button" '+
-            playAttrs(e, subLine, e.photo || photo, loading, playing)+'>'+glyph(loading, playing)+
-            '<span class="sheet-episode-instead"'+(sheetHasDifferentPlayer(e.mp3) && !loading && !playing ? '' : ' hidden')+'>instead</span></button>'+
-        '</div>';
-    }).join('');
-    return '<div class="sheet-archive-head">'+
-        '<span class="sheet-archive-art" aria-hidden="true">'+(photo ? '<img alt="" src="'+esc(photo)+'">' : '')+'</span>'+
-        '<span class="sheet-archive-identity">'+
-          '<strong class="sheet-archive-title">'+esc(r.title)+'</strong>'+
-          '<span class="sheet-archive-tally">'+list.length+(list.length === 1 ? ' episode' : ' episodes')+
-            (summary ? ' · '+esc(summary) : '')+'</span>'+
-        '</span>'+
+    var more = list.length - sheetShown;
+    return '<div class="sheet-list-head"><h3>Episodes</h3>'+
+        '<span class="sheet-archive-tally">'+list.length+(list.length === 1 ? ' episode' : ' episodes')+(summary ? ' · '+esc(summary) : '')+'</span></div>'+
+      '<div class="sheet-episode-list" role="list" aria-label="Episodes of '+esc(r.title)+'">'+
+        list.slice(0, sheetShown).map(function(e){ return episodeRowHtml(e, photo); }).join('')+'</div>'+
+      (more > 0 ? '<button class="sheet-show-more" type="button">Show '+Math.min(SHEET_PAGE, more)+' more</button>' : '');
+  }
+  // One broadcast.
+  function episodeHtml(r){
+    var info = showInfo[r.sho] || {};
+    var photo = r.photo || info.photo || '';
+    var c = CAT_BY_KEY[r.cat] || {label:''};
+    var host = r.host || info.dj || '';
+    var dparts = splitDateText(r.dateText);
+    var subLine = c.label + (host ? ' · with '+host : '');
+    var isLoading = (loadingMp3===r.mp3);
+    var isPlaying = (nowPlaying.mp3===r.mp3 && !audio.paused && !audio.ended && !isLoading);
+    var topic = window.ArchiveSearch.episodeTitle(r);
+    var notes = r.episodeDesc || '';
+    var extra = pluginSheetActions(r);
+    // No headline or summary: say why, so no panel looks empty (Paul, 2026-09-28).
+    var empty = !topic && !notes
+      ? (r.qirPending ? (r.qirPending.skipped ? 'No summary or transcript for this episode.' : 'Transcript processing — the summary and transcript usually appear within a few hours of the broadcast.')
+        : 'No episode notes for this broadcast.')
+      : '';
+    // Stats step 6: a QIR summary or the "processing" note was shown (once per episode per visit).
+    if(window.ArchiveStats){
+      var shown = r.qirEpisode && notes ? 'summaryShown' : (r.qirPending && !r.qirPending.skipped && empty ? 'pendingShown' : '');
+      if(shown && !sheetCounted[shown+' '+r.id]){ sheetCounted[shown+' '+r.id] = 1; window.ArchiveStats.count(shown); }
+    }
+    var play = r.mp3
+      ? '<button class="sheet-play play-btn'+(isPlaying?' playing':'')+(isLoading?' loading':'')+'" type="button" '+
+        playAttrs(r, subLine, photo, isLoading, isPlaying)+'>'+glyph(isLoading, isPlaying)+
+        '<span class="play-label">'+esc(playLabelFor(r.mp3, isLoading, isPlaying))+'</span></button>'
+      : '';
+    var restart = r.mp3 ? '<button class="sheet-restart" id="sheetRestart" type="button" hidden>Start over</button>' : '';
+    var share = navigator.share ? '<button class="sheet-link sheet-share sheet-icon-btn" type="button" aria-label="Share this episode">'+svgShare()+'</button>' : '';
+    var listen = '<div class="sheet-listen" id="sheetSelectedListen" hidden>'+
+        '<svg class="sheet-listen-check" id="sheetSelectedCheck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 6.5"/></svg>'+
+        '<span id="sheetSelectedListenText"></span>'+
+        '<span class="listen-progress sheet-selected-progress" id="sheetSelectedProgress" aria-hidden="true"></span>'+
+      '</div>';
+    var list = episodesFor(r), i = list.indexOf(r);
+    var others = list.slice(i + 1, i + 4);
+    return '<button class="sheet-back" type="button" data-sheet-back>'+
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>'+
+        '<span class="sheet-back-show">'+esc(r.title)+'</span><span class="sheet-back-all">All episodes</span></button>'+
+      (sheetLinkNote ? '<p class="sheet-link-note" role="status">'+esc(sheetLinkNote)+'</p>' : '')+
+      '<h2 class="sheet-ep-title" id="sheetEpTitle">'+esc(topic || dparts.date || r.title)+'</h2>'+
+      '<div class="sheet-ep-meta">'+
+        (topic && dparts.date ? '<span>'+esc(dparts.date)+'</span>' : '')+
+        (dparts.time ? '<span>'+esc(dparts.time)+'</span>' : '')+
+        (r.length ? '<span class="mono">'+esc(r.length)+'</span>' : '')+
+        retentionBadge(r)+
       '</div>'+
-      '<div class="sheet-episode-list" role="list" aria-label="Past episodes of '+esc(r.title)+'">'+items+'</div>';
+      listen+
+      '<div class="sheet-ep-actions">'+play+restart+extra+share+'</div>'+
+      (empty ? '<p class="sheet-selected-empty">'+esc(empty)+'</p>' : '')+
+      (notes ? '<div class="sheet-selected-notes"><p class="sheet-selected-summary">'+esc(notes)+'</p>'+
+        (notes.length > 420 ? '<button class="sheet-summary-more" type="button" aria-expanded="false">More</button>' : '')+'</div>' : '')+
+      (others.length ? '<div class="sheet-list-head"><h3>More from this show</h3></div>'+
+        '<div class="sheet-episode-list" role="list" aria-label="More episodes of '+esc(r.title)+'">'+
+          others.map(function(e){ return episodeRowHtml(e, photo); }).join('')+'</div>'+
+        '<button class="sheet-show-all" type="button" data-sheet-back>All episodes</button>' : '');
   }
 
   function applyListenProgress(root){
@@ -4457,14 +4546,11 @@
     if(selected && row) selected.style.setProperty('--pct', listenState(row).pct+'%');
   }
 
-  // Update the archive rows without rebuilding the list or disturbing its scroll.
-  // Live playback temporarily outranks saved progress; when it stops, the saved
-  // status returns in the same footprint.
+  // Update every episode row in the panel (the list, or "More from this show") without
+  // rebuilding it or disturbing its scroll: playing / paused / loading, listening state.
   function syncEpMarks(){
     if(!sheet) return;
-    var list = sheet.querySelector('.sheet-episode-list');
-    if(!list) { applyListenProgress(sheet); return; }
-    list.querySelectorAll('.sheet-episode').forEach(function(el){
+    sheet.querySelectorAll('.sheet-episode').forEach(function(el){
       var row = rowById(el.dataset.id);
       if(!row) return;
       var s = listenState(row);
@@ -4473,6 +4559,7 @@
       var playing = current && !loading && !audio.paused && !audio.ended;
       var status = loading ? 'Loading' : (playing ? 'Playing' : (current && !audio.ended ? 'Paused' : s.short));
       el.classList.toggle('is-playing', loading || playing);
+      el.classList.toggle('is-current', current);
       var label = el.querySelector('.sheet-episode-status');
       if(label){ label.textContent = status; label.hidden = !status; }
       var open = el.querySelector('.sheet-episode-open');
@@ -4484,159 +4571,14 @@
       }
     });
     var context = sheetRowId && rowById(sheetRowId);
-    var tally = list.parentNode.querySelector('.sheet-archive-tally');
+    var tally = sheet.querySelector('.sheet-archive-tally');
     if(context && tally){
       var episodes = episodesFor(context);
       var summary = listeningSummary(episodes);
-      tally.textContent = episodes.length+(episodes.length === 1 ? ' episode' : ' episodes')+
-        (summary ? ' · '+summary : '');
+      tally.textContent = episodes.length+(episodes.length === 1 ? ' episode' : ' episodes')+(summary ? ' · '+summary : '');
     }
+    applyListenProgress(sheet);
     syncSelectedListening();
-  }
-
-  function episodeBrowseButton(r){
-    var list = episodesFor(r);
-    if(list.length < 2) return '';
-    var summary = listeningSummary(list);
-    return '<button class="sheet-archive-open" type="button">'+
-        '<span class="sheet-archive-primary">'+
-          '<span class="sheet-archive-label">Past episodes</span>'+
-          '<span class="sheet-archive-count">'+list.length+'</span>'+
-          '<span class="sheet-archive-history"'+(summary ? '' : ' hidden')+'>'+
-            '<span class="sheet-archive-sep" aria-hidden="true">·</span>'+
-            '<span class="sheet-archive-summary">'+esc(summary)+'</span>'+
-          '</span>'+
-          '<svg class="sheet-archive-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>'+
-        '</span>'+
-      '</button>';
-  }
-
-  function sheetHtml(r){
-    var info = showInfo[r.sho] || {};
-    var prog = programFor(r.title) || {};
-    var c = CAT_BY_KEY[r.cat] || {label:'', color:'var(--accent)'};
-    // the archive row is most specific, then the on-air feed, then the directory
-    var host = r.host || info.dj || prog.host || '';
-    var desc = info.desc || prog.desc || info.shortdesc || '';
-    var photo = r.photo || info.photo || '';
-    var dparts = splitDateText(r.dateText);
-    var subLine = c.label + (host ? ' · with '+host : '');
-    var isLoading = (loadingMp3===r.mp3);
-    var isPlaying = (nowPlaying.mp3===r.mp3 && !audio.paused && !audio.ended && !isLoading);
-
-    var links = '';
-    if(showRss(r)) links += sheetLink(RSS_BASE+encodeURIComponent(r.sho), svgRss(), 'RSS feed');
-    var site = safeUrl(info.url || prog.url);
-    // Phones drop the verb: four pills have to share a narrow row, and "Website"
-    // is unambiguous next to a link glyph. CSS picks which span is shown.
-    if(site) links += sheetLinkHtml(site, svgLink(),
-      '<span class="link-wide">Show website</span><span class="link-narrow">Website</span>');
-    var fb = safeUrl(info.facebook || prog.facebook);
-    if(fb) links += sheetLink(fb, svgFacebook(), 'Facebook');
-    var tw = safeUrl(info.twitter || prog.twitter);
-    if(tw) links += sheetLink(tw, svgLink(), 'Twitter');
-    // Rendered only where the OS can actually take it, in keeping with the
-    // sheet's rule that nothing is shown as an inert placeholder.
-    //
-    // Its word is in a .link-wide span so phones can drop it (CSS) and leave the
-    // glyph alone — four pills don't fit one row otherwise, and Share is the only
-    // one that can lose its label: the share glyph is unambiguous, while Website
-    // and Twitter are both drawn with svgLink() and are told apart by wording.
-    // Hence the aria-label, which is the accessible name once the span is hidden.
-    if(navigator.share) links += '<button class="sheet-link sheet-share" type="button" aria-label="Share">'+
-      svgShare()+'<span class="link-wide">Share</span></button>';
-
-    var play = r.mp3
-      ? '<button class="sheet-play play-btn'+(isPlaying?' playing':'')+(isLoading?' loading':'')+'" type="button" '+
-        playAttrs(r, subLine, photo, isLoading, isPlaying)+'>'+glyph(isLoading, isPlaying)+
-        '<span class="play-label">'+esc(playLabelFor(r.mp3, isLoading, isPlaying))+'</span></button>'
-      : '';
-
-    // Rendered always, revealed by syncSheetRestart() only while this episode has
-    // a saved position — so pausing with the sheet open makes it appear in place.
-    var restart = r.mp3
-      ? '<button class="sheet-restart" id="sheetRestart" type="button" hidden>Start over</button>'
-      : '';
-
-    // Always present in the selected block so progress can change in place when
-    // playback pauses or finishes. Untouched episodes hide the whole line.
-    var listen = '<div class="sheet-listen" id="sheetSelectedListen" hidden>'+
-        '<svg class="sheet-listen-check" id="sheetSelectedCheck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5.5 5.5L20 6.5"/></svg>'+
-        '<span id="sheetSelectedListenText"></span>'+
-        '<span class="listen-progress sheet-selected-progress" id="sheetSelectedProgress" aria-hidden="true"></span>'+
-      '</div>';
-
-    // This broadcast's own headline and summary (integration step 4e): QIR's where the
-    // Discovery plugin added them, else the feed's topic and notes; plus a plugin's buttons
-    // (Transcript, Songs). Long summaries show four lines with More.
-    var showBlock =
-      (desc ? '<div class="sheet-desc-wrap"><p class="sheet-desc" id="sheetDesc">'+esc(desc)+'</p></div>' : '')+
-      (links ? '<div class="sheet-links sheet-profile-links">'+links+'</div>' : '');
-    var selTopic = window.ArchiveSearch.episodeTitle(r);
-    var selNotes = r.episodeDesc || '';
-    var selExtra = pluginSheetActions(r);
-    // No headline or summary: say why, so no popup looks empty (Paul, 2026-09-28). QIR has
-    // not reached it yet (Discovery), QIR skipped it, or the feed simply has no notes.
-    var selEmpty = !selTopic && !selNotes && (selExtra || r.qirPending)
-      ? (r.qirPending ? (r.qirPending.skipped ? 'No summary or transcript for this episode.' : 'Transcript processing — the summary and transcript usually appear within a few hours of the broadcast.')
-        : 'No episode notes for this broadcast.')
-      : '';
-    // Stats step 6: a QIR summary or the "processing" note was shown. Once per episode per
-    // visit (the sheet repaints when data arrives); the counter carries no episode.
-    if(window.ArchiveStats){
-      var shown = r.qirEpisode && selNotes ? 'summaryShown' : (r.qirPending && !r.qirPending.skipped && selEmpty ? 'pendingShown' : '');
-      if(shown && !sheetCounted[shown+' '+r.id]){ sheetCounted[shown+' '+r.id] = 1; window.ArchiveStats.count(shown); }
-    }
-    var episodeBlock =
-      (selEmpty ? '<p class="sheet-selected-empty">'+esc(selEmpty)+'</p>' : '')+
-      (selTopic ? '<p class="sheet-selected-topic">'+esc(selTopic)+'</p>' : '')+
-      (selExtra ? '<div class="sheet-plugin-actions">'+selExtra+'</div>' : '')+
-      (selNotes ? '<div class="sheet-selected-notes"><p class="sheet-selected-summary">'+esc(selNotes)+'</p>'+
-        (selNotes.length > 220 ? '<button class="sheet-summary-more" type="button" aria-expanded="false">More</button>' : '')+'</div>' : '');
-    return {
-      body:
-        '<div class="sheet-head">'+
-          // With art, the tile is a real control that opens the lightbox for a
-          // closer look. With none, it stays a decorative (aria-hidden) span.
-          (photo
-            ? '<button type="button" class="sheet-art sheet-art-zoom" data-photo="'+esc(photo)+'" aria-label="View larger artwork for '+esc(r.title)+'">'+
-                '<img alt="" src="'+esc(photo)+'">'+
-                '<span class="sheet-art-zoom-badge" aria-hidden="true">'+
-                  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>'+
-                '</span>'+
-              '</button>'
-            : '<span class="sheet-art" aria-hidden="true"></span>')+
-          '<div class="sheet-titles">'+
-            (c.label ? '<span class="sheet-eyebrow">'+catIcon(r.cat)+esc(c.label)+'</span>' : '')+
-            '<h2 id="sheetTitle">'+esc(r.title)+'</h2>'+
-            (host ? '<div class="sheet-host">with '+esc(host)+'</div>' : '')+
-            episodeBrowseButton(r)+
-          '</div>'+
-        '</div>'+
-        // Layout (Paul, 2026-09-28): the episode's own text sits in the wide left column under
-        // "Episode info" (headline, Transcript/Songs, summary), then "Show info"; the
-        // narrow right column (the footer) keeps only the broadcast and its controls.
-        // Both kinds of text: "Episode info | Show info" tabs, one visible at a time, so the
-        // sheet stays short (Paul, 2026-09-28). Only one kind: that section, labelled.
-        (episodeBlock && showBlock ? infoTabs(episodeBlock, showBlock)
-          : episodeBlock ? '<section class="sheet-episode" aria-label="Episode info"><span class="sheet-section-k">Episode info</span>'+episodeBlock+'</section>'
-          : showBlock),
-      // One dated broadcast. Archive navigation belongs to the show identity
-      // above; the footer stays about this selection and nothing else.
-      foot:
-        '<div class="sheet-selected">'+
-          (sheetLinkNote ? '<p class="sheet-link-note" role="status">'+esc(sheetLinkNote)+'</p>' : '')+
-          '<span class="sheet-selected-k">Selected broadcast</span>'+
-          '<div class="sheet-selected-line">'+
-            (dparts.date ? '<span class="sheet-selected-date">'+esc(shortDateText(dparts.date))+'</span>' : '')+
-            (dparts.time ? '<span class="sheet-selected-time">'+esc(dparts.time)+'</span>' : '')+
-            (r.length ? '<span class="sheet-selected-length">'+esc(r.length)+'</span>' : '')+
-            retentionBadge(r)+
-          '</div>'+
-          listen+
-          (play ? '<div class="sheet-actions">'+play+restart+'</div>' : '')+
-        '</div>'
-    };
   }
 
   function syncSelectedListening(){
@@ -4656,13 +4598,6 @@
     if(progress){
       progress.hidden = s.kind !== 'part' || loading || playing;
       progress.style.setProperty('--pct', s.pct+'%');
-    }
-    var summaryEl = sheet.querySelector('.sheet-archive-summary');
-    if(summaryEl){
-      var summary = listeningSummary(episodesFor(r));
-      summaryEl.textContent = summary;
-      var history = summaryEl.closest('.sheet-archive-history');
-      if(history) history.hidden = !summary;
     }
   }
 
@@ -4684,19 +4619,9 @@
     var below = slack > 4 && top < slack - 4;
     sheetBody.classList.toggle('fade-top', slack > 4 && top > 4);
     sheetBody.classList.toggle('fade-bottom', below);
-    if(sheetScrollCue){
-      sheetScrollCue.hidden = !below;
-      if(below){
-        var label = sheetView === 'archive' ? 'More episodes' : 'More show information';
-        sheetScrollCueLabel.textContent = label;
-        sheetScrollCue.setAttribute('aria-label', label);
-        // The footer and player have variable heights. Anchor the cue to the
-        // visible bottom of the scrolling body rather than guessing either one.
-        var sr = sheet.getBoundingClientRect();
-        var br = sheetBody.getBoundingClientRect();
-        sheet.style.setProperty('--sheet-cue-bottom', Math.max(8, sr.bottom - br.bottom + 8)+'px');
-      }
-    }
+    // The "More show information" arrow went with the redesign (2026-09-29): the episode
+    // list below the show says there is more on its own.
+    if(sheetScrollCue) sheetScrollCue.hidden = true;
   }
   if(sheetBody) sheetBody.addEventListener('scroll', syncSheetFade, { passive: true });
   window.addEventListener('resize', syncSheetFade);
@@ -4767,7 +4692,7 @@
   // merges in a host from the on-air feed or the directory, so its data-sub is
   // the richer line, and this keeps the two controls describing one track.
   function restartSheetEpisode(){
-    var btn = sheetFoot.querySelector('.sheet-play');
+    var btn = sheetBody.querySelector('.sheet-play');
     if(!btn || !btn.dataset.mp3) return;
     // already loaded: rewind in place rather than re-buffering the whole file
     if(nowPlaying.mp3 === btn.dataset.mp3){
@@ -4814,145 +4739,125 @@
     // history entry, then stack the chosen show above it. Back can therefore
     // retrace the exact path while the audio source remains untouched.
     dismissLivePlayer();
-    openSheetById(r.id, onAirBtn);
+    openSheetById(r.id, onAirBtn, false, 'show');
     if(canHistory){
-      var routeState = {sheetId:r.id, liveOrigin:1};
-      if(view === 'archive') routeState.sheetView = 'archive';
-      try { history.replaceState(routeState, '', urlFor(r.id)); } catch(e){}
+      // Live keeps its own entry under this one: close consumes both (sheetDepth 2).
+      try { history.replaceState({sheetId:r.id, sheetView:'show', sheetDepth:2, liveOrigin:1}, '', urlFor(r.id, 'show')); } catch(e){}
     }
-    if(view === 'archive') setSheetView('archive', 'back');
   }
-  function openLiveShowArchive(altid){ openLiveShowRoute(altid, 'archive'); }
+  function openLiveShowArchive(altid){ openLiveShowRoute(altid, 'show'); }
   function openLiveShowProfile(altid){ openLiveShowRoute(altid, 'show'); }
 
-  // Paint exactly one modal route. The archive replaces the profile body and
-  // empties its footer; the player bar sits outside the sheet and is never rebuilt.
+  // Paint the panel: the show column always (desktop keeps it beside an episode; phones hide
+  // it in the Episode view), and beside it the episodes or one episode.
   function paintSheet(r, keepScroll){
     if(enteringPanel === sheet) endEnter();
     var top = keepScroll ? sheetBody.scrollTop : 0;
+    var sideTop = keepScroll && sheetBody.querySelector('.sv-side') ? sheetBody.querySelector('.sv-side').scrollTop : 0;
     sheetRowId = r.id;
     sheetMp3 = r.mp3 || null;
     sheetEpAlt = epLabel(r).date;       // every primary action names its date
-    sheet.classList.toggle('archive-view', sheetView === 'archive');
-    sheetRoutebar.hidden = sheetView !== 'archive';
-    sheet.setAttribute('aria-labelledby', sheetView === 'archive' ? 'sheetRouteTitle' : 'sheetTitle');
-    if(sheetView === 'archive'){
-      sheetBody.innerHTML = archiveHtml(r);
-      sheetFoot.innerHTML = '';
-    } else {
-      var parts = sheetHtml(r);
-      sheetBody.innerHTML = parts.body;
-      sheetFoot.innerHTML = parts.foot;
-    }
+    sheet.classList.toggle('episode-view', sheetView === 'episode');
+    sheet.setAttribute('aria-labelledby', sheetView === 'episode' ? 'sheetEpTitle' : 'sheetTitle');
+    sheetBody.innerHTML = '<div class="sv view-'+sheetView+'"><div class="sv-show">'+showColHtml(r)+'</div>'+
+      '<div class="sv-side">'+(sheetView === 'episode' ? episodeHtml(r) : listHtml(r))+'</div></div>';
     sheetBody.scrollTop = top;
-    if(sheetView === 'show') setupDescClamp();
+    var side = sheetBody.querySelector('.sv-side');
+    if(side) side.scrollTop = sideTop;
+    setupDescClamp();
     updatePlayButtons();
-    syncSheetFade();        // new content, so what is hidden above/below changed
+    syncSheetFade();
   }
 
+  // Show view <-> Episode view inside the one panel. Opening an episode from the show's list
+  // is one more history entry, so Back returns to the list; "← show" takes that entry back.
   function setSheetView(view, focusTarget){
-    if(view !== 'show' && view !== 'archive') return;
+    if(view !== 'show' && view !== 'episode') return;
     var r = sheetRowId && rowById(sheetRowId);
     if(!r) return;
     sheetView = view;
     paintSheet(r);
-    var backToLive = !!(canHistory && history.state && history.state.liveOrigin);
-    sheetRouteBack.setAttribute('aria-label', backToLive ? 'Back to live player' : 'Back to show info');
-    var backText = sheetRouteBack.querySelector('span');
-    if(backText) backText.textContent = backToLive ? 'Live player' : 'Show info';
-    if(focusTarget === 'back') sheetRouteBack.focus();
+    if(focusTarget === 'back'){ var b = sheet.querySelector('.sheet-back'); if(b) b.focus(); }
     else if(focusTarget === 'close') sheetClose.focus();
-    else if(focusTarget === 'archive'){
-      var archiveBtn = sheet.querySelector('.sheet-archive-open');
-      if(archiveBtn) archiveBtn.focus();
-    }
   }
-
-  // A row chooses context and returns to the restored profile. Its separate play
-  // icon is the only archive-list action that starts audio immediately.
   function selectEpisode(id){
     sheetLinkNote = '';
-    sheetInfoTab = 'episode';
     var r = rowById(id);
     if(!r) return;
-    sheetView = 'show';
+    sheetView = 'episode';
     paintSheet(r);
     if(canHistory){
-      var selectedState = {sheetId:r.id};
-      // The profile is a branch within the same Live-originated modal journey.
-      // Keep that origin so Back can retrace it and Close can dismiss the whole
-      // journey instead of revealing a surprise Live overlay.
-      if(history.state && history.state.liveOrigin) selectedState.liveOrigin = 1;
-      try { history.replaceState(selectedState, '', urlFor(r.id)); } catch(e){}
+      var st = history.state || {};
+      var depth = (st.sheetDepth || 1) + (st.sheetView === 'episode' ? 0 : 1);
+      var next = {sheetId:r.id, sheetView:'episode', sheetDepth:depth};
+      if(st.liveOrigin) next.liveOrigin = 1;
+      try { history[st.sheetView === 'episode' ? 'replaceState' : 'pushState'](next, '', urlFor(r.id, 'episode')); } catch(e){}
     }
-    // Usually this is another date from the same show. The modal player can also
-    // point at a different show, though, and following it must perform the same
-    // lazy description lookup as opening that show's front card.
     ensureShowDetail(r.sho);
     var play = sheet.querySelector('.sheet-play');
     if(play) play.focus();
   }
+  // Back from an episode to its show: through history when the episode was opened from the
+  // list (so Back and the arrow agree), otherwise (opened straight onto the episode) in place.
+  function backToShow(){
+    var st = canHistory ? (history.state || {}) : {};
+    if(st.sheetView === 'episode' && (st.sheetDepth || 1) > (st.liveOrigin ? 2 : 1)){ history.back(); return; }
+    setSheetView('show', 'close');
+    if(canHistory){ try { history.replaceState(Object.assign({}, st, {sheetView:'show'}), '', urlFor(sheetRowId, 'show')); } catch(e){} }
+  }
 
-  // `fromHistory` marks an open that a popstate is already accounting for, so it
-  // must not push an entry of its own.
-  function openSheetById(id, trigger, fromHistory){
+  // `fromHistory` marks an open that a popstate is already accounting for, so it must not
+  // push an entry of its own. `view`: 'show' (a show card, schedule, live, Now Playing) or
+  // 'episode' (an episode row, Just aired, the mini player, an episode link).
+  function openSheetById(id, trigger, fromHistory, view){
     var r = rowById(id);
     if(!r) return;
-    // One history entry per *opening*, not per sheet: swapping from one show to
-    // another with the sheet already up replaces the entry, so Back always
-    // returns to the listing rather than walking back through shows.
+    // One history entry per *opening*: swapping to another show with the panel already up
+    // replaces it, so Back returns to the listing rather than walking back through shows.
     var wasOpen = sheet.classList.contains('show');
-    sheetView = 'show';       // every front-card opening restores the profile
+    sheetView = view === 'show' ? 'show' : 'episode';
+    if(!wasOpen || !fromHistory) sheetShown = SHEET_PAGE;
     paintSheet(r);
     if(canHistory && !fromHistory){
       try {
-        history[wasOpen ? 'replaceState' : 'pushState']({sheetId:r.id}, '', urlFor(r.id));
+        history[wasOpen ? 'replaceState' : 'pushState']({sheetId:r.id, sheetView:sheetView, sheetDepth:1}, '', urlFor(r.id, sheetView));
       } catch(e){}
     }
-    sheetReturnFocus = trigger || document.activeElement;
-    endMinimize();     // re-opened mid-collapse: drop the transform, it wins
+    if(!wasOpen) sheetReturnFocus = trigger || document.activeElement;
     sheet.classList.add('show');
     runEnter(sheet);
     sheetScrim.classList.add('show');
     sheet.setAttribute('aria-hidden', 'false');
     document.body.classList.add('sheet-open');
     refreshOverlayState();
-    sheetClose.focus();
+    if(!wasOpen) sheetClose.focus();
     document.addEventListener('keydown', onSheetKey);
 
-    // the directory arrives on first open; repaint if this sheet is still up
+    // the directory arrives on first open; repaint if this panel is still up
     if(!programs){
       ensurePrograms().then(function(){
         var same = rowById(sheetRowId);
-        if(same && sheet.classList.contains('show')) paintSheet(same);
+        if(same && sheet.classList.contains('show')) paintSheet(same, true);
       });
     }
-    // and the per-show record, for anything neither source already describes
     ensureShowDetail(r.sho);
   }
 
-  // Closing from the UI goes through history so the entry pushed on open is
-  // consumed; popstate then calls dismissSheet() to do the actual work. Without
-  // this, closing by button would leave a dead entry that Back would replay.
+  // Closing from the UI goes through history so every entry the panel pushed is consumed
+  // (opening = 1, an episode opened from the list = +1, a journey from Live = +1); popstate
+  // then calls dismissSheet(). Without this, closing would leave dead entries Back replays.
   function closeSheet(){
     sheetLinkNote = '';
-    sheetInfoTab = 'episode';
     if(!sheet.classList.contains('show')) return;
-    // Close/minimize means leave the modal journey, not go Back within it. A
-    // show opened from Live has two owned entries, so consume both at once.
-    if(canHistory && history.state && history.state.sheetId && history.state.liveOrigin){
-      history.go(-2);
-      return;
-    }
-    if(canHistory && history.state && history.state.sheetId){ history.back(); return; }
+    var st = canHistory ? (history.state || {}) : {};
+    if(canHistory && st.sheetId){ history.go(-(st.sheetDepth || 1)); return; }
     dismissSheet();
   }
 
+  // A plain slide down (Paul, 2026-09-29: no "shrink into the player" animation).
   function dismissSheet(){
     if(!sheet.classList.contains('show')) return;
-    // The card can only collapse toward a bar that is on screen to be measured.
-    if(sheetWillMinimize() && !playerBar.hidden) runMinimize(sheet);
-    closeLightbox();   // never leave the artwork overlay stranded over a closed sheet
+    closeLightbox();   // never leave the artwork overlay stranded over a closed panel
     sheet.classList.remove('show');
     sheetScrim.classList.remove('show');
     sheet.setAttribute('aria-hidden', 'true');
@@ -5000,9 +4905,8 @@
     }
     dismissLivePlayer();
     var id = route.sheetId || param('show');
-    if(id && rowById(id)) openSheetById(id, null, true);
+    if(id && rowById(id)) openSheetById(id, null, true, route.sheetView === 'show' ? 'show' : 'episode');
     else dismissSheet();
-    if(id && route.sheetView === 'archive') setSheetView('archive');
     if(route.sched) openSchedule(true);
     else dismissSchedule();
   });
@@ -5016,11 +4920,8 @@
       return;
     }
     if(e.key === 'Escape'){
-      if(sheetView === 'archive'){
-        e.preventDefault();
-        if(canHistory && history.state && history.state.liveOrigin) history.back();
-        else setSheetView('show', 'archive');
-      }
+      e.preventDefault();
+      if(sheetView === 'episode' && (history.state || {}).sheetDepth > ((history.state || {}).liveOrigin ? 2 : 1)) backToShow();
       else closeSheet();
       return;
     }
@@ -5029,13 +4930,6 @@
     cycleTab(e, sheet.querySelectorAll('a[href], button:not([disabled]):not([tabindex="-1"])'));
   }
 
-  // Arrow keys move between the info tabs (the standard tablist pattern).
-  sheetBody.addEventListener('keydown', function(e){
-    var t = e.target.closest && e.target.closest('.sheet-info-tab');
-    if(!t || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
-    e.preventDefault();
-    setInfoTab(t.dataset.sheetInfo === 'episode' ? 'show' : 'episode', true);
-  });
   sheetClose.addEventListener('click', closeSheet);
   sheetScrim.addEventListener('click', closeSheet);
   // Bound on the dialog, so it covers profile, archive route and fixed player.
@@ -5046,21 +4940,20 @@
       sheetBody.scrollBy({ top:Math.min(remaining, Math.max(120, sheetBody.clientHeight*.7)), behavior:motion });
       return;
     }
-    if(e.target.closest('.sheet-route-back')){
-      if(canHistory && history.state && history.state.liveOrigin) history.back();
-      else setSheetView('show', 'archive');
+    if(e.target.closest('[data-sheet-back]')){ backToShow(); return; }
+    if(e.target.closest('.sheet-show-more')){
+      sheetShown += SHEET_PAGE;
+      var cur = sheetRowId && rowById(sheetRowId);
+      if(cur) paintSheet(cur, true);
       return;
     }
-    if(e.target.closest('.sheet-archive-open')){ setSheetView('archive', 'back'); return; }
     var art = e.target.closest('.sheet-art-zoom');
     if(art){ openLightbox(art.dataset.photo, art); return; }
-    var btn = e.target.closest('.sheet-play, .sheet-episode-play');
+    var btn = e.target.closest('.sheet-play, .sheet-episode-play, .sheet-head-play');
     if(btn){ togglePlayFrom(btn); return; }
     var episode = e.target.closest('.sheet-episode-open');
     if(episode){ selectEpisode(episode.dataset.id); return; }
     if(e.target.closest('.sheet-restart')){ restartSheetEpisode(); return; }
-    var infoTab = e.target.closest('[data-sheet-info]');
-    if(infoTab){ setInfoTab(infoTab.dataset.sheetInfo, false); return; }
     var pa = e.target.closest('[data-plugin-action]');
     if(pa){
       plugins.forEach(function(p){ if(p.onAction) p.onAction(pa.dataset.pluginAction, pa.dataset.id); });
@@ -5074,6 +4967,7 @@
       more.textContent = open ? 'Less' : 'More';
       return;
     }
+    if(e.target.closest('[data-share-show]')){ shareSheet(true); return; }
     if(e.target.closest('.sheet-share')) shareSheet();
   });
 
@@ -5081,13 +4975,13 @@
   // sharer happened to have applied — the recipient wants the episode, not the
   // sharer's filters. It stays valid only until the episode's retention window
   // closes; openDeepLink() handles the other side of that.
-  function shareSheet(){
+  function shareSheet(asShow){
     var r = sheetRowId && rowById(sheetRowId);
     if(!r || !navigator.share) return;
     navigator.share({
       title: r.title,
       text: r.title + (' — ' + STATION.label + ' Archive'),
-      url: location.origin + window.ShowLinks.episodePath(r)
+      url: location.origin + (asShow ? window.ShowLinks.showPath(r.sho) : window.ShowLinks.episodePath(r))
     }).catch(function(){ /* dismissed by the user, or no target chosen */ });
   }
   // artwork that 404s falls back to the station placeholder behind it

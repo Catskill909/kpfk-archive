@@ -4289,3 +4289,110 @@
     .np-sheet{ transition:none; }
     .np-toggle.is-loading .spinner{ animation-duration:1.4s; }
   }
+
+  /* ==== Show panel: Show view + Episode view (2026-09-29; docs/kpfk/show-view-plan.md) ====
+     Replaces the profile + "Past episodes" route + "Selected broadcast" footer. One block,
+     scoped to .sheet .sv so it wins over the older sheet rules (removed in the clean-up step).
+     Phone: one column, compact header. Desktop (>= 900px): the show on the left, the episodes
+     or one episode on the right, each scrolling on its own (DESIGN-SYSTEM Rule 2). */
+  .sheet{ --row-play-bg:color-mix(in srgb, var(--ink) 15%, var(--surface-1)); --row-play-line:transparent; }
+  :root[data-theme="light"] .sheet{ --row-play-bg:var(--surface-2); --row-play-line:var(--outline-strong); }
+  @media (prefers-color-scheme: light){ :root:not([data-theme]) .sheet{ --row-play-bg:var(--surface-2); --row-play-line:var(--outline-strong); } }
+  .sheet .sheet-scroll-cue{ display:none; }
+  .sheet .sv{ display:flex; flex-direction:column; gap:1rem; min-width:0; }
+  .sheet .sv-show, .sheet .sv-side{ min-width:0; display:flex; flex-direction:column; gap:1rem; }
+
+  /* show column */
+  .sheet .sv .sheet-head{ flex-direction:row; align-items:flex-start; text-align:left; gap:1rem; padding-right:2.8rem; }
+  .sheet .sv .sheet-art{ width:92px; height:92px; border-radius:12px; }
+  .sheet .sv .sheet-titles{ align-items:flex-start; gap:.3rem; }
+  .sheet .sv .sheet-eyebrow{ align-self:flex-start; }
+  .sheet .sv .sheet-links{ justify-content:flex-start; margin:0; }
+  .sheet-head-actions{ display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; margin-top:.35rem; }
+  .sheet .sheet-head-play{
+    display:inline-flex; align-items:center; gap:.5rem; width:auto; height:auto; cursor:pointer;
+    border:1px solid transparent; border-radius:999px; padding:.55rem 1.1rem;
+    background:var(--accent); color:var(--accent-ink); font-family:inherit; font-size:.88rem; font-weight:700;
+    box-shadow:var(--shadow);
+  }
+  .sheet .sheet-head-play.playing, .sheet .sheet-head-play.loading{ background:var(--accent); color:var(--accent-ink); }
+  .sheet .sheet-head-play svg{ width:15px; height:15px; }
+  .sheet .sheet-icon-btn{ width:40px; height:40px; padding:0; justify-content:center; border-radius:50%; }
+  .sheet .sheet-icon-btn .link-wide{ display:none; }
+
+  /* list heads, rows */
+  .sheet-list-head{ display:flex; align-items:baseline; justify-content:space-between; gap:.75rem; margin-top:.25rem; }
+  .sheet-list-head h3{ margin:0; font-family:var(--font-display); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-dim); }
+  .sheet-list-head .sheet-archive-tally{ font-size:.8rem; color:var(--ink-faint); }
+  .sheet .sv .sheet-episode-list{ display:flex; flex-direction:column; }
+  .sheet .sv .sheet-episode{
+    display:grid; grid-template-columns:auto minmax(0,1fr); gap:.8rem; align-items:center;
+    padding:.7rem .15rem; margin:0; border:0; border-bottom:1px solid var(--outline); border-radius:0;
+    background:transparent; box-shadow:none;
+  }
+  .sheet .sv .sheet-episode:last-child{ border-bottom:0; }
+  .sheet .sv .sheet-episode.is-current{ background:color-mix(in srgb, var(--accent-2) 10%, transparent); }
+  .sheet .sv .sheet-episode-play{
+    align-self:center; width:40px; height:40px; min-height:0; margin:0; border-radius:50%;
+    border:1px solid var(--row-play-line); background:var(--row-play-bg); color:var(--ink);
+  }
+  .sheet .sv .sheet-episode-play.play-btn.playing, .sheet .sv .sheet-episode-play.play-btn.loading{
+    background:var(--accent); color:var(--accent-ink); border-color:transparent;
+  }
+  .sheet .sv .sheet-episode-play svg{ width:15px; height:15px; }
+  .sheet .sv .sheet-episode-open{ padding:0; gap:.2rem; background:transparent; }
+  .sheet-episode-when{ display:flex; align-items:center; flex-wrap:wrap; gap:.2rem .55rem; font-size:.84rem; color:var(--ink-dim); font-variant-numeric:tabular-nums; }
+  .sheet .sv .sheet-episode-date{ font-size:.86rem; font-weight:700; color:var(--ink); }
+  .sheet .sv .sheet-episode-time{ font-family:inherit; font-size:inherit; }
+  .sheet-episode-when .mono{ font-family:var(--font-mono); font-size:.78rem; }
+  .sheet .sv .sheet-episode-status{
+    font-size:.72rem; font-weight:700; padding:.05rem .45rem; border-radius:999px;
+    background:color-mix(in srgb, var(--accent-2) 20%, transparent); color:var(--accent-2);
+  }
+  .sheet-episode-topic{ font-size:.95rem; font-weight:650; line-height:1.3; color:var(--ink);
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+  .sheet-episode-notes{ font-size:.86rem; color:var(--ink-dim); display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:1; overflow:hidden; }
+  .sheet .sv .sheet-episode-progress{ width:100%; margin-top:.35rem; }
+  .sheet-show-more, .sheet-show-all{
+    align-self:stretch; min-height:42px; border-radius:999px; border:1px solid var(--outline-strong);
+    background:var(--surface-2); color:var(--ink); font:inherit; font-weight:650; font-size:.9rem; cursor:pointer;
+  }
+  @media (hover:hover) and (pointer:fine){
+    .sheet .sv .sheet-episode:hover{ background:var(--surface-hover); }
+    .sheet-show-more:hover, .sheet-show-all:hover{ background:var(--surface-3); }
+  }
+
+  /* episode view */
+  .sheet-back{ align-self:flex-start; display:inline-flex; align-items:center; gap:.35rem; max-width:calc(100% - 3rem);
+    border:0; background:none; padding:.3rem 0; color:var(--accent-2); font:inherit; font-weight:650; font-size:.92rem; cursor:pointer; }
+  .sheet-back svg{ width:18px; height:18px; flex:none; }
+  .sheet-back span{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sheet-back .sheet-back-all{ display:none; }
+  .sheet-ep-title{ margin:0; font-family:var(--font-display); font-size:clamp(1.25rem, 1.05rem + .8vw, 1.55rem); line-height:1.2; font-weight:700; text-wrap:balance; }
+  .sheet-ep-meta{ display:flex; flex-wrap:wrap; align-items:center; gap:.2rem .7rem; color:var(--ink-dim); font-size:.88rem; font-variant-numeric:tabular-nums; }
+  .sheet-ep-meta .mono{ font-family:var(--font-mono); font-size:.82rem; }
+  .sheet-ep-actions{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; }
+  .sheet .sv .sheet-selected-summary{ max-width:65ch; }
+
+  /* the old footer, route bar and tabs no longer exist */
+  .sheet .sheet-foot, .sheet .sheet-routebar{ display:none; }
+
+  /* Desktop: two columns, each scrolling on its own; the panel fills the space above the bar. */
+  @media (min-width:900px){
+    .sheet{ width:min(1000px, 94vw); height:min(88dvh, 820px); max-height:none; }
+    body.has-player .sheet{ height:min(88dvh, calc(100dvh - var(--player-h, 0px) - 2rem)); max-height:none; }
+    .sheet .sheet-body{ padding:0; overflow:hidden; display:block; flex:1 1 auto; min-height:0; }
+    .sheet .sv{ display:grid; grid-template-columns:minmax(0, 2fr) minmax(0, 3fr); gap:0; height:100%; }
+    .sheet .sv-show{ overflow-y:auto; overscroll-behavior:contain; padding:1.6rem 1.5rem; border-right:1px solid var(--outline); }
+    .sheet .sv-side{ overflow-y:auto; overscroll-behavior:contain; padding:1.3rem 1.6rem 1.4rem; }
+    .sheet .sv .sheet-head{ flex-direction:column; padding-right:0; }
+    .sheet .sv .sheet-art{ width:100%; max-width:220px; height:auto; aspect-ratio:1; }
+    .sheet .sv-side > .sheet-list-head:first-child, .sheet .sv-side > .sheet-back:first-child{ padding-right:2.8rem; }
+    .sheet .sv .sheet-desc{ -webkit-line-clamp:6; }
+    .sheet .sheet-back .sheet-back-show{ display:none; }
+    .sheet .sheet-back .sheet-back-all{ display:inline; }
+  }
+  /* Phones: the Episode view is the whole panel (the show column waits behind "← show"). */
+  @media (max-width:899px){
+    .sheet .view-episode .sv-show{ display:none; }
+  }

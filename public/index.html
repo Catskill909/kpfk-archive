@@ -353,8 +353,8 @@
     </div>
   </aside>
 
-  <!-- Show info dialog. Body is painted by app.js from the archive row plus any
-     harvested show record; empty fields are left out entirely. -->
+  <!-- The show panel (2026-09-29, docs/kpfk/show-view-plan.md). Body painted by app.js from
+     the archive rows plus the show record; empty fields are left out entirely. -->
   <div class="sheet-scrim" id="sheetScrim"></div>
   <div class="sheet" id="showSheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true">
     <!-- Same two-glyph close as the live player: ✕ when closing really does leave
@@ -371,20 +371,8 @@
         <path d="M6 9l6 6 6-6" />
       </svg>
     </button>
-    <!-- Past episodes is an internal view of this one dialog, not another modal.
-       Its Back control has a different promise from Close/minimize. -->
-    <div class="sheet-routebar" id="sheetRoutebar" hidden>
-      <button class="sheet-route-back" id="sheetRouteBack" type="button" aria-label="Back to show info">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M19 12H5M11 18l-6-6 6-6" />
-        </svg>
-        <span>Show info</span>
-      </button>
-      <strong id="sheetRouteTitle">Past episodes</strong>
-    </div>
-    <!-- Exactly one body owns scrolling. The profile controls stay in sheetFoot;
-       the archive browser replaces both body and footer rather than growing them. -->
+    <!-- Show view / Episode view (app.js paintSheet): the show and its episodes, or one
+       broadcast. On desktop the show column stays beside the episodes (two columns). -->
     <div class="sheet-body" id="sheetBody"></div>
     <button class="sheet-scroll-cue" id="sheetScrollCue" type="button" hidden
       aria-label="Show more information">
@@ -394,7 +382,6 @@
         <path d="M6 9l6 6 6-6" />
       </svg>
     </button>
-    <div class="sheet-foot" id="sheetFoot"></div>
   </div>
 
   <!-- Artwork lightbox: opened by tapping the show art in the sheet, so a listener
