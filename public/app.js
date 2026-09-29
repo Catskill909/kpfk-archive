@@ -1511,6 +1511,8 @@
     var infoBtn = document.getElementById('playerInfoBtn');
     function openForPlaying(){
       if(barMode === 'live'){ openLivePlayer(); return; }
+      // Phones with Now Playing on (public/now-playing.js; testers only until Paul switches it on).
+      if(window.NowPlaying && window.NowPlaying.active()){ window.NowPlaying.open(infoBtn); return; }
       var r = nowPlaying.mp3 && rowByMp3(nowPlaying.mp3);
       if(r) openSheetById(r.id, infoBtn);
     }
@@ -2955,6 +2957,40 @@
     closeSheet: function(){ closeSheet(); },
     // What the player bar holds: 'archive', 'live' or null.
     barMode: function(){ return barMode; },
+    // For the phone "Now Playing" sheet (public/now-playing.js, 2026-09-29): a thin window on
+    // the one player — it never plays audio of its own, so the bar, the lock screen and the
+    // sheet can never disagree.
+    player: {
+      audio: audio,
+      // The episode in the bar: its row (or null), and what the bar shows.
+      current: function(){
+        if(barMode !== 'archive' || !nowPlaying.mp3) return null;
+        return { row: rowByMp3(nowPlaying.mp3) || null, mp3: nowPlaying.mp3, title: nowPlaying.title, sub: nowPlaying.sub,
+          photo: nowPlaying.photo, loading: loadingMp3 === nowPlaying.mp3 };
+      },
+      toggle: function(){ togglePlayback(); },
+      skip: function(sign){ seekBy(sign * SKIP_SECONDS); },
+      seek: function(seconds){ if(barMode === 'archive' && isFinite(seconds)) audio.currentTime = seconds; },
+      skipSeconds: SKIP_SECONDS,
+      formatTime: formatTime,
+      // Play another episode (from where the listener left it, like a card's play button).
+      play: function(id){
+        var r = rowById(id);
+        if(!r || !r.mp3) return;
+        var c = CAT_BY_KEY[r.cat] || {label:''};
+        playTrack(r.mp3, r.title, c.label + (r.host ? ' · with '+r.host : ''), r.photo || '');
+      },
+      // The show's other episodes, newest first.
+      showEpisodes: function(row, limit){
+        if(!row) return [];
+        return rows.filter(function(x){ return x.sho === row.sho && x.id !== row.id; })
+          .sort(function(a, b){ return b.dt - a.dt; }).slice(0, limit || 5);
+      },
+      openShow: function(id, trigger){ openSheetById(id, trigger); },
+      episodeTitle: function(r){ return (window.ArchiveSearch && window.ArchiveSearch.episodeTitle(r)) || r.title; },
+      shareUrl: function(r){ return location.origin + window.ShowLinks.episodePath(r); },
+      stationLabel: function(){ return STATION.label; }
+    },
     // A plugin's own live data arrived (new QIR headlines): redo the rows' extra fields
     // and redraw Just aired only; the listing never moves under the reader.
     refreshJustAired: function(){ enrichRows(); rebuildSearchIndex(); renderJustAired(true); repaintOpenSheet(); }
