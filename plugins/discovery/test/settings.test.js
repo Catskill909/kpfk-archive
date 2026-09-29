@@ -60,7 +60,8 @@ test('switched off: every route declines, no main-page script, no QIR traffic', 
  assert.equal(app.discovery.status().enabled,false);
  assert.deepEqual(calls,[],'no requests while off');
  app.discovery.applyAdmin({enabled:true});
- assert.equal((await fetch(o+'/discover')).status,200,'on at once, no restart');
+ assert.equal((await fetch(o+'/discover/app.js')).status,200,'on at once, no restart');
+ assert.equal((await fetch(o+'/discover',{redirect:'manual'})).status,302,'old page: to the main page');
  assert.match(app.discovery.pageScripts(),/\/discover\/main\.js\?v=/);
 });
 

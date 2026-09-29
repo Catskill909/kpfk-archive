@@ -54,9 +54,12 @@ test('menu text is escaped, and only HTTPS links and known networks are accepted
 });
 
 
-test('Discover menu entry exists only when its station plugin is enabled', () => {
+// The old standalone Discover page is retired (2026-09-29): no menu link, on or off.
+test('no Discover menu entry, whether the plugin is on or off', () => {
   const p = raw(); p.plugins = { discovery: true };
-  assert.match(menuOf(render(template, validateProfile(p))), /href="\/discover"/);
+  const on = menuOf(render(template, validateProfile(p)));
+  assert.match(on, /Programs A–Z/, 'the probe sees the menu');
+  assert.doesNotMatch(on, /href="\/discover"|Discover shows/);
   p.plugins.discovery = false;
   assert.doesNotMatch(menuOf(render(template, validateProfile(p))), /href="\/discover"/);
   delete p.plugins;

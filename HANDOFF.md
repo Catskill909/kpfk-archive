@@ -1,6 +1,6 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-28 (Discovery integrated as a plugin; see the first section). **This folder is the active KPFK podcast-template project.**
+**Updated:** 2026-09-29 (music limit, Alan Watts, /discover retired).  **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
@@ -14,8 +14,9 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 2. **Ace email sent 2026-09-28** (`kpfk-discovery-plugin/.local-notes/ace-email-2026-09-28.html`):
    7 show keys + World Massive Sep 26 still open in QIR; heads-up that Discovery moved here; studio
    tour. Paul sent Ace his Coolify login and the studio password. **Any reply?** Recheck QIR.
-3. **Start here:** "Start here tomorrow" in [docs/INTEGRATION-PLAN.md](docs/INTEGRATION-PLAN.md) —
-   music 14-day limit → Alan Watts corrections → 4f → retire the Discovery site.
+3. **2026-09-29 done, awaiting redeploy:** music 14-day limit, Alan Watts corrections, old `/discover`
+   page retired (see "Done 2026-09-29" in [docs/INTEGRATION-PLAN.md](docs/INTEGRATION-PLAN.md)).
+   After the redeploy: check Alan Watts on Jul 26 / Aug 2 / Sep 27. Next: 5b, 7, 8.
 4. **Parked:** desktop "Copy link" share button (so desktop shares count); Coolify SMTP and
    "Instance's Domain" (invite links); queued Ace items in the Discovery HANDOFF (hold).
 5. **How Paul works:** short plain wrap-ups + "Paul — your action points"; copy-paste text on a

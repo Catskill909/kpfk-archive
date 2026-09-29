@@ -2,7 +2,7 @@
 
 **Goal:** one deployable app (the podcast site, `kpfk-archive`) for every Pacifica station, with
 Discovery (QIR search, summaries, transcripts) as a switch-on plugin for stations that have it.
-Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-28.**
+Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-29.**
 
 > This file is identical in two repos (like `APP-FAMILY.md`). Edit it in one and copy it to the
 > other in the same session: `kpfk-archive/docs/INTEGRATION-PLAN.md` and
@@ -54,27 +54,24 @@ Still running, but every visitor sees a "Discovery has moved" notice with one bu
 podcasts.kpfk.org and no way to dismiss it. It still calls QIR in the background until it is
 retired (step 8). Nothing else is developed there.
 
-## Start here tomorrow (written 2026-09-28, end of day)
+## Done 2026-09-29 (needs a Coolify redeploy)
 
-Before the separate Discovery site can be closed, three things (about an hour, with tests):
-
-1. **Music 14-day limit on the podcast site** (music licence; Discovery applied it, the podcast
-   site never has — 1 music episode over 14 days was listed on 2026-09-28: Reggae Central, Sep 13).
-   Station rule, so for every station: `musicWindowDays` / `musicShows` in the profile.
-2. **Episode corrections on the podcast site** — the three Alan Watts fund-drive hours (Jul 26,
-   Aug 2, Sep 27) still show as "On Contact" there; Discovery shows them right. Station rule:
-   `episodeCorrections` in the profile.
-3. **4f** `/discover` goes to the main page.
-
-Then close the Discovery site: redirect `kpfk-discovery.pacifica.audio` to `podcasts.kpfk.org`
-(old links keep working), stop its Coolify deployment. Ace already knows (email sent 2026-09-28).
-
-**Player:** done and live on podcasts.kpfk.org (confirmed 2026-09-29). Not an open decision.
+- **Music 14-day limit on the podcast site:** music (category Music, plus `musicShows`) is hidden
+  `musicWindowDays` after air. The feed's episode *type* is not used — it marks talk such as
+  Something's Happening as Music (Paul: category only). Hides nothing today (the feed already
+  expires music at 14 days); guards against it stopping. `/healthz` `archiveFilter.musicExpired`.
+- **Episode corrections on the podcast site:** the three Alan Watts hours (Jul 26, Aug 2, Sep 27)
+  show as Alan Watts (name, picture, host, category), not On Contact. `archiveFilter.episodeCorrected`.
+  Reaches the Flutter app through `/api/archive`. The 8:00 and 8:30 halves are not joined into one
+  episode here (Discovery joins them).
+- Both listed in Studio → Feed anomalies.
+- **Old standalone `/discover` page retired** (Paul): `/discover` redirects to the main page (search
+  kept); the "Discover shows" menu link is gone. `/discover/<file>` addresses stay — the main page
+  loads Discovery's transcript/songs files from them.
 
 ## Next up
 
-1. **4f** `/discover` points to the main page (one page for everyone).
-2. **5b** Station template in the studio: edit a station's feeds, logo, colours and text, preview,
+1. **5b** Station template in the studio: edit a station's feeds, logo, colours and text, preview,
    apply, with a way back.
 3. **6** Stats: transcript and summary clicks, Discovery searches (counts only).
 4. **7** Import / export include Discovery's settings; prove a full restore.
@@ -184,7 +181,7 @@ shares the main top bar, search, player and popups, and adds its data where the 
   episode's headline and summary (for every station where the feed or QIR has them). The Episodes
   tab leads with the headline where there is one. Checked on phone and desktop: 625-line transcript,
   tapping a line jumps the audio there, the player bar stays visible.
-- ⬜ **4f** `/discover` points to the main page.
+- ✅ **4f** `/discover` points to the main page (2026-09-29).
 
 | # | Section / popup | Main side | Discovery | Pick (Paul, date) |
 |---|---|---|---|---|

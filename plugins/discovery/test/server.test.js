@@ -7,16 +7,13 @@ const {test}=require('node:test');const assert=require('node:assert/strict');con
 const json=d=>new Response(JSON.stringify(d),{headers:{'content-type':'application/json'}});
 async function listen(t,app){await new Promise(r=>app.listen(0,'127.0.0.1',r));t.after(()=>new Promise(r=>app.close(r)));return 'http://127.0.0.1:'+app.address().port;}
 
-test('the page is served at /discover with stamped assets and no secrets; only its own files',async t=>{
+test('/discover sends people to the main page (old page retired 2026-09-29); only its own files, no secrets',async t=>{
  const calls=[];
  const o=await listen(t,createApp({env:{},fetchImpl:async url=>{calls.push(url);throw Error('Unexpected network '+url);}}));
- const page=await fetch(o+'/discover');const html=await page.text();assert.equal(page.status,200);
- assert.match(html,/KPFK Discovery/);assert.match(html,/playerRange/);assert.match(html,/\/discover\/player\.js\?v=/);assert.match(html,/\/discover\/text\.js\?v=/);
- assert.doesNotMatch(html,/\{\{station/);assert.match(html,/data-view="discover"/);assert.doesNotMatch(html,/id="admin"|admin\.js/,'the admin view moves to the studio');
- assert.match(page.headers.get('content-security-policy'),/script-src 'self'/);
- assert.equal((await fetch(o+'/discover/')).status,200);
+ for(const [from,to] of [['/discover','/'],['/discover/','/'],['/discover?q=jazz&scope=episodes','/?q=jazz&scope=episodes']]){
+  const r=await fetch(o+from,{redirect:'manual'});assert.equal(r.status,302,from);assert.equal(r.headers.get('location'),to,from);
+  assert.match(r.headers.get('content-security-policy'),/script-src 'self'/);}
  for(const asset of ['app.js','player.js','styles.css','app.css','qir-transcript.js','archive-search.js','along.js','playlist.js','media-session.js','just-aired.js','text.js','theme-boot.js'])assert.equal((await fetch(o+'/discover/'+asset)).status,200,asset);
- assert.match(html,/href="\/discover\/styles\.css\?v=/,'one stylesheet with the main site');
  for(const bad of ['/discover/base.css','/discover/admin.js','/discover/index.js','/discover/..%2Findex.js','/discover/lib/qir/service.js','/discover/app.js.map','/discover/nope.js','/api/plugins/qir/unknown','/api/cue/'])assert.equal((await fetch(o+bad)).status,404,bad);
  assert.equal((await fetch(o+'/discover',{method:'POST'})).status,405);
  const cfg=await(await fetch(o+'/discover/station.js')).text();
@@ -29,8 +26,7 @@ test('the page is served at /discover with stamped assets and no secrets; only i
 
 test('the beta tells every crawler to stay out of Discovery',async t=>{
  const o=await listen(t,createApp({env:{}}));
- for(const route of ['/discover','/discover/app.js','/discover/station.js','/api/plugins/qir/status','/api/cue/abc'])assert.equal((await fetch(o+route)).headers.get('x-robots-tag'),'noindex, nofollow, noarchive',route);
- assert.match(await(await fetch(o+'/discover')).text(),/<meta name="robots" content="noindex,nofollow">/);
+ for(const route of ['/discover','/discover/app.js','/discover/station.js','/api/plugins/qir/status','/api/cue/abc'])assert.equal((await fetch(o+route,{redirect:'manual'})).headers.get('x-robots-tag'),'noindex, nofollow, noarchive',route);
 });
 
 // Class: QIR rows carry no images, so every QIR view fell back to the placeholder.

@@ -11,7 +11,7 @@
  * HTTPS from podcast.kpfk.org, so Discovery's own archive fetch, artwork proxy and image cache
  * are gone. The admin page is gone too; its switch moves to the studio (step 5).
  *
- * Routes: /discover (page), /discover/<file>.js|css, /discover/station.js,
+ * Routes: /discover (redirects to the main page; old page retired 2026-09-29), /discover/<file>.js|css, /discover/station.js,
  * /api/plugins/qir/{status,catalog,recent,transcript/<id>}, /api/cue/<id>.
  */
 const fs = require('node:fs');
@@ -169,25 +169,20 @@ function createDiscovery({ station, env = process.env, dataDir = null, fetchImpl
     cuePending.set(id, job); return job;
   }
 
-  const esc = s => String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   function assetFile(name) {
     if (SHARED.has(name)) return path.join(HOST_PUBLIC_DIR, name);
     return path.join(PUBLIC_DIR, name);
   }
   const version = name => { const stat = fs.statSync(assetFile(name)); return stat.size.toString(16) + '-' + Math.round(stat.mtimeMs).toString(36); };
-  function page() {
-    const values = { name: station.name, frequency: station.frequency, city: station.city, logo: station.assets.logo };
-    return fs.readFileSync(path.join(PUBLIC_DIR, 'index.html'), 'utf8')
-      .replace(/\{\{station\.(\w+)\}\}/g, (_, key) => esc(values[key]))
-      .replace(/(src|href)="\/discover\/([a-z0-9-]+\.(?:js|css))"/g, (_, attr, name) => name === 'station.js' ? `${attr}="/discover/station.js"` : `${attr}="/discover/${name}?v=${version(name)}"`);
-  }
 
   /** Answers a GET/HEAD for one of this plugin's routes. Returns false for any other path. */
   async function handle(req, res, url) {
     const route = decodeURIComponent(url.pathname);
     if (!ownsRoute(route) || !enabled()) return false;
     try {
-      if (route === '/discover' || route === '/discover/') { send(res, 200, page(), MIME['.html']); return true; }
+      // The old standalone page is retired (2026-09-29, Paul): Discovery is on the main page.
+      // Old links land there, search kept. 302 so it stays reversible (browsers cache a 301).
+      if (route === '/discover' || route === '/discover/') { send(res, 302, '', 'text/plain; charset=utf-8', { Location: '/' + url.search }); return true; }
       if (route === '/discover/station.js') { send(res, 200, 'window.StationConfig=Object.freeze(' + JSON.stringify(config).replace(/</g, '\\u003c') + ');', MIME['.js']); return true; }
       const asset = /^\/discover\/([a-z0-9-]+\.(?:js|css))$/.exec(route);
       if (asset) {
