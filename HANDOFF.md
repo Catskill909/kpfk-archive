@@ -15,7 +15,9 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
    podcasts.kpfk.org and podcast.kpfk.org are the same app.
 2. **Ace / QIR:** email sent 2026-09-28. As of 2026-09-29 the 7 show keys (All Of The Above, Nightscapes,
    The Aware Show, Reggae Central, CodePINK, Making Contact, CinemaScore) and World Massive Sep 26 are
-   still not processed in QIR. **Any reply?** Recheck with the live `/api/plugins/qir/catalog`.
+   still not processed in QIR — **rechecked 2026-09-29 evening: unchanged** (36 recordings; they appear in
+   `/api/plugins/qir/catalog` only as our `pending-…` placeholders, transcripts 404; a control episode
+   returns 200). **Any reply?** Recheck the same way: a real QIR record has a UUID `public_id`.
 3. **Show view is live and Paul likes it ("really nice") — letting it sink in, testing more.**
    Ask Paul what he found on his phone before changing it. Remaining steps, in order, in
    [docs/kpfk/show-view-plan.md](docs/kpfk/show-view-plan.md) §6: 4 dead-code sweep, 5 older
