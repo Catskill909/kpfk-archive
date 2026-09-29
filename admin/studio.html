@@ -509,8 +509,9 @@
     <section class="export-step" id="statsSection" aria-labelledby="statsHead">
       <h3 class="export-legend" id="statsHead"><span class="export-num">2</span> Stats for Pacifica and the station</h3>
       <p class="export-copy">
-        Listening, reach and feature use for the dates you pick, as spreadsheets
-        (CSV) plus JSON and a read-me that explains every column. Every station&rsquo;s
+        Everything the dashboard shows, in one file: listening, reach and feature use
+        for the dates you pick, plus the archive, coverage and station profile &mdash; as
+        spreadsheets (CSV) and JSON, with a read-me for every column. Every station&rsquo;s
         files have the same names and columns, so Pacifica can compare stations.
       </p>
       <p class="export-empty" id="exportEmpty" hidden></p>
@@ -533,7 +534,7 @@
       <p class="export-summary" id="exportSpanNote" aria-live="polite"></p>
       <p class="export-copy export-fine" id="exportClock">Days are UTC calendar days &mdash; the counters were recorded that way.</p>
       <div class="export-row">
-        <button class="studio-btn export-go" id="statsZip" type="button">Download stats (.zip)</button>
+        <button class="studio-btn export-go" id="statsZip" type="button">Download everything (.zip)</button>
         <button class="studio-btn" id="reportOpen" type="button">Printable report (PDF)</button>
       </div>
       <p class="export-status" id="exportStatus" role="status" aria-live="polite"></p>
@@ -544,7 +545,8 @@
           <li><span>Daily totals</span><button class="export-link" type="button" data-file="listening:csv:daily">CSV</button></li>
           <li><span>Per show</span><button class="export-link" type="button" data-file="listening:csv:shows">CSV</button></li>
           <li><span>Reach</span><button class="export-link" type="button" data-file="listening:csv:reach">CSV</button></li>
-          <li><span>Feature clicks</span><button class="export-link" type="button" data-file="listening:csv:features">CSV</button></li>
+          <li><span>Feature clicks (totals)</span><button class="export-link" type="button" data-file="listening:csv:features">CSV</button></li>
+          <li><span>Feature clicks per day</span><button class="export-link" type="button" data-file="listening:csv:features_daily">CSV</button></li>
           <li><span>All of the above</span><button class="export-link" type="button" data-file="listening:json">JSON</button></li>
           <li><span>What the columns mean</span><button class="export-link" type="button" data-file="listening:readme">Read-me</button></li>
         </ul>

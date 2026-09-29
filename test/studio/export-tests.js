@@ -140,18 +140,19 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   ok('Download full backup is on screen without scrolling (1200×900)', r1.hit && r1.bottom <= r1.vh, JSON.stringify(r1));
 
   // ---- 2. Download stats: one .zip with every table
-  console.log('\n2. Download stats saves a real .zip with every table');
+  console.log('\n2. Download everything saves a real .zip with every dataset');
   let before = files();
   await click('#statsZip');
-  const zip = await landed(/^[a-z0-9]+-stats-\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}\.zip$/, before);
+  const zip = await landed(/^[a-z0-9]+-export-\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}\.zip$/, before);
   ok('a .zip lands in the download folder', !!zip, `files: ${files().join(', ') || 'none'}`);
   if (zip) {
     const out = path.join(dir, 'unzipped');
     require('child_process').execFileSync('unzip', ['-q', '-o', path.join(dir, zip), '-d', out]);
     const inside = fs.readdirSync(out).sort();
-    const want = ['daily', 'features', 'reach', 'shows'].map((t) => new RegExp(`-listening-${t}-.*\\.csv$`)).concat([/-listening-[^a-z]*\.json$/, /-README\.txt$/]);
-    ok('it holds daily, per show, reach and feature clicks as CSV, the JSON and the read-me',
-      inside.length === 6 && want.every((re) => inside.some((n) => re.test(n))), inside.join(', '));
+    const want = ['daily', 'shows', 'reach', 'features', 'features_daily'].map((t) => new RegExp(`-listening-${t}-.*\\.csv$`))
+      .concat([/-archive-episodes-.*\.csv$/, /-coverage-shows-.*\.csv$/, /-profile-.*\.json$/, /^README-FIRST\.txt$/]);
+    ok('it holds every stats table, the archive, coverage, the profile and a README-FIRST',
+      want.every((re) => inside.some((n) => re.test(n))), inside.join(', '));
     const dailyCsv = inside.find((n) => /-listening-daily-/.test(n));
     if (dailyCsv) {
       const buf = fs.readFileSync(path.join(out, dailyCsv));

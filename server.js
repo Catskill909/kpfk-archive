@@ -3019,6 +3019,33 @@ function sendReport(req, res) {
   res.end(req.method === 'HEAD' ? undefined : body);
 }
 
+/** One dataset as files: every CSV table, the JSON and the read-me (the single downloads' bytes). */
+function datasetFiles(d, data) {
+  return [
+    ...Object.keys(d.lib.COLUMNS).map((t) => ({ name: d.lib.exportFilename(data.manifest, t, 'csv'), data: toCsv(d.lib.COLUMNS[t], data[t]) })),
+    { name: d.lib.exportFilename(data.manifest, null, 'json'), data: JSON.stringify(data, null, 2) + '\n' },
+    { name: d.lib.exportFilename(data.manifest, null, 'readme'), data: d.lib.manifestText(data.manifest) },
+  ];
+}
+/** Every dataset for the .zip, with a README-FIRST that lists what is inside and what could not be built. */
+function exportEverything(listening, from, to) {
+  const generatedAt = listening.manifest.generated_at;
+  const files = datasetFiles(EXPORT_DATASETS.listening, listening), lines = [];
+  lines.push(`${STATION_ID.toUpperCase()} export, made ${generatedAt}`, '',
+    `Stats (listening, reach, feature clicks): UTC days ${from} to ${to}.`,
+    'Archive: every episode listeners can play right now. Coverage and station profile: as they are right now.', '',
+    'Nothing in any of these files identifies a listener. Each dataset has its own README explaining every column.', '');
+  for (const name of ['inventory', 'coverage', 'profile']) {
+    const d = EXPORT_DATASETS[name];
+    if (d.canBuild && !d.canBuild()) { lines.push(`Not included: ${name} (${name === 'profile' ? 'no station profile' : 'the Pacifica catalog has not loaded yet'}).`); continue; }
+    const b = d.span ? d.bounds() : {};
+    files.push(...datasetFiles(d, d.build({ from: b.firstDate, to: b.today, generatedAt })));
+  }
+  lines.push('', 'Files:', ...files.map((f) => '  ' + f.name));
+  files.unshift({ name: 'README-FIRST.txt', data: lines.join('\r\n') + '\r\n' });
+  return { files };
+}
+
 /** `GET /api/studio/export` — one dataset, one span, one format. */
 function sendExport(req, res) {
   const q = new URL(req.url, 'http://localhost').searchParams;
@@ -3053,13 +3080,12 @@ function sendExport(req, res) {
     body = JSON.stringify(data, null, 2) + '\n';
     type = 'application/json; charset=utf-8'; file = d.lib.exportFilename(data.manifest, null, 'json');
   } else if (format === 'zip') {
-    // The same bytes the single-file downloads give, packed: every table, the JSON, the read-me.
-    body = zipExport.buildZip([
-      ...tables.map((t) => ({ name: d.lib.exportFilename(data.manifest, t, 'csv'), data: toCsv(d.lib.COLUMNS[t], data[t]) })),
-      { name: d.lib.exportFilename(data.manifest, null, 'json'), data: JSON.stringify(data, null, 2) + '\n' },
-      { name: d.lib.exportFilename(data.manifest, null, 'readme'), data: d.lib.manifestText(data.manifest) },
-    ]);
-    type = 'application/zip'; file = d.lib.exportFilename(data.manifest, null, 'zip');
+    // "Download everything" (Paul, 2026-09-29: the export must hold all the stats): the stats
+    // for the chosen dates, plus the archive (every episode listeners can play now), coverage
+    // and the station profile — each exactly the bytes its own download gives.
+    const packed = exportEverything(data, from, to);
+    body = zipExport.buildZip(packed.files);
+    type = 'application/zip'; file = `${STATION_ID}-export-${from}_${to}.zip`;
   } else {
     body = d.lib.manifestText(data.manifest);
     type = 'text/plain; charset=utf-8'; file = d.lib.exportFilename(data.manifest, null, 'readme');
