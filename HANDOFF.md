@@ -8,9 +8,9 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 
 ## Remind Paul first (say these at the start of every session)
 
-1. **Redeployed?** The LIVE badge and the transcript spacing fix (`ec68584`) were waiting at end of 2026-09-28. Check `/healthz` `storage.instanceId` =
-   `73039ae5-6589-4ec2-9df5-354de84c0989`. Then Paul's call on the player: floating card + bottom
-   fade, or docked full-width bar with a slimmer centred row of controls.
+1. **Live:** the player is done and live on podcasts.kpfk.org (floating card; settled — do not
+   re-raise). Redeploy of `ec68584` confirmed 2026-09-29; `storage.instanceId` =
+   `73039ae5-6589-4ec2-9df5-354de84c0989`. podcasts.kpfk.org and podcast.kpfk.org are the same app.
 2. **Ace email sent 2026-09-28** (`kpfk-discovery-plugin/.local-notes/ace-email-2026-09-28.html`):
    7 show keys + World Massive Sep 26 still open in QIR; heads-up that Discovery moved here; studio
    tour. Paul sent Ace his Coolify login and the studio password. **Any reply?** Recheck QIR.
@@ -30,7 +30,7 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 - Done today: steps 1–3, 4a–4e, 5a, 6 (32 commits, all pushed; `npm test` 182/182).
 - Next session, in order: music 14-day limit here → episode corrections here (Alan Watts) → 4f →
   redirect and stop the Discovery deployment. Then 5b, 7, 8.
-- Paul's open decision: floating player + fade vs docked full-width bar (see the plan).
+- Player: done and live (floating card). Not an open decision.
 - Ace (checked 2026-09-28): the 7 show keys and World Massive Sep 26 are still not fixed in QIR.
   Follow-up email sent 2026-09-28.
 - Checks: popup audit `tools/popup-audit/` (Chrome on port 9333); stats counters proven by

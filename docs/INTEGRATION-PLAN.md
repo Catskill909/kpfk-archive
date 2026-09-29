@@ -69,8 +69,7 @@ Before the separate Discovery site can be closed, three things (about an hour, w
 Then close the Discovery site: redirect `kpfk-discovery.pacifica.audio` to `podcasts.kpfk.org`
 (old links keep working), stop its Coolify deployment. Ace already knows (email sent 2026-09-28).
 
-**Open decision (Paul):** after the redeploy, is the floating player + bottom fade right, or
-switch to a docked full-width bar with the controls in a slimmer centred row? (Both ready to do.)
+**Player:** done and live on podcasts.kpfk.org (confirmed 2026-09-29). Not an open decision.
 
 ## Next up
 
