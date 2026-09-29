@@ -10,9 +10,6 @@
   var section = $('stationSection'), tabs = $('studioTabs');
   if (!section || !tabs) return;
   var state = null, csrf = null, busy = false, pendingLogo = null, previewed = null;
-  // The brand colour chosen in the form: '#rrggbb', or null for the design's own colours.
-  var accent = null;
-  var DESIGN_ACCENT = '#e14a2e';   // what the colour picker shows when no colour is set
 
   var LINK_LABELS = { website: 'Station website', archive: 'Original archive', donate: 'Donate', privacy: 'Privacy policy',
     schedule: 'Schedule page', programs: 'Programs A–Z', androidApp: 'Android app', appleApp: 'Apple app', about: 'About',
@@ -63,13 +60,6 @@
     });
     pendingLogo = null;
     $('stLogo').src = cur.logo;
-    setAccent(cur.accent);
-  }
-  function setAccent(v) {
-    accent = v || null;
-    $('stAccent').value = accent || DESIGN_ACCENT;
-    $('stAccentHex').textContent = accent ? accent : 'The design’s own colour';
-    $('stSwatches').hidden = true;
   }
   function logoNow() { return pendingLogo || state.current.logo; }
   /** The edits as differences from the station PROFILE (not from the current edits): the
@@ -89,7 +79,6 @@
       if (Object.keys(d).length) out[g] = d;
     });
     if (logoNow() !== p.logo) out.logo = logoNow();
-    if (accent && accent !== p.accent) out.accent = accent;
     return out;
   }
   /** What applying would change on the listener site, compared with what it shows now. */
@@ -107,7 +96,6 @@
       });
     });
     if (logoNow() !== c.logo) list.push(logoNow() === state.profile.logo ? 'Logo: back to the profile’s logo' : 'Logo: the newly uploaded image');
-    if (accent !== (c.accent || null)) list.push(!accent ? 'Colour: back to the design’s own' : 'Colour: ' + (c.accent || 'the design’s own') + ' → ' + accent);
     return list;
   }
   function dirty() { previewed = null; $('stApply').disabled = true; $('stReview').hidden = true; }
@@ -153,14 +141,6 @@
       list.forEach(function (t) { $('stChanges').appendChild(el('li', '', t)); });
       $('stReview').hidden = false;
       $('stApply').disabled = false;
-      // How the colour will look in each theme (CSSOM styles: the CSP allows these, not inline ones).
-      var cols = d.preview && d.preview.colors;
-      $('stSwatches').hidden = !cols;
-      if (cols) [['stSwatchDark', cols.dark], ['stSwatchLight', cols.light]].forEach(function (x) {
-        $(x[0]).style.backgroundColor = x[1].accent; $(x[0]).style.color = x[1].ink;
-        $(x[0]).parentNode.style.backgroundColor = cols.surfaces[x[0] === 'stSwatchDark' ? 'dark' : 'light'];
-        $(x[0]).title = x[1].accent + (x[1].adjusted ? ' (adjusted to be readable)' : '');
-      });
       say('Looks good. Apply to put ' + (list.length === 1 ? 'this change' : 'these ' + list.length + ' changes') + ' on the listener site.', 'ok');
     }).catch(function (e) { busy = false; console.error('[studio] station preview failed:', e); say(e.message, 'bad'); });
   });
@@ -206,8 +186,6 @@
       say('Logo uploaded. Preview, then apply, to use it on the listener site.', 'ok');
     }).catch(function (e) { busy = false; input.value = ''; console.error('[studio] logo upload failed:', e); say(e.message, 'bad'); });
   });
-  $('stAccent').addEventListener('input', function () { setAccent(this.value.toLowerCase()); dirty(); });
-  $('stAccentReset').addEventListener('click', function () { setAccent(null); dirty(); say('The design’s own colour is selected. Preview, then apply.'); });
   $('stLogoReset').addEventListener('click', function () {
     if (!state) return;
     pendingLogo = state.profile.logo; $('stLogo').src = state.profile.logo; dirty();

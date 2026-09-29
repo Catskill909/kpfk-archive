@@ -11,8 +11,6 @@
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" href="/assets/icon-256.png">
 <link rel="stylesheet" href="/styles.css">
-<!-- The station's brand colour (studio → Station & appearance), after styles.css so it wins. -->
-<link rel="stylesheet" href="/station.css">
 <link rel="stylesheet" href="/studio.css">
 <script src="/theme-boot.js"></script>
 </head>
@@ -135,18 +133,6 @@
           <button class="export-link" id="stLogoReset" type="button">Use the profile&rsquo;s logo</button>
         </div>
         <p class="st-hint">PNG, JPEG or WebP, up to 1 MB. Shown in the listener site&rsquo;s header.</p>
-      </fieldset>
-      <fieldset class="st-group">
-        <legend class="st-legend">Colour</legend>
-        <div class="st-logo-row">
-          <label class="st-colour"><input id="stAccent" type="color" aria-describedby="stAccentHint"><span id="stAccentHex"></span></label>
-          <button class="export-link" id="stAccentReset" type="button">Use the design&rsquo;s own colour</button>
-        </div>
-        <div class="st-swatches" id="stSwatches" hidden>
-          <span class="st-swatch st-swatch--dark"><span class="st-swatch-btn" id="stSwatchDark">Dark theme</span></span>
-          <span class="st-swatch st-swatch--light"><span class="st-swatch-btn" id="stSwatchLight">Light theme</span></span>
-        </div>
-        <p class="st-hint" id="stAccentHint">Buttons, badges and highlights. The site makes a readable version for the dark and the light theme (shown after Preview).</p>
       </fieldset>
       <fieldset class="st-group">
         <legend class="st-legend">Side-menu links</legend>

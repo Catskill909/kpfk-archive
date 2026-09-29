@@ -1306,13 +1306,6 @@ th[aria-sort="ascending"] .th-sort::after { content: "\25B2"; }    /* ▲ */
 .st-review { padding: .9rem 1rem; border: 1px solid var(--outline); border-radius: 10px; background: var(--surface-2); }
 .st-changes { margin: 0; padding-left: 1.1rem; display: grid; gap: .25rem; font-size: .92rem; overflow-wrap: anywhere; }
 .st-profile-head { margin-top: 1.5rem; }
-/* Colour (slice 3): the picker, its value, and one sample button per theme after Preview. The
-   samples' backgrounds (each theme's page colour) come from the server with the preview. */
-.st-colour { display: inline-flex; align-items: center; gap: .6rem; font-size: .92rem; color: var(--ink); cursor: pointer; }
-.st-colour input { width: 3rem; height: 2.4rem; padding: 0; border: 1px solid var(--outline-strong); border-radius: 8px; background: none; cursor: pointer; }
-.st-swatches { display: flex; flex-wrap: wrap; gap: .6rem; }
-.st-swatch { display: inline-flex; padding: .6rem .8rem; border-radius: 10px; border: 1px solid var(--outline); }
-.st-swatch-btn { display: inline-block; padding: .45rem 1rem; border-radius: 999px; font-weight: 600; font-size: .9rem; }
 
 /* Phone header: "Import / Export" became two cramped lines; keep the icon, hide the words
    (the button keeps its name through aria-label). */
