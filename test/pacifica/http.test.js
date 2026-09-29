@@ -196,7 +196,7 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
   const studio = async p => { const r = await fetch(url + p, { headers: { Cookie: cookie } }); assert.equal(r.status, 200, p); return r.json(); };
   // Feature clicks (step 6): every named counter lands in the report once per beacon;
   // a name off the list is dropped, not stored.
-  const uiNames = JSON.parse(/const UI_COUNTERS = (\[[^\]]+\])/.exec(fs.readFileSync(path.join(root, 'server.js'), 'utf8'))[1].replace(/'/g, '"'));
+  const uiNames = require('../../lib/usage-fields').UI_COUNTERS;
   for (const k of uiNames) assert.equal((await beacon({ t: 'ui', k })).status, 204);
   assert.equal((await beacon({ t: 'ui', k: 'somethingElse' })).status, 204);
   await sleep(50);

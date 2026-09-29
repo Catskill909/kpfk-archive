@@ -11,7 +11,7 @@ const root = path.resolve(__dirname, '../..');
 const read = f => fs.readFileSync(path.join(root, f), 'utf8');
 
 test('every feature-click name the page sends is one the server counts', () => {
-  const server = JSON.parse(/const UI_COUNTERS = (\[[^\]]+\])/.exec(read('server.js'))[1].replace(/'/g, '"'));
+  const server = require('../../lib/usage-fields').UI_COUNTERS;   // the one list the server counts
   const files = ['public/app.js', 'public/track.js', ...fs.readdirSync(path.join(root, 'plugins/discovery/public'))
     .filter(f => f.endsWith('.js')).map(f => 'plugins/discovery/public/' + f)];
   const sent = new Set();

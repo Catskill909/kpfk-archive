@@ -154,7 +154,7 @@ whole-VPS snapshot restore, which rolls back every other app on the host.
 
 ## Moving the app to another server
 
-No VPS access needed — it is all in the studio (**Export → Backup & restore**).
+No VPS access needed — it is all in the studio (**Import / Export → Back up or move this site**).
 
 1. **On the old server:** *Download backup*. One JSON file: every usage month plus
    studio settings, with a checksum per month. It holds counters only, no
@@ -168,7 +168,7 @@ No VPS access needed — it is all in the studio (**Export → Backup & restore*
 4. Click **Restore N months**. The new server's own copies of any replaced months
    are saved first under `stats/pre-import-<time>/`; **Undo this restore** puts them
    back. Nothing is ever deleted.
-5. Check **Export → Reports** on both servers for the same dates: the files match.
+5. Check **Import / Export → Download stats** on both servers for the same dates: the files match.
 
 What does not move, on purpose: `.instance.json` (the new volume keeps its own
 `storage.instanceId`), and the feed snapshots in `pacifica/`. A backup from

@@ -23,6 +23,7 @@ const stationView = require('./lib/station-view');
 const ShowLinks = require('./public/links');
 const { toCsv } = require('./lib/export/csv');
 const listeningExport = require('./lib/export/listening');
+const zipExport = require('./lib/export/zip');
 const backupLib = require('./lib/export/backup');
 const inventoryExport = require('./lib/export/inventory');
 const coverageExport = require('./lib/export/coverage');
@@ -2381,11 +2382,10 @@ const STATS_FLUSH_MS = 5 * 1000;
 // mid-word pause from recording a truncated stem. See track.js.
 // No `searchterm`: the words are not collected. See the note above.
 const EVENT_TYPES = ['pageview', 'play', 'live', 'listen', 'search', 'share', 'ui'];
-// Feature clicks (integration step 6). A closed list: `ui` events naming anything
-// else are dropped, so the beacon can never carry free text. Counts only — no
-// episode, no words. Most exist only where Discovery is on.
-const UI_COUNTERS = ['transcriptOpen', 'songsOpen', 'lineJump', 'songJump', 'transcriptFind',
-  'summaryShown', 'pendingShown', 'justAiredPlay'];
+// Feature clicks (integration step 6): a closed list, in lib/usage-fields.js with
+// every other day field. `ui` events naming anything else are dropped.
+const USAGE = require('./lib/usage-fields');
+const UI_COUNTERS = USAGE.UI_COUNTERS;
 
 /**
  * Reach, without geolocation — the three buckets a pageview's timezone becomes.
@@ -2492,12 +2492,10 @@ function statsDay() {
    * So the shape is asserted on every access, not once. Any counter added later
    * is covered by the same loop rather than needing another migration.
    */
+  // The fields come from lib/usage-fields.js, the one list the backup also reads.
   const day = statsStore.days[d] || (statsStore.days[d] = {});
-  const NUMBERS = ['pageviews', 'plays', 'live', 'searches', 'shares',
-    'listenSeconds', 'liveSeconds'];
-  const MAPS = ['byShow', 'secondsByShow', 'byZone', 'clicks'];
-  for (const k of NUMBERS) if (typeof day[k] !== 'number' || !Number.isFinite(day[k])) day[k] = 0;
-  for (const k of MAPS) if (!day[k] || typeof day[k] !== 'object') day[k] = {};
+  for (const k of USAGE.COUNTERS) if (typeof day[k] !== 'number' || !Number.isFinite(day[k])) day[k] = 0;
+  for (const k of USAGE.MAP_NAMES) if (!day[k] || typeof day[k] !== 'object') day[k] = {};
   return day;
 }
 
@@ -2869,6 +2867,8 @@ const EXPORT_DATASETS = {
   listening: {
     lib: listeningExport,
     span: 'utc',
+    // zip: every table as CSV, the JSON and the read-me in one file ("Download stats").
+    formats: ['csv', 'json', 'readme', 'zip'],
     bounds() { return { firstDate: exportFirstDate(), today: today() }; },
     hasData() { return listStatsMonths().some((m) => Object.keys(statsMonthDays(m) || {}).length > 0); },
     build({ from, to, generatedAt }) {
@@ -3052,11 +3052,19 @@ function sendExport(req, res) {
   } else if (format === 'json') {
     body = JSON.stringify(data, null, 2) + '\n';
     type = 'application/json; charset=utf-8'; file = d.lib.exportFilename(data.manifest, null, 'json');
+  } else if (format === 'zip') {
+    // The same bytes the single-file downloads give, packed: every table, the JSON, the read-me.
+    body = zipExport.buildZip([
+      ...tables.map((t) => ({ name: d.lib.exportFilename(data.manifest, t, 'csv'), data: toCsv(d.lib.COLUMNS[t], data[t]) })),
+      { name: d.lib.exportFilename(data.manifest, null, 'json'), data: JSON.stringify(data, null, 2) + '\n' },
+      { name: d.lib.exportFilename(data.manifest, null, 'readme'), data: d.lib.manifestText(data.manifest) },
+    ]);
+    type = 'application/zip'; file = d.lib.exportFilename(data.manifest, null, 'zip');
   } else {
     body = d.lib.manifestText(data.manifest);
     type = 'text/plain; charset=utf-8'; file = d.lib.exportFilename(data.manifest, null, 'readme');
   }
-  const buf = Buffer.from(body, 'utf8');
+  const buf = Buffer.isBuffer(body) ? body : Buffer.from(body, 'utf8');
   res.writeHead(200, {
     'Content-Type': type,
     'Content-Length': buf.length,

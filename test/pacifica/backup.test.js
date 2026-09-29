@@ -76,6 +76,27 @@ test('backupMonth drops only what the app already deletes; planImport names each
   assert.deepEqual(B.planImport({ '2026-08': b }, { '2026-08': JSON.parse(JSON.stringify(b)) }).map(p => p.action), ['identical']);
 });
 
+// Class (2026-09-29): a field the server collects that the backup does not carry is lost on a
+// move. Feature clicks were: two copies of the field list drifted. Every field in the one list
+// (lib/usage-fields.js) must survive backupMonth → buildBackup → JSON → validateBackup unchanged.
+test('lossless: every field a day can hold survives a backup and is accepted by restore', () => {
+  const U = require('../../lib/usage-fields');
+  const full = {};
+  U.COUNTERS.forEach((k, i) => { full[k] = i + 1; });
+  full.byShow = { 'kpfk.kpfk.dn': 2 }; full.secondsByShow = { 'kpfk.kpfk.dn': 90 };
+  full.byZone = Object.fromEntries(U.ZONES.map((z, i) => [z, i + 1]));
+  full.clicks = Object.fromEntries(U.UI_COUNTERS.map((k, i) => [k, i + 1]));
+  assert.deepEqual(Object.keys(full).sort(), [...U.COUNTERS, ...U.MAP_NAMES].sort(), 'the probe fills every field in the list');
+  const month = { station: 'kpfk', month: '2026-08', days: { '2026-08-02': full } };
+  const b = JSON.parse(JSON.stringify(backupOf({ '2026-08': B.backupMonth(month, 'kpfk', '2026-08') })));
+  assert.deepEqual(b.stats['2026-08'], month, 'nothing dropped');
+  const v = B.validateBackup(b, { station: 'kpfk', thisMonth: THIS_MONTH });
+  assert.ok(v.ok, JSON.stringify(v.errors)); assert.deepEqual(v.months['2026-08'], month, 'restore takes it all');
+  // Still closed: a click name off the list is refused.
+  const odd = JSON.parse(JSON.stringify(b)); odd.stats['2026-08'].days['2026-08-02'].clicks.typedWords = 1; resign(odd);
+  assert.ok(errorsOf(odd).some(e => /"clicks" has an unexpected key/.test(e)));
+});
+
 // ---------------------------------------------------------------- real HTTP
 function cleanEnv() { const env = { ...process.env }; for (const k of ['STATION_PROFILE', 'STATION_PROVIDER', 'STATION_ID', 'STATION_TZ', 'STUDIO_PASSWORD']) delete env[k]; return env; }
 async function freePort() {
@@ -162,7 +183,8 @@ test('real HTTP: back up A, restore on a fresh B, exports match; refusals; idemp
     '2020-02-10': day({ terms: { 'democracy now': 2 } }), '2020-02-29': day({ plays: 5, byShow: { 'kpfk.kpfk.dn': 5 } }) } }));
   const A = await boot('a');
   const played = A.archive.shows[0];
-  for (const b of [{ t: 'pageview', z: 'America/Chicago' }, { t: 'play', u: played.mp3 }, { t: 'listen', u: played.mp3, s: 75 }]) assert.equal((await A.beacon(b)).status, 204);
+  for (const b of [{ t: 'pageview', z: 'America/Chicago' }, { t: 'play', u: played.mp3 }, { t: 'listen', u: played.mp3, s: 75 }, { t: 'ui', k: 'transcriptOpen' }]) assert.equal((await A.beacon(b)).status, 204);
+  await settled(A);
 
   assert.equal((await fetch(A.url + '/api/studio/backup')).status, 401, 'backup is signed-in only');
   const backupRes = await A.get('/api/studio/backup');
@@ -172,6 +194,9 @@ test('real HTTP: back up A, restore on a fresh B, exports match; refusals; idemp
   const backup = JSON.parse(backupText);
   assert.deepEqual(Object.keys(backup.stats), ['2020-02', thisMonth], 'every month, including counters not yet flushed');
   assert.equal(backup.stats[thisMonth].days[todayUtc].plays, 1);
+  // Lossless: the backup's month is A's month on disk, field for field (feature clicks included).
+  assert.deepEqual(backup.stats[thisMonth], JSON.parse(fs.readFileSync(statsFile(A, thisMonth), 'utf8')), 'backup = what A collected');
+  assert.equal(backup.stats[thisMonth].days[todayUtc].clicks.transcriptOpen, 1);
   assert.doesNotMatch(backupText, /democracy now|"terms"/, 'legacy search terms never leave the server');
   const aExports = await exportsOf(A, '2020-02-01');
 
@@ -235,6 +260,7 @@ test('real HTTP: back up A, restore on a fresh B, exports match; refusals; idemp
   assert.equal((await Bsrv.beacon({ t: 'play', u: played.mp3 })).status, 204);
   const usage = await (await Bsrv.get('/api/studio/usage?days=7')).json();
   assert.equal(usage.days[usage.days.length - 1].plays, 2, "A's 1 play + the new one — not B's 3");
+  assert.equal(usage.clicks.transcriptOpen, 1, "A's feature click came across");
 
   // Idempotent: the same file again changes nothing. (The new beacon made this
   // month differ, so it is 'replace' again; the historical month is identical.)

@@ -857,74 +857,13 @@
   display: grid;
   gap: 1rem;
 }
-/* `display: grid` would otherwise override the hidden attribute used for the
-   no-data state and the inactive tab. */
-.export-step[hidden], .export-pane[hidden], .export-preview[hidden], .export-choices[hidden] { display: none; }
+/* `display: grid` would otherwise override the hidden attribute. */
+.export-step[hidden], .export-preview[hidden], .export-undo[hidden] { display: none; }
+/* The two sections scroll between the header and the pinned footer. */
+.export-body { display: grid; gap: 1.75rem; }
+.export-undo { display: grid; gap: 0.75rem; }
+.export-fine { font-size: 0.85rem; }
 
-/* Dataset picker: three equal cards in a row, stacking on a phone. The radio
-   itself is hidden; the whole card is the target and the border says which. */
-.export-datasets {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  gap: 0.6rem;
-}
-.export-dataset {
-  position: relative;
-  display: grid;
-  gap: 0.2rem;
-  padding: 0.8rem 0.95rem;
-  border: 1px solid var(--outline);
-  border-radius: 12px;
-  background: var(--surface-2);
-  cursor: pointer;
-}
-.export-dataset input {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-.export-dataset:hover { border-color: var(--outline-strong); }
-.export-dataset:has(input:checked) { border-color: var(--accent); background: var(--surface-3); }
-.export-dataset:has(input:focus-visible) { outline: 2px solid var(--accent-2); outline-offset: 2px; }
-.export-dataset-name { font-weight: 600; }
-.export-dataset-desc { font-size: 0.85rem; line-height: 1.4; color: var(--ink-dim); }
-
-/* Dates that do not apply (Coverage) are shown switched off, with the reason,
-   rather than hidden — the step numbering stays put. */
-.export-step:disabled .export-presets,
-.export-step:disabled .export-span,
-.export-step:disabled .export-summary { opacity: 0.45; }
-
-.export-tabs {
-  display: flex;
-  gap: 0.25rem;
-  margin-bottom: -0.75rem;
-  border-bottom: 1px solid var(--outline);
-}
-.export-tab {
-  font: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
-  padding: 0.7rem 0.9rem;
-  min-height: 2.75rem;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  background: none;
-  color: var(--ink-dim);
-  cursor: pointer;
-}
-.export-tab:hover { color: var(--ink); }
-.export-tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
-.export-tab:focus-visible { outline: 2px solid var(--accent-2); outline-offset: -2px; }
-
-.export-pane { display: grid; gap: 1.75rem; }
-/* The tab bar already draws the line above a pane's first step. */
-.export-pane > .export-step:first-child { border-top: 0; padding-top: 0.25rem; }
 .export-copy {
   margin: 0;
   font-size: 0.93rem;
@@ -982,8 +921,7 @@
   font-size: 0.92rem;
 }
 .export-legend {
-  float: left;          /* lets the legend sit inside the grid like a heading */
-  width: 100%;
+  margin: 0;
   padding: 0;
   display: flex;
   align-items: center;
@@ -1023,62 +961,6 @@
 }
 .export-summary.is-bad { color: var(--danger); }
 
-.export-choices {
-  display: grid;
-  gap: 0.6rem;
-}
-/* A whole card is the hit target; the radio stays visible so the choice reads
-   as a choice, not as four buttons. */
-.export-choice {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-  padding: 0.9rem 1rem;
-  border: 1px solid var(--outline);
-  border-radius: 12px;
-  background: var(--surface-2);
-  cursor: pointer;
-}
-.export-choice:hover { border-color: var(--outline-strong); }
-.export-choice:has(input:checked) {
-  border-color: var(--accent);
-  background: var(--surface-3);
-}
-.export-choice input {
-  flex: none;
-  margin: 0.2rem 0 0;
-  width: 1.1rem;
-  height: 1.1rem;
-  accent-color: var(--accent);
-}
-.export-choice input:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
-.export-choice-body { display: grid; gap: 0.25rem; }
-.export-choice-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-}
-.export-choice-desc {
-  font-size: 0.9rem;
-  line-height: 1.45;
-  color: var(--ink-dim);
-}
-.export-tag {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  padding: 0.1rem 0.45rem;
-  border-radius: 999px;
-  border: 1px solid var(--outline-strong);
-  color: var(--ink-dim);
-}
-
-.export-readme {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--ink-dim);
-}
 .export-link {
   font: inherit;
   padding: 0.35rem 0.1rem;
@@ -1091,9 +973,37 @@
 }
 .export-link:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
 
-/* Pinned to the bottom of the dialog while the choices scroll: on a laptop
-   screen the dialog is taller than the window, and a Download button you have
-   to hunt for is the one thing this dialog must not have. */
+/* "One file at a time" and "Program data": folded away, because the .zip is the
+   answer for almost everyone. Compact rows (Paul's popup-density rule): the
+   name, then its formats as small links on the same line. */
+.export-more { border-top: 1px solid var(--outline); padding-top: 0.75rem; }
+.export-more > summary {
+  cursor: pointer;
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.export-more > summary:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.export-more[open] { display: grid; gap: 0.6rem; }
+.export-files { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.1rem; }
+.export-files li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.9rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--outline);
+  font-size: 0.92rem;
+}
+.export-files li > span { flex: 1 1 14rem; color: var(--ink-dim); }
+.export-files .export-link { min-height: 2.25rem; font-weight: 600; }
+.export-link:disabled { color: var(--ink-faint); cursor: default; text-decoration: none; }
+
+/* Pinned to the bottom of the dialog while the sections scroll, so Close is
+   always in reach on a laptop screen. */
 .export-foot {
   position: sticky;
   bottom: 0;

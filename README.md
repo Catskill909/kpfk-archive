@@ -37,8 +37,9 @@ read the Pacifica JSON feeds through a per-station profile.
   dismissal with focus returned, reduced-motion support.
 - **Private station dashboard** at `/studio` — password-protected archive stats,
   listening figures and maintenance actions.
-- **Downloadable listening figures** — the studio exports any date span (this month,
-  last month, this year, all time, or dates you pick) as CSV for Excel or Google Sheets, or JSON. The files hold the same counters
+- **Downloadable listening figures** — the studio's **Import / Export** gives any date span (this month,
+  last month, this year, all time, or dates you pick) as one .zip: daily totals, per show, reach and
+  feature clicks as CSV for Excel or Google Sheets, plus JSON and a read-me. The files hold the same counters
   the dashboard shows and nothing else: still no identifier of any kind.
 - **Built for every Pacifica station** — the same files and columns at each one, so
   Pacifica can put stations side by side ([docs/exports-for-pacifica.md](docs/exports-for-pacifica.md)).
@@ -47,9 +48,9 @@ read the Pacifica JSON feeds through a per-station profile.
 - **Archive and coverage reports** — every episode listeners can play, by air date,
   and every show in Pacifica's catalog with its gaps (no artwork, no description, no
   recent episodes), as CSV or JSON. These describe programs, not listeners.
-- **Move it to another server** — the studio downloads a backup of every usage month
-  and restores it on a new install, with a preview first and an undo after. Imports
-  accept counters only; a file carrying anything else is refused.
+- **Move it to another server** — the studio downloads one backup of everything the site has
+  collected (every usage counter, feature clicks included) and restores it on a new install, with a
+  preview first and an undo after. Imports accept counters only; a file carrying anything else is refused.
 - **Listener insights, with privacy built in** — see how long people actually
   listen, plays, searches, and how far the station's reach extends — without
   ever tracking who anyone is.
@@ -67,7 +68,7 @@ read the Pacifica JSON feeds through a per-station profile.
 | `GET /api/station` · `/station.js` · `/manifest.webmanifest` | Public station profile and app manifest |
 | `POST /api/ev` | Usage beacon from the page — an event name, and for a play the media URL, for a page view the browser's timezone (bucketed to one of three labels and discarded), and for a feature click (`ui`) one name from a fixed list — Transcript/Songs opened, a line or song played from the list, Find in episode, summary or "processing" seen, Just aired play. Names off the list are dropped; no episode, no words. No identifier of any kind; answers `204` to everything. Not registered at all when `USAGE_TRACKING=off` |
 | `GET /studio` | Password-gated station view. **Only exists when `STUDIO_PASSWORD` is set** — otherwise the path falls through like any other unknown one |
-| `GET /api/studio/export?dataset=<listening\|inventory\|coverage>&from=<YYYY-MM-DD>&to=<YYYY-MM-DD>&format=<csv\|json\|readme>` | Studio download (signed-in only). `listening`: daily, per-show and reach counters for a span of UTC days. `inventory`: the archive's episodes and shows by local air date. `coverage`: every catalog show and its gaps (no dates). CSV takes `&table=daily\|shows\|reach`. See [docs/exports.md](docs/exports.md) |
+| `GET /api/studio/export?dataset=<listening\|inventory\|coverage>&from=<YYYY-MM-DD>&to=<YYYY-MM-DD>&format=<csv\|json\|readme>` | Studio download (signed-in only). `listening`: daily, per-show, reach and feature-click counters for a span of UTC days (`&format=zip`: every table, the JSON and the read-me in one file). `inventory`: the archive's episodes and shows by local air date. `coverage`: every catalog show and its gaps (no dates). CSV takes `&table=daily\|shows\|reach\|features`. See [docs/exports.md](docs/exports.md) |
 | `GET /api/studio/export?dataset=profile&format=<json\|readme>` | Studio download (signed-in only): the station's public settings — exactly `/api/station` plus the category map |
 | `GET /studio/report?from=<YYYY-MM-DD>&to=<YYYY-MM-DD>` | Printable report (signed-in; otherwise redirects to `/studio`): listening, archive and program-data gaps for the dates, built from the same data as the downloads. Print → Save as PDF |
 | `GET /api/studio/backup` | Studio download (signed-in only): every usage month plus settings, checksummed — see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) "Moving the app" |

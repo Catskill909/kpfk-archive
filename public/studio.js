@@ -1040,17 +1040,15 @@
         if (openBtn) openBtn.hidden = true;
         return;
       }
-      var form = document.getElementById('exportForm');
       var fromEl = document.getElementById('exportFrom');
       var toEl = document.getElementById('exportTo');
       var presetsEl = document.getElementById('exportPresets');
       var note = document.getElementById('exportSpanNote');
       var statusEl = document.getElementById('exportStatus');
-      var go = document.getElementById('exportGo');
-      var readme = document.getElementById('exportReadme');
+      var programStatus = document.getElementById('programStatus');
+      var zipBtn = document.getElementById('statsZip');
+      var reportBtn = document.getElementById('reportOpen');
       var empty = document.getElementById('exportEmpty');
-      var datesStep = document.getElementById('exportDates');
-      var clock = document.getElementById('exportClock');
       var index = null;     // the last /api/studio/exports answer
       var presets = {};
       // The preset last chosen, while the dates still equal it. Matching by
@@ -1059,61 +1057,38 @@
       var chosen = 'thisMonth';
       var busy = false;
 
-      // What each dataset's dates mean, and what "nothing yet" means for it.
-      var CLOCK = {
-        utc: 'Days are UTC calendar days — the listening counters were recorded that way.',
-        local: function (tz) { return 'Episodes are chosen by air date in ' + tz + ', the station’s timezone.'; },
-        none: 'Coverage is a snapshot of the catalog right now, so dates do not apply.',
-        profile: 'The profile is the station\u2019s settings as they are now, so dates do not apply.',
-        mixed: function (tz) {
-          return 'Listening figures use UTC days; the archive section uses air dates in ' + tz + '.';
-        },
-      };
-      var EMPTY = {
-        listening: 'Nothing has been counted yet. Counting began when this app was deployed — it does not backfill. An export now has the columns and no figures.',
-        inventory: 'The archive holds no episodes right now. An export now has the columns and no rows.',
-        coverage: 'The Pacifica catalog has not loaded yet, so there is nothing to describe. Try again in a minute.',
-        report: '',
-        profile: 'This build has no station profile to export.',
-      };
-
-      function status(text, kind) {
-        statusEl.textContent = text;
-        statusEl.className = 'export-status' + (kind ? ' is-' + kind : '');
+      function sayInto(node) {
+        return function (text, kind) {
+          node.textContent = text;
+          node.className = 'export-status' + (kind ? ' is-' + kind : '');
+        };
       }
-      function datasetName() { return form.querySelector('input[name=exportDataset]:checked').value; }
-      function dataset() {
-        var name = datasetName();
+      var status = sayInto(statusEl);
+      function datasetInfo(name) {
         return index ? index.datasets.filter(function (d) { return d.name === name; })[0] : null;
       }
       function spanOk() {
-        var d = dataset();
-        if (d && !d.span) return true;
         var from = fromEl.value, to = toEl.value;
         return !!(from && to && from <= to && from >= fromEl.min && to <= toEl.max);
       }
+      // Every download button in the stats section, so one rule enables them all.
+      function statsButtons() {
+        return [zipBtn, reportBtn].concat([].slice.call(dialog.querySelectorAll('[data-file^="listening:"]')));
+      }
       function refresh() {
-        var d = dataset();
-        if (!d) { go.disabled = true; readme.disabled = true; return; }
-        var from = fromEl.value, to = toEl.value, ok = spanOk();
-        // Coverage cannot be built at all without a catalog; the others export
-        // their columns with no rows.
-        var blocked = (d.name === 'coverage' || d.name === 'profile') && !d.hasData;
-        go.disabled = busy || !ok || blocked;
-        readme.disabled = busy || !ok || blocked;
-        datesStep.disabled = !d.span;
-        if (!d.span) {
-          clock.textContent = d.name === 'profile' ? CLOCK.profile : CLOCK.none;
-          note.textContent = '';
-          [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) { b.setAttribute('aria-pressed', 'false'); });
-          return;
-        }
-        clock.textContent = d.span === 'local' ? CLOCK.local(index.stationTimezone)
-          : d.span === 'mixed' ? CLOCK.mixed(index.stationTimezone) : CLOCK.utc;
+        var ok = !!index && spanOk();
+        statsButtons().forEach(function (b) { b.disabled = busy || !ok; });
+        [].forEach.call(dialog.querySelectorAll('[data-file]:not([data-file^="listening:"])'), function (b) {
+          var d = datasetInfo(b.getAttribute('data-file').split(':')[0]);
+          // Coverage and the profile cannot be built at all without their source;
+          // the archive exports its columns with no rows.
+          b.disabled = busy || !d || ((d.name === 'coverage' || d.name === 'profile') && !d.hasData);
+        });
+        if (!index) return;
+        var from = fromEl.value, to = toEl.value;
         if (ok) {
           var days = Math.round((utcMs(to) - utcMs(from)) / 86400000) + 1;
-          note.textContent = longDay(from) + ' – ' + longDay(to) + ' · '
-            + days + (days === 1 ? ' day' : ' days');
+          note.textContent = longDay(from) + ' – ' + longDay(to) + ' · ' + days + (days === 1 ? ' day' : ' days');
         } else {
           note.textContent = 'Choose a start date on or before the end date, between '
             + longDay(fromEl.min) + ' and ' + longDay(toEl.max) + '.';
@@ -1133,34 +1108,18 @@
         toEl.value = p.to;
         refresh();
       }
-
-      /* Switching dataset changes the cards, the date bounds and what the dates
-         mean. A chosen preset is re-applied inside the new bounds ("This
-         month" of listening and of the archive are different spans); dates
-         typed by hand are kept and re-checked. */
-      function applyDataset() {
-        var name = datasetName(), d = dataset();
-        [].forEach.call(form.querySelectorAll('.export-choices'), function (g) {
-          g.hidden = g.getAttribute('data-dataset') !== name;
-        });
-        var picked = form.querySelector('input[name=exportFile]:checked');
-        var first = form.querySelector('.export-choices[data-dataset="' + name + '"] input[name=exportFile]');
-        if (first && (!picked || picked.value.split(':')[0] !== name)) first.checked = true;
-        // The report is a page, not a file: no read-me, and the button opens it.
-        document.getElementById('exportReadmeRow').hidden = name === 'report';
-        go.textContent = name === 'report' ? 'Open report' : 'Download';
+      function applyIndex() {
+        var d = datasetInfo('listening');
         if (!d) return refresh();
         empty.hidden = d.hasData;
-        empty.textContent = d.hasData ? '' : EMPTY[name];
-        if (d.span) {
-          presets = exportPresets(d.today, d.firstDate);
-          [fromEl, toEl].forEach(function (i) { i.min = d.firstDate; i.max = d.today; });
-          [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) {
-            b.disabled = !presets[b.getAttribute('data-preset')];
-          });
-          if (chosen && presets[chosen]) return setSpan(chosen);
-          if (!fromEl.value || !toEl.value || !spanOk()) return setSpan(presets.thisMonth ? 'thisMonth' : 'all');
-        }
+        empty.textContent = d.hasData ? '' : 'Nothing has been counted yet. Counting began when this app was deployed — it does not backfill. A download now has the columns and no figures.';
+        presets = exportPresets(d.today, d.firstDate);
+        [fromEl, toEl].forEach(function (i) { i.min = d.firstDate; i.max = d.today; });
+        [].forEach.call(presetsEl.querySelectorAll('.win-btn'), function (b) {
+          b.disabled = !presets[b.getAttribute('data-preset')];
+        });
+        if (chosen && presets[chosen]) return setSpan(chosen);
+        if (!fromEl.value || !toEl.value || !spanOk()) return setSpan(presets.thisMonth ? 'thisMonth' : 'all');
         refresh();
       }
 
@@ -1169,8 +1128,7 @@
          download starts but nothing arrives" went unexplained. Here every
          outcome is on screen: the file name and size, or the server's error
          and HTTP status. `say(text, kind)` writes into the caller's own
-         status line, so reports and backups each report where they were
-         asked for. */
+         status line, so each section reports where it was asked. */
       function saveFrom(url, say) {
         say('Preparing your file…');
         return fetch(url, { credentials: 'same-origin' })
@@ -1209,15 +1167,24 @@
             say(e && e.message ? e.message : 'The download failed: ' + e, 'bad');
           });
       }
-      function download(format, table) {
-        var d = dataset();
-        if (busy || !d || !spanOk()) return;
-        var q = 'dataset=' + d.name + '&format=' + format;
-        if (d.span) q += '&from=' + fromEl.value + '&to=' + toEl.value;
-        if (table) q += '&table=' + table;
+      /* One file: `name:format[:table]`. Stats use the chosen dates; the archive
+         (program data) is everything listeners can play now, so it takes its
+         own full span; coverage and the profile have no dates. */
+      function download(spec) {
+        var p = spec.split(':'), name = p[0], d = datasetInfo(name);
+        if (busy || !d) return;
+        var say = name === 'listening' ? status : sayInto(programStatus);
+        var q = 'dataset=' + name + '&format=' + p[1];
+        if (name === 'listening') {
+          if (!spanOk()) return;
+          q += '&from=' + fromEl.value + '&to=' + toEl.value;
+        } else if (d.span) {
+          q += '&from=' + d.firstDate + '&to=' + d.today;
+        }
+        if (p[2]) q += '&table=' + p[2];
         busy = true;
         refresh();
-        saveFrom('/api/studio/export?' + q, status)
+        saveFrom('/api/studio/export?' + q, say)
           .then(function () { busy = false; refresh(); });
       }
 
@@ -1232,35 +1199,15 @@
           })
           .then(function (x) {
             index = x;
-            applyDataset();
+            applyIndex();
           })
           .catch(function (e) {
             console.error('[studio] export options failed:', e);
-            go.disabled = true;
+            index = null;
+            refresh();
             status(e.message, 'bad');
           });
       }
-
-      /* ---- tabs: Reports | Backup & restore (WAI-ARIA tabs; arrow keys move) */
-      var tabs = [document.getElementById('tabReports'), document.getElementById('tabBackup')];
-      function selectTab(tab, focus) {
-        tabs.forEach(function (t) {
-          var on = t === tab;
-          t.setAttribute('aria-selected', String(on));
-          t.tabIndex = on ? 0 : -1;
-          document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
-        });
-        if (focus) tab.focus();
-        if (tab.id === 'tabBackup') loadImportStatus();
-      }
-      tabs.forEach(function (t, i) {
-        t.addEventListener('click', function () { selectTab(t); });
-        t.addEventListener('keydown', function (ev) {
-          if (ev.key !== 'ArrowRight' && ev.key !== 'ArrowLeft') return;
-          ev.preventDefault();
-          selectTab(tabs[(i + (ev.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length], true);
-        });
-      });
 
       /* ---- backup & restore (docs/exports.md "1c")
          The chosen file is read in the browser and sent as-is: the server
@@ -1283,12 +1230,6 @@
       var pending = null;   // { text, token, changes } from the last good preview
       var csrf = null;
 
-      function sayInto(node) {
-        return function (text, kind) {
-          node.textContent = text;
-          node.className = 'export-status' + (kind ? ' is-' + kind : '');
-        };
-      }
       function monthName(m) {
         return new Date(Date.UTC(+m.slice(0, 4), +m.slice(5, 7) - 1, 1))
           .toLocaleDateString(undefined, { month: 'long', year: 'numeric', timeZone: 'UTC' });
@@ -1479,6 +1420,7 @@
       openBtn.addEventListener('click', function () {
         dialog.showModal();
         loadOptions();
+        loadImportStatus();
       });
       function close() { dialog.close(); openBtn.focus(); }
       document.getElementById('exportClose').addEventListener('click', close);
@@ -1491,29 +1433,19 @@
       });
       fromEl.addEventListener('input', refresh);
       toEl.addEventListener('input', refresh);
-      [].forEach.call(form.querySelectorAll('input[name=exportDataset]'), function (r) {
-        r.addEventListener('change', applyDataset);
+      zipBtn.addEventListener('click', function () { download('listening:zip'); });
+      [].forEach.call(dialog.querySelectorAll('[data-file]'), function (b) {
+        b.addEventListener('click', function () { download(b.getAttribute('data-file')); });
       });
-      form.addEventListener('submit', function (ev) {
-        ev.preventDefault();
-        if (datasetName() === 'report') {
-          if (!spanOk()) return;
-          var url = '/studio/report?from=' + fromEl.value + '&to=' + toEl.value;
-          var tab = window.open(url, '_blank');
-          // A blocked pop-up returns null: say so and offer the link, rather
-          // than leaving the click looking like it did nothing.
-          if (tab) {
-            status('Opened the report in a new tab. Use Print or save as PDF there.', 'ok');
-          } else {
-            status('Your browser blocked the new tab. Open the report here: ' + location.origin + url, 'bad');
-          }
-          return;
-        }
-        // value is dataset:format[:table]; the dataset is already the checked one.
-        var pick = form.querySelector('input[name=exportFile]:checked').value.split(':');
-        download(pick[1], pick[2]);
+      reportBtn.addEventListener('click', function () {
+        if (!spanOk()) return;
+        var url = '/studio/report?from=' + fromEl.value + '&to=' + toEl.value;
+        var tab = window.open(url, '_blank');
+        // A blocked pop-up returns null: say so and offer the link, rather
+        // than leaving the click looking like it did nothing.
+        if (tab) status('Opened the report in a new tab. Use Print or save as PDF there.', 'ok');
+        else status('Your browser blocked the new tab. Open the report here: ' + location.origin + url, 'bad');
       });
-      readme.addEventListener('click', function () { download('readme'); });
     })();
 
     // ---- feed anomalies (2026-09-27): what the feed rules hid, corrected, held or skipped.

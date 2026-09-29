@@ -25,6 +25,7 @@ const DOCUMENTED = {
     'seconds_listened_on_demand', 'seconds_listened_live'],
   shows: ['station', 'show_key', 'show_title', 'plays', 'seconds_listened'],
   reach: ['station', 'bucket', 'label', 'page_views'],
+  features: ['station', 'feature', 'label', 'clicks'],
 };
 
 /** RFC 4180 parser, independent of the writer under test. Strips the BOM. */
@@ -283,7 +284,8 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   const archive = await (await fetch(url + '/api/archive')).json();
   const played = archive.shows[0];
   const beacon = body => fetch(url + '/api/ev', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  for (const b of [{ t: 'pageview', z: 'Europe/Paris' }, { t: 'play', u: played.mp3 }, { t: 'listen', u: played.mp3, s: 45 }, { t: 'search' }]) {
+  for (const b of [{ t: 'pageview', z: 'Europe/Paris' }, { t: 'play', u: played.mp3 }, { t: 'listen', u: played.mp3, s: 45 }, { t: 'search' },
+    { t: 'ui', k: 'songsOpen' }, { t: 'ui', k: 'songsOpen' }]) {
     assert.equal((await beacon(b)).status, 204);
   }
 
@@ -360,12 +362,42 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   const jsonRes = await get(`/api/studio/export?dataset=listening&from=2020-02-01&to=${todayUtc}&format=json`);
   assert.equal(jsonRes.headers.get('content-disposition'), `attachment; filename="kpfk-listening-2020-02-01_${todayUtc}.json"`);
   const json = await jsonRes.json();
-  assert.deepEqual(Object.keys(json), ['manifest', 'daily', 'shows', 'reach']);
+  assert.deepEqual(Object.keys(json), ['manifest', 'daily', 'shows', 'reach', 'features']);
   assert.equal(json.manifest.station, 'kpfk'); assert.equal(json.manifest.schema_version, 1);
   assert.equal(json.manifest.station_timezone, 'America/Los_Angeles'); assert.equal(json.manifest.from_date_utc, '2020-02-01');
   assert.equal(json.manifest.to_date_utc, todayUtc);
   for (const [table, cols] of Object.entries(DOCUMENTED)) for (const row of json[table]) assert.deepEqual(Object.keys(row), cols);
   assert.equal(json.daily.filter(r => r.date_utc.startsWith('2020-02')).reduce((n, r) => n + r.episode_plays, 0), seeded('plays'));
+
+  // Feature clicks (2026-09-29): a table of their own, every feature in a fixed order, zeros kept,
+  // and the same count the dashboard shows.
+  const THIS = `from=${thisMonth}-01&to=${todayUtc}`;
+  const feats = parseCsv(await bytes(await get(`/api/studio/export?dataset=listening&${THIS}&format=csv&table=features`)));
+  assert.deepEqual(feats.head, DOCUMENTED.features);
+  assert.deepEqual(feats.rows.map(r => r.feature), require('../../lib/usage-fields').UI_COUNTERS, 'every feature, fixed order');
+  assert.equal(feats.rows.find(r => r.feature === 'songsOpen').clicks, '2');
+  assert.equal(feats.rows.find(r => r.feature === 'songsOpen').label, 'Song list opened');
+  assert.equal(Number(feats.rows.find(r => r.feature === 'songsOpen').clicks), usage.clicks.songsOpen, 'same as the dashboard');
+  assert.ok(feats.rows.filter(r => r.feature !== 'songsOpen').every(r => r.clicks === '0'), 'zeros kept, so stations line up');
+
+  // "Download stats": one .zip holding exactly the single-file downloads. Opened with the
+  // system's unzip, not our own reader, so a malformed archive cannot pass.
+  const zipRes = await get(`/api/studio/export?dataset=listening&${THIS}&format=zip`);
+  assert.equal(zipRes.status, 200);
+  assert.equal(zipRes.headers.get('content-type'), 'application/zip');
+  assert.equal(zipRes.headers.get('content-disposition'), `attachment; filename="kpfk-stats-${thisMonth}-01_${todayUtc}.zip"`);
+  const zipDir = fs.mkdtempSync(path.join(os.tmpdir(), 'kpfk-zip-'));
+  t.after(() => fs.rmSync(zipDir, { recursive: true, force: true }));
+  fs.writeFileSync(path.join(zipDir, 'stats.zip'), Buffer.from(await zipRes.arrayBuffer()));
+  require('child_process').execFileSync('unzip', ['-q', path.join(zipDir, 'stats.zip'), '-d', path.join(zipDir, 'out')]);
+  const span = `${thisMonth}-01_${todayUtc}`;
+  const expected = [...Object.keys(DOCUMENTED).map(tb => `kpfk-listening-${tb}-${span}.csv`), `kpfk-listening-${span}.json`, `kpfk-listening-${span}-README.txt`];
+  assert.deepEqual(fs.readdirSync(path.join(zipDir, 'out')).sort(), expected.sort(), 'every table, the JSON and the read-me');
+  for (const tb of Object.keys(DOCUMENTED)) {
+    const single = Buffer.from(await (await get(`/api/studio/export?dataset=listening&${THIS}&format=csv&table=${tb}`)).arrayBuffer());
+    assert.deepEqual(fs.readFileSync(path.join(zipDir, 'out', `kpfk-listening-${tb}-${span}.csv`)), single, `${tb}: same bytes as its own download`);
+  }
+  assert.match(fs.readFileSync(path.join(zipDir, 'out', `kpfk-listening-${span}-README.txt`), 'utf8'), /Table "features"/);
 
   // ---- Archive (inventory) and coverage, on the pinned fixtures
   const idx = await (await get('/api/studio/exports')).json();

@@ -84,15 +84,17 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     text: document.getElementById('exportStatus').textContent,
     cls: document.getElementById('exportStatus').className })`));
 
-  // Is the Download button on screen and actually hit-testable, with no
-  // scrolling? Measured before any click() helper scrolls it into view — the
-  // first dialog had it below the fold on a laptop-height window.
-  const reachable = async () => JSON.parse(await ev(`(() => {
-    const b = document.getElementById('exportGo').getBoundingClientRect();
+  // Is a button on screen and actually hit-testable, with no scrolling?
+  // Measured before any click() helper scrolls it into view.
+  const reachable = async (id) => JSON.parse(await ev(`(() => {
+    const b = document.getElementById(${JSON.stringify(id)}).getBoundingClientRect();
     const hit = document.elementFromPoint(b.x + b.width / 2, b.y + b.height / 2);
     return JSON.stringify({ top: Math.round(b.top), bottom: Math.round(b.bottom), vh: innerHeight,
-      hit: !!hit && (hit.id === 'exportGo' || !!hit.closest('#exportGo')) });
+      hit: !!hit && (hit.id === ${JSON.stringify(id)} || !!hit.closest('#' + ${JSON.stringify(id)})) });
   })()`));
+  const span = async () => JSON.parse(await ev(`JSON.stringify([exportFrom.value, exportTo.value])`));
+  const daysOf = (sp) => Math.round((Date.parse(sp[1]) - Date.parse(sp[0])) / 86400000) + 1;
+  const csvRows = (file) => fs.readFileSync(file, 'utf8').trim().split('\r\n').length - 1;
 
   // ---- 1. sign in, open the dialog from the header
   await size(1200);
@@ -106,8 +108,6 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     await go();
   }
   // (Dashboard, not export — but this suite already signs in to the real page.)
-  // On a Pacifica JSON station the System panel counts what the provider holds;
-  // the XML-era "Programs"/"Feeds" rows read 0 there and are not drawn.
   const provider = await ev(`fetch('/api/studio/health').then((r) => r.json()).then((h) => h.provider)`);
   if (provider === 'pacifica-json') {
     await wait(800);
@@ -118,106 +118,84 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
       /Episodes in the archive/.test(panel.counts) && /catalog/.test(panel.counts) && !/Programs/.test(panel.counts), panel.counts);
     ok('storage names the Pacifica snapshots', /Pacifica snapshots on disk/.test(panel.storage) && !/Records on disk at boot/.test(panel.storage), panel.storage);
   }
-  console.log('\n1. the Export button opens the dialog');
-  ok('signed in', await ev("!!document.getElementById('exportOpen')"));
+  console.log('\n1. the Import / Export button opens the dialog');
+  ok('signed in, and the button says Import / Export',
+    (await ev("(document.getElementById('exportOpen') || {}).textContent || ''")).trim() === 'Import / Export');
   ok('dialog starts closed', await ev("!document.getElementById('exportDialog').open"));
   await click('#exportOpen');
   await wait(800);
   const opened = JSON.parse(await ev(`JSON.stringify({
     open: document.getElementById('exportDialog').open,
+    title: document.getElementById('exportTitle').textContent,
+    sections: [...document.querySelectorAll('#exportDialog .export-legend')].map((h) => h.textContent.trim()),
     from: exportFrom.value, to: exportTo.value,
     pressed: [...document.querySelectorAll('#exportPresets [aria-pressed=true]')].map((b) => b.dataset.preset),
-    go: !document.getElementById('exportGo').disabled })`));
-  ok('clicking Export opens the dialog', opened.open);
-  ok('dates are filled and one preset is chosen', !!opened.from && !!opened.to && opened.pressed.length === 1,
-    JSON.stringify(opened));
-  ok('Download is enabled', opened.go);
-  const r1 = await reachable();
-  ok('Download is on screen without scrolling (1200×900)', r1.hit && r1.bottom <= r1.vh, JSON.stringify(r1));
+    zip: !document.getElementById('statsZip').disabled, backup: !document.getElementById('backupDownload').disabled })`));
+  ok('clicking it opens the dialog', opened.open && opened.title === 'Import / Export', JSON.stringify(opened));
+  ok('two sections: back up or move, then stats', opened.sections.length === 2
+    && /Back up or move this site/.test(opened.sections[0]) && /Stats for Pacifica and the station/.test(opened.sections[1]), JSON.stringify(opened.sections));
+  ok('dates are filled and one preset is chosen', !!opened.from && !!opened.to && opened.pressed.length === 1, JSON.stringify(opened));
+  ok('Download full backup and Download stats are enabled', opened.zip && opened.backup, JSON.stringify(opened));
+  const r1 = await reachable('backupDownload');
+  ok('Download full backup is on screen without scrolling (1200×900)', r1.hit && r1.bottom <= r1.vh, JSON.stringify(r1));
 
-  // ---- 2. Download puts real files on disk
-  console.log('\n2. Download saves a real file');
+  // ---- 2. Download stats: one .zip with every table
+  console.log('\n2. Download stats saves a real .zip with every table');
   let before = files();
-  await click('#exportGo');
-  const daily = await landed(/^[a-z0-9]+-listening-daily-\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}\.csv$/, before);
-  ok('Daily totals: a CSV lands in the download folder', !!daily, `files: ${files().join(', ') || 'none'}`);
-  if (daily) {
-    const buf = fs.readFileSync(path.join(dir, daily));
-    ok('it starts with the UTF-8 BOM', buf[0] === 0xEF && buf[1] === 0xBB && buf[2] === 0xBF);
-    ok('its header row is the daily columns', buf.toString('utf8').slice(1).startsWith('station,date_utc,page_views,'));
-    const rows = buf.toString('utf8').trim().split('\r\n').length - 1;
-    const span = JSON.parse(await ev(`JSON.stringify([exportFrom.value, exportTo.value])`));
-    const days = Math.round((Date.parse(span[1]) - Date.parse(span[0])) / 86400000) + 1;
-    ok('one row per day of the chosen span', rows === days, `${rows} rows for ${days} days`);
+  await click('#statsZip');
+  const zip = await landed(/^[a-z0-9]+-stats-\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}\.zip$/, before);
+  ok('a .zip lands in the download folder', !!zip, `files: ${files().join(', ') || 'none'}`);
+  if (zip) {
+    const out = path.join(dir, 'unzipped');
+    require('child_process').execFileSync('unzip', ['-q', '-o', path.join(dir, zip), '-d', out]);
+    const inside = fs.readdirSync(out).sort();
+    const want = ['daily', 'features', 'reach', 'shows'].map((t) => new RegExp(`-listening-${t}-.*\\.csv$`)).concat([/-listening-[^a-z]*\.json$/, /-README\.txt$/]);
+    ok('it holds daily, per show, reach and feature clicks as CSV, the JSON and the read-me',
+      inside.length === 6 && want.every((re) => inside.some((n) => re.test(n))), inside.join(', '));
+    const dailyCsv = inside.find((n) => /-listening-daily-/.test(n));
+    if (dailyCsv) {
+      const buf = fs.readFileSync(path.join(out, dailyCsv));
+      ok('the daily CSV starts with the UTF-8 BOM and the daily columns', buf[0] === 0xEF && buf.toString('utf8').slice(1).startsWith('station,date_utc,page_views,'));
+      const sp = await span();
+      ok('one row per day of the chosen span', csvRows(path.join(out, dailyCsv)) === daysOf(sp), `${csvRows(path.join(out, dailyCsv))} rows for ${daysOf(sp)} days`);
+    }
   }
   const s1 = await status();
-  ok('the dialog says what was saved', s1.cls.includes('is-ok') && daily && s1.text.includes(daily), JSON.stringify(s1));
+  ok('the dialog says what was saved', s1.cls.includes('is-ok') && zip && s1.text.includes(zip), JSON.stringify(s1));
 
+  // ---- 2b. one file at a time, and program data — folded away until opened
+  console.log('\n2b. one file at a time, and program data');
+  const folded = await ev(`[...document.querySelectorAll('#exportDialog details.export-more')].every((d) => !d.open)`);
+  ok('both lists start folded', folded);
+  await click('#statsSection details.export-more:nth-of-type(1) > summary');
   before = files();
-  await click('input[name=exportFile][value="listening:csv:shows"]');
-  await click('#exportGo');
+  await click('[data-file="listening:csv:features"]');
+  const feats = await landed(/-listening-features-.*\.csv$/, before);
+  ok('Feature clicks: a CSV with the feature columns lands', !!feats && fs.readFileSync(path.join(dir, feats), 'utf8').slice(1).startsWith('station,feature,label,clicks'),
+    `files: ${files().join(', ')}`);
+  before = files();
+  await click('[data-file="listening:csv:shows"]');
   const shows = await landed(/-listening-shows-.*\.csv$/, before);
-  ok('Per show: choosing the card changes the file', !!shows && fs.readFileSync(path.join(dir, shows), 'utf8').slice(1).startsWith('station,show_key,show_title,'));
+  ok('Per show: a CSV lands', !!shows && fs.readFileSync(path.join(dir, shows), 'utf8').slice(1).startsWith('station,show_key,show_title,'));
 
+  await click('#statsSection details.export-more:nth-of-type(2) > summary');
   before = files();
-  await click('input[name=exportFile][value="listening:json"]');
-  await click('#exportGo');
-  const json = await landed(/-listening-.*\.json$/, before);
-  let parsed = null;
-  try { parsed = json && JSON.parse(fs.readFileSync(path.join(dir, json), 'utf8')); } catch (e) { parsed = null; }
-  ok('Everything: a JSON file with all three tables lands', !!parsed && Array.isArray(parsed.daily) && Array.isArray(parsed.shows) && Array.isArray(parsed.reach));
-
-  before = files();
-  await click('#exportReadme');
-  const readme = await landed(/-README\.txt$/, before);
-  ok('the read-me link saves the column explanations', !!readme && /Personal data/.test(fs.readFileSync(path.join(dir, readme), 'utf8')));
-
-  // ---- 2b. the other datasets: pick one, and its cards, dates and file follow
-  console.log('\n2b. Archive and Coverage');
-  await click('input[name=exportDataset][value="inventory"]');
-  const invState = JSON.parse(await ev(`JSON.stringify({
-    cards: [...document.querySelectorAll('.export-choices:not([hidden]) input[name=exportFile]')].map((i) => i.value),
-    checked: document.querySelector('input[name=exportFile]:checked').value,
-    datesOff: document.getElementById('exportDates').disabled,
-    clock: document.getElementById('exportClock').textContent, min: exportFrom.min })`));
-  ok('Archive shows its own cards and checks the first', invState.cards.join() === 'inventory:csv:episodes,inventory:csv:shows,inventory:json'
-    && invState.checked === 'inventory:csv:episodes', JSON.stringify(invState));
-  ok('its dates are air dates in the station timezone', !invState.datesOff && /air date in /.test(invState.clock), JSON.stringify(invState));
-  await click('[data-preset=all]');
-  before = files();
-  await click('#exportGo');
+  await click('[data-file="inventory:csv:episodes"]');
   const episodes = await landed(/-archive-episodes-\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}\.csv$/, before);
   const epText = episodes ? fs.readFileSync(path.join(dir, episodes), 'utf8') : '';
-  ok('Episodes: a CSV of the archive lands', !!episodes && epText.slice(1).startsWith('station,show_key,show_title,episode_id,')
-    && epText.trim().split('\r\n').length > 1, `files: ${files().join(', ')}`);
-
-  await click('input[name=exportDataset][value="coverage"]');
-  const covState = JSON.parse(await ev(`JSON.stringify({ datesOff: document.getElementById('exportDates').disabled,
-    clock: document.getElementById('exportClock').textContent, go: document.getElementById('exportGo').disabled })`));
-  ok('Coverage switches the dates off and says why', covState.datesOff && /snapshot/.test(covState.clock) && !covState.go, JSON.stringify(covState));
+  ok('Archive: every playable episode, whatever stats dates are picked', !!episodes && epText.slice(1).startsWith('station,show_key,show_title,episode_id,')
+    && epText.trim().split('\r\n').length > 1, `files: ${files().join(', ')} ${await ev("programStatus.textContent")}`);
   before = files();
-  await click('#exportGo');
+  await click('[data-file="coverage:csv:shows"]');
   const coverage = await landed(/-coverage-shows-\d{4}-\d{2}-\d{2}\.csv$/, before);
-  const covText = coverage ? fs.readFileSync(path.join(dir, coverage), 'utf8') : '';
-  ok('Coverage: a CSV of every catalog show lands', !!coverage && covText.slice(1).startsWith('station,show_key,show_title,source,')
-    && covText.trim().split('\r\n').length > 1, `files: ${files().join(', ')}`);
-
-  await click('input[name=exportDataset][value="profile"]');
-  const profState = JSON.parse(await ev(`JSON.stringify({ datesOff: document.getElementById('exportDates').disabled,
-    checked: document.querySelector('input[name=exportFile]:checked').value, go: document.getElementById('exportGo').disabled })`));
-  ok('Station profile: JSON only, dates off', profState.datesOff && profState.checked === 'profile:json' && !profState.go, JSON.stringify(profState));
+  ok('Coverage: a CSV of every catalog show lands', !!coverage && fs.readFileSync(path.join(dir, coverage), 'utf8').slice(1).startsWith('station,show_key,show_title,source,'));
   before = files();
-  await click('#exportGo');
+  await click('[data-file="profile:json"]');
   const profileFile = await landed(/-profile-\d{4}-\d{2}-\d{2}\.json$/, before);
   let profileJson = null;
   try { profileJson = profileFile && JSON.parse(fs.readFileSync(path.join(dir, profileFile), 'utf8')); } catch (e) { profileJson = null; }
-  ok('a station profile JSON lands, with no feed addresses', !!profileJson && !!profileJson.profile.name
+  ok('Station profile: a JSON lands, with no feed addresses', !!profileJson && !!profileJson.profile.name
     && !/"feeds"|"origins"|fe_feed/.test(JSON.stringify(profileJson)), `files: ${files().join(', ')}`);
-
-  await click('input[name=exportDataset][value="listening"]');
-  const back = JSON.parse(await ev(`JSON.stringify({ checked: document.querySelector('input[name=exportFile]:checked').value,
-    datesOff: document.getElementById('exportDates').disabled, go: document.getElementById('exportGo').disabled })`));
-  ok('back on Listening, its cards and dates return', back.checked.startsWith('listening:') && !back.datesOff && !back.go, JSON.stringify(back));
 
   // ---- 3. presets move the dates
   console.log('\n3. presets and dates');
@@ -226,10 +204,12 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   ok('All time spans the oldest data to today', all.from === all.min && all.to === all.max, JSON.stringify(all));
   await ev(`(() => { const f = exportFrom.value; exportFrom.value = exportTo.value; exportTo.value = f;
     exportTo.dispatchEvent(new Event('input', { bubbles: true })); return true; })()`);
-  const bad = JSON.parse(await ev(`JSON.stringify({ go: document.getElementById('exportGo').disabled,
+  const bad = JSON.parse(await ev(`JSON.stringify({ zip: document.getElementById('statsZip').disabled,
+    one: document.querySelector('[data-file="listening:csv:daily"]').disabled,
+    archive: document.querySelector('[data-file="inventory:csv:episodes"]').disabled,
     note: document.getElementById('exportSpanNote').className })`));
-  ok('a reversed span disables Download and says why',
-    all.from === all.to ? true : (bad.go && bad.note.includes('is-bad')), JSON.stringify(bad));
+  ok('a reversed span disables the stats downloads and says why (program data stays available)',
+    all.from === all.to ? true : (bad.zip && bad.one && !bad.archive && bad.note.includes('is-bad')), JSON.stringify(bad));
 
   // ---- 4. self-test: a refused export is visible and lands nothing
   console.log('\n4. self-test — a refused export must be seen, and must land no file');
@@ -239,26 +219,21 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   await ev(`(() => { exportFrom.min = '2000-01-01'; exportFrom.value = '2000-01-01';
     exportFrom.dispatchEvent(new Event('input', { bubbles: true })); return true; })()`);
   before = files();
-  await click('#exportGo');
+  await click('#statsZip');
   await wait(1500);
   const s4 = await status();
   ok('the dialog shows the refusal with its HTTP status', s4.cls.includes('is-bad') && /HTTP 400/.test(s4.text), JSON.stringify(s4));
   ok('and no file landed', files().length === before.length, `files now: ${files().join(', ')}`);
 
-  // ---- 4b. Backup & restore — download a backup, then preview restoring that
-  // same file. Never clicks Restore: this section must be safe to run against
-  // a live station.
+  // ---- 4b. Back up, then preview restoring that same file. Never clicks
+  // Restore: this section must be safe to run against a live station.
   console.log('\n4b. backup, and a restore preview that writes nothing');
-  await click('#tabBackup');
-  const panes = JSON.parse(await ev(`JSON.stringify({ reports: document.getElementById('paneReports').hidden,
-    backup: document.getElementById('paneBackup').hidden, selected: document.getElementById('tabBackup').getAttribute('aria-selected') })`));
-  ok('the Backup & restore tab shows its pane and hides Reports', panes.reports && !panes.backup && panes.selected === 'true', JSON.stringify(panes));
   before = files();
   await click('#backupDownload');
   const backupName = await landed(/^[a-z0-9]+-backup-\d{4}-\d{2}-\d{2}\.json$/, before);
   let backup = null;
   try { backup = backupName && JSON.parse(fs.readFileSync(path.join(dir, backupName), 'utf8')); } catch (e) { backup = null; }
-  ok('Download backup saves a backup file', !!backup && backup.format === 'pacifica-archive-backup' && Object.keys(backup.stats).length > 0,
+  ok('Download full backup saves a backup file', !!backup && backup.format === 'pacifica-archive-backup' && Object.keys(backup.stats).length > 0,
     `files: ${files().join(', ')}`);
   if (backupName) {
     const doc = await c.send('DOM.getDocument', { depth: 1 });
@@ -312,16 +287,16 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
       await wait(400);
       const fitB = JSON.parse(await ev(`(() => {
         const d = document.getElementById('exportDialog'), b = d.getBoundingClientRect();
-        const out = [...d.querySelectorAll('#paneBackup *')].filter((el) => {
+        const out = [...d.querySelectorAll('#backupSection *')].filter((el) => {
           const r = el.getBoundingClientRect(); return r.width > 0 && (r.right > b.right + 1 || r.left < b.left - 1);
         }).map((el) => el.tagName.toLowerCase() + '.' + el.className);
         // Content wider than its own box, in ANY overflow mode: text that will not
         // wrap spills out of a visible-overflow cell without growing the cell's
         // rect, so element rects alone passed a layout whose text overlapped.
-        const clipped = [...d.querySelectorAll('#paneBackup *')].filter((el) => el.tagName !== 'INPUT'
+        const clipped = [...d.querySelectorAll('#backupSection *')].filter((el) => el.tagName !== 'INPUT'
           && el.clientWidth > 0 && el.scrollWidth > el.clientWidth + 1).map((el) => el.tagName.toLowerCase() + '.' + el.className);
         // And each rendered line of text against the element that holds it.
-        const walker = document.createTreeWalker(d.querySelector('#paneBackup'), NodeFilter.SHOW_TEXT);
+        const walker = document.createTreeWalker(d.querySelector('#backupSection'), NodeFilter.SHOW_TEXT);
         for (let n = walker.nextNode(); n; n = walker.nextNode()) {
           if (!n.textContent.trim() || !n.parentElement.getClientRects().length) continue;
           const box = n.parentElement.getBoundingClientRect(), range = document.createRange();
@@ -342,15 +317,13 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     }
     await size(1200);
   }
-  await click('#tabReports');
-
   // ---- 5. closing, and the phone layout
   console.log('\n5. closing and small screens');
   await c.send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
   await c.send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
   await wait(300);
   ok('Esc closes the dialog', await ev("!document.getElementById('exportDialog').open"));
-  ok('focus returns to the Export button', await ev("document.activeElement === document.getElementById('exportOpen') || document.activeElement === document.body"));
+  ok('focus returns to the Import / Export button', await ev("document.activeElement === document.getElementById('exportOpen') || document.activeElement === document.body"));
 
   for (const w of [390, 360]) {
     await size(w);
@@ -365,8 +338,8 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
       }).map((el) => el.tagName.toLowerCase() + '.' + el.className);
       return JSON.stringify({ open: d.open, left: b.left, right: b.right, vw, sideways: d.scrollWidth > d.clientWidth + 1, out: out.slice(0, 3) });
     })()`));
-    const rw = await reachable();
-    ok(`${w}px — Download is on screen without scrolling`, rw.hit && rw.bottom <= rw.vh, JSON.stringify(rw));
+    const rw = await reachable('backupDownload');
+    ok(`${w}px — Download full backup is on screen without scrolling`, rw.hit && rw.bottom <= rw.vh, JSON.stringify(rw));
     ok(`${w}px — dialog is inside the screen`, fit.open && fit.left >= 0 && fit.right <= fit.vw, JSON.stringify(fit));
     ok(`${w}px — nothing inside it is cut off or scrolls sideways`, !fit.sideways && fit.out.length === 0, JSON.stringify(fit.out));
   }
@@ -377,22 +350,15 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   await go();
   await click('#exportOpen');
   await wait(800);
-  await click('input[name=exportDataset][value="report"]');
-  const repUi = JSON.parse(await ev(`JSON.stringify({ go: document.getElementById('exportGo').textContent,
-    readmeHidden: document.getElementById('exportReadmeRow').hidden, clock: document.getElementById('exportClock').textContent,
-    datesOff: document.getElementById('exportDates').disabled })`));
-  ok('Printable report: the button says Open report, no read-me, both clocks explained',
-    repUi.go === 'Open report' && repUi.readmeHidden && /UTC days/.test(repUi.clock) && /air dates in/.test(repUi.clock) && !repUi.datesOff,
-    JSON.stringify(repUi));
   const targetsBefore = (await (await fetch(`http://127.0.0.1:${PORT}/json/list`)).json()).map((t) => t.id);
-  await click('#exportGo');
+  await click('#reportOpen');
   let reportTab = null;
   for (let i = 0; i < 30 && !reportTab; i++) {
     await wait(150);
     reportTab = (await (await fetch(`http://127.0.0.1:${PORT}/json/list`)).json())
       .find((t) => !targetsBefore.includes(t.id) && /\/studio\/report\?from=\d{4}-\d{2}-\d{2}&to=\d{4}-\d{2}-\d{2}/.test(t.url));
   }
-  ok('Open report opens the report in a new tab', !!reportTab, JSON.stringify(await status()));
+  ok('Printable report opens the report in a new tab', !!reportTab, JSON.stringify(await status()));
   if (reportTab) await fetch(`http://127.0.0.1:${PORT}/json/close/${reportTab.id}`);
 
   await c.send('Page.navigate', { url: BASE + '/studio/report' });
