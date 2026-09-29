@@ -14,8 +14,11 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 2. **Ace / QIR:** email sent 2026-09-28. As of 2026-09-29 the 7 show keys (All Of The Above, Nightscapes,
    The Aware Show, Reggae Central, CodePINK, Making Contact, CinemaScore) and World Massive Sep 26 are
    still not processed in QIR. **Any reply?** Recheck with the live `/api/plugins/qir/catalog`.
-3. **Next:** step 8 (retire kpfk-discovery.pacifica.audio) → 5b (station template in the studio).
-   Step 7 is done except that a moved site still needs its QIR key set in Coolify (env, not data).
+3. **Next:** step 8 = Paul **stops** the old Discovery app in Coolify (no redirect; the app and its
+   address kpfk-discovery.pacifica.audio are kept as a future staging app — own named volume, never
+   production's; see the Discovery repo's HANDOFF item 0). Then 5b: station template in the studio
+   (anyone with the studio login edits feeds, logo, colours, text; placeholders already in
+   Discovery & settings → Station & appearance). A moved site needs its QIR key set in Coolify (env).
 4. **Auto mode outage (Anthropic, since 2026-09-28 ~06:30 UTC):** "server-side auto mode classifier gave
    no verdict" blocks commands in bursts, for everyone ([#97870](https://github.com/anthropics/claude-code/issues/97870)).
    Not this project. Paul chose to stay on auto; when it bursts, wait or switch to "Edit automatically".
@@ -40,6 +43,8 @@ All pushed and live (Paul redeployed; each checked on podcasts.kpfk.org). `npm t
 | `ee69216` | Backup carries the **Discovery switches** (`settings.discovery = {enabled, qir}`); restore previews, sets, and undo puts them back. The site writes only stats, the switches and its own identity (never moved) |
 | `e74c551` | **Download everything (.zip)**: every dataset (stats, archive, coverage, profile) + `features_daily` + README-FIRST |
 | `dfa4132` | Printable report gains **Feature use** |
+| `192a62c` | Studio: **Discovery & settings no longer shows the stats**. Root cause: `.studio-main {display:grid}` beat `[hidden]`; one global `[hidden] {display:none !important}` replaces four one-off patches. Browser test in `test/studio/layout-tests.js` 1b (not yet run — needs Chrome). Listener stylesheets use 31 per-element `[hidden]` rules: same pattern, nothing broken, not swept |
+| `ea9f3cb`, `ea69217` | Profile `siteUrl` + `retiredHosts` (a retired host 301s to the same path on siteUrl). KPFK retires **no** host: the old Discovery address is kept for staging |
 | `077aee0` | **Master spreadsheet (.xlsx)**: every table, one tab each, plus Read me and Columns tabs (`lib/export/xlsx.js`, no dependency; opened with openpyxl on real data) |
 
 **Move test (Paul, 2026-09-29):** live full backup restored onto a fresh local server — every

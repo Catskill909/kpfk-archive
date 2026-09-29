@@ -60,8 +60,9 @@ retired (step 8). Nothing else is developed there.
 
 ## Next up
 
-1. **8** Production release: point kpfk-discovery.pacifica.audio at podcasts.kpfk.org, stop that
-   Coolify app (it still calls QIR), archive the `kpfk-discovery-plugin` repo, update APP-FAMILY.md.
+1. **8** Production release: Paul **stops** the old Discovery app in Coolify (it still calls QIR). No
+   redirect: the app and kpfk-discovery.pacifica.audio are kept as a future staging app (Paul,
+   2026-09-29). Then update APP-FAMILY.md.
 2. **5b** Station template in the studio: edit a station's feeds, logo, colours and text, preview,
    apply, with a way back (station settings would then join the backup).
 
@@ -245,3 +246,4 @@ on a new server; they are never in a backup.
 | 2026-09-28 (late) | Step 6 stats; player no outline + bottom fade; Transcript button on/off look; LIVE badge; Discovery site forces visitors to podcasts.kpfk.org; Ace follow-up sent; status sections rewritten to match what is live. |
 | 2026-09-29 | Music 14-day limit and Alan Watts corrections on the archive list; old `/discover` page retired (4f). Redeployed and checked live. |
 | 2026-09-29 | Step 7: studio Import / Export reworked (two sections); backup now keeps feature clicks; stats .zip with feature-clicks table. |
+| 2026-09-29 | Step 8 decided: stop the old Discovery app, keep it as staging (no redirect). Studio tab bug fixed (stats showed under Discovery & settings). |
