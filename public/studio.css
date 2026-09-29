@@ -973,21 +973,11 @@
 }
 .export-link:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
 
-/* "One file at a time" and "Program data": folded away, because the .zip is the
-   answer for almost everyone. Compact rows (Paul's popup-density rule): the
-   name, then its formats as small links on the same line. */
-.export-more { border-top: 1px solid var(--outline); padding-top: 0.75rem; }
-.export-more > summary {
-  cursor: pointer;
-  min-height: 2.75rem;
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--ink);
-}
-.export-more > summary:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
-.export-more[open] { display: grid; gap: 0.6rem; }
+/* "One file at a time" and "Program data": always shown, never folded (Paul,
+   2026-09-29: content hidden behind a toggle is bad UI). Compact rows (Paul's
+   popup-density rule): the name, then its formats as small links on one line. */
+.export-more { display: grid; gap: 0.5rem; border-top: 1px solid var(--outline); padding-top: 1rem; }
+.export-sub { margin: 0; font-size: 0.95rem; font-weight: 600; color: var(--ink); }
 .export-files { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.1rem; }
 .export-files li {
   display: flex;
