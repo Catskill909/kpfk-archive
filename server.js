@@ -24,6 +24,7 @@ const ShowLinks = require('./public/links');
 const { toCsv } = require('./lib/export/csv');
 const listeningExport = require('./lib/export/listening');
 const zipExport = require('./lib/export/zip');
+const xlsxExport = require('./lib/export/xlsx');
 const backupLib = require('./lib/export/backup');
 const inventoryExport = require('./lib/export/inventory');
 const coverageExport = require('./lib/export/coverage');
@@ -2868,7 +2869,7 @@ const EXPORT_DATASETS = {
     lib: listeningExport,
     span: 'utc',
     // zip: every table as CSV, the JSON and the read-me in one file ("Download stats").
-    formats: ['csv', 'json', 'readme', 'zip'],
+    formats: ['csv', 'json', 'readme', 'zip', 'xlsx'],
     bounds() { return { firstDate: exportFirstDate(), today: today() }; },
     hasData() { return listStatsMonths().some((m) => Object.keys(statsMonthDays(m) || {}).length > 0); },
     build({ from, to, generatedAt }) {
@@ -3027,23 +3028,64 @@ function datasetFiles(d, data) {
     { name: d.lib.exportFilename(data.manifest, null, 'readme'), data: d.lib.manifestText(data.manifest) },
   ];
 }
-/** Every dataset for the .zip, with a README-FIRST that lists what is inside and what could not be built. */
-function exportEverything(listening, from, to) {
+/** Every dataset for "Download everything": stats for the chosen dates, the archive (every
+ *  episode listeners can play now), coverage and the station profile. The .zip and the
+ *  master workbook are both built from this, so they cannot disagree. */
+function collectEverything(listening) {
   const generatedAt = listening.manifest.generated_at;
-  const files = datasetFiles(EXPORT_DATASETS.listening, listening), lines = [];
-  lines.push(`${STATION_ID.toUpperCase()} export, made ${generatedAt}`, '',
-    `Stats (listening, reach, feature clicks): UTC days ${from} to ${to}.`,
-    'Archive: every episode listeners can play right now. Coverage and station profile: as they are right now.', '',
-    'Nothing in any of these files identifies a listener. Each dataset has its own README explaining every column.', '');
+  const sets = [{ name: 'listening', d: EXPORT_DATASETS.listening, data: listening }], missing = [];
   for (const name of ['inventory', 'coverage', 'profile']) {
     const d = EXPORT_DATASETS[name];
-    if (d.canBuild && !d.canBuild()) { lines.push(`Not included: ${name} (${name === 'profile' ? 'no station profile' : 'the Pacifica catalog has not loaded yet'}).`); continue; }
+    if (d.canBuild && !d.canBuild()) { missing.push(`${name} (${name === 'profile' ? 'no station profile' : 'the Pacifica catalog has not loaded yet'})`); continue; }
     const b = d.span ? d.bounds() : {};
-    files.push(...datasetFiles(d, d.build({ from: b.firstDate, to: b.today, generatedAt })));
+    sets.push({ name, d, data: d.build({ from: b.firstDate, to: b.today, generatedAt }) });
   }
-  lines.push('', 'Files:', ...files.map((f) => '  ' + f.name));
-  files.unshift({ name: 'README-FIRST.txt', data: lines.join('\r\n') + '\r\n' });
-  return { files };
+  return { sets, missing, generatedAt };
+}
+// The master workbook's tabs, in reading order: [dataset, table, tab name].
+const WORKBOOK_TABS = [
+  ['listening', 'daily', 'Daily totals'], ['listening', 'shows', 'Per show'], ['listening', 'reach', 'Reach'],
+  ['listening', 'features', 'Feature clicks'], ['listening', 'features_daily', 'Feature clicks per day'],
+  ['inventory', 'episodes', 'Archive episodes'], ['inventory', 'shows', 'Archive shows'], ['coverage', 'shows', 'Coverage'],
+];
+/** One .xlsx with every table as a tab, plus "Read me" and "Columns" tabs. */
+function masterWorkbook(all, from, to) {
+  const by = Object.fromEntries(all.sets.map((x) => [x.name, x]));
+  const tabs = WORKBOOK_TABS.filter(([ds, t]) => by[ds] && by[ds].d.lib.COLUMNS[t]);
+  // A table in the export that has no tab here would be silently missing from "everything".
+  for (const x of all.sets) for (const t of Object.keys(x.d.lib.COLUMNS)) {
+    if (!WORKBOOK_TABS.some(([ds, tb]) => ds === x.name && tb === t)) throw new Error(`workbook: no tab for ${x.name}/${t}`);
+  }
+  const readme = [
+    { item: 'Station', value: STATION_ID },
+    { item: 'Made', value: all.generatedAt },
+    { item: 'Stats dates (UTC days)', value: `${from} to ${to}` },
+    { item: 'Archive, coverage', value: 'As they are right now: every episode listeners can play, every catalog show.' },
+    { item: 'Personal data', value: listeningExport.NO_IDENTIFIER },
+    ...tabs.map(([ds, t, name]) => ({ item: `Tab: ${name}`, value: `${by[ds].data[t].length} rows` })),
+    ...all.missing.map((m) => ({ item: 'Not included', value: m })),
+  ];
+  const columns = [];
+  for (const [ds, t, name] of tabs) for (const c of by[ds].data.manifest.tables[t] || []) columns.push({ tab: name, column: c.column, meaning: c.meaning });
+  return xlsxExport.buildXlsx([
+    { name: 'Read me', columns: ['item', 'value'], rows: readme },
+    ...tabs.map(([ds, t, name]) => ({ name, columns: by[ds].d.lib.COLUMNS[t], rows: by[ds].data[t] })),
+    { name: 'Columns', columns: ['tab', 'column', 'meaning'], rows: columns },
+  ]);
+}
+function exportEverything(listening, from, to) {
+  const all = collectEverything(listening);
+  const files = [];
+  for (const x of all.sets) files.push(...datasetFiles(x.d, x.data));
+  const workbook = { name: `${STATION_ID}-everything-${from}_${to}.xlsx`, data: masterWorkbook(all, from, to) };
+  const lines = [`${STATION_ID.toUpperCase()} export, made ${all.generatedAt}`, '',
+    `START HERE: ${workbook.name} — every table in one Excel / Google Sheets workbook, one tab each.`, '',
+    `Stats (listening, reach, feature clicks): UTC days ${from} to ${to}.`,
+    'Archive: every episode listeners can play right now. Coverage and station profile: as they are right now.', '',
+    'Nothing in any of these files identifies a listener. Each dataset has its own README explaining every column.', '',
+    ...all.missing.map((m) => `Not included: ${m}.`),
+    '', 'Files:', '  ' + workbook.name, ...files.map((f) => '  ' + f.name)];
+  return { files: [{ name: 'README-FIRST.txt', data: lines.join('\r\n') + '\r\n' }, workbook, ...files], workbook };
 }
 
 /** `GET /api/studio/export` — one dataset, one span, one format. */
@@ -3079,6 +3121,10 @@ function sendExport(req, res) {
   } else if (format === 'json') {
     body = JSON.stringify(data, null, 2) + '\n';
     type = 'application/json; charset=utf-8'; file = d.lib.exportFilename(data.manifest, null, 'json');
+  } else if (format === 'xlsx') {
+    // The master workbook alone: every table, one tab each.
+    body = masterWorkbook(collectEverything(data), from, to);
+    type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'; file = `${STATION_ID}-everything-${from}_${to}.xlsx`;
   } else if (format === 'zip') {
     // "Download everything" (Paul, 2026-09-29: the export must hold all the stats): the stats
     // for the chosen dates, plus the archive (every episode listeners can play now), coverage

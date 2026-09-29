@@ -509,9 +509,10 @@
     <section class="export-step" id="statsSection" aria-labelledby="statsHead">
       <h3 class="export-legend" id="statsHead"><span class="export-num">2</span> Stats for Pacifica and the station</h3>
       <p class="export-copy">
-        Everything the dashboard shows, in one file: listening, reach and feature use
-        for the dates you pick, plus the archive, coverage and station profile &mdash; as
-        spreadsheets (CSV) and JSON, with a read-me for every column. Every station&rsquo;s
+        Everything the dashboard shows: listening, reach and feature use for the dates
+        you pick, plus the archive, coverage and station profile. The <strong>master
+        spreadsheet</strong> has it all in one workbook, one tab per table; the .zip adds
+        each table as CSV and JSON, with a read-me for every column. Every station&rsquo;s
         files have the same names and columns, so Pacifica can compare stations.
       </p>
       <p class="export-empty" id="exportEmpty" hidden></p>
@@ -535,6 +536,7 @@
       <p class="export-copy export-fine" id="exportClock">Days are UTC calendar days &mdash; the counters were recorded that way.</p>
       <div class="export-row">
         <button class="studio-btn export-go" id="statsZip" type="button">Download everything (.zip)</button>
+        <button class="studio-btn" id="statsXlsx" type="button" data-file="listening:xlsx">Master spreadsheet (.xlsx)</button>
         <button class="studio-btn" id="reportOpen" type="button">Printable report (PDF)</button>
       </div>
       <p class="export-status" id="exportStatus" role="status" aria-live="polite"></p>

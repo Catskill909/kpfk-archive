@@ -38,8 +38,9 @@ read the Pacifica JSON feeds through a per-station profile.
 - **Private station dashboard** at `/studio` — password-protected archive stats,
   listening figures and maintenance actions.
 - **Downloadable listening figures** — the studio's **Import / Export** gives any date span (this month,
-  last month, this year, all time, or dates you pick) as one .zip: daily totals, per show, reach and
-  feature clicks as CSV for Excel or Google Sheets, plus JSON and a read-me. The files hold the same counters
+  last month, this year, all time, or dates you pick) as one **master spreadsheet** (.xlsx, one tab per
+  table: daily totals, per show, reach, feature clicks, the archive, coverage) and as a .zip that also
+  holds every table as CSV and JSON, with a read-me. The files hold the same counters
   the dashboard shows and nothing else: still no identifier of any kind.
 - **Built for every Pacifica station** — the same files and columns at each one, so
   Pacifica can put stations side by side ([docs/exports-for-pacifica.md](docs/exports-for-pacifica.md)).

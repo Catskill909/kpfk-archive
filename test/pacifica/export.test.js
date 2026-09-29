@@ -308,7 +308,7 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
     assert.equal(r.status, 400, `span ${from}..${to} refused`);
   }
   for (const q of [`dataset=nosuch&${FEB}&format=csv`, `dataset=inventory&format=csv&table=episodes`,
-    `dataset=coverage&format=csv&table=daily`, `dataset=listening&${FEB}&format=xlsx`,
+    `dataset=coverage&format=csv&table=daily`, `dataset=listening&${FEB}&format=pdf`, `dataset=coverage&format=xlsx`,
     `dataset=listening&${FEB}&format=csv&table=ip`]) {
     assert.equal((await get('/api/studio/export?' + q)).status, 400, q);
   }
@@ -406,7 +406,33 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
     }
     assert.ok(inside.some(n => n.endsWith('.json') && n.includes(ds.name === 'inventory' ? '-archive-' : `-${ds.name}-`)), `${ds.name}: JSON included`);
   }
+  // The master workbook: in the .zip and on its own, one tab per table, each tab's rows = that table's CSV rows.
+  const wbName = `kpfk-everything-${thisMonth}-01_${todayUtc}.xlsx`;
+  assert.ok(inside.includes(wbName), 'the .zip holds the master workbook');
+  const xRes = await get(`/api/studio/export?dataset=listening&${THIS}&format=xlsx`);
+  assert.equal(xRes.status, 200);
+  assert.equal(xRes.headers.get('content-disposition'), `attachment; filename="${wbName}"`);
+  const wbFile = path.join(zipDir, 'alone.xlsx');
+  fs.writeFileSync(wbFile, Buffer.from(await xRes.arrayBuffer()));
+  const part = p => require('child_process').execFileSync('unzip', ['-p', wbFile, p], { maxBuffer: 64 * 1024 * 1024 }).toString('utf8');
+  const tabNames = [...part('xl/workbook.xml').matchAll(/<sheet name="([^"]+)"/g)].map(m => m[1]);
+  assert.deepEqual(tabNames, ['Read me', 'Daily totals', 'Per show', 'Reach', 'Feature clicks', 'Feature clicks per day',
+    'Archive episodes', 'Archive shows', 'Coverage', 'Columns']);
+  const TAB = { 'Daily totals': ['listening', 'daily'], 'Per show': ['listening', 'shows'], 'Reach': ['listening', 'reach'],
+    'Feature clicks': ['listening', 'features'], 'Feature clicks per day': ['listening', 'features_daily'],
+    'Archive episodes': ['inventory', 'episodes'], 'Archive shows': ['inventory', 'shows'], 'Coverage': ['coverage', 'shows'] };
+  for (const [name, [ds, tb]] of Object.entries(TAB)) {
+    const sheet = part(`xl/worksheets/sheet${tabNames.indexOf(name) + 1}.xml`);
+    const dsInfo = exportIndex.datasets.find(x => x.name === ds);
+    const q = ds === 'listening' ? `dataset=listening&${THIS}` : dsInfo.span ? `dataset=${ds}&from=${dsInfo.firstDate}&to=${dsInfo.today}` : `dataset=${ds}`;
+    const csv = parseCsv(await bytes(await get(`/api/studio/export?${q}&format=csv&table=${tb}`)));
+    assert.equal((sheet.match(/<row /g) || []).length - 1, csv.rows.length, `${name}: same rows as the ${ds}/${tb} CSV`);
+    const header = [...sheet.slice(0, sheet.indexOf('</row>')).matchAll(/<t xml:space="preserve">([^<]*)<\/t>/g)].map(m => m[1]);
+    assert.deepEqual(header, csv.head, `${name}: same columns`);
+  }
+  assert.match(part('xl/worksheets/sheet' + (tabNames.indexOf('Feature clicks per day') + 1) + '.xml'), /<v>2<\/v>/, 'the 2 song-list opens are in the workbook');
   const first = fs.readFileSync(path.join(zipDir, 'out', 'README-FIRST.txt'), 'utf8');
+  assert.match(first, /START HERE: kpfk-everything-/);
   assert.match(first, /Nothing in any of these files identifies a listener/);
   assert.ok(inside.every(n => n === 'README-FIRST.txt' || first.includes(n)), 'README-FIRST lists every file');
   const span = `${thisMonth}-01_${todayUtc}`;
