@@ -4060,6 +4060,17 @@ const server = http.createServer(async (req, res) => {
   const url = req.url || '/';
   const pathOnly = url.split('?')[0];
 
+  // Retired addresses (station `retiredHosts`, integration step 8, 2026-09-29): an old site's
+  // domain pointed at this app forwards every request to the same path on `siteUrl`, so old
+  // links and bookmarks keep working. Before anything else, for every method.
+  if (station && station.retiredHosts.length) {
+    const host = String(req.headers.host || '').toLowerCase().replace(/:\d+$/, '');
+    if (station.retiredHosts.includes(host)) {
+      res.writeHead(301, { Location: station.siteUrl + (url.startsWith('/') ? url : '/'), 'Cache-Control': 'public, max-age=3600', ...securityHeaders() });
+      return res.end();
+    }
+  }
+
   // The blanket GET/HEAD rule stays; POST is opened for the studio's two auth
   // routes and nothing else. A global `if (method === 'POST')` would be a much
   // larger change than this feature needs.

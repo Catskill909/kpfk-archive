@@ -94,6 +94,14 @@ test('real HTTP archive serves every episode of scheduled programs only, exact s
     throw new Error('Server not ready: ' + logs);
   }
   await boot();
+  // Step 8 (2026-09-29): the retired Discovery address forwards to the site, path and query kept;
+  // the app's own address still serves normally (checked first, so the redirect check means something).
+  const asHost = (host, p) => new Promise((resolve, reject) => http.get({ host: '127.0.0.1', port, path: p, headers: { host } },
+    r => { r.resume(); resolve({ status: r.statusCode, location: r.headers.location }); }).on('error', reject));
+  assert.equal((await asHost('127.0.0.1', '/')).status, 200, 'the app itself serves the page');
+  const moved = await asHost('kpfk-discovery.pacifica.audio', '/?q=jazz&scope=episodes');
+  assert.deepEqual(moved, { status: 301, location: 'https://podcasts.kpfk.org/?q=jazz&scope=episodes' });
+  assert.equal((await asHost('KPFK-Discovery.pacifica.audio:443', '/admin')).location, 'https://podcasts.kpfk.org/admin', 'any case, any port');
   const archive = await (await fetch(url + '/api/archive')).json();
   assert.equal(archive.count, expected.episodes); assert.equal(archive.shows.length, expected.episodes);
   assert.ok(archive.shows.every(r => r.archiveSource === 'kpfk' ? expected.altids.has(r.upstreamAltId) : expected.uploadAltids.has(r.upstreamAltId)), 'scheduled on-air programs and upload shows only');

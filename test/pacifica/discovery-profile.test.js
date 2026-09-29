@@ -53,3 +53,17 @@ test('episodeCorrections: mp3 file, real show key and a note are all required', 
 test('the show-type rule still applies alongside the Discovery settings', () => {
   assert.equal(validateProfile(raw()).showTypes['2kpfk.biketalk'], 'Talk');
 });
+
+test('siteUrl and retiredHosts (step 8): an https origin, and hostnames that are not the site itself', () => {
+  const p = validateProfile(raw());
+  assert.equal(p.siteUrl, 'https://podcasts.kpfk.org');
+  assert.deepEqual(p.retiredHosts, ['kpfk-discovery.pacifica.audio']);
+  for (const bad of ['http://podcasts.kpfk.org', 'https://podcasts.kpfk.org/path', 'podcasts.kpfk.org', 'https://u@podcasts.kpfk.org'])
+    assert.throws(() => validateProfile({ ...raw(), siteUrl: bad }), /siteUrl/, bad);
+  for (const bad of [['https://old.example'], ['podcasts.kpfk.org'], ['bad host'], 'x'])
+    assert.throws(() => validateProfile({ ...raw(), retiredHosts: bad }), /retired host|retiredHosts/, JSON.stringify(bad));
+  const { siteUrl, ...noSite } = raw();
+  assert.throws(() => validateProfile(noSite), /retiredHosts needs siteUrl/);
+  const { retiredHosts, ...none } = noSite;
+  assert.deepEqual(validateProfile(none).retiredHosts, []);
+});
