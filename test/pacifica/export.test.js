@@ -540,6 +540,13 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   assert.match(rep, /<h2>Program data gaps<\/h2>/); assert.match(rep, /<h2>What the archive aired<\/h2>/);
   const tile = (html, label) => Number(((html.match(new RegExp(`<div class="tile-value">([\\d,]+)</div><div class="tile-label">${label}</div>`)) || [])[1] || 'NaN').replace(/,/g, ''));
   const repAll = await (await get(`/studio/report?from=${inv.firstDate}&to=${todayUtc}`)).text();
+  // Feature use (2026-09-29): every feature, the same counts as the feature-clicks export for the span.
+  assert.match(repAll, /<h2>Feature use<\/h2>/);
+  const featAll = parseCsv(await bytes(await get(`/api/studio/export?dataset=listening&from=${inv.firstDate}&to=${todayUtc}&format=csv&table=features`)));
+  const repFeat = [...repAll.slice(repAll.indexOf('<h2>Feature use</h2>')).matchAll(/<tr><td>([^<]+)<\/td><td class="num">([\d,]+)<\/td><\/tr>/g)]
+    .slice(0, featAll.rows.length).map(m => [m[1].replace(/&quot;/g, '"'), m[2]]);
+  assert.deepEqual(repFeat, featAll.rows.map(r => [r.label, r.clicks]), 'report feature use = the feature-clicks CSV');
+  assert.ok(featAll.rows.some(r => r.clicks !== '0'), 'the comparison is not all zeros');
   const invAll = parseCsv(await bytes(await get(`/api/studio/export?dataset=inventory&from=${inv.firstDate}&to=${inv.today}&format=csv&table=episodes`)));
   assert.equal(tile(repAll, 'Episodes'), invAll.rows.length, 'report episodes = the Archive CSV');
   const covAll = parseCsv(await bytes(await get('/api/studio/export?dataset=coverage&format=csv')));
