@@ -15,6 +15,8 @@
    under the Discovery tab (2026-09-29), after four one-off `.x[hidden]` patches for the same
    thing. One rule for every element instead. */
 [hidden] { display: none !important; }
+/* Focus rings only for keyboard use (theme-boot.js sets data-input; see styles.css). */
+:root[data-input="pointer"] :focus-visible { outline: none !important; }
 
 .studio-body {
   margin: 0;

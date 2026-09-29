@@ -261,6 +261,9 @@
   }
 
   :focus-visible{outline:2px solid var(--accent-2); outline-offset:2px;}
+  /* Rings are for the keyboard: none after a tap or click (theme-boot.js sets data-input). The
+     page hands focus back to a sheet's opener, and Safari on iPhone drew the ring after a touch. */
+  :root[data-input="pointer"] :focus-visible{ outline:none !important; }
 
   /* ================= Touch base layer =================
      See docs/touch-dev.md. This block is the interaction baseline for coarse

@@ -103,3 +103,19 @@
 
   apply(stored());
 })();
+
+/* How the visitor is steering right now: data-input="pointer" (touch, mouse, pen) or
+ * "keyboard", on <html>. Focus rings are for keyboard users; the page moves focus itself in
+ * ~45 places (a closed sheet hands focus back to the button that opened it — right for the
+ * keyboard), and Safari on iPhone then drew the green ring after a finger tap (Paul,
+ * 2026-09-29). styles.css hides :focus-visible rings while data-input is "pointer"; the first
+ * key press (Tab, arrows, Enter…) brings them straight back. Loaded early so the first tap counts. */
+(function () {
+  var root = document.documentElement;
+  function set(mode) { if (root.getAttribute('data-input') !== mode) root.setAttribute('data-input', mode); }
+  document.addEventListener('pointerdown', function () { set('pointer'); }, true);
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;   // shortcuts are not navigation
+    set('keyboard');
+  }, true);
+})();
