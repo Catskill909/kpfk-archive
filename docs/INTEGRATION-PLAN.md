@@ -20,7 +20,7 @@ Started 2026-09-28. Owner: Paul. **Last updated: 2026-09-29.**
 | 4 | Discovery's sections on the main page | ✅ Done (4f 2026-09-29) | Yes |
 | 5 | Discovery admin as a studio tab | 🟡 5a done, 5b to do | 5a yes |
 | 6 | Stats for both sides in the studio | ✅ Done | Yes — Studio → Listening → Feature clicks |
-| 7 | Import / export cover everything | ⬜ Not started | — |
+| 7 | Import / export cover everything | 🟡 Reworked 2026-09-29 (backup lossless, stats .zip); full-restore rehearsal left | After redeploy |
 | 8 | Production release (retire the separate Discovery site) | ⬜ Not started | — |
 
 **Legend:** ✅ done · 🟡 in progress · ⬜ not started
@@ -249,3 +249,4 @@ same site, same stats).
 | 2026-09-28 | Popup tabs (Episode info / Show info); live-stream Transcript button fix; persistent player (no Close); floating player card; "Transcript processing". Checked what is left before closing the Discovery site (see "Start here tomorrow"). |
 | 2026-09-28 (late) | Step 6 stats; player no outline + bottom fade; Transcript button on/off look; LIVE badge; Discovery site forces visitors to podcasts.kpfk.org; Ace follow-up sent; status sections rewritten to match what is live. |
 | 2026-09-29 | Music 14-day limit and Alan Watts corrections on the archive list; old `/discover` page retired (4f). Redeployed and checked live. |
+| 2026-09-29 | Step 7: studio Import / Export reworked (two sections); backup now keeps feature clicks; stats .zip with feature-clicks table. |

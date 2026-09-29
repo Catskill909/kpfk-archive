@@ -17,9 +17,15 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 3. **2026-09-29 done and live (checked):** music 14-day limit, Alan Watts corrections, old `/discover`
    page retired (see "Done 2026-09-29" in [docs/INTEGRATION-PLAN.md](docs/INTEGRATION-PLAN.md)).
    Next: 7 → 8 → 5b. QIR (checked 2026-09-29): Ace has not fixed the 7 show keys or World Massive Sep 26 yet.
-4. **Parked:** desktop "Copy link" share button (so desktop shares count); Coolify SMTP and
+4. **Import / Export (2026-09-29, pushed, needs redeploy):** studio button renamed; two sections —
+   full backup / restore, and one-click stats .zip (daily, shows, reach, feature clicks). Fixed: the
+   backup had been dropping feature clicks (day fields now one list, `lib/usage-fields.js`). After the
+   redeploy: open Import / Export, Download stats, open the .zip. **Known, not from this change:**
+   `test/studio/layout-tests.js` self-test "with both defences removed the probe reports the overflow"
+   fails on 2026-09-28 code too (stale self-test; real layout checks pass).
+5. **Parked:** desktop "Copy link" share button (so desktop shares count); Coolify SMTP and
    "Instance's Domain" (invite links); queued Ace items in the Discovery HANDOFF (hold).
-5. **How Paul works:** short plain wrap-ups + "Paul — your action points"; copy-paste text on a
+6. **How Paul works:** short plain wrap-ups + "Paul — your action points"; copy-paste text on a
    page with Copy buttons; ask before opening a browser or touching his app on port 8081;
    announce every push. Paul was worn out at the end of 2026-09-28 — keep the start light.
 
