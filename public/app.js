@@ -1511,8 +1511,12 @@
     var infoBtn = document.getElementById('playerInfoBtn');
     function openForPlaying(){
       if(barMode === 'live'){ openLivePlayer(); return; }
-      // Phones with Now Playing on (public/now-playing.js; testers only until Paul switches it on).
-      if(window.NowPlaying && window.NowPlaying.active()){ window.NowPlaying.open(infoBtn); return; }
+      // Phones: Now Playing (public/now-playing.js).
+      // The mini player stays visible under Now Playing; tapping it again closes the sheet.
+      if(window.NowPlaying && window.NowPlaying.active()){
+        if(window.NowPlaying.isOpen()) window.NowPlaying.close(); else window.NowPlaying.open(infoBtn);
+        return;
+      }
       var r = nowPlaying.mp3 && rowByMp3(nowPlaying.mp3);
       if(r) openSheetById(r.id, infoBtn);
     }

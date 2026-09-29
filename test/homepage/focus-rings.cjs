@@ -13,7 +13,7 @@ const base = process.env.APP_URL || 'http://localhost:8081';
   const ring = `const a = document.activeElement, s = a && a !== document.body ? getComputedStyle(a) : null;
     return JSON.stringify({ el: a ? a.tagName + '#' + a.id + '.' + String(a.className).split(' ')[0] : null, outline: s ? s.outlineStyle : 'none', input: document.documentElement.getAttribute('data-input') });`;
   await p.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
-  await p.send('Page.navigate', { url: base + '/?np=off' });
+  await p.send('Page.navigate', { url: base + '/' });
   await until(`return document.querySelectorAll('.ja-play, #rows .play-btn').length > 0;`, 30000);
 
   // A show sheet opened and closed by taps.

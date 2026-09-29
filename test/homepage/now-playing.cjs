@@ -15,14 +15,10 @@ const base = process.env.APP_URL || 'http://localhost:8081';
   const shot = async f => { if (process.env.SHOTS) fs.writeFileSync(process.env.SHOTS + '/' + f, Buffer.from((await p.send('Page.captureScreenshot', { format: 'png' })).data, 'base64')); };
   await p.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
 
-  // 1. the tester switch
+  // 1. phone size: Now Playing is on for everyone (the ?np=on tester switch was removed)
   await p.send('Page.navigate', { url: base + '/' });
-  await until(`return document.readyState === 'complete';`);
-  await p.eval(`try{localStorage.clear()}catch(e){};return 1;`);
-  await p.send('Page.navigate', { url: base + '/?np=on' });
   await until(`return document.querySelectorAll('#rows .play-btn').length > 0;`, 30000);
-  check('?np=on turns it on for this browser, and the address is cleaned', await p.eval(`return localStorage.getItem('nowPlaying') === 'on' && !/np=/.test(location.search);`));
-  check('Now Playing is active at phone width', await p.eval(`return !!window.NowPlaying && NowPlaying.active();`));
+  check('Now Playing is active at phone width, with no special address', await p.eval(`return !!window.NowPlaying && NowPlaying.active();`));
 
   // 2. play something (a Just aired play button: the gallery's cards open shows on phones), tap the mini player
   const PLAY = await p.eval(`return document.querySelector('.ja-play') ? '.ja-play' : 'button.play-btn[data-mp3]';`);
@@ -50,6 +46,16 @@ const base = process.env.APP_URL || 'http://localhost:8081';
   check('no repeated headline: the big title is not the show name', np.title !== np.show, JSON.stringify(np));
   check('nothing runs off the phone screen', np.fits);
   await shot('np-1-open.png');
+  // Nothing covers the mini player (Paul): it is on screen, it is what a tap there hits, and it works.
+  const bar = await p.eval(`const b = document.getElementById('playerBar').getBoundingClientRect(), t = document.getElementById('playerToggle').getBoundingClientRect();
+    const hit = document.elementFromPoint(t.x + t.width / 2, t.y + t.height / 2), sheet = document.querySelector('#nowPlaying .np-sheet').getBoundingClientRect();
+    return JSON.stringify({ visible: b.height > 0 && b.bottom <= innerHeight + 1, hitsBar: !!hit && !!hit.closest('#playerBar'), sheetEndsAboveBar: sheet.bottom <= b.top + 1 });`);
+  const barState = JSON.parse(bar);
+  check('the mini player stays on screen, above everything, while Now Playing is open', barState.visible && barState.hitsBar && barState.sheetEndsAboveBar, bar);
+  await p.click('#playerToggle');
+  check('and its own play/pause works with the sheet open', await until(`return document.getElementById('mainAudio').paused;`, 3000));
+  await p.click('#playerToggle');
+  await until(`return !document.getElementById('mainAudio').paused;`, 8000);
 
   // 3. controls act on the one player
   const t0 = await p.eval(`return document.getElementById('mainAudio').currentTime;`);
@@ -73,18 +79,31 @@ const base = process.env.APP_URL || 'http://localhost:8081';
   check('the mini player is still there and playing', await p.eval(`return !document.getElementById('playerBar').hidden && !document.getElementById('mainAudio').paused;`));
   await p.click('#playerInfoBtn');
   await until(`return document.getElementById('nowPlaying').open;`, 3000);
+  await p.click('#playerInfoBtn');
+  check('tapping the mini player again closes Now Playing', await until(`return !document.getElementById('nowPlaying').open;`, 2000));
+  await p.click('#playerInfoBtn');
+  await until(`return document.getElementById('nowPlaying').open;`, 3000);
   await p.eval(`history.back(); return 1;`);
   check('the phone back button closes it (and does not leave the page)', await until(`return !document.getElementById('nowPlaying').open;`, 3000) && await p.eval(`return location.pathname === '/';`));
 
-  // 5. switch off: the old behaviour returns
-  await p.send('Page.navigate', { url: base + '/?np=off' });
-  await until(`return document.querySelectorAll('#rows .play-btn').length > 0;`, 30000);
-  check('?np=off turns it off', await p.eval(`return localStorage.getItem('nowPlaying') === null && !NowPlaying.active();`));
-  await p.click(PLAY);
-  await until(`return !document.getElementById('playerBar').hidden && document.getElementById('playerTitle').textContent.length > 1;`);
+  // 5. the show sheet on a phone reaches up to a thin gap (it used to leave a tall dark band)
+  await p.click('.ja-text, #rows .card-wrap .show-open, #rows .card-wrap');
+  await until(`return document.getElementById('showSheet').classList.contains('show');`, 4000);
+  await sleep(700);
+  const gap = await p.eval(`return Math.round(document.getElementById('showSheet').getBoundingClientRect().top);`);
+  check('the show sheet fills up to a thin gap at the top', gap >= 0 && gap <= 24, 'top at ' + gap + 'px');
+  await shot('np-3-show-sheet.png');
+  await p.click('#sheetClose');
+  await until(`return !document.getElementById('showSheet').classList.contains('show');`, 4000);
+
+  // 6. wide screens keep the old behaviour: the mini player opens the show sheet (and the probe
+  // can tell the two apart)
+  await p.send('Emulation.setDeviceMetricsOverride', { width: 1200, height: 900, deviceScaleFactor: 1, mobile: false });
+  await sleep(600);
+  check('wide screen: Now Playing is not active', await p.eval(`return !NowPlaying.active();`));
   await p.click('#playerInfoBtn');
-  check('off: tapping the mini player opens the show sheet, as before', await until(`return document.getElementById('showSheet').classList.contains('show');`, 3000)
-    && await p.eval(`return !document.getElementById('nowPlaying') || !document.getElementById('nowPlaying').open;`));
+  check('wide screen: the mini player opens the show sheet, as before', await until(`return document.getElementById('showSheet').classList.contains('show');`, 3000)
+    && await p.eval(`return !document.getElementById('nowPlaying').open;`));
 
   check('no page errors', errors.length === 0, errors.join(' | '));
   console.log(failed ? `\n${failed} failure(s)` : '\nOK — Now Playing checks passed');

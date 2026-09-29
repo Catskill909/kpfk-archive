@@ -2,25 +2,16 @@
  * player opens a full sheet: big artwork, the whole episode title, a large scrub bar, big ±15 and
  * play/pause, actions (Transcript/Songs, Show & episodes, Share) and "More from this show".
  * It has no audio of its own: everything goes through window.ArchiveApp.player (public/app.js),
- * so the bar, the lock screen and this sheet can never disagree.
+ * so the bar, the lock screen and this sheet can never disagree. It is non-modal and ends at the
+ * mini player's top edge: nothing ever covers the mini player (Paul, 2026-09-29).
  *
- * TESTERS ONLY until Paul switches it on for everyone: open the site once with ?np=on (this
- * browser remembers it; ?np=off forgets). Active on phones (up to 699 px wide, like Listen along).
+ * On for everyone on phones (up to 699 px wide, like Listen along).
  * The live stream keeps its own live player. */
 (function () {
   'use strict';
-  var KEY = 'nowPlaying';
   var PHONE = '(max-width: 699px)';
-  // ---- the tester switch (a per-browser convenience; storage may be blocked — then it is off)
-  function flag() { try { return localStorage.getItem(KEY) === 'on'; } catch (e) { return false; } }
-  (function readParam() {
-    var m = /[?&]np=(on|off)\b/.exec(location.search);
-    if (!m) return;
-    try { if (m[1] === 'on') localStorage.setItem(KEY, 'on'); else localStorage.removeItem(KEY); }
-    catch (e) { console.warn('[now-playing] could not remember the tester switch:', e.message); }
-    try { history.replaceState(history.state, '', location.pathname + location.search.replace(/([?&])np=(on|off)&?/, '$1').replace(/[?&]$/, '') + location.hash); }
-    catch (e) { /* the address keeps ?np=; harmless */ }
-  })();
+  // (The ?np=on tester switch was removed 2026-09-29 — Paul: on for everyone on phones.)
+  try { localStorage.removeItem('nowPlaying'); } catch (e) { /* storage blocked: nothing to tidy */ }
 
   var app = null, dlg = null, els = {}, pushed = false, seeking = false;
   function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; }
@@ -69,8 +60,9 @@
     els.img.addEventListener('error', function () { els.img.removeAttribute('src'); dlg.querySelector('.np-art').classList.add('is-empty'); });
 
     els.close.addEventListener('click', close);
-    dlg.addEventListener('cancel', function (e) { e.preventDefault(); close(); });   // Esc
-    dlg.addEventListener('click', function (e) { if (e.target === dlg) close(); });    // the dimmed area
+    // Non-modal (the mini player below must stay usable), so Esc is ours to handle.
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && dlg.open) { e.preventDefault(); close(); } });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) close(); });    // the dimmed strip above
     els.toggle.addEventListener('click', function () { app.player.toggle(); });
     dlg.querySelectorAll('.np-skip').forEach(function (b) { b.addEventListener('click', function () { app.player.skip(Number(b.dataset.skip)); }); });
     els.range.addEventListener('input', function () { seeking = true; els.cur.textContent = app.player.formatTime(Number(els.range.value)); });
@@ -193,7 +185,7 @@
   function open(trigger) {
     if (!app || !app.player.current()) return;
     if (!dlg) build();
-    dlg.showModal();          // open first: paintTime/paintState only paint an open sheet
+    dlg.show();               // non-modal: the mini player stays usable. Open first: paint* only paint an open sheet
     paint();
     dlg.classList.add('is-open');
     els.scroll.scrollTop = 0;
@@ -216,7 +208,7 @@
   function closeThen(fn) { close(); setTimeout(fn, 60); }
 
   window.NowPlaying = {
-    active: function () { return !!app && flag() && matchMedia(PHONE).matches; },
+    active: function () { return !!app && matchMedia(PHONE).matches; },
     open: open,
     close: close,
     isOpen: function () { return !!(dlg && dlg.open); },

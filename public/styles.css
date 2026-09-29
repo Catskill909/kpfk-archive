@@ -33,7 +33,7 @@
        donate modal so all three sit at exactly the same height — they swap
        places often enough that any difference reads as a jump. Not
        theme-dependent, so declared once. */
-    --phone-sheet-gap: 2.25rem;
+    --phone-sheet-gap: .75rem;   /* thin strip above phone sheets: reads as a sheet, wastes nothing (Paul, 2026-09-29) */
     --phone-sheet-radius: 20px;
     /* ---- overlay motion ----
        Every dialog in here (info sheet, live player, donate, schedule, on-air
@@ -3873,6 +3873,10 @@
     body.has-player .sheet{
       max-height:calc(100dvh - var(--player-h, 0px) - max(var(--phone-sheet-gap), env(safe-area-inset-top,0px)));
     }
+    /* The show sheet fills up to the thin gap instead of sizing to its content, which left a
+       tall dark band above it on short episodes (Paul, 2026-09-29). */
+    .sheet{ height:calc(100dvh - max(var(--phone-sheet-gap), env(safe-area-inset-top,0px))); }
+    body.has-player .sheet{ height:calc(100dvh - var(--player-h, 0px) - max(var(--phone-sheet-gap), env(safe-area-inset-top,0px))); }
     body.has-player .lp-info{ max-height:calc(82dvh - var(--player-h, 0px)); }
     /* The bar now sits under the sheet's last row instead of behind it, so the
        footer no longer needs the home-indicator inset twice. */
@@ -4194,13 +4198,16 @@
   /* ---- Now Playing (phones; public/now-playing.js, 2026-09-29). The mini player's full-size
      form: a sheet up from the bottom, big artwork, the whole title, a large scrub bar and big
      controls. A native <dialog>: focus stays inside, Esc and the phone's back button close it. */
+  /* Non-modal, and it ends at the mini player's top edge: nothing ever covers the mini player
+     (Paul, 2026-09-29) — the bar stays above every layer (z-index 310) and keeps taking taps. */
   .np{
-    position:fixed; inset:0; width:100%; height:100%; max-width:none; max-height:none; margin:0; padding:0;
-    border:0; background:transparent; color:var(--ink); overflow:hidden;
+    position:fixed; inset:0 0 var(--player-h, 0px) 0; z-index:290; width:100%; height:auto; max-width:none; max-height:none;
+    margin:0; padding:0; border:0; color:var(--ink); overflow:hidden;
+    background:color-mix(in srgb, #000 55%, transparent);
   }
-  .np::backdrop{ background:rgba(0,0,0,.55); }
+  .np:not([open]){ display:none; }
   .np-sheet{
-    position:absolute; left:0; right:0; bottom:0; height:calc(100dvh - max(env(safe-area-inset-top), 12px));
+    position:absolute; left:0; right:0; bottom:0; height:calc(100% - max(var(--phone-sheet-gap), env(safe-area-inset-top,0px)));
     display:flex; flex-direction:column; border-radius:20px 20px 0 0;
     background:var(--surface-1); box-shadow:var(--elev-2);
     transform:translateY(0); transition:transform .28s cubic-bezier(.2,.8,.2,1);
@@ -4217,7 +4224,7 @@
   .np-close:focus-visible, .np-toggle:focus-visible, .np-skip:focus-visible, .np-action:focus-visible, .np-ep:focus-visible{
     outline:2px solid var(--accent-2); outline-offset:3px;
   }
-  .np-scroll{ flex:1; overflow-y:auto; overscroll-behavior:contain; padding:0 22px calc(24px + env(safe-area-inset-bottom)); display:flex; flex-direction:column; gap:18px; }
+  .np-scroll{ flex:1; overflow-y:auto; overscroll-behavior:contain; padding:0 22px 24px; display:flex; flex-direction:column; gap:18px; }
   /* The column scrolls; its children keep their size (the artwork was squashed to a strip). */
   .np-scroll > *{ flex:none; }
   .np-art{
