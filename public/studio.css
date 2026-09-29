@@ -1292,20 +1292,59 @@ th[aria-sort="ascending"] .th-sort::after { content: "\25B2"; }    /* ▲ */
 .studio-dialog-actions { display: flex; justify-content: flex-end; gap: .6rem; flex-wrap: wrap; }
 .studio-dialog-confirm { background: var(--accent); border-color: var(--accent); color: var(--accent-ink, #fff); }
 
-/* ---- Station & appearance form (station template slice 1, 2026-09-29). Compact (Paul's
-   popup-density rule): three short fields on a row, links and socials in two columns. */
-.st-form { display: grid; gap: 1.25rem; }
-.st-group { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: .6rem; }
-.st-legend { margin: 0 0 .25rem; padding: 0; font-size: 1rem; font-weight: 600; color: var(--ink); }
-.st-row3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: .75rem; }
-.st-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); gap: .6rem 1rem; }
-.st-logo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
-.st-logo { height: 48px; width: auto; max-width: 14rem; object-fit: contain; padding: .4rem; border-radius: 8px; background: var(--surface-2); }
+/* ---- Station & appearance (station template, 2026-09-29; redesigned the same day). A summary
+   that reads like the site, one edit panel per part, a bar for unpublished changes. */
+.st-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.st-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr)); gap: 1rem; margin-top: 1rem; }
+.st-card { min-width: 0; padding: 1rem 1.1rem; border: 1px solid var(--outline); border-radius: 14px; background: var(--surface-2); display: grid; gap: .75rem; align-content: start; }
+.st-card-head { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+.st-card-title { margin: 0; font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); }
+.st-edit { min-height: 2.25rem; padding-inline: .9rem; }
+.st-identity { display: flex; align-items: center; gap: 1rem; min-width: 0; }
+.st-logo { height: 44px; width: auto; max-width: 9rem; object-fit: contain; padding: .35rem; border-radius: 8px; background: var(--surface-1); }
+.st-name { margin: 0; font-size: 1.15rem; font-weight: 700; color: var(--ink); overflow-wrap: anywhere; }
+.st-sub { margin: .15rem 0 0; color: var(--ink-dim); font-size: .92rem; }
+.st-rows { list-style: none; margin: 0; padding: 0; display: grid; }
+.st-row { display: grid; grid-template-columns: minmax(0, 9.5rem) minmax(0, 1fr); align-items: baseline; gap: .75rem; padding: .4rem 0; border-top: 1px solid var(--outline); font-size: .9rem; min-width: 0; }
+.st-empty { display: block; }
+.st-row:first-child { border-top: 0; }
+.st-row-label { min-width: 0; color: var(--ink); overflow-wrap: anywhere; }
+.st-row-value { min-width: 0; color: var(--ink-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.st-removed { font-style: italic; }
+.st-empty { color: var(--ink-faint); }
+/* An unpublished change: a small accent dot, so the draft reads at a glance. */
+.st-row.is-changed .st-row-label::after, .st-name.is-changed::after, .st-sub.is-changed::after {
+  content: ""; display: inline-block; width: .45rem; height: .45rem; margin-left: .45rem; border-radius: 50%; background: var(--accent); vertical-align: middle;
+}
+.st-logo.is-changed { outline: 2px solid var(--accent); outline-offset: 2px; }
+.st-fixed { margin: 1rem 0 0; font-size: .82rem; color: var(--ink-faint); }
+/* Unpublished changes: pinned to the bottom of the screen while there are any. */
+.st-bar { position: sticky; bottom: 1rem; z-index: 5; margin-top: 1rem; display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+  padding: .75rem 1rem; border: 1px solid var(--outline-strong); border-radius: 14px; background: var(--surface-1); box-shadow: var(--elev-2); }
+.st-bar-text { flex: 1 1 12rem; font-weight: 600; color: var(--ink); }
+
+/* The edit panel (reuses the Import / Export dialog frame). */
+.st-dialog { width: min(34rem, calc(100vw - 2rem)); }
+.st-dialog-form { display: grid; gap: 1.25rem; padding: 1.5rem 1.5rem 0; }
+.st-dialog-body { display: grid; gap: .9rem; }
+.st-dialog .export-foot { margin: 0 -1.5rem; padding: 1rem 1.5rem 1.25rem; }
+.st-row3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .75rem; }
+.st-sub-head { margin: .25rem 0 0; font-size: .95rem; font-weight: 600; color: var(--ink); }
+.st-logo-edit { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem; }
+.st-edit-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+.st-edit-row { display: flex; align-items: flex-end; gap: .5rem; }
+.st-edit-row .studio-field { flex: 1; min-width: 0; }
+.st-remove { flex: none; width: 2.5rem; height: 2.5rem; border: 1px solid var(--outline); border-radius: 999px; background: none; color: var(--ink-dim); font-size: 1.25rem; line-height: 1; cursor: pointer; }
+.st-remove:hover { background: var(--surface-3); color: var(--ink); }
+.st-remove:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.st-add { max-width: 16rem; }
 .st-hint { margin: 0; font-size: .85rem; line-height: 1.45; color: var(--ink-dim); }
-.st-hint:empty { display: none; }
-.st-review { padding: .9rem 1rem; border: 1px solid var(--outline); border-radius: 10px; background: var(--surface-2); }
-.st-changes { margin: 0; padding-left: 1.1rem; display: grid; gap: .25rem; font-size: .92rem; overflow-wrap: anywhere; }
-.st-profile-head { margin-top: 1.5rem; }
+.st-changes { margin: 0; padding-left: 1.1rem; display: grid; gap: .3rem; font-size: .95rem; color: var(--ink); overflow-wrap: anywhere; }
+@media (max-width: 480px) {
+  .st-dialog-form { padding: 1.1rem 1.1rem 0; }
+  .st-dialog .export-foot { margin: 0 -1.1rem; padding: .85rem 1.1rem 1.1rem; }
+  .st-row { grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr); }
+}
 
 /* Phone header: "Import / Export" became two cramped lines; keep the icon, hide the words
    (the button keeps its name through aria-label). */

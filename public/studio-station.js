@@ -1,29 +1,27 @@
-/* Studio: Station & appearance (station template, slice 1 — step 5b, 2026-09-29).
- * Name, frequency, city, logo, side-menu links and social accounts, edited by anyone signed in
- * to the studio. The form sends the edits as differences from the station profile; the server
- * validates them exactly like the profile file (lib/station-overrides.js). Preview is required
- * before Apply; Undo puts the last change back. Kept apart from studio.js and
- * studio-discovery.js so none can break the others. In-app dialogs only (StudioDialog). */
+/* Studio: Station & appearance (station template, step 5b, 2026-09-29).
+ * A summary that reads like the site (Station, Side-menu links, Social accounts), one focused edit
+ * panel per part, and a bar that collects changes until Review & publish (Paul: stacked forms were
+ * "jarring and busy"). Edits are a local draft until published; the server checks every edit
+ * exactly like the station's install settings (lib/station-overrides.js). Undo last publish puts
+ * the previous version back. Anyone signed in to the studio may edit. In-app dialogs only. */
 (function () {
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
-  var section = $('stationSection'), tabs = $('studioTabs');
-  if (!section || !tabs) return;
-  var state = null, csrf = null, busy = false, pendingLogo = null, previewed = null;
+  var section = $('stationSection'), tabs = $('studioTabs'), dlg = $('stDialog');
+  if (!section || !tabs || !dlg || typeof dlg.showModal !== 'function') return;
+  var state = null, draft = null, csrf = null, busy = false, onDone = null;
 
   var LINK_LABELS = { website: 'Station website', archive: 'Original archive', donate: 'Donate', privacy: 'Privacy policy',
     schedule: 'Schedule page', programs: 'Programs A–Z', androidApp: 'Android app', appleApp: 'Apple app', about: 'About',
     mission: 'Mission', pacifica: 'Pacifica Foundation', news: 'News', volunteer: 'Volunteer', contact: 'Contact' };
   var SOCIAL_LABELS = { x: 'X', facebook: 'Facebook', instagram: 'Instagram', youtube: 'YouTube', linkedin: 'LinkedIn', bluesky: 'Bluesky' };
+  var REQUIRED = { website: true, archive: true };   // the site needs these two links
   var TEXT = { name: 'Name', frequency: 'Frequency', city: 'City' };
 
-  function el(tag, cls, text) {
-    var n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text !== undefined) n.textContent = text;
-    return n;
-  }
-  function say(text, kind) { $('stStatus').textContent = text; $('stStatus').className = 'export-status' + (kind ? ' is-' + kind : ''); }
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; }
+  function copy(o) { return JSON.parse(JSON.stringify(o)); }
+  function say(node, text, kind) { node.textContent = text; node.className = 'export-status' + (kind ? ' is-' + kind : ''); }
+  function shortUrl(u) { return String(u || '').replace(/^https:\/\//, '').replace(/\/$/, ''); }
   function withCsrf() {
     if (csrf) return Promise.resolve(csrf);
     return fetch('/api/studio/health', { headers: { Accept: 'application/json' } })
@@ -32,164 +30,257 @@
   }
   function post(path, body, type) {
     return withCsrf().then(function (token) {
-      return fetch('/api/studio/station/' + path, { method: 'POST', body: body,
-        headers: { 'Content-Type': type || 'application/json', 'X-Studio-CSRF': token } });
+      return fetch('/api/studio/station/' + path, { method: 'POST', body: body, headers: { 'Content-Type': type || 'application/json', 'X-Studio-CSRF': token } });
     }).then(function (r) {
       if (r.status === 401) { location.replace('/studio'); throw new Error('Your studio session has ended.'); }
-      return r.json().then(function (d) { d.httpStatus = r.status; return d; });
+      return r.json();
     });
   }
 
-  // ---- form <-> values
-  function fieldGrid(box, group, keys, labels) {
-    box.textContent = '';
-    keys.forEach(function (k) {
-      var l = el('label', 'studio-field');
-      l.appendChild(el('span', 'studio-field-label', labels[k] || k));
-      var i = el('input', 'studio-input');
-      i.type = 'url'; i.id = 'st-' + group + '-' + k; i.setAttribute('data-group', group); i.setAttribute('data-key', k);
-      i.placeholder = 'https://…'; i.autocomplete = 'off';
-      l.appendChild(i);
-      box.appendChild(l);
-    });
-  }
-  function fill(cur) {
-    Object.keys(TEXT).forEach(function (k) { $('st' + k.charAt(0).toUpperCase() + k.slice(1)).value = cur[k] || ''; });
-    ['links', 'social'].forEach(function (g) {
-      state.keys[g].forEach(function (k) { $('st-' + g + '-' + k).value = (cur[g] && cur[g][k]) || ''; });
-    });
-    pendingLogo = null;
-    $('stLogo').src = cur.logo;
-  }
-  function logoNow() { return pendingLogo || state.current.logo; }
-  /** The edits as differences from the station PROFILE (not from the current edits): the
-   *  server keeps only these, so a field put back to the profile's value stops being an edit. */
+  // ---- the draft, against what is published (state.current) and the install settings (state.profile)
+  /** Edits as differences from the install settings: the server keeps only these. */
   function edits() {
     var p = state.profile, out = {};
-    Object.keys(TEXT).forEach(function (k) {
-      var v = $('st' + k.charAt(0).toUpperCase() + k.slice(1)).value.trim();
-      if (v !== p[k]) out[k] = v;
-    });
+    Object.keys(TEXT).forEach(function (k) { if (draft[k] !== p[k]) out[k] = draft[k]; });
     ['links', 'social'].forEach(function (g) {
       var d = {};
-      state.keys[g].forEach(function (k) {
-        var v = $('st-' + g + '-' + k).value.trim();
-        if (v !== ((p[g] && p[g][k]) || '')) d[k] = v;
-      });
+      state.keys[g].forEach(function (k) { var v = draft[g][k] || '', was = (p[g] && p[g][k]) || ''; if (v !== was) d[k] = v; });
       if (Object.keys(d).length) out[g] = d;
     });
-    if (logoNow() !== p.logo) out.logo = logoNow();
+    if (draft.logo !== p.logo) out.logo = draft.logo;
     return out;
   }
-  /** What applying would change on the listener site, compared with what it shows now. */
+  /** What publishing would change on the site, in words. */
   function changes() {
     var c = state.current, list = [];
-    Object.keys(TEXT).forEach(function (k) {
-      var v = $('st' + k.charAt(0).toUpperCase() + k.slice(1)).value.trim();
-      if (v !== c[k]) list.push(TEXT[k] + ': “' + c[k] + '” → “' + v + '”');
-    });
+    Object.keys(TEXT).forEach(function (k) { if (draft[k] !== c[k]) list.push(TEXT[k] + ': “' + c[k] + '” → “' + draft[k] + '”'); });
     [['links', LINK_LABELS, ' link'], ['social', SOCIAL_LABELS, '']].forEach(function (g) {
       state.keys[g[0]].forEach(function (k) {
-        var was = (c[g[0]] && c[g[0]][k]) || '', now = $('st-' + g[0] + '-' + k).value.trim(), name = (g[1][k] || k) + g[2];
-        if (was === now) return;
-        list.push(!now ? name + ': removed' : !was ? name + ': added (' + now + ')' : name + ': ' + was + ' → ' + now);
+        var was = c[g[0]][k] || '', now = draft[g[0]][k] || '', name = (g[1][k] || k) + g[2];
+        if (was !== now) list.push(!now ? name + ': removed' : !was ? name + ': added' : name + ': changed');
       });
     });
-    if (logoNow() !== c.logo) list.push(logoNow() === state.profile.logo ? 'Logo: back to the profile’s logo' : 'Logo: the newly uploaded image');
+    if (draft.logo !== c.logo) list.push(draft.logo === state.profile.logo ? 'Logo: back to the original' : 'Logo: new image');
     return list;
   }
-  function dirty() { previewed = null; $('stApply').disabled = true; $('stReview').hidden = true; }
 
+  // ---- the summary cards
+  function rows(box, group, labels) {
+    box.textContent = '';
+    var cur = state.current[group];
+    state.keys[group].forEach(function (k) {
+      var v = draft[group][k] || '', was = cur[k] || '';
+      if (!v && !was) return;
+      var li = el('li', 'st-row' + (v !== was ? ' is-changed' : ''));
+      li.appendChild(el('span', 'st-row-label', labels[k] || k));
+      li.appendChild(v ? el('span', 'st-row-value', shortUrl(v)) : el('span', 'st-row-value st-removed', 'Removed'));
+      box.appendChild(li);
+    });
+    if (!box.children.length) box.appendChild(el('li', 'st-row st-empty', 'None yet'));
+  }
+  function render() {
+    $('stLogoView').src = draft.logo;
+    $('stNameView').textContent = draft.name;
+    $('stSubView').textContent = draft.frequency + ' · ' + draft.city;
+    $('stNameView').classList.toggle('is-changed', draft.name !== state.current.name);
+    $('stSubView').classList.toggle('is-changed', draft.frequency !== state.current.frequency || draft.city !== state.current.city);
+    $('stLogoView').classList.toggle('is-changed', draft.logo !== state.current.logo);
+    rows($('stLinksView'), 'links', LINK_LABELS);
+    rows($('stSocialView'), 'social', SOCIAL_LABELS);
+    var n = changes().length;
+    $('stBar').hidden = !n;
+    $('stBarText').textContent = n === 1 ? '1 change not yet on the site' : n + ' changes not yet on the site';
+    $('stUndo').hidden = !state.history.length;
+  }
   function paint(d) {
     state = d;
+    draft = copy(d.current);
     tabs.querySelector('[data-studio-tab="discovery"]').hidden = false;
     section.hidden = false;
-    fieldGrid($('stLinks'), 'links', d.keys.links, LINK_LABELS);
-    fieldGrid($('stSocial'), 'social', d.keys.social, SOCIAL_LABELS);
-    fill(d.current);
-    dirty();
-    $('stUndo').disabled = !d.history.length;
-    $('stWhen').textContent = (Object.keys(d.edits).length ? 'Edited here: ' + Object.keys(d.edits).map(function (k) { return TEXT[k] || (k === 'links' ? 'links' : k === 'social' ? 'social accounts' : k); }).join(', ')
-      + (d.updatedAt ? ' · last change ' + new Date(d.updatedAt).toLocaleString() : '') : 'No edits yet: everything comes from the station profile file.')
-      + (d.bootError ? ' · The saved edits are not valid with the current profile and are not in use: ' + d.bootError : '');
-    var f = d.fixed || {}, facts = el('dl', 'disc-facts');
-    [['Time zone', f.timezone], ['Data source', f.provider]].concat(Object.keys(f.feeds || {}).map(function (k) { return ['Feed: ' + k, f.feeds[k]]; }))
-      .forEach(function (r) { facts.appendChild(el('dt', '', r[0])); facts.appendChild(el('dd', '', r[1] || '')); });
-    $('discStation').textContent = '';
-    $('discStation').appendChild(facts);
+    var f = d.fixed || {}, hosts = Object.keys(f.feeds || {}).map(function (k) { try { return new URL(f.feeds[k]).host; } catch (e) { return ''; } })
+      .filter(function (h, i, a) { return h && a.indexOf(h) === i; });
+    $('stFixed').textContent = 'Set when the site was installed: time zone ' + (f.timezone || '?') + ' · programme data from ' + (hosts.join(', ') || 'Pacifica') + '.'
+      + (d.bootError ? ' Saved changes are not in use because they no longer fit these settings: ' + d.bootError : '');
+    render();
   }
   function load() {
     return fetch('/api/studio/station', { headers: { Accept: 'application/json' } })
       .then(function (r) { if (r.status === 401) { location.replace('/studio'); return null; } return r.json(); })
       .then(function (d) { if (d && d.available) paint(d); })
-      .catch(function (e) { console.error('[studio] station settings failed:', e); say('Could not load the station settings: ' + e.message, 'bad'); });
+      .catch(function (e) { console.error('[studio] station settings failed:', e); say($('stStatus'), 'Could not load the station settings: ' + e.message, 'bad'); });
   }
 
-  // ---- actions
-  $('stForm').addEventListener('input', function (e) { if (e.target.id !== 'stLogoFile') { dirty(); say(''); } });
-  $('stPreview').addEventListener('click', function () {
-    if (busy || !state) return;
-    var list = changes();
-    if (!list.length) { dirty(); say('Nothing has changed.'); return; }
-    busy = true; say('Checking…');
-    var body = edits();
+  // ---- the edit panel (one native <dialog>, filled per part)
+  function field(label, value, attrs) {
+    var l = el('label', 'studio-field');
+    l.appendChild(el('span', 'studio-field-label', label));
+    var i = el('input', 'studio-input');
+    i.value = value || ''; i.autocomplete = 'off';
+    Object.keys(attrs || {}).forEach(function (k) { i.setAttribute(k, attrs[k]); });
+    l.appendChild(i);
+    return { label: l, input: i };
+  }
+  function open(title, okLabel, build, done) {
+    $('stDialogTitle').textContent = title;
+    $('stDialogOk').textContent = okLabel;
+    $('stDialogOk').disabled = false;
+    say($('stDialogStatus'), '');
+    $('stDialogBody').textContent = '';
+    build($('stDialogBody'));
+    onDone = done;
+    dlg.showModal();
+    var first = $('stDialogBody').querySelector('input, select');
+    if (first) first.focus();
+  }
+  function close() { if (dlg.open) dlg.close(); onDone = null; }
+
+  function stationPanel() {
+    var f = {}, logo = draft.logo;
+    open('Station', 'Done', function (body) {
+      var row = el('div', 'st-row3');
+      Object.keys(TEXT).forEach(function (k) { f[k] = field(TEXT[k], draft[k], { maxlength: '80', 'data-field': k }); row.appendChild(f[k].label); });
+      body.appendChild(row);
+      body.appendChild(el('h3', 'st-sub-head', 'Logo'));
+      var lg = el('div', 'st-logo-edit');
+      var img = el('img', 'st-logo'); img.src = logo; img.alt = 'Logo';
+      var up = el('label', 'export-file');
+      var file = el('input'); file.type = 'file'; file.accept = 'image/png,image/jpeg,image/webp'; file.id = 'stLogoFile';
+      up.appendChild(file); up.appendChild(el('span', 'studio-btn', 'Upload a new logo…'));
+      var reset = el('button', 'export-link', 'Use the original logo'); reset.type = 'button';
+      reset.hidden = logo === state.profile.logo;
+      lg.appendChild(img); lg.appendChild(up); lg.appendChild(reset);
+      body.appendChild(lg);
+      body.appendChild(el('p', 'st-hint', 'PNG, JPEG or WebP, up to 1 MB. Shown in the site’s header.'));
+      file.addEventListener('change', function () {
+        var fl = file.files && file.files[0];
+        if (!fl) return;
+        if (fl.size > state.logoMaxBytes) { say($('stDialogStatus'), 'That image is larger than ' + Math.round(state.logoMaxBytes / 1024) + ' KB.', 'bad'); file.value = ''; return; }
+        say($('stDialogStatus'), 'Uploading…');
+        post('logo', fl, fl.type || 'application/octet-stream').then(function (d) {
+          file.value = '';
+          if (!d.ok) { say($('stDialogStatus'), 'Not accepted: ' + (d.errors || [d.error]).join(' '), 'bad'); return; }
+          logo = d.logo; img.src = logo; reset.hidden = logo === state.profile.logo;
+          say($('stDialogStatus'), 'Uploaded.', 'ok');
+        }).catch(function (e) { file.value = ''; console.error('[studio] logo upload failed:', e); say($('stDialogStatus'), e.message, 'bad'); });
+      });
+      reset.addEventListener('click', function () { logo = state.profile.logo; img.src = logo; reset.hidden = true; });
+    }, function () {
+      for (var k in f) {
+        var v = f[k].input.value.trim();
+        if (!v) { say($('stDialogStatus'), TEXT[k] + ' cannot be empty.', 'bad'); f[k].input.focus(); return false; }
+      }
+      for (var j in f) draft[j] = f[j].input.value.trim();
+      draft.logo = logo;
+      return true;
+    });
+  }
+  /** Links / social: the ones in use, each editable and removable, and "Add…" for the rest.
+   *  A row shows while its key is in `work`; Add puts a key in, × takes it out. */
+  function listPanel(group, title, labels, addText) {
+    var work = copy(draft[group]), list, add;
+    function paintList(focusKey) {
+      list.textContent = '';
+      state.keys[group].forEach(function (k) {
+        if (!(k in work)) return;
+        var li = el('li', 'st-edit-row');
+        var f = field(labels[k] || k, work[k], { type: 'url', placeholder: 'https://…', 'data-key': k });
+        f.input.addEventListener('input', function () { work[k] = f.input.value.trim(); });
+        li.appendChild(f.label);
+        if (!(group === 'links' && REQUIRED[k])) {
+          var rm = el('button', 'st-remove', '×'); rm.type = 'button';
+          rm.setAttribute('aria-label', 'Remove ' + (labels[k] || k));
+          rm.addEventListener('click', function () { delete work[k]; paintList(); });
+          li.appendChild(rm);
+        }
+        list.appendChild(li);
+        if (k === focusKey) setTimeout(function () { f.input.focus(); }, 0);
+      });
+      add.textContent = '';
+      var none = el('option', '', addText); none.value = ''; add.appendChild(none);
+      state.keys[group].forEach(function (k) { if (!(k in work)) { var o = el('option', '', labels[k] || k); o.value = k; add.appendChild(o); } });
+      add.hidden = add.options.length < 2;
+    }
+    open(title, 'Done', function (body) {
+      list = el('ul', 'st-edit-list');
+      add = el('select', 'studio-input st-add'); add.setAttribute('aria-label', addText);
+      add.addEventListener('change', function () { var k = add.value; if (k) { work[k] = ''; paintList(k); } });
+      body.appendChild(list);
+      body.appendChild(add);
+      body.appendChild(el('p', 'st-hint', 'Every link starts with https://.' + (group === 'links' ? ' The station website and archive links are required.' : '')));
+      paintList();
+    }, function () {
+      var out = {};
+      for (var k in work) if (work[k]) out[k] = work[k];
+      for (var j in out) if (!/^https:\/\/\S+$/.test(out[j])) { say($('stDialogStatus'), (labels[j] || j) + ': must start with https://', 'bad'); return false; }
+      if (group === 'links' && (!out.website || !out.archive)) { say($('stDialogStatus'), 'The station website and archive links are required.', 'bad'); return false; }
+      draft[group] = out;
+      return true;
+    });
+  }
+  function review() {
+    var list = changes(), body = edits();
+    if (!list.length) return;
+    open('Review & publish', 'Publish', function (b) {
+      b.appendChild(el('p', 'st-hint', 'These go on the listener site as soon as you publish. Pages already open show them after a reload.'));
+      var ul = el('ul', 'st-changes');
+      list.forEach(function (t) { ul.appendChild(el('li', '', t)); });
+      b.appendChild(ul);
+    }, function () {
+      busy = true; $('stDialogOk').disabled = true; say($('stDialogStatus'), 'Publishing…');
+      post('apply', JSON.stringify(body)).then(function (d) {
+        busy = false;
+        if (!d.ok) { $('stDialogOk').disabled = false; say($('stDialogStatus'), 'Not published: ' + (d.errors || [d.error]).join(' '), 'bad'); return; }
+        close(); paint(d);
+        say($('stStatus'), 'Published. Reload the listener site to see it.', 'ok');
+      }).catch(function (e) { busy = false; $('stDialogOk').disabled = false; console.error('[studio] publish failed:', e); say($('stDialogStatus'), e.message, 'bad'); });
+      return 'wait';
+    });
+    // Ask the server first: a change the site would refuse never gets a Publish button.
+    $('stDialogOk').disabled = true;
+    say($('stDialogStatus'), 'Checking…');
     post('preview', JSON.stringify(body)).then(function (d) {
-      busy = false;
-      if (!d.ok) { dirty(); say('Not valid: ' + (d.errors || [d.error]).join(' '), 'bad'); return; }
-      previewed = JSON.stringify(body);
-      $('stChanges').textContent = '';
-      list.forEach(function (t) { $('stChanges').appendChild(el('li', '', t)); });
-      $('stReview').hidden = false;
-      $('stApply').disabled = false;
-      say('Looks good. Apply to put ' + (list.length === 1 ? 'this change' : 'these ' + list.length + ' changes') + ' on the listener site.', 'ok');
-    }).catch(function (e) { busy = false; console.error('[studio] station preview failed:', e); say(e.message, 'bad'); });
+      if (!d.ok) { say($('stDialogStatus'), 'Cannot publish: ' + (d.errors || [d.error]).join(' '), 'bad'); return; }
+      $('stDialogOk').disabled = false; say($('stDialogStatus'), '');
+    }).catch(function (e) { console.error('[studio] preview failed:', e); say($('stDialogStatus'), e.message, 'bad'); });
+  }
+
+  // ---- wiring
+  section.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-edit]');
+    if (!b || !state || busy) return;
+    var part = b.getAttribute('data-edit');
+    if (part === 'station') stationPanel();
+    else if (part === 'links') listPanel('links', 'Side-menu links', LINK_LABELS, 'Add a link…');
+    else if (part === 'social') listPanel('social', 'Social accounts', SOCIAL_LABELS, 'Add an account…');
   });
-  $('stApply').addEventListener('click', function () {
-    if (busy || !previewed || previewed !== JSON.stringify(edits())) { dirty(); return; }
-    window.StudioDialog.confirm({ title: 'Apply to the listener site?', confirmLabel: 'Apply',
-      message: 'Listeners see this as soon as their page reloads. You can undo it here afterwards.' })
-      .then(function (ok) {
-        if (!ok) return;
-        busy = true; say('Applying…');
-        return post('apply', previewed).then(function (d) {
-          busy = false;
-          if (!d.ok) { say('Not applied: ' + (d.errors || [d.error]).join(' '), 'bad'); return; }
-          paint(d);
-          say('Applied. Reload the listener site to see it.', 'ok');
-        });
-      }).catch(function (e) { busy = false; console.error('[studio] station apply failed:', e); say(e.message, 'bad'); });
+  $('stDialogForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!onDone) { close(); return; }
+    var r = onDone();
+    if (r === 'wait') return;
+    if (r !== false) { close(); render(); say($('stStatus'), ''); }
+  });
+  $('stDialogCancel').addEventListener('click', close);
+  $('stDialogClose').addEventListener('click', close);
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) close(); });
+  $('stReview').addEventListener('click', function () { if (state && !busy) review(); });
+  $('stDiscard').addEventListener('click', function () {
+    window.StudioDialog.confirm({ title: 'Discard these changes?', confirmLabel: 'Discard', message: 'Nothing has been published; the site stays as it is.' })
+      .then(function (ok) { if (ok) { draft = copy(state.current); render(); say($('stStatus'), ''); } });
   });
   $('stUndo').addEventListener('click', function () {
     if (busy || !state || !state.history.length) return;
-    window.StudioDialog.confirm({ title: 'Undo the last change?', confirmLabel: 'Undo',
-      message: 'The listener site goes back to how it was before the last change you applied here.' })
+    window.StudioDialog.confirm({ title: 'Undo the last publish?', confirmLabel: 'Undo',
+      message: 'The listener site goes back to how it was before the last publish.' + (changes().length ? ' Changes you have not published are discarded too.' : '') })
       .then(function (ok) {
         if (!ok) return;
-        busy = true; say('Undoing…');
+        busy = true;
         return post('undo', '').then(function (d) {
           busy = false;
-          if (!d.ok) { say((d.errors || [d.error]).join(' '), 'bad'); return; }
-          paint(d);
-          say('Undone. Reload the listener site to see it.', 'ok');
+          if (!d.ok) { say($('stStatus'), (d.errors || [d.error]).join(' '), 'bad'); return; }
+          paint(d); say($('stStatus'), 'Undone. Reload the listener site to see it.', 'ok');
         });
-      }).catch(function (e) { busy = false; console.error('[studio] station undo failed:', e); say(e.message, 'bad'); });
-  });
-  $('stLogoFile').addEventListener('change', function () {
-    var f = this.files && this.files[0], input = this;
-    if (!f || busy) return;
-    if (state && f.size > state.logoMaxBytes) { say('That image is larger than ' + Math.round(state.logoMaxBytes / 1024) + ' KB.', 'bad'); input.value = ''; return; }
-    busy = true; say('Uploading the logo…');
-    post('logo', f, f.type || 'application/octet-stream').then(function (d) {
-      busy = false; input.value = '';
-      if (!d.ok) { say('Logo not accepted: ' + (d.errors || [d.error]).join(' '), 'bad'); return; }
-      pendingLogo = d.logo; $('stLogo').src = d.logo; dirty();
-      say('Logo uploaded. Preview, then apply, to use it on the listener site.', 'ok');
-    }).catch(function (e) { busy = false; input.value = ''; console.error('[studio] logo upload failed:', e); say(e.message, 'bad'); });
-  });
-  $('stLogoReset').addEventListener('click', function () {
-    if (!state) return;
-    pendingLogo = state.profile.logo; $('stLogo').src = state.profile.logo; dirty();
-    say('The profile’s logo is selected. Preview, then apply.');
+      }).catch(function (e) { busy = false; console.error('[studio] undo failed:', e); say($('stStatus'), e.message, 'bad'); });
   });
 
   load();
