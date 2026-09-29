@@ -213,7 +213,7 @@ test('real HTTP: back up A, restore on a fresh B, exports match; refusals; idemp
   // Lossless: the backup's month is A's month on disk, field for field (feature clicks included).
   assert.deepEqual(backup.stats[thisMonth], JSON.parse(fs.readFileSync(statsFile(A, thisMonth), 'utf8')), 'backup = what A collected');
   assert.equal(backup.stats[thisMonth].days[todayUtc].clicks.transcriptOpen, 1);
-  assert.deepEqual(backup.settings, { discovery: { enabled: true, qir: true } }, 'the backup carries the switches');
+  assert.deepEqual(backup.settings, { discovery: { enabled: true, qir: true }, station: { values: {} } }, 'the backup carries the switches and the (empty) station edits');
   assert.doesNotMatch(backupText, /democracy now|"terms"/, 'legacy search terms never leave the server');
   const aExports = await exportsOf(A, '2020-02-01');
 
@@ -238,7 +238,7 @@ test('real HTTP: back up A, restore on a fresh B, exports match; refusals; idemp
   assert.deepEqual(preview.plan.map(p => [p.month, p.action]), [[thisMonth, 'replace'], ['2020-02', 'new']]);
   assert.equal(preview.changes, 3); assert.equal(preview.monthChanges, 2); assert.equal(preview.switchChanges, 1);
   assert.equal(preview.backup.sameServer, false);
-  assert.deepEqual(preview.settings.map(x => [x.name, x.backup, x.server, x.action]), [['enabled', true, false, 'set'], ['qir', true, true, 'identical']]);
+  assert.deepEqual(preview.settings.map(x => [x.name, x.backup, x.server, x.action]), [['enabled', true, false, 'set'], ['qir', true, true, 'identical'], ['edits', 0, 0, 'identical']]);
   const bSwitch = async () => (await (await Bsrv.get('/api/studio/discovery')).json()).enabled;
   assert.equal(await bSwitch(), false, 'B starts with Discovery off, and the preview did not change it');
   assert.equal(preview.plan[0].server.plays, 3); assert.equal(preview.plan[0].backup.plays, 1);

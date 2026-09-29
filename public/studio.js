@@ -1279,7 +1279,9 @@
       });
 
       var BADGE = { 'new': 'New', replace: 'Replaced', identical: 'Already the same', kept: 'Kept' };
-      var SWITCH_NAME = { enabled: 'Discovery on this station', qir: 'Transcripts & summaries (QIR)' };
+      var SWITCH_NAME = { enabled: 'Discovery on this station', qir: 'Transcripts & summaries (QIR)', station: 'Station & appearance' };
+      // One restored/undone setting in words: a switch with its new state, the station edits by name.
+      function settingWords(k, v) { return k === 'station' ? SWITCH_NAME.station : SWITCH_NAME[k] + ' ' + onOff(v); }
       function onOff(b) { return b ? 'On' : 'Off'; }
       var WHAT = {
         'new': 'Added from the backup.',
@@ -1319,10 +1321,13 @@
         swBox.hidden = !sw.length;
         sw.forEach(function (s) {
           var li = el('li');
-          li.appendChild(el('span', '', SWITCH_NAME[s.name] + ' — in the backup: ' + onOff(s.backup)
-            + ' · on this server: ' + (s.server === null ? 'not available' : onOff(s.server))));
+          var edits = function (n) { return n === null ? 'not available' : n ? plural(n, 'edit') : 'no edits'; };
+          li.appendChild(el('span', '', s.group === 'station'
+            ? 'Station & appearance — in the backup: ' + edits(s.backup) + ' · on this server: ' + edits(s.server)
+            : SWITCH_NAME[s.name] + ' — in the backup: ' + onOff(s.backup) + ' · on this server: ' + (s.server === null ? 'not available' : onOff(s.server))));
           li.appendChild(el('span', 'plan-badge plan-badge--' + (s.action === 'set' ? 'replace' : 'kept'),
-            s.action === 'set' ? 'Set to ' + onOff(s.backup) : s.action === 'identical' ? 'Already the same' : 'Not available here'));
+            s.action === 'set' ? (s.group === 'station' ? 'Use the backup’s' : 'Set to ' + onOff(s.backup))
+              : s.action === 'identical' ? 'Already the same' : s.action === 'invalid' ? 'Not applied: ' + s.reason : 'Not available here'));
           swList.appendChild(li);
         });
         var replaced = p.plan.filter(function (r) { return r.action === 'replace'; }).length;
@@ -1335,7 +1340,7 @@
         applyBtn.disabled = !p.changes;
         var parts = [];
         if (p.monthChanges) parts.push(plural(p.monthChanges, 'month'));
-        if (p.switchChanges) parts.push(plural(p.switchChanges, 'switch').replace(/switchs$/, 'switches'));
+        if (p.switchChanges) parts.push(plural(p.switchChanges, 'setting'));
         applyBtn.textContent = p.changes
           ? 'Restore ' + parts.join(' and ')
           : 'Nothing to restore — this server already matches';
@@ -1384,7 +1389,7 @@
             var set = Object.keys(r.body.settings || {});
             say('Restored ' + plural(r.body.replaced.length + r.body.added.length, 'month') + ' ('
               + r.body.added.length + ' added, ' + r.body.replaced.length + ' replaced)'
-              + (set.length ? '; switches set: ' + set.map(function (k) { return SWITCH_NAME[k] + ' ' + onOff(r.body.settings[k]); }).join(', ') : '')
+              + (set.length ? '; settings restored: ' + set.map(function (k) { return settingWords(k, r.body.settings[k]); }).join(', ') : '')
               + '. The dashboard has been refreshed.', 'ok');
             pending = null;
             previewBox.hidden = true;
@@ -1431,7 +1436,7 @@
             var back = Object.keys(r.body.settings || {});
             say('Undone: ' + plural(r.body.restored.length, 'month') + ' put back, '
               + r.body.removed.length + ' moved aside'
-              + (back.length ? '; switches put back: ' + back.map(function (k) { return SWITCH_NAME[k] + ' ' + onOff(r.body.settings[k]); }).join(', ') : '')
+              + (back.length ? '; settings put back: ' + back.map(function (k) { return settingWords(k, r.body.settings[k]); }).join(', ') : '')
               + '. The dashboard has been refreshed.', 'ok');
             load();
           })

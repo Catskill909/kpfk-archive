@@ -62,22 +62,16 @@
       if (st.error) parts.push('Last error: ' + st.error);
     }
     $('discQirStatus').textContent = parts.join(' · ');
-    var s = d.station || {}, f = s.feeds || {};
-    $('discStation').innerHTML =
-      (s.logo ? '<img class="disc-logo" src="' + esc(s.logo) + '" alt="' + esc(s.name) + '">' : '') +
-      '<dl class="disc-facts">' +
-        '<dt>Station</dt><dd>' + esc([s.name, s.frequency].join(' ')) + ' · ' + esc(s.city) + '</dd>' +
-        '<dt>Time zone</dt><dd>' + esc(s.timezone) + '</dd>' +
-        '<dt>Data source</dt><dd>' + esc(s.provider) + '</dd>' +
-        Object.keys(f).map(function (k) { return '<dt>Feed: ' + esc(k) + '</dt><dd>' + esc(f[k]) + '</dd>'; }).join('') +
-      '</dl>';
   }
   function load() {
     return fetch('/api/studio/discovery', { headers: { Accept: 'application/json' } })
       .then(function (r) { if (r.status === 401) { location.replace('/studio'); return null; } return r.json(); })
       .then(function (d) {
         if (!d) return;
-        if (!d.available) { tabs.querySelector('[data-studio-tab="discovery"]').hidden = true; return; }
+        // No Discovery at this station: hide its part only. The tab also holds Station &
+        // appearance (studio-station.js shows the tab for that), so it is not hidden here.
+        if (!d.available) { $('discoverySection').hidden = true; return; }
+        $('discoverySection').hidden = false;
         tabs.querySelector('[data-studio-tab="discovery"]').hidden = false;
         if (!panel.hidden) paint(d);
       })

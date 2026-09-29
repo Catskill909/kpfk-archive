@@ -79,8 +79,8 @@
   </div>
 </nav>
 
-<div class="studio-main studio-discovery" id="discoveryPanel" role="region" aria-labelledby="discoveryTitle" hidden>
-  <section class="studio-section studio-section--wide">
+<div class="studio-main studio-discovery" id="discoveryPanel" role="region" aria-label="Discovery and settings" hidden>
+  <section class="studio-section studio-section--wide" id="discoverySection">
     <h2 class="studio-h2" id="discoveryTitle">Discovery</h2>
     <p class="studio-note">QIR search, summaries and transcripts on the listener site. The station
       profile decides whether this station may have it; these switches turn it on and off
@@ -105,11 +105,58 @@
     </div>
     <p class="disc-error" id="discError" role="alert"></p>
   </section>
-  <section class="studio-section studio-section--wide">
+  <!-- Station template, slice 1 (step 5b, 2026-09-29): name, frequency, city, logo, side-menu
+       links, social accounts. Anyone signed in to the studio may edit (Paul). Preview, apply,
+       undo; the server validates every edit like the profile file (lib/station-overrides.js). -->
+  <section class="studio-section studio-section--wide" id="stationSection" hidden>
     <h2 class="studio-h2">Station &amp; appearance</h2>
+    <p class="studio-note">What listeners see: the station&rsquo;s name, logo, side-menu links and social
+      accounts. Changes reach the listener site as soon as you apply them. Preview first; Undo puts
+      the last change back.</p>
+    <form class="st-form" id="stForm" novalidate>
+      <fieldset class="st-group">
+        <legend class="st-legend">Station</legend>
+        <div class="st-row3">
+          <label class="studio-field"><span class="studio-field-label">Name</span><input class="studio-input" id="stName" maxlength="80" autocomplete="off"></label>
+          <label class="studio-field"><span class="studio-field-label">Frequency</span><input class="studio-input" id="stFrequency" maxlength="80" autocomplete="off"></label>
+          <label class="studio-field"><span class="studio-field-label">City</span><input class="studio-input" id="stCity" maxlength="80" autocomplete="off"></label>
+        </div>
+      </fieldset>
+      <fieldset class="st-group">
+        <legend class="st-legend">Logo</legend>
+        <div class="st-logo-row">
+          <img class="st-logo" id="stLogo" alt="Current logo">
+          <label class="export-file">
+            <input id="stLogoFile" type="file" accept="image/png,image/jpeg,image/webp">
+            <span class="studio-btn" aria-hidden="true">Upload a new logo&hellip;</span>
+          </label>
+          <button class="export-link" id="stLogoReset" type="button">Use the profile&rsquo;s logo</button>
+        </div>
+        <p class="st-hint">PNG, JPEG or WebP, up to 1 MB. Shown in the listener site&rsquo;s header.</p>
+      </fieldset>
+      <fieldset class="st-group">
+        <legend class="st-legend">Side-menu links</legend>
+        <div class="st-grid" id="stLinks"></div>
+        <p class="st-hint">Leave a link empty to take it out of the menu. The station website and archive links are required. Every link must start with https://.</p>
+      </fieldset>
+      <fieldset class="st-group">
+        <legend class="st-legend">Social accounts</legend>
+        <div class="st-grid" id="stSocial"></div>
+      </fieldset>
+      <div class="st-review" id="stReview" hidden>
+        <h3 class="st-legend">What will change</h3>
+        <ul class="st-changes" id="stChanges"></ul>
+      </div>
+      <p class="export-status" id="stStatus" role="status" aria-live="polite"></p>
+      <div class="export-row">
+        <button class="studio-btn" id="stPreview" type="button">Preview changes</button>
+        <button class="studio-btn export-go" id="stApply" type="button" disabled>Apply to the listener site</button>
+        <button class="studio-btn studio-btn--quiet" id="stUndo" type="button">Undo last change</button>
+      </div>
+      <p class="st-hint" id="stWhen"></p>
+    </form>
+    <h3 class="st-legend st-profile-head">From the station profile file (not editable here yet)</h3>
     <div id="discStation"></div>
-    <p class="studio-note">Coming next: a station template — change a station's feeds, logo,
-      colours and text here, preview them, then apply, with a way back. Not editable yet.</p>
   </section>
 </div>
 
@@ -487,7 +534,7 @@
           </table>
         </div>
         <div class="export-switches" id="restoreSwitchesBox" hidden>
-          <h4 class="export-sub">Switches (Discovery &amp; settings)</h4>
+          <h4 class="export-sub">Settings (Discovery &amp; settings tab)</h4>
           <ul class="export-files" id="restoreSwitches"></ul>
         </div>
         <p class="export-warn" id="restoreWarn" hidden></p>
@@ -588,5 +635,6 @@
 <script src="/studio-dialog.js"></script>
 <script src="/studio.js"></script>
 <script src="/studio-discovery.js" defer></script>
+<script src="/studio-station.js" defer></script>
 </body>
 </html>

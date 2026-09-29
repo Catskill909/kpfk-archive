@@ -18,12 +18,13 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { loadProfile, publicProfile } = require('./lib/station-config');
+const { loadProfile, publicProfile, LINK_KEYS, SOCIAL_KEYS } = require('./lib/station-config');
 const stationView = require('./lib/station-view');
 const ShowLinks = require('./public/links');
 const { toCsv } = require('./lib/export/csv');
 const listeningExport = require('./lib/export/listening');
 const zipExport = require('./lib/export/zip');
+const stationOverridesLib = require('./lib/station-overrides');
 const xlsxExport = require('./lib/export/xlsx');
 const backupLib = require('./lib/export/backup');
 const inventoryExport = require('./lib/export/inventory');
@@ -31,8 +32,12 @@ const coverageExport = require('./lib/export/coverage');
 const exportCommon = require('./lib/export/common');
 const reportLib = require('./lib/export/report');
 const profileExport = require('./lib/export/profile');
-const station = process.env.STATION_PROFILE
+// The station profile file, and the station the app runs as: the profile with the studio's
+// Station & appearance edits laid over it (step 5b; reassigned when staff apply an edit). Read
+// `station` at request time, never copy an editable field (name, links, logo…) at boot.
+const baseStation = process.env.STATION_PROFILE
   ? loadProfile(process.env.STATION_PROFILE, { root: __dirname, allowLocal: process.env.PACIFICA_TEST_LOCAL === '1' }) : null;
+let station = baseStation;
 if (require.main === module && !station && process.env.STATION_PROVIDER !== 'legacy-xml') {
   throw new Error('STATION_PROFILE is required. Use npm start for the isolated KPFK app.');
 }
@@ -68,6 +73,13 @@ const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
 if (station && fs.existsSync(path.join(DATA_DIR, '.instance.json'))) {
   const marker = JSON.parse(fs.readFileSync(path.join(DATA_DIR, '.instance.json'), 'utf8'));
   if (marker.station !== station.id) throw new Error('DATA_DIR belongs to a different station');
+}
+// Station template (step 5b, lib/station-overrides.js): edits saved on the data volume.
+const stationEdits = baseStation ? require('./lib/station-overrides').createStationOverrides({
+  dataDir: DATA_DIR, base: baseStation, allowLocal: process.env.PACIFICA_TEST_LOCAL === '1', writeJsonAtomic }) : null;
+if (stationEdits) {
+  station = stationEdits.station();
+  if (stationEdits.bootError()) console.warn(`[station] saved Station & appearance edits are not valid with this profile and were NOT applied: ${stationEdits.bootError()}`);
 }
 
 // Files that existed at boot and could not be parsed, and where their bytes were
@@ -2037,9 +2049,12 @@ const MIME = {
 };
 
 // Origins the Donate/Privacy modal may frame: exactly those of the profile's links.
-const FRAME_ORIGINS = station
-  ? [...new Set(['donate', 'privacy'].map(k => station.links[k]).filter(Boolean).map(u => new URL(u).origin))].join(' ')
-  : '';
+// Read per response, not at boot: Donate and Privacy are editable in the studio (step 5b).
+function frameOrigins() {
+  return station
+    ? [...new Set(['donate', 'privacy'].map(k => station.links[k]).filter(Boolean).map(u => new URL(u).origin))].join(' ')
+    : '';
+}
 
 function securityHeaders() {
   return {
@@ -2060,7 +2075,7 @@ function securityHeaders() {
       // origins follow the profile's links, so a station whose donate page
       // lives elsewhere is not silently blanked. The child document's own
       // subresources are governed by its origin, not ours.
-      "frame-src " + (FRAME_ORIGINS || 'https://docs.pacifica.org'),
+      "frame-src " + (frameOrigins() || 'https://docs.pacifica.org'),
       "frame-ancestors 'self'",
       "base-uri 'self'",
     ].join('; '),
@@ -2150,8 +2165,9 @@ function stampAssets(html) {
 // that episode's artwork already in the HTML — no client-side code runs in a
 // preview fetch, so nothing app.js does can add it afterwards.
 const OG_RE = /<!-- og:start -->[\s\S]*?<!-- og:end -->/;
-const OG_DEFAULT_TITLE = station ? `${station.name} ${station.frequency} Archive` : 'WBAI 99.5 FM Archive';
-const OG_DEFAULT_DESC = station ? `Search, stream, and browse ${station.name} broadcasts from ${station.city}.` : "Search, stream, and browse WBAI 99.5 FM's on-demand broadcast archive — Free Speech Radio, Pacifica Radio in New York City.";
+// Functions, not boot-time constants: the name, frequency and city are editable (step 5b).
+const ogDefaultTitle = () => (station ? `${station.name} ${station.frequency} Archive` : 'WBAI 99.5 FM Archive');
+const ogDefaultDesc = () => (station ? `Search, stream, and browse ${station.name} broadcasts from ${station.city}.` : "Search, stream, and browse WBAI 99.5 FM's on-demand broadcast archive — Free Speech Radio, Pacifica Radio in New York City.");
 
 function htmlAttr(s) {
   return String(s == null ? '' : s)
@@ -2169,8 +2185,8 @@ function originFor(req) {
 function ogTags(req, reqUrl) {
   const origin = originFor(req);
   const abs = (p) => (/^https?:/i.test(p) ? p : origin + p);
-  let title = OG_DEFAULT_TITLE;
-  let desc = OG_DEFAULT_DESC;
+  let title = ogDefaultTitle();
+  let desc = ogDefaultDesc();
   // The station card is a 1200×630 PNG; crawlers and iMessage ignore SVG, so an
   // SVG placeholder photo (a show with no artwork) must not replace it.
   let image = abs(station ? station.assets.share : '/assets/icon-512.png');
@@ -2194,7 +2210,7 @@ function ogTags(req, reqUrl) {
       if (photo && !/\.svg(\?|$)/i.test(photo)) { image = abs(photo); large = false; }
       desc = (info.desc || info.shortdesc || '').replace(/\s+/g, ' ').trim();
       if (desc.length > 300) desc = desc.slice(0, 297).trimEnd() + '…';
-      if (!desc) desc = (row.dateText ? row.dateText + ' · ' : '') + OG_DEFAULT_TITLE;
+      if (!desc) desc = (row.dateText ? row.dateText + ' · ' : '') + ogDefaultTitle();
       pageUrl = origin + '/?show=' + encodeURIComponent(id);
     }
   }
@@ -2213,7 +2229,7 @@ function ogTags(req, reqUrl) {
       if (photo && !/\.svg(\?|$)/i.test(photo)) { image = abs(photo); large = false; }
       desc = (info.desc || info.shortdesc || '').replace(/\s+/g, ' ').trim();
       if (desc.length > 300) desc = desc.slice(0, 297).trimEnd() + '…';
-      if (!desc) desc = (episode && found.row.dateText ? found.row.dateText + ' · ' : '') + OG_DEFAULT_TITLE;
+      if (!desc) desc = (episode && found.row.dateText ? found.row.dateText + ' · ' : '') + ogDefaultTitle();
       pageUrl = origin + (episode ? ShowLinks.episodePath(found.row) : ShowLinks.showPath(found.sho));
     }
   }
@@ -2222,7 +2238,7 @@ function ogTags(req, reqUrl) {
   // letterbox it); the station's 1200×630 share card gets `summary_large_image`.
   return [
     '<meta property="og:type" content="website">',
-    `<meta property="og:site_name" content="${htmlAttr(OG_DEFAULT_TITLE)}">`,
+    `<meta property="og:site_name" content="${htmlAttr(ogDefaultTitle())}">`,
     `<meta property="og:title" content="${htmlAttr(title)}">`,
     `<meta property="og:description" content="${htmlAttr(desc)}">`,
     `<meta property="og:image" content="${htmlAttr(image)}">`,
@@ -3191,21 +3207,46 @@ function backupShaped(months) {
 /** This server's switches, as a backup carries them. Empty where the station has no
  *  Discovery at all — then there is nothing to back up or restore. */
 function currentSettings() {
-  if (!discovery) return {};
-  const s = discovery.adminState();
-  return { discovery: { enabled: s.enabled, qir: s.qir.enabled } };
+  const out = {};
+  if (discovery) {
+    const s = discovery.adminState();
+    out.discovery = { enabled: s.enabled, qir: s.qir.enabled };
+  }
+  // Station & appearance edits (step 5b), with the uploaded logo they use, so a moved site keeps its look.
+  if (stationEdits) {
+    const values = stationEdits.values();
+    out.station = { values };
+    const f = values.logo && stationEdits.assetFile(values.logo.split('/').pop());
+    if (f) out.station.logo = { name: path.basename(f), base64: fs.readFileSync(f).toString('base64') };
+  }
+  return out;
 }
 /** The switch plan, with QIR marked unavailable where this server's station cannot have it. */
 function settingsPlan(incoming) {
   const qirSupported = !!discovery && discovery.adminState().qir.supported;
-  return backupLib.planSettings(incoming, currentSettings()).map((p) =>
-    (p.group === 'discovery' && p.name === 'qir' && p.backup === true && !qirSupported ? { ...p, action: 'unavailable' } : p));
+  return backupLib.planSettings(incoming, currentSettings()).map((p) => {
+    if (p.group === 'discovery' && p.name === 'qir' && p.backup === true && !qirSupported) return { ...p, action: 'unavailable' };
+    // Station edits must make a valid station with THIS server's profile, or they are not applied.
+    if (p.group === 'station' && p.action === 'set') {
+      const check = stationEdits.preview(incoming.station.values);
+      if (!check.ok) return { ...p, action: 'invalid', reason: check.errors.join(' ') };
+    }
+    return p;
+  });
 }
 /** Set the switches the plan changes. Returns what was set, for the manifest and the answer. */
-function applySettings(plan) {
+function applySettings(plan, incoming) {
   const change = {};
   for (const p of plan) if (p.action === 'set' && p.group === 'discovery') change[p.name] = p.backup;
   if (Object.keys(change).length) discovery.applyAdmin(change);
+  if (plan.some((p) => p.action === 'set' && p.group === 'station')) {
+    const st = incoming.station;
+    if (st.logo) stationEdits.saveLogo(Buffer.from(st.logo.base64, 'base64'));
+    const r = stationEdits.apply(st.values, 'restored from a backup');
+    if (!r.ok) throw new Error('Station & appearance: ' + r.errors.join(' '));
+    station = stationEdits.station();
+    change.station = true;
+  }
   return change;
 }
 
@@ -3287,7 +3328,7 @@ function applyImport(plan, months, parsed, sPlan) {
     if (m === statsMonth) statsStore = mo;
   }
   // 3. The switches, last: a month that failed to write leaves them as they were.
-  const settings = applySettings(sPlan);
+  const settings = applySettings(sPlan, parsed.settings || {});
   if (Object.keys(settings).length) {
     const manifest = readJsonFile(path.join(dir, 'manifest.json'), {});
     writeJsonAtomic(path.join(dir, 'manifest.json'), { ...manifest, settingsSet: settings });
@@ -3323,8 +3364,14 @@ function undoImport(last) {
   // The switches the restore changed go back to what they were before it.
   const put = {};
   const before = (last.settingsBefore || {}).discovery;
-  if (before && discovery) for (const k of Object.keys(last.settingsSet || {})) put[k] = before[k];
+  if (before && discovery) for (const k of Object.keys(last.settingsSet || {})) if (k !== 'station') put[k] = before[k];
   if (Object.keys(put).length) discovery.applyAdmin(put);
+  // Station & appearance edits go back to what they were (the logo files stay; they are named by content).
+  const stBefore = (last.settingsBefore || {}).station;
+  if ((last.settingsSet || {}).station && stBefore && stationEdits) {
+    const r = stationEdits.apply(stBefore.values, 'restore undone');
+    if (r.ok) { station = stationEdits.station(); put.station = true; }
+  }
   const manifest = readJsonFile(path.join(dir, 'manifest.json'), {});
   writeJsonAtomic(path.join(dir, 'manifest.json'), { ...manifest, undoneAt: new Date().toISOString() });
   console.log(`[studio] import undone: restored ${last.replaced.length}, moved aside ${last.added.length}, switches ${JSON.stringify(put)} (${last.name})`);
@@ -3554,6 +3601,21 @@ function readBody(req, limit = 2048) {
       chunks.push(c);
     });
     req.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+    req.on('error', reject);
+  });
+}
+
+/** readBody, as bytes (uploads). */
+function readBodyBuffer(req, limit) {
+  return new Promise((resolve, reject) => {
+    let size = 0;
+    const chunks = [];
+    req.on('data', (c) => {
+      size += c.length;
+      if (size > limit) { req.destroy(); return reject(Object.assign(new Error('body too large'), { tooLarge: true })); }
+      chunks.push(c);
+    });
+    req.on('end', () => resolve(Buffer.concat(chunks)));
     req.on('error', reject);
   });
 }
@@ -3955,10 +4017,57 @@ async function studioDiscoveryPost(req, res) {
   return sendStudioJson(res, discovery.adminState());
 }
 
+// ---- Station & appearance (step 5b, slice 1): lib/station-overrides.js does the work.
+/** What the studio's Station & appearance form shows. */
+function stationEditState() {
+  const pick = (p) => ({ name: p.name, frequency: p.frequency, city: p.city, links: { ...p.links }, social: { ...p.social }, logo: p.assets.logo });
+  return { available: !!stationEdits, profile: pick(baseStation), current: pick(station), edits: stationEdits.values(),
+    updatedAt: stationEdits.updatedAt(), history: stationEdits.history(), bootError: stationEdits.bootError(),
+    keys: { links: LINK_KEYS, social: SOCIAL_KEYS }, logoMaxBytes: stationOverridesLib.LOGO_MAX_BYTES,
+    fixed: { timezone: station.timezone, provider: station.provider, feeds: { ...station.feeds } } };
+}
+async function studioStationPost(req, res, pathOnly) {
+  if (!studioAuthed(req)) return sendStudioJson(res, { error: 'unauthorized' }, 401);
+  if (!secretEquals(req.headers['x-studio-csrf'] || '', studioCsrf(req))) return sendStudioJson(res, { error: 'bad token' }, 403);
+  if (!stationEdits) return sendStudioJson(res, { error: 'not found' }, 404);
+  if (pathOnly === '/api/studio/station/logo') {
+    let buf;
+    try { buf = await readBodyBuffer(req, stationOverridesLib.LOGO_MAX_BYTES + 1); }
+    catch (e) { return sendStudioJson(res, { ok: false, errors: [e.tooLarge ? `The image is larger than ${stationOverridesLib.LOGO_MAX_BYTES / 1024} KB.` : 'The upload failed.'] }, e.tooLarge ? 413 : 400); }
+    const r = stationEdits.saveLogo(buf);
+    return sendStudioJson(res, r, r.ok ? 200 : 422);
+  }
+  if (pathOnly === '/api/studio/station/undo') {
+    const r = stationEdits.undo();
+    if (r.ok) { station = stationEdits.station(); console.log('[studio] Station & appearance: last change undone'); }
+    return sendStudioJson(res, r.ok ? { ok: true, ...stationEditState() } : r, r.ok ? 200 : 409);
+  }
+  let input;
+  try { input = JSON.parse(await readBody(req, 16 * 1024)); } catch (e) { return sendStudioJson(res, { ok: false, errors: ['The edits are not valid JSON.'] }, 400); }
+  if (pathOnly === '/api/studio/station/preview') {
+    const r = stationEdits.preview(input);
+    if (!r.ok) return sendStudioJson(res, r, 422);
+    const p = r.station;
+    return sendStudioJson(res, { ok: true, preview: { name: p.name, frequency: p.frequency, city: p.city, logo: p.assets.logo,
+      menu: stationView.menu(p) } });
+  }
+  if (pathOnly === '/api/studio/station/apply') {
+    const r = stationEdits.apply(input);
+    if (!r.ok) return sendStudioJson(res, r, 422);
+    station = stationEdits.station();
+    console.log(`[studio] Station & appearance changed: ${Object.keys(stationEdits.values()).join(', ') || 'back to the profile'}`);
+    return sendStudioJson(res, { ok: true, ...stationEditState() });
+  }
+  return sendStudioJson(res, { error: 'not found' }, 404);
+}
+
 function studioApi(req, res, pathOnly) {
   if (!studioAuthed(req)) return sendStudioJson(res, { error: 'unauthorized' }, 401);
   if (pathOnly === '/api/studio/discovery') {
     return discovery ? sendStudioJson(res, discovery.adminState()) : sendStudioJson(res, { available: false });
+  }
+  if (pathOnly === '/api/studio/station') {
+    return stationEdits ? sendStudioJson(res, stationEditState()) : sendStudioJson(res, { available: false });
   }
   if (pathOnly === '/api/studio/usage') {
     return sendStudioJson(res, usageReport(usageWindowFromUrl(req.url)));
@@ -4090,6 +4199,10 @@ const server = http.createServer(async (req, res) => {
         return sendStudioJson(res, { ok: false, errors: ['The upload could not be read: ' + e.message] }, 400);
       }
     }
+    if (STUDIO_ENABLED && pathOnly.startsWith('/api/studio/station/')) {
+      try { return await studioStationPost(req, res, pathOnly); }
+      catch (e) { console.error('[studio] station edit failed:', e.message); return sendStudioJson(res, { ok: false, errors: [e.message] }, 400); }
+    }
     if (STUDIO_ENABLED && pathOnly === '/api/studio/discovery') {
       try { return await studioDiscoveryPost(req, res); }
       catch (e) { return sendStudioJson(res, { error: 'bad request' }, 400); }
@@ -4139,6 +4252,15 @@ const server = http.createServer(async (req, res) => {
         return res.end(stationView.script(liveStation()));
       }
       if (pathOnly === '/manifest.webmanifest') return sendJson(res, stationView.manifest(station), 200, 0);
+      // Logos uploaded in the studio (step 5b). Named by content hash, so they never change: cache hard.
+      if (pathOnly.startsWith('/station-assets/') && stationEdits) {
+        const f = stationEdits.assetFile(pathOnly.slice('/station-assets/'.length));
+        if (!f) { res.writeHead(404, securityHeaders()); return res.end(); }
+        const buf = fs.readFileSync(f);
+        res.writeHead(200, { 'Content-Type': { png: 'image/png', jpg: 'image/jpeg', webp: 'image/webp' }[path.extname(f).slice(1)],
+          'Content-Length': buf.length, 'Cache-Control': 'public, max-age=31536000, immutable', ...securityHeaders() });
+        return res.end(req.method === 'HEAD' ? undefined : buf);
+      }
       if (pathOnly === '/api/showinfo') {
         const data = await getArchive();
         return sendJson(res, { updated: data.updated, revision: data.revision, count: Object.keys(data.directory).length,
