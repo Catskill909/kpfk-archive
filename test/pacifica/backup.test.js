@@ -97,6 +97,20 @@ test('lossless: every field a day can hold survives a backup and is accepted by 
   assert.ok(errorsOf(odd).some(e => /"clicks" has an unexpected key/.test(e)));
 });
 
+test('switches: the Discovery switches travel as exactly { enabled, qir }; the plan says what changes', () => {
+  const b = backupOf({ '2026-08': { station: 'kpfk', month: '2026-08', days: { '2026-08-02': day() } } });
+  b.settings = { discovery: { enabled: true, qir: false } };
+  assert.deepEqual(errorsOf(b), [], 'known switches are accepted');
+  for (const [label, bad] of [['extra key', { enabled: true, qir: true, key: 'x' }], ['not a boolean', { enabled: 'yes', qir: true }], ['missing', { enabled: true }], ['not an object', true]]) {
+    const x = JSON.parse(JSON.stringify(b)); x.settings.discovery = bad;
+    assert.ok(errorsOf(x).some(e => /"discovery" setting must be exactly/.test(e)), label);
+  }
+  assert.deepEqual(B.planSettings({ discovery: { enabled: true, qir: false } }, { discovery: { enabled: false, qir: false } }).map(p => [p.name, p.action]),
+    [['enabled', 'set'], ['qir', 'identical']]);
+  assert.deepEqual(B.planSettings({ discovery: { enabled: true, qir: true } }, {}).map(p => p.action), ['unavailable', 'unavailable'], 'a server without Discovery');
+  assert.deepEqual(B.planSettings({}, { discovery: { enabled: true, qir: true } }), [], 'an older backup changes no switch');
+});
+
 // ---------------------------------------------------------------- real HTTP
 function cleanEnv() { const env = { ...process.env }; for (const k of ['STATION_PROFILE', 'STATION_PROVIDER', 'STATION_ID', 'STATION_TZ', 'STUDIO_PASSWORD']) delete env[k]; return env; }
 async function freePort() {
@@ -185,6 +199,8 @@ test('real HTTP: back up A, restore on a fresh B, exports match; refusals; idemp
   const played = A.archive.shows[0];
   for (const b of [{ t: 'pageview', z: 'America/Chicago' }, { t: 'play', u: played.mp3 }, { t: 'listen', u: played.mp3, s: 75 }, { t: 'ui', k: 'transcriptOpen' }]) assert.equal((await A.beacon(b)).status, 204);
   await settled(A);
+  // A has Discovery switched on; B (a fresh install) starts with it off. The backup must carry it.
+  assert.equal((await A.post('/api/studio/discovery', JSON.stringify({ enabled: true }))).status, 200, 'switch Discovery on at A');
 
   assert.equal((await fetch(A.url + '/api/studio/backup')).status, 401, 'backup is signed-in only');
   const backupRes = await A.get('/api/studio/backup');
@@ -197,6 +213,7 @@ test('real HTTP: back up A, restore on a fresh B, exports match; refusals; idemp
   // Lossless: the backup's month is A's month on disk, field for field (feature clicks included).
   assert.deepEqual(backup.stats[thisMonth], JSON.parse(fs.readFileSync(statsFile(A, thisMonth), 'utf8')), 'backup = what A collected');
   assert.equal(backup.stats[thisMonth].days[todayUtc].clicks.transcriptOpen, 1);
+  assert.deepEqual(backup.settings, { discovery: { enabled: true, qir: true } }, 'the backup carries the switches');
   assert.doesNotMatch(backupText, /democracy now|"terms"/, 'legacy search terms never leave the server');
   const aExports = await exportsOf(A, '2020-02-01');
 
@@ -219,7 +236,11 @@ test('real HTTP: back up A, restore on a fresh B, exports match; refusals; idemp
   assert.equal(previewRes.status, 200);
   const preview = await previewRes.json();
   assert.deepEqual(preview.plan.map(p => [p.month, p.action]), [[thisMonth, 'replace'], ['2020-02', 'new']]);
-  assert.equal(preview.changes, 2); assert.equal(preview.backup.sameServer, false);
+  assert.equal(preview.changes, 3); assert.equal(preview.monthChanges, 2); assert.equal(preview.switchChanges, 1);
+  assert.equal(preview.backup.sameServer, false);
+  assert.deepEqual(preview.settings.map(x => [x.name, x.backup, x.server, x.action]), [['enabled', true, false, 'set'], ['qir', true, true, 'identical']]);
+  const bSwitch = async () => (await (await Bsrv.get('/api/studio/discovery')).json()).enabled;
+  assert.equal(await bSwitch(), false, 'B starts with Discovery off, and the preview did not change it');
   assert.equal(preview.plan[0].server.plays, 3); assert.equal(preview.plan[0].backup.plays, 1);
   assert.deepEqual(snapshot(Bsrv.dataDir), before, 'the data directory is byte-identical after a preview');
 
@@ -245,6 +266,8 @@ test('real HTTP: back up A, restore on a fresh B, exports match; refusals; idemp
   const applied = await applyRes.json();
   assert.equal(applyRes.status, 200, JSON.stringify(applied));
   assert.deepEqual(applied.replaced, [thisMonth]); assert.deepEqual(applied.added, ['2020-02']);
+  assert.deepEqual(applied.settings, { enabled: true });
+  assert.equal(await bSwitch(), true, 'B comes back with Discovery on, as A had it');
   assert.equal(applied.lastImport.undoable, true);
   const folder = path.join(Bsrv.dataDir, 'stats', applied.folder);
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(folder, thisMonth + '.json'), 'utf8')), bOriginalMonth, "B's own month was copied aside first");
@@ -273,6 +296,8 @@ test('real HTTP: back up A, restore on a fresh B, exports match; refusals; idemp
   const undone = await undoRes.json();
   assert.equal(undoRes.status, 200, JSON.stringify(undone));
   assert.deepEqual(undone.restored, [thisMonth]); assert.deepEqual(undone.removed, ['2020-02']);
+  assert.deepEqual(undone.settings, { enabled: false });
+  assert.equal(await bSwitch(), false, 'undo puts the switch back as it was');
   assert.equal((await exportsOf(Bsrv, thisMonth + '-01')).daily, bOriginalDaily, "B's own figures are back");
   assert.equal(fs.existsSync(statsFile(Bsrv, '2020-02')), false, 'the added month left the live set');
   assert.ok(fs.existsSync(path.join(folder, 'imported-2020-02.json')), '...by moving into the import folder, not by deletion');

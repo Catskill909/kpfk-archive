@@ -978,6 +978,9 @@
    popup-density rule): the name, then its formats as small links on one line. */
 .export-more { display: grid; gap: 0.5rem; border-top: 1px solid var(--outline); padding-top: 1rem; }
 .export-sub { margin: 0; font-size: 0.95rem; font-weight: 600; color: var(--ink); }
+/* The restore preview's switches: one line each, beside the months. */
+.export-switches { display: grid; gap: 0.5rem; }
+.export-switches[hidden] { display: none; }
 .export-files { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.1rem; }
 .export-files li {
   display: flex;

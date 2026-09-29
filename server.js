@@ -3116,6 +3116,27 @@ function backupShaped(months) {
   return out;
 }
 
+/** This server's switches, as a backup carries them. Empty where the station has no
+ *  Discovery at all — then there is nothing to back up or restore. */
+function currentSettings() {
+  if (!discovery) return {};
+  const s = discovery.adminState();
+  return { discovery: { enabled: s.enabled, qir: s.qir.enabled } };
+}
+/** The switch plan, with QIR marked unavailable where this server's station cannot have it. */
+function settingsPlan(incoming) {
+  const qirSupported = !!discovery && discovery.adminState().qir.supported;
+  return backupLib.planSettings(incoming, currentSettings()).map((p) =>
+    (p.group === 'discovery' && p.name === 'qir' && p.backup === true && !qirSupported ? { ...p, action: 'unavailable' } : p));
+}
+/** Set the switches the plan changes. Returns what was set, for the manifest and the answer. */
+function applySettings(plan) {
+  const change = {};
+  for (const p of plan) if (p.action === 'set' && p.group === 'discovery') change[p.name] = p.backup;
+  if (Object.keys(change).length) discovery.applyAdmin(change);
+  return change;
+}
+
 function sendBackup(req, res) {
   const backup = backupLib.buildBackup({
     station: STATION_ID,
@@ -3123,7 +3144,7 @@ function sendBackup(req, res) {
     appVersion: appVersion(),
     sourceInstanceId: storageDiag.instanceId,
     months: backupShaped(currentStatsMonths()),
-    settings: {},
+    settings: currentSettings(),
   });
   const buf = Buffer.from(JSON.stringify(backup, null, 2) + '\n', 'utf8');
   res.writeHead(200, {
@@ -3170,7 +3191,7 @@ function readBackupBody(res, body) {
   return { parsed, v };
 }
 
-function applyImport(plan, months, parsed) {
+function applyImport(plan, months, parsed, sPlan) {
   flushFile(statsMonthPath(statsMonth));
   const raw = currentStatsMonths();
   const stamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -3178,9 +3199,11 @@ function applyImport(plan, months, parsed) {
   const replaced = plan.filter((p) => p.action === 'replace').map((p) => p.month);
   const added = plan.filter((p) => p.action === 'new').map((p) => p.month);
   // 1. The copies, and the manifest that says what they are — before any change.
+  // The switches as they are now go in the manifest too, so undo can put them back.
   for (const m of replaced) writeJsonAtomic(path.join(dir, `${m}.json`), raw[m]);
   writeJsonAtomic(path.join(dir, 'manifest.json'), {
     station: STATION_ID, importedAt: new Date().toISOString(), replaced, added,
+    settingsBefore: currentSettings(),
     backup: { createdAt: parsed.createdAt || null, sourceInstanceId: parsed.sourceInstanceId || null },
     undoneAt: null,
   });
@@ -3191,8 +3214,14 @@ function applyImport(plan, months, parsed) {
     writeJsonAtomic(statsMonthPath(m), mo);
     if (m === statsMonth) statsStore = mo;
   }
-  console.log(`[studio] import: replaced ${replaced.length} month(s) [${replaced.join(', ')}], added ${added.length} [${added.join(', ')}]; copies in ${path.basename(dir)}`);
-  return { folder: path.basename(dir), replaced, added };
+  // 3. The switches, last: a month that failed to write leaves them as they were.
+  const settings = applySettings(sPlan);
+  if (Object.keys(settings).length) {
+    const manifest = readJsonFile(path.join(dir, 'manifest.json'), {});
+    writeJsonAtomic(path.join(dir, 'manifest.json'), { ...manifest, settingsSet: settings });
+  }
+  console.log(`[studio] import: replaced ${replaced.length} month(s) [${replaced.join(', ')}], added ${added.length} [${added.join(', ')}], switches ${JSON.stringify(settings)}; copies in ${path.basename(dir)}`);
+  return { folder: path.basename(dir), replaced, added, settings };
 }
 
 function undoImport(last) {
@@ -3219,10 +3248,15 @@ function undoImport(last) {
     // Moved, not deleted: the month leaves the live set and stays recoverable.
     if (fs.existsSync(statsMonthPath(m))) fs.renameSync(statsMonthPath(m), path.join(dir, `imported-${m}.json`));
   }
+  // The switches the restore changed go back to what they were before it.
+  const put = {};
+  const before = (last.settingsBefore || {}).discovery;
+  if (before && discovery) for (const k of Object.keys(last.settingsSet || {})) put[k] = before[k];
+  if (Object.keys(put).length) discovery.applyAdmin(put);
   const manifest = readJsonFile(path.join(dir, 'manifest.json'), {});
   writeJsonAtomic(path.join(dir, 'manifest.json'), { ...manifest, undoneAt: new Date().toISOString() });
-  console.log(`[studio] import undone: restored ${last.replaced.length}, moved aside ${last.added.length} (${last.name})`);
-  return { restored: last.replaced, removed: last.added };
+  console.log(`[studio] import undone: restored ${last.replaced.length}, moved aside ${last.added.length}, switches ${JSON.stringify(put)} (${last.name})`);
+  return { restored: last.replaced, removed: last.added, settings: put };
 }
 
 /** POST /api/studio/import/{preview,apply,undo} — auth, CSRF, then the step. */
@@ -3259,7 +3293,10 @@ async function studioImport(req, res, pathOnly) {
   const got = readBackupBody(res, body);
   if (!got) return;
   const plan = backupLib.planImport(got.v.months, backupShaped(currentStatsMonths()));
-  const changes = plan.filter((p) => p.action === 'new' || p.action === 'replace').length;
+  const sPlan = settingsPlan(got.v.settings);
+  const monthChanges = plan.filter((p) => p.action === 'new' || p.action === 'replace').length;
+  const switchChanges = sPlan.filter((p) => p.action === 'set').length;
+  const changes = monthChanges + switchChanges;
 
   if (pathOnly === '/api/studio/import/preview') {
     return sendStudioJson(res, {
@@ -3271,14 +3308,15 @@ async function studioImport(req, res, pathOnly) {
         sameServer: !!got.parsed.sourceInstanceId && got.parsed.sourceInstanceId === storageDiag.instanceId,
       },
       plan,
-      changes,
+      settings: sPlan,
+      changes, monthChanges, switchChanges,
       token: importToken(req, body),
     });
   }
   if (pathOnly === '/api/studio/import/apply') {
-    if (!changes) return sendStudioJson(res, { ok: true, replaced: [], added: [], lastImport: lastImport() });
+    if (!changes) return sendStudioJson(res, { ok: true, replaced: [], added: [], settings: {}, lastImport: lastImport() });
     importLastRun = Date.now();
-    try { return sendStudioJson(res, { ok: true, ...applyImport(plan, got.v.months, got.parsed), lastImport: lastImport() }); }
+    try { return sendStudioJson(res, { ok: true, ...applyImport(plan, got.v.months, got.parsed, sPlan), lastImport: lastImport() }); }
     catch (e) {
       console.error('[studio] import failed:', e.message);
       return sendStudioJson(res, { ok: false, error: 'The restore failed part-way: ' + e.message

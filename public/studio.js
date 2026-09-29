@@ -1279,6 +1279,8 @@
       });
 
       var BADGE = { 'new': 'New', replace: 'Replaced', identical: 'Already the same', kept: 'Kept' };
+      var SWITCH_NAME = { enabled: 'Discovery on this station', qir: 'Transcripts & summaries (QIR)' };
+      function onOff(b) { return b ? 'On' : 'Off'; }
       var WHAT = {
         'new': 'Added from the backup.',
         replace: 'This server’s figures are replaced by the backup’s.',
@@ -1308,6 +1310,21 @@
         summary.textContent = 'Backup of ' + String(p.backup.station).toUpperCase() + ' made '
           + whenText(p.backup.createdAt) + ' · ' + plural(p.backup.months, 'month')
           + (p.backup.sameServer ? ' · made on this server.' : '.');
+        // Switches (Discovery on/off, QIR on/off): one line each, what the backup has,
+        // what this server has, and what happens.
+        var sw = p.settings || [];
+        var swBox = document.getElementById('restoreSwitchesBox');
+        var swList = document.getElementById('restoreSwitches');
+        swList.textContent = '';
+        swBox.hidden = !sw.length;
+        sw.forEach(function (s) {
+          var li = el('li');
+          li.appendChild(el('span', '', SWITCH_NAME[s.name] + ' — in the backup: ' + onOff(s.backup)
+            + ' · on this server: ' + (s.server === null ? 'not available' : onOff(s.server))));
+          li.appendChild(el('span', 'plan-badge plan-badge--' + (s.action === 'set' ? 'replace' : 'kept'),
+            s.action === 'set' ? 'Set to ' + onOff(s.backup) : s.action === 'identical' ? 'Already the same' : 'Not available here'));
+          swList.appendChild(li);
+        });
         var replaced = p.plan.filter(function (r) { return r.action === 'replace'; }).length;
         warn.hidden = !replaced;
         warn.textContent = replaced
@@ -1316,8 +1333,11 @@
             + 'first, and you can undo the restore.'
           : '';
         applyBtn.disabled = !p.changes;
+        var parts = [];
+        if (p.monthChanges) parts.push(plural(p.monthChanges, 'month'));
+        if (p.switchChanges) parts.push(plural(p.switchChanges, 'switch').replace(/switchs$/, 'switches'));
         applyBtn.textContent = p.changes
-          ? 'Restore ' + plural(p.changes, 'month')
+          ? 'Restore ' + parts.join(' and ')
           : 'Nothing to restore — this server already matches';
         previewBox.hidden = false;
       }
@@ -1361,9 +1381,11 @@
               throw new Error(r.body.error || (r.body.errors || []).join(' ')
                 || 'The restore was refused (HTTP ' + r.status + ').');
             }
+            var set = Object.keys(r.body.settings || {});
             say('Restored ' + plural(r.body.replaced.length + r.body.added.length, 'month') + ' ('
-              + r.body.added.length + ' added, ' + r.body.replaced.length + ' replaced). '
-              + 'The dashboard has been refreshed.', 'ok');
+              + r.body.added.length + ' added, ' + r.body.replaced.length + ' replaced)'
+              + (set.length ? '; switches set: ' + set.map(function (k) { return SWITCH_NAME[k] + ' ' + onOff(r.body.settings[k]); }).join(', ') : '')
+              + '. The dashboard has been refreshed.', 'ok');
             pending = null;
             previewBox.hidden = true;
             restoreFile.value = '';
@@ -1406,8 +1428,11 @@
           .then(function (r) {
             if (r.status !== 200) throw new Error(r.body.error || 'Undo was refused (HTTP ' + r.status + ').');
             undoSummary.textContent = 'This restore has been undone.';
+            var back = Object.keys(r.body.settings || {});
             say('Undone: ' + plural(r.body.restored.length, 'month') + ' put back, '
-              + r.body.removed.length + ' moved aside. The dashboard has been refreshed.', 'ok');
+              + r.body.removed.length + ' moved aside'
+              + (back.length ? '; switches put back: ' + back.map(function (k) { return SWITCH_NAME[k] + ' ' + onOff(r.body.settings[k]); }).join(', ') : '')
+              + '. The dashboard has been refreshed.', 'ok');
             load();
           })
           .catch(function (e) {

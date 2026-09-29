@@ -19,7 +19,9 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
    Next: 7 → 8 → 5b. QIR (checked 2026-09-29): Ace has not fixed the 7 show keys or World Massive Sep 26 yet.
 4. **Import / Export (2026-09-29, pushed, needs redeploy):** studio button renamed; two sections —
    full backup / restore, and one-click stats .zip (daily, shows, reach, feature clicks). Fixed: the
-   backup had been dropping feature clicks (day fields now one list, `lib/usage-fields.js`). After the
+   backup had been dropping feature clicks (day fields now one list, `lib/usage-fields.js`). The backup also
+   carries the two Discovery switches (restore shows them, sets them, undo puts them back). **Move test passed
+   2026-09-29:** live backup restored onto a fresh local server — stats, clicks, archive filters identical. After the
    redeploy: open Import / Export, Download stats, open the .zip. **Known, not from this change:**
    `test/studio/layout-tests.js` self-test "with both defences removed the probe reports the overflow"
    fails on 2026-09-28 code too (stale self-test; real layout checks pass).

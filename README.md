@@ -49,7 +49,7 @@ read the Pacifica JSON feeds through a per-station profile.
   and every show in Pacifica's catalog with its gaps (no artwork, no description, no
   recent episodes), as CSV or JSON. These describe programs, not listeners.
 - **Move it to another server** — the studio downloads one backup of everything the site has
-  collected (every usage counter, feature clicks included) and restores it on a new install, with a
+  collected (every usage counter, feature clicks included, and the Discovery on/off switches) and restores it on a new install, with a
   preview first and an undo after. Imports accept counters only; a file carrying anything else is refused.
 - **Listener insights, with privacy built in** — see how long people actually
   listen, plays, searches, and how far the station's reach extends — without
