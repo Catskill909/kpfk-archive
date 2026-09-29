@@ -55,15 +55,17 @@ test('the show-type rule still applies alongside the Discovery settings', () => 
 });
 
 test('siteUrl and retiredHosts (step 8): an https origin, and hostnames that are not the site itself', () => {
-  const p = validateProfile(raw());
-  assert.equal(p.siteUrl, 'https://podcasts.kpfk.org');
-  assert.deepEqual(p.retiredHosts, ['kpfk-discovery.pacifica.audio']);
+  // KPFK sets siteUrl but retires no host: kpfk-discovery.pacifica.audio is kept for a future
+  // staging app (Paul, 2026-09-29), which a redirect would make unreachable.
+  assert.equal(validateProfile(raw()).siteUrl, 'https://podcasts.kpfk.org');
+  assert.deepEqual(validateProfile(raw()).retiredHosts, []);
+  const p = validateProfile({ ...raw(), retiredHosts: ['old.example.org'] });
+  assert.deepEqual(p.retiredHosts, ['old.example.org']);
   for (const bad of ['http://podcasts.kpfk.org', 'https://podcasts.kpfk.org/path', 'podcasts.kpfk.org', 'https://u@podcasts.kpfk.org'])
     assert.throws(() => validateProfile({ ...raw(), siteUrl: bad }), /siteUrl/, bad);
   for (const bad of [['https://old.example'], ['podcasts.kpfk.org'], ['bad host'], 'x'])
     assert.throws(() => validateProfile({ ...raw(), retiredHosts: bad }), /retired host|retiredHosts/, JSON.stringify(bad));
   const { siteUrl, ...noSite } = raw();
-  assert.throws(() => validateProfile(noSite), /retiredHosts needs siteUrl/);
-  const { retiredHosts, ...none } = noSite;
-  assert.deepEqual(validateProfile(none).retiredHosts, []);
+  assert.throws(() => validateProfile({ ...noSite, retiredHosts: ['old.example.org'] }), /retiredHosts needs siteUrl/);
+  assert.equal(validateProfile(noSite).siteUrl, null);
 });

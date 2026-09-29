@@ -77,7 +77,6 @@
   },
   "hiddenShows": ["friedman", "biketalka"],
   "siteUrl": "https://podcasts.kpfk.org",
-  "retiredHosts": ["kpfk-discovery.pacifica.audio"],
   "musicWindowDays": 14,
   "musicShows": ["specialmusicprogramm"],
   "episodeCorrections": [
