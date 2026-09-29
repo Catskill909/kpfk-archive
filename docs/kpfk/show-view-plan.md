@@ -1,6 +1,6 @@
 # Show view — plan (2026-09-29)
 
-**Status: plan for review. No code yet.** Paul: "the show modals on both desktop and mobile are a
+**Status: plan agreed 2026-09-29 (decisions in §9). Next: step 0, the mockup.** Paul: "the show modals on both desktop and mobile are a
 big mess … how do Spotify / Apple Podcasts handle all this info … I like the archive showing in
 the same view as the show info and episode info … deep planning before we jump in."
 
@@ -173,11 +173,9 @@ nothing to throw away.
   Record which fail before step 1 so failures are not blamed on the redesign.
 - **The Flutter app is not affected** (it uses `/api/archive` only).
 
-## 9. Decisions for Paul
+## 9. Decisions (Paul, 2026-09-29)
 
-1. Desktop: centred two-column panel (5.4, recommended) or a right-side drawer (like Listen
-   along's)? The drawer would collide with the transcript drawer, which also opens on the right.
-2. Header button: **Play latest** (recommended) — or play the episode the listener came from?
-   (Coming from an episode opens the Episode view anyway.)
-3. Keep the "minimize toward the bar" animation on close, or a plain slide down (simpler)?
-4. First 20 episodes then "Show 20 more", or all at once? (KPFK shows have up to ~70.)
+1. Desktop: **centred two-column panel** (show left, episodes / episode view right).
+2. Header button: **Play latest** (Resume / Pause when the latest is in progress / playing).
+3. Closing while playing: **plain slide down** (the "minimize toward the bar" animation goes).
+4. List: **first 20, then "Show 20 more"** at the end of the list.
