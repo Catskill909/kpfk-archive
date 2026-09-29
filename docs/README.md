@@ -42,7 +42,8 @@ names and examples in these are WBAI's; the mechanics are the same.
 | [live-audio-pattern.md](live-audio-pattern.md) | **Read before touching live audio.** The per-play live element model |
 | [big-audio-bug.md](big-audio-bug.md) | Why that model exists; the stale-cache lesson behind CLAUDE.md §1 |
 | [modal-live-audio-player.md](modal-live-audio-player.md) | Live player design record |
-| [show-modal-archive.md](show-modal-archive.md) · [episode-rail.md](episode-rail.md) | Show sheet and Past episodes |
+| [kpfk/show-view-plan.md](kpfk/show-view-plan.md) | **Current:** the Show view (show + episodes + episode view), 2026-09-29 |
+| [show-modal-archive.md](show-modal-archive.md) · [episode-rail.md](episode-rail.md) | Inherited (WBAI): the old show sheet and Past episodes, replaced by the Show view |
 | [touch-dev.md](touch-dev.md) | Touch, scroll locking, overlays (source of CLAUDE.md §3a) |
 | [accessibility.md](accessibility.md) | Front-end accessibility research |
 | [admin-page.md](admin-page.md) | The `/studio` view and usage counters. Its feed-harvest panels describe WBAI's XML sources |

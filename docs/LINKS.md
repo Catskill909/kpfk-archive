@@ -6,8 +6,8 @@ For station web pages, newsletters and social posts. Added 2026-09-28.
 
 | Link | Opens | Example |
 |---|---|---|
-| **Show** | the show, on its latest episode | `https://podcasts.kpfk.org/show/lawsnddisor` |
-| **Episode** | that episode | `https://podcasts.kpfk.org/show/lawsnddisor/138584` |
+| **Show** | the show and its list of episodes | `https://podcasts.kpfk.org/show/lawsnddisor` |
+| **Episode** | that episode, with a link back to the show | `https://podcasts.kpfk.org/show/lawsnddisor/138584` |
 
 - **Show links never expire** while the show is on the air. Use them for "listen to our show"
   links on websites and in bios.

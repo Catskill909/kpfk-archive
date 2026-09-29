@@ -177,7 +177,7 @@ shares the main top bar, search, player and popups, and adds its data where the 
 | 4.4 | Just aired | — | ✓ | **On both, Discovery's layout** (2026-09-28) — done |
 | 4.5 | Show cards | text on image | text under image | **Desktop: Discovery's; phone: main's** (2026-09-28) — done |
 | 4.6 | Search results | ✓ | ✓ | *to pick* |
-| 4.7 | Show popup / past episodes | ✓ | ✓ | *to pick* (main's is live, improved in step 2) |
+| 4.7 | Show popup / past episodes | ✓ | ✓ | main's, redesigned as the Show view 2026-09-29 ([kpfk/show-view-plan.md](kpfk/show-view-plan.md)) |
 | 4.8 | Episode + transcript (Listen along) | — | ✓ | Discovery's panel on the main player (2026-09-28) — done |
 | 4.9 | Schedule | ✓ | — | Main's (only one) |
 | 4.10 | Live player | ✓ | — | Main's (only one) |

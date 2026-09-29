@@ -97,6 +97,9 @@ main-side popups keep the player visible and clickable at phone and desktop (16 
 
 ### How rule 2 is built (step 2c: show sheet and Discovery popup)
 
+> **Superseded for the show sheet on 2026-09-29** by the Show view (next section). The Discovery
+> popup notes below still apply.
+
 - **Show sheet, desktop** (`styles.css`, "POPUP LAYOUT" block): two columns. The body (art,
   title, host, Past episodes, description, links; still the one scroll area) on the left; the
   selected broadcast and Play/Pause become a 280 px right-hand column instead of a strip
@@ -169,6 +172,36 @@ previous case's live player into the menu case. Each case now starts from a blan
   or deployed; app.js was rebuilt from the last commit plus the 3a steps, and a line-by-line
   comparison showed no other differences before 3b was applied again, one loop at a time.
 
+### The Show view (2026-09-29) — the show sheet, redesigned
+
+Plan, decisions and build order: [kpfk/show-view-plan.md](kpfk/show-view-plan.md). One panel,
+the Spotify / Apple Podcasts model; replaces the tabs, the "Selected broadcast" footer and the
+separate "Past episodes" screen.
+
+- **Show view:** compact header (art, category, name, host, **Play latest** / Resume latest /
+  Pause, Share), description (2 lines, More), link pills, then the **episodes right there**:
+  rows with the round play button on the left, date · time · length · status, topic (2 lines),
+  notes (1 line), progress. First 20, then "Show 20 more" in the flow of the list.
+- **Episode view** in the same panel: back link to the show, title (topic, else the date),
+  meta, Play · Start over · Transcript / Songs (Discovery) · Share, notes, "More from this show"
+  (3 rows) and All episodes.
+- **Phone:** one column; the Episode view takes the whole panel ("← show name").
+  **Desktop (≥ 900 px):** 1000 px panel, the show on the left (2fr), the list or the episode on
+  the right (3fr), each column scrolling on its own; the back link reads "All episodes".
+- **Rule 1 holds:** the panel ends above the player bar; the bar stays tappable.
+- **Closing** is a plain slide down (the "minimize toward the bar" animation is gone). The close
+  button still shows a chevron while audio plays, meaning "keeps playing".
+- **Row play button colours:** light mode `--surface-2` with an outline; dark mode a lighter
+  fill, no outline (`--row-play-bg`, `--row-play-line` on `.sheet`).
+- Code: `public/app.js` (`episodeRowHtml`, `showColHtml`, `listHtml`, `episodeHtml`,
+  `paintSheet`, `selectEpisode`, `backToShow`); CSS block "Show panel" at the end of
+  `public/styles.css`. The panel's view marker is `view-show` / `view-episode` on `.sv`
+  (not `sv-show`, which is the show column's class — the clash was a real bug, fixed before
+  shipping).
+- Test: `test/homepage/show-view.cjs` (33 checks, real taps, phone and desktop).
+- **Not yet done:** popup audit (`tools/popup-audit/`) rerun with the new panel; old sheet CSS
+  (`.sheet-foot`, `.sheet-routebar`, tabs, old row layout) still in `styles.css`, unused.
+
 ### Known limits and follow-ups
 
 - ~~**Keyboard on the main side:** focus trapped inside each popup~~ — fixed in 3b.
@@ -184,3 +217,4 @@ previous case's live player into the menu case. Each case now starts from a blan
 | 2026-09-28 | 2c | Show sheet two columns (desktop) / compact header (phone); Discovery popup Play in header, two columns on desktop; sheet Pause restored; resume notice waits under popups; audit checks play control is tappable | player usable 22 of 22; Play/Pause tappable in all 6 episode views; checked by eye (phone and desktop) |
 | 2026-09-28 | 2d | Remaining popups reviewed; live player desktop card 760 → 680 px; audit cases start from a blank page | all 11 popups: player usable at both widths; screenshots judged by eye |
 | 2026-09-28 | 3a–3b | Sheet's player copy removed; one shared Tab loop (popup → player bar → popup) for all nine popups and Discovery's popup; hidden controls skipped | player usable 22/22; keyboard reaches the bar and returns in 20/22 (Discovery transcript panel: probe limit, see above); npm test 162/162 |
+| 2026-09-29 | Show view | One panel: Show view with episodes + Episode view; desktop two columns; phone one column; Play latest; 20 + Show 20 more; plain slide down | `test/homepage/show-view.cjs` 33/33; now-playing, focus-rings pass; npm test 190/190; live on phone (Paul: "really nice"); popup audit not rerun |

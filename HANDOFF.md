@@ -1,6 +1,6 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-29 (archive rules, /discover retired, Import / Export + master spreadsheet).  **This folder is the active KPFK podcast-template project.**
+**Updated:** 2026-09-29, end of day (archive rules, /discover retired, Import / Export, Station & appearance, Now Playing on phones, **Show view**).  **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
@@ -8,14 +8,20 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 
 ## Remind Paul first (say these at the start of every session)
 
-1. **Live and checked (2026-09-29):** everything below is deployed; `storage.instanceId` =
-   `73039ae5-6589-4ec2-9df5-354de84c0989`, `freshVolume:false`. Player settled (floating card — do not
-   re-raise). podcasts.kpfk.org and podcast.kpfk.org are the same app.
+1. **Live and checked (2026-09-29, end of day):** everything below is deployed — live HEAD `4e2ceeb`
+   (Show view). Every script and stylesheet served byte-identical to the repo; `storage.instanceId` =
+   `73039ae5-6589-4ec2-9df5-354de84c0989`, `freshVolume:false` (survived an accidental no-cache
+   redeploy — harmless, just a slower rebuild). Player settled (floating card — do not re-raise).
+   podcasts.kpfk.org and podcast.kpfk.org are the same app.
 2. **Ace / QIR:** email sent 2026-09-28. As of 2026-09-29 the 7 show keys (All Of The Above, Nightscapes,
    The Aware Show, Reggae Central, CodePINK, Making Contact, CinemaScore) and World Massive Sep 26 are
    still not processed in QIR. **Any reply?** Recheck with the live `/api/plugins/qir/catalog`.
-3. **Next: the listener site (front interface) — Paul, 2026-09-29: "more important now".**
-   Step 8 done (old Discovery app stopped; kept for staging, own volume if reused). 5b station
+3. **Show view is live and Paul likes it ("really nice") — letting it sink in, testing more.**
+   Ask Paul what he found on his phone before changing it. Remaining steps, in order, in
+   [docs/kpfk/show-view-plan.md](docs/kpfk/show-view-plan.md) §6: 4 dead-code sweep, 5 older
+   browser suites + popup audit, 6 Now Playing fit (375×667), 7 docs. Details in the section below.
+   **Listener site (front interface) first — Paul, 2026-09-29: "more important now".** Station template:
+   step 8 done (old Discovery app stopped; kept for staging, own volume if reused). 5b station
    template: slice 1 built and parked — studio **Station & appearance** (cards, edit panels, draft
    bar, Review & publish, Undo) edits name/frequency/city/logo/links/socials; **Data sources** card
    shows feeds, stream, hosts read-only ("Not editable yet"). What's next for the template, in
@@ -29,7 +35,45 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
    defences removed…" fails on 2026-09-28 code too (real layout checks pass).
 6. **How Paul works:** short plain wrap-ups + "Paul — your action points"; copy-paste text on a
    page with Copy buttons; ask before opening a browser or touching his app on port 8081;
-   announce every push. Root causes, not workarounds ("no duct tape").
+   announce every push. **Test Chrome always `--mute-audio`** (tests play real episodes — they were
+   audible on Paul's Mac on 2026-09-29). Browser checks run on a scratch server (port 8091, copied
+   data dir, stats removed), never on 8081. Root causes, not workarounds ("no duct tape").
+
+## 2026-09-29 (afternoon) — studio Station & appearance, Now Playing on phones, the Show view
+
+All pushed and live (Paul redeployed; phone-tested). `npm test` 190/190.
+
+| Commit | What |
+|---|---|
+| `e874b91`, `e7282f1`, `483c480`, `01ac695` | **Station & appearance** (template slice 1): summary cards, edit panels, publish bar, Undo; **Data sources** card read-only ("Not editable yet"). Suite `test/studio/` station. Colour built (`404816e`) then removed for now (`90b0681`) |
+| `aa3dbb1`, `4785872` | **Now Playing on phones** (`public/now-playing.js`, ≤ 699 px): tap the mini player → full player sheet; non-modal, ends at the bar's top edge (never covers it — Paul). On for all phones; the `?np=on` tester switch is gone. Test `test/homepage/now-playing.cjs` |
+| `2ed0014` | **Focus rings only for the keyboard** (`theme-boot.js` sets `data-input`); no green outline after a tap. Test `test/homepage/focus-rings.cjs`, shown to fail without the fix |
+| `0ba882f`, `6eaf8cd` | Plan: [docs/kpfk/show-view-plan.md](docs/kpfk/show-view-plan.md) — inventory of 10 entry points, audit, design, URLs/Back, build order; Paul's four decisions (§9). Clickable mockup approved (claude.ai artifact) |
+| `4e2ceeb` | **Show view** (plan steps 1–3): one panel = show header with **Play latest** + description + links + **the episodes right there** (20, then "Show 20 more"); tap an episode → **Episode view** in the same panel (back link to the show). Desktop two columns (show left, list/episode right, each scrolls); phone one column. `/show/<code>` → Show view, `/show/<code>/<ep>` → Episode view; Back/close walk out exactly as far as they came in. Tabs, "Selected broadcast" footer, "Past episodes" route and the minimize animation removed. Design notes in docs/DESIGN-SYSTEM.md. Test `test/homepage/show-view.cjs` (33 checks, phone + desktop) |
+
+**Bugs found while building the Show view (fixed before shipping):** the panel's view marker and
+the show column shared the class `sv-show`, so column styles hit the whole panel (now
+`view-show` / `view-episode`); `syncUrl()` rewrote the open panel's history entry as a bare
+`{sheetId}`, dropping view and depth, which would have broken close/Back after a filter change.
+
+**Show view — what's left (plan §6), in order:**
+1. Let it sink in; collect Paul's phone findings first.
+2. **Step 4, dead code:** unused CSS for `.sheet-foot`, `.sheet-routebar`, `.sheet-route-back`,
+   `.sheet-archive-*`, `.sheet-info-*`, `.sheet-episode-instead`, `.sheet.minimizing`, the old
+   `.sheet-episode` row layout and `#sheetScrollCue` (markup still in `index.html`, always hidden);
+   JS `runMinimize` for the sheet, `sheetScrollCueLabel`. Harmless today (the new block overrides).
+3. **Step 5:** run the inherited browser suites that touch the sheet (`test/episode-rail`,
+   `test/live-stream`, `test/motion`, `test/schedule`, `test/touch`, `test/ui/live-archive-tests.js`)
+   — first record which already failed before `4e2ceeb`, then update them; rerun the popup audit
+   (`tools/popup-audit/`). Not run yet.
+4. **Step 6, Now Playing fit:** art sized by remaining height, 60 px play button, everything above the
+   fold at 375×667.
+5. **Step 7:** docs (DESIGN-SYSTEM examples, LINKS if anything changes).
+
+To run the browser tests: scratch server `PORT=8091 DATA_DIR=<copy of data> node tools/start.js`,
+headless Chrome `--headless=new --mute-audio --remote-debugging-port=9241
+--autoplay-policy=no-user-gesture-required`, then `APP_URL=http://localhost:8091 CDP_PORT=9241 node
+test/homepage/show-view.cjs` (also now-playing, focus-rings). Kill both and delete the copies after.
 
 ## 2026-09-29 — archive rules, /discover retired, Import / Export for moving the site
 

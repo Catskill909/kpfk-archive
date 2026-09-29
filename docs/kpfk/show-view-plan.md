@@ -1,6 +1,6 @@
 # Show view — plan (2026-09-29)
 
-**Status (2026-09-29): steps 0–3 built (mockup approved; Show view, Episode view, URLs/Back, all entry points) — test/homepage/show-view.cjs. Next: phone test after redeploy, then step 4 (dead CSS), 5 (older suites), 6 (Now Playing fit), 7 (docs).** Paul: "the show modals on both desktop and mobile are a
+**Status (2026-09-29): steps 0–3 built (mockup approved; Show view, Episode view, URLs/Back, all entry points) — test/homepage/show-view.cjs. Live 2026-09-29 (`4e2ceeb`); Paul's phone test: "really nice" — letting it sink in. Next: step 4 (dead CSS), 5 (older suites), 6 (Now Playing fit), 7 (docs).** Paul: "the show modals on both desktop and mobile are a
 big mess … how do Spotify / Apple Podcasts handle all this info … I like the archive showing in
 the same view as the show info and episode info … deep planning before we jump in."
 
