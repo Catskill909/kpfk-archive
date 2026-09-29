@@ -51,7 +51,7 @@ done
 # The suites share the one browser. None is allowed to hide another's
 # failure, so run them all regardless and exit non-zero if any did.
 rc=0
-for suite in layout-tests.js sort-tests.js export-tests.js; do
+for suite in layout-tests.js sort-tests.js export-tests.js station-tests.js; do
   echo
   echo "--- $suite"
   CDP_PORT=$PORT BASE="$BASE" STUDIO_PASSWORD="$PASSWORD" \

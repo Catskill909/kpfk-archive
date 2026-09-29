@@ -168,7 +168,7 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   console.log('\n2b. one file at a time, and program data');
   // Both lists are always shown (Paul: nothing hidden behind a toggle), every file link visible.
   const lists = JSON.parse(await ev(`JSON.stringify({ folded: document.querySelectorAll('#exportDialog details').length,
-    heads: [...document.querySelectorAll('#exportDialog .export-sub')].map((h) => h.textContent),
+    heads: [...document.querySelectorAll('#statsSection .export-sub')].map((h) => h.textContent),
     hidden: [...document.querySelectorAll('#exportDialog [data-file]')].filter((b) => !b.getClientRects().length).length })`));
   ok('both lists are shown, nothing folded or hidden', lists.folded === 0 && lists.heads.length === 2 && lists.hidden === 0, JSON.stringify(lists));
   before = files();
