@@ -29,7 +29,9 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
    [docs/kpfk/show-view-plan.md](docs/kpfk/show-view-plan.md) §6: 4 dead-code sweep, 5 older
    browser suites + popup audit, 6 Now Playing fit (375×667), 7 docs. Details in the section below.
    **Listener site (front interface) first — Paul, 2026-09-29: "more important now".** Station template:
-   step 8 done (old Discovery app stopped; kept for staging, own volume if reused). 5b station
+   step 8 done (old Discovery app stopped; kept for staging, own volume if reused). **Its Coolify Auto
+   deploy is now "Manual deployments only"** (2026-09-29 late evening): it had been redeploying itself on
+   every push to `kpfk-discovery-plugin`, which is why it was back up. Keep it manual. 5b station
    template: slice 1 built and parked — studio **Station & appearance** (cards, edit panels, draft
    bar, Review & publish, Undo) edits name/frequency/city/logo/links/socials; **Data sources** card
    shows feeds, stream, hosts read-only ("Not editable yet"). What's next for the template, in
