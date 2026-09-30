@@ -1,6 +1,7 @@
 # Schedule grid — plan (2026-09-29)
 
-A week-at-a-glance grid opened from the Schedule modal. Status: **built 2026-09-29, Paul approved ("so cool"), pushed** — live after a Coolify redeploy.
+A week-at-a-glance grid opened from the Schedule modal. Status: **live 2026-09-29 (`8a7a563`)**, Paul approved ("so cool"); checked on desktop, phone and
+iPad. Upright iPads stay on the list — confirmed by Paul on the device. Open: iPad edge polish (Paul's list, pending).
 Browser test: `test/schedule-grid/run.sh` — 47 checks; starts its own scratch server on 8091
 (copy of `data/` without `stats/`); `APP=<url>` targets another server instead.
 

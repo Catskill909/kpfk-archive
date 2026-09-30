@@ -8,16 +8,17 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 
 ## Remind Paul first (say these at the start of every session)
 
-1. **Live and checked (2026-09-29, end of day):** everything below is deployed — live HEAD `4e2ceeb`
-   (Show view). Every script and stylesheet served byte-identical to the repo; `storage.instanceId` =
-   `73039ae5-6589-4ec2-9df5-354de84c0989`, `freshVolume:false` (survived an accidental no-cache
-   redeploy — harmless, just a slower rebuild). Player settled (floating card — do not re-raise).
+1. **Live and checked (2026-09-29, late evening):** everything below is deployed — live HEAD `8a7a563`
+   (schedule week grid). `app.js` and `styles.css` served byte-identical to the repo; `/healthz`
+   `version` changed on the redeploy; `storage.instanceId` = `73039ae5-6589-4ec2-9df5-354de84c0989`,
+   `freshVolume:false` (volume intact). Player settled (floating card — do not re-raise).
    podcasts.kpfk.org and podcast.kpfk.org are the same app.
-1a. **Schedule week grid — pushed 2026-09-29 late evening; live only after Paul's Coolify redeploy.**
-   Paul is testing it on tablets, phones and live desktop. Check first: after the redeploy, `/healthz`
-   `version` changed and `storage.instanceId` is still `73039ae5-…`. What to expect on devices: a
-   **Grid** button in the schedule header from 1024 px wide (iPad landscape, 12.9" iPad Pro portrait,
-   desktop) and **never** on phones or smaller iPads in portrait. Ask Paul what he found before changing it.
+1a. **Schedule week grid is live and Paul likes it ("works great and looks great").** Checked by Paul on
+   desktop, phone and iPad. **Decided: upright iPads stay on the day list** — the Grid button shows from
+   1024 px only (iPad landscape, 13" iPads either way, desktop), never on phones or iPads held upright
+   ("good choice to leave it off portrait"). **Next: Paul has "edge polishing and some minor issues on
+   iPad" — ask him for the list first**, before changing anything. Details in the late-evening section
+   below and [docs/schedule-grid-plan.md](docs/schedule-grid-plan.md).
 2. **Ace / QIR:** email sent 2026-09-28. As of 2026-09-29 the 7 show keys (All Of The Above, Nightscapes,
    The Aware Show, Reggae Central, CodePINK, Making Contact, CinemaScore) and World Massive Sep 26 are
    still not processed in QIR — **rechecked 2026-09-29 evening: unchanged** (36 recordings; they appear in
@@ -49,7 +50,7 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 ## 2026-09-29 (late evening) — schedule week grid + show info card
 
 Plan and record: [docs/schedule-grid-plan.md](docs/schedule-grid-plan.md) (Paul's decisions at the top).
-Pushed; live after redeploy. `npm test` 190/190; browser `test/schedule-grid/run.sh` 47/47, shown to fail
+Pushed and live (Paul redeployed; checked on desktop, phone, iPad landscape). `npm test` 190/190; browser `test/schedule-grid/run.sh` 47/47, shown to fail
 on the pre-grid build and with the card's placement broken.
 
 - **Grid** button in the schedule header (1024 px and up only; JS `matchMedia` gate, and the grid closes
