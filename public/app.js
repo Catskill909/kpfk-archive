@@ -3710,12 +3710,14 @@
       publishedStale = stale;
       publishedLoading = false;
       paintPublishedSchedule();
+      if(gridIsOpen()) paintGrid(false);
     } catch(error){
       if(request !== publishedRequest) return;
       console.warn('[schedule] unavailable', error);
       publishedDays = null; schedTabs.innerHTML = '';
       schedBody.innerHTML = '<p class="sched-empty" role="status">Schedule unavailable. <button type="button" id="scheduleRetry">Retry</button></p>';
       document.getElementById('scheduleRetry').onclick = function(){ loadPublishedSchedule(); };
+      if(gridIsOpen()) paintGrid(false);
     } finally { if(request === publishedRequest) publishedLoading = false; }
   }
   function paintPublishedSchedule(){
@@ -3932,6 +3934,7 @@
   // is schedScrollToLive()'s job, and it only runs on paint, not on poll).
   function schedApplyLiveHighlight(){
     if(!schedIsOpen()) return;
+    gridApplyLive();
     // A published slot carries its real interval, so "on air" is a clock
     // comparison against absolute epochs — a future week can never light up by
     // weekday and time alone. The derived schedule has no intervals and matches
@@ -4097,6 +4100,7 @@
   }
   function dismissSchedule(){
     if(!schedIsOpen()) return;
+    dismissGrid();       // it sits on the schedule; never strand it over a closed one
     closeLiveChoice();   // never strand the chooser over a schedule that has gone
     schedScrim.classList.remove('show');
     schedModal.classList.remove('show');
@@ -4110,6 +4114,7 @@
   }
   function onSchedKey(e){
     if(sheet.classList.contains('show')) return;   // the sheet is above; its handler owns the keys
+    if(gridIsOpen()) return;                       // and so does the week grid
     if(liveChoiceOpen()) return;                   // and so does the chooser, which is above both
     if(e.key === 'Escape'){ e.preventDefault(); closeSchedule(); return; }
     if(e.key === 'Tab'){
@@ -4168,6 +4173,274 @@
   schedBody.addEventListener('error', function(e){
     if(e.target && e.target.tagName === 'IMG') e.target.classList.add('failed');
   }, true);
+
+  // ---------------- Week grid ----------------
+  // docs/schedule-grid-plan.md. The published week as days-across, times-down,
+  // each show as tall as its airtime. Large tablets and desktop only (1024px+),
+  // opened from the schedule's header and layered above it with its own history
+  // entry {sched:1, schedGrid:1}, so every way out lands back on the schedule,
+  // on the day tab that was showing. A block opens an info card beside it
+  // (photo, time, host, description) — information only, no links yet — and
+  // nothing here touches an <audio> element.
+  var gridModal = document.getElementById('schedGrid');
+  var gridScrim = document.getElementById('gridScrim');
+  var gridCloseBtn = document.getElementById('gridClose');
+  var gridBody = document.getElementById('gridBody');
+  var schedGridBtn = document.getElementById('schedGridBtn');
+  var GRID_MQ = window.matchMedia ? window.matchMedia('(min-width:1024px)') : null;
+  var GRID_Q = 15;                    // minutes per grid row — .grid-sheet's --grid-q
+  var GRID_ROWS = 24 * 60 / GRID_Q;
+  var gridReturnFocus = null;
+  var gridPaintedToday = '';
+  var gridScrollPending = false;      // opened before the week had loaded: scroll on first real paint
+  var gridSlots = [];                 // block data-i → {slot, day}, for the info card
+  var gridPopFor = null;              // the block whose info card is open
+
+  // Guarded like schedIsOpen: the live highlight runs once at init, before this is assigned.
+  function gridIsOpen(){ return !!gridModal && gridModal.classList.contains('show'); }
+  function gridAllowed(){ return !!(STATION.capabilities.publishedSchedule && GRID_MQ && GRID_MQ.matches); }
+  function gridSyncButton(){
+    schedGridBtn.hidden = !gridAllowed();
+    // Narrowed past the cutoff with the grid up: hand the reader back the list.
+    if(!gridAllowed() && gridIsOpen()) closeGrid();
+  }
+
+  function paintGrid(scroll){
+    gridPaintedToday = stationDay(new Date());
+    gridPopFor = null;                // the repaint replaces the blocks and the card with them
+    gridSlots = [];
+    var days = publishedWindow();
+    if(!days.length){
+      gridScrollPending = gridScrollPending || !!scroll;
+      gridBody.innerHTML = '<p class="sched-empty" role="status">'+
+        (publishedLoading ? 'Loading the schedule…' : publishedDays ? 'No upcoming days are published yet.' : 'Schedule unavailable.')+'</p>';
+      return;
+    }
+    scroll = scroll || gridScrollPending;
+    gridScrollPending = false;
+    var head = '<div class="grid-corner"></div>' + days.map(function(d, i){
+      var isToday = d.date === gridPaintedToday;
+      var name = new Intl.DateTimeFormat('en-US', {timeZone:STATION.timezone, weekday:'short'}).format(new Date(d.startTime * 1000));
+      return '<div class="grid-day'+(isToday ? ' grid-day-today' : '')+'" data-col="'+(i + 2)+'">'+
+        '<span class="grid-day-name">'+esc(isToday ? 'Today' : name + ' ' + (+d.date.slice(8)))+'</span></div>';
+    }).join('');
+    var hours = '';
+    for(var h = 0; h < 24; h++){
+      hours += '<div class="grid-hour" data-row="'+(2 + h * 60 / GRID_Q)+'" data-span="'+(60 / GRID_Q)+'" data-col="1">'+
+        esc(schedTimeLabel(h * 60))+'</div>';
+    }
+    var todayCol = 0;
+    var blocks = days.map(function(d, i){
+      if(d.date === gridPaintedToday) todayCol = i + 2;
+      return d.slots.map(function(slot){
+        var durMin = Math.round((slot.endTime - slot.startTime) / 60);
+        var row = Math.round(stationMinutes(slot.startTime) / GRID_Q);
+        var span = Math.max(1, Math.min(GRID_ROWS - row, Math.round(durMin / GRID_Q)));
+        gridSlots.push({slot:slot, day:d});
+        return '<button class="grid-block'+(durMin <= 30 ? ' grid-block-short' : '')+'" type="button"'+
+          ' aria-haspopup="dialog" aria-expanded="false" data-i="'+(gridSlots.length - 1)+'"'+
+          ' data-col="'+(i + 2)+'" data-row="'+(row + 2)+'" data-span="'+span+'"'+
+          ' data-start="'+slot.startTime+'" data-end="'+slot.endTime+'">'+
+          '<span class="grid-block-top">'+
+            '<span class="grid-thumb">'+(slot.photo ? '<img loading="lazy" alt="" src="'+esc(slot.photo)+'">' : '')+'</span>'+
+            '<span class="grid-title">'+esc(slot.name)+'</span>'+
+          '</span>'+
+          '<span class="grid-meta">'+esc(schedTimeLabel(stationMinutes(slot.startTime))+' · '+schedDurLabel(durMin))+'</span>'+
+          (slot.host ? '<span class="grid-host">'+esc(slot.host)+'</span>' : '')+
+          '<span class="sched-live-badge grid-live-badge" aria-hidden="true">'+
+            '<span class="sched-live-dot"></span><span class="sched-live-word">Live</span></span>'+
+        '</button>';
+      }).join('');
+    }).join('');
+    gridBody.innerHTML =
+      (publishedStale ? '<p class="sched-stale" role="status">Saved schedule · KPFK’s feed could not be refreshed.</p>' : '')+
+      '<div class="grid-sheet">'+head+hours+'<div class="grid-lines" aria-hidden="true"></div>'+blocks+
+      (todayCol ? '<div class="grid-now" data-col="'+todayCol+'" aria-hidden="true"></div>' : '')+'</div>'+
+      '<div class="grid-pop" id="gridPop" role="dialog" aria-labelledby="gridPopTitle" tabindex="-1" hidden></div>';
+    // Placement through CSSOM: the CSP (style-src 'self') voids style="" in markup.
+    var sheetEl = gridBody.querySelector('.grid-sheet');
+    sheetEl.style.setProperty('--grid-days', String(days.length));
+    [].forEach.call(sheetEl.querySelectorAll('[data-col]'), function(el){
+      el.style.gridColumn = el.dataset.col;
+      if(el.dataset.row) el.style.gridRow = el.dataset.row + ' / span ' + el.dataset.span;
+    });
+    gridApplyLive();
+    if(scroll) gridScrollToNow();
+  }
+
+  // On every now-playing poll (via schedApplyLiveHighlight) as well as on paint:
+  // moves the on-air block and the now-line without touching the scroll.
+  function gridApplyLive(){
+    if(!gridIsOpen()) return;
+    // Midnight with the grid up: the rolling week has moved a day under it.
+    if(stationDay(new Date()) !== gridPaintedToday){ paintGrid(false); return; }
+    var nowSec = Date.now() / 1000;
+    var onNow = (barMode === 'live') && !!liveWanted;
+    [].forEach.call(gridBody.querySelectorAll('.grid-block'), function(b){
+      var live = +b.dataset.start <= nowSec && nowSec < +b.dataset.end;
+      b.classList.toggle('grid-live', live);
+      b.classList.toggle('sched-live-playing', live && onNow);
+      var word = b.querySelector('.sched-live-word');
+      if(word) word.textContent = (live && onNow) ? 'On air' : 'Live';
+    });
+    var line = gridBody.querySelector('.grid-now');
+    if(line) line.style.setProperty('--grid-now', String((stationMinutes(nowSec) + (Math.floor(nowSec) % 60) / 60) / 1440));
+  }
+  // Puts the now-line a third of the way down, so what just aired is visible
+  // above it. offsetTop, not getBoundingClientRect: the dialog is still scaling
+  // in when this runs and a transformed rect would be off by that scale.
+  function gridScrollToNow(){
+    var line = gridBody.querySelector('.grid-now');
+    if(!line){ gridBody.scrollTop = 0; return; }
+    var frac = parseFloat(line.style.getPropertyValue('--grid-now')) || 0;
+    gridBody.scrollTop = Math.max(0, line.offsetTop + frac * line.offsetHeight - gridBody.clientHeight / 3);
+  }
+
+  // ---- The info card ----
+  // One card, opened beside the block that was clicked or tapped (not on hover:
+  // the large tablets this view serves have no hover). It lives inside the
+  // scrolling body, so it scrolls with its block. Information only for now.
+  function gridPopEl(){ return document.getElementById('gridPop'); }
+  function openGridPop(block){
+    var pop = gridPopEl(), item = gridSlots[+block.dataset.i];
+    if(!pop || !item) return;
+    closeGridPop(false);
+    var slot = item.slot;
+    var c = CAT_BY_KEY[slot.cat] || CAT_BY_KEY.special;
+    var info = showInfo[slot.showKey] || {};
+    var desc = slot.shortDescription || info.desc || info.shortdesc || '';
+    var day = item.day.date === gridPaintedToday ? 'Today'
+      : new Intl.DateTimeFormat('en-US', {timeZone:STATION.timezone, weekday:'long'}).format(new Date(slot.startTime * 1000));
+    var when = day + ' · ' + schedTimeLabel(stationMinutes(slot.startTime)) + ' – ' + schedTimeLabel(stationMinutes(slot.endTime));
+    var live = block.classList.contains('grid-live');
+    pop.innerHTML =
+      '<div class="grid-pop-head">'+
+        '<span class="grid-pop-thumb">'+(slot.photo ? '<img alt="" src="'+esc(slot.photo)+'">' : '')+'</span>'+
+        '<div class="grid-pop-titles">'+
+          '<h3 class="grid-pop-title" id="gridPopTitle">'+esc(slot.name)+'</h3>'+
+          '<p class="grid-pop-when">'+esc(when)+'</p>'+
+        '</div>'+
+        '<button class="grid-pop-close" type="button" aria-label="Close show info">'+
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>'+
+        '</button>'+
+      '</div>'+
+      '<p class="grid-pop-meta">'+esc(c.label + (slot.host ? ' · ' + slot.host : ''))+'</p>'+
+      (desc ? '<p class="grid-pop-desc">'+esc(desc)+'</p>' : '')+
+      (live ? '<span class="sched-live-badge grid-pop-live'+(block.classList.contains('sched-live-playing') ? ' is-playing' : '')+'">'+
+        '<span class="sched-live-dot"></span><span class="sched-live-word">'+
+        (block.classList.contains('sched-live-playing') ? 'On air' : 'Live')+'</span></span>' : '');
+    pop.hidden = false;
+    gridPlacePop(block, pop);
+    block.classList.add('grid-block-open');
+    block.setAttribute('aria-expanded', 'true');
+    gridPopFor = block;
+    pop.focus({preventScroll:true});
+  }
+  // Returns whether there was a card to close, so Esc can close the card
+  // first and the grid only on the next press.
+  function closeGridPop(returnFocus){
+    var pop = gridPopEl();
+    if(!pop || pop.hidden) return false;
+    pop.hidden = true;
+    pop.innerHTML = '';
+    var block = gridPopFor;
+    gridPopFor = null;
+    if(block){
+      block.classList.remove('grid-block-open');
+      block.setAttribute('aria-expanded', 'false');
+      if(returnFocus) block.focus({preventScroll:true});
+    }
+    return true;
+  }
+  // Beside the block: to its right, or to its left when the right would run
+  // off the grid; and vertically inside what is on screen, below the sticky
+  // day headers. Offsets are within .grid-body (position:relative), so the
+  // card is measured in the same unscaled space it is placed in.
+  function gridPlacePop(block, pop){
+    var GAP = 8, w = pop.offsetWidth, h = pop.offsetHeight;
+    var left = block.offsetLeft + block.offsetWidth + GAP;
+    if(left + w > gridBody.clientWidth - GAP) left = block.offsetLeft - w - GAP;
+    left = Math.max(GAP, left);
+    var head = gridBody.querySelector('.grid-day');
+    var headH = head ? head.getBoundingClientRect().bottom - gridBody.getBoundingClientRect().top : 0;
+    var minTop = gridBody.scrollTop + headH + GAP;
+    var maxTop = gridBody.scrollTop + gridBody.clientHeight - h - GAP;
+    var top = Math.min(Math.max(block.offsetTop, minTop), Math.max(minTop, maxTop));
+    pop.style.left = left + 'px';
+    pop.style.top = top + 'px';
+  }
+
+  function openGrid(fromHistory){
+    if(gridIsOpen()) return;
+    if(!gridAllowed() || !schedIsOpen()){
+      // Back/Forward onto a grid entry this screen can no longer show: fold it
+      // into the plain schedule entry so the next Back is not a dead press.
+      if(fromHistory && canHistory && history.state && history.state.schedGrid){
+        try { history.replaceState({sched:1}, '', location.href); } catch(e){}
+      }
+      return;
+    }
+    gridReturnFocus = document.activeElement;
+    // Open before painting: gridApplyLive() and the scroll both need it showing.
+    gridScrim.classList.add('show');
+    gridModal.classList.add('show');
+    gridModal.setAttribute('aria-hidden', 'false');
+    schedGridBtn.setAttribute('aria-expanded', 'true');
+    paintGrid(true);
+    if(canHistory && !fromHistory){
+      try { history.pushState({sched:1, schedGrid:1}, '', location.href); } catch(e){}
+    }
+    refreshOverlayState();
+    gridCloseBtn.focus();
+    document.addEventListener('keydown', onGridKey);
+  }
+  // Through history when the grid pushed an entry; popstate then dismisses it
+  // and leaves the schedule (whose {sched:1} entry is now current) standing.
+  function closeGrid(){
+    if(!gridIsOpen()) return;
+    if(canHistory && history.state && history.state.schedGrid){ history.back(); return; }
+    dismissGrid();
+  }
+  function dismissGrid(){
+    if(!gridIsOpen()) return;
+    closeGridPop(false);
+    gridScrim.classList.remove('show');
+    gridModal.classList.remove('show');
+    gridModal.setAttribute('aria-hidden', 'true');
+    schedGridBtn.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('keydown', onGridKey);
+    refreshOverlayState();
+    if(gridReturnFocus && gridReturnFocus.focus) gridReturnFocus.focus();
+    gridReturnFocus = null;
+  }
+  function onGridKey(e){
+    // The card first, the grid on the next press — never both at once.
+    if(e.key === 'Escape'){ e.preventDefault(); if(!closeGridPop(true)) closeGrid(); return; }
+    if(e.key === 'Tab') cycleTab(e, gridModal.querySelectorAll('button, [tabindex="0"]'));
+  }
+  schedGridBtn.addEventListener('click', function(){ openGrid(false); });
+  gridCloseBtn.addEventListener('click', closeGrid);
+  gridScrim.addEventListener('click', closeGrid);
+  // A block opens its card (again = closes it; another block = swaps it);
+  // anywhere else in the grid that is not the card closes it.
+  gridBody.addEventListener('click', function(e){
+    var block = e.target.closest('.grid-block');
+    if(block){
+      if(block === gridPopFor) closeGridPop(false);
+      else openGridPop(block);
+      return;
+    }
+    if(e.target.closest('.grid-pop-close')){ closeGridPop(true); return; }
+    if(!e.target.closest('.grid-pop')) closeGridPop(false);
+  });
+  gridBody.addEventListener('error', function(e){
+    if(e.target && e.target.tagName === 'IMG') e.target.classList.add('failed');
+  }, true);
+  if(GRID_MQ){
+    if(GRID_MQ.addEventListener) GRID_MQ.addEventListener('change', gridSyncButton);
+    else if(GRID_MQ.addListener) GRID_MQ.addListener(gridSyncButton);
+  }
+  gridSyncButton();
 
   function fetchShowInfo(){
     fetch('/api/showinfo', {cache:'no-store'})
@@ -4909,6 +5182,9 @@
     else dismissSheet();
     if(route.sched) openSchedule(true);
     else dismissSchedule();
+    // The grid stacks on the schedule: its entry is {sched:1, schedGrid:1}.
+    if(route.schedGrid) openGrid(true);
+    else dismissGrid();
   });
 
   function onSheetKey(e){

@@ -8,6 +8,7 @@
     --surface-hover: rgba(243,236,228,0.05);
     --outline: rgba(243,236,228,0.10);
     --outline-strong: rgba(243,236,228,0.18);
+    --grid-edge: rgba(243,236,228,0.20);   /* week-grid show borders: --outline was too faint on dark (Paul, 2026-09-29) */
     --ink:#f3ece4;
     --ink-dim:#b7a99e;
     --ink-faint:#7d7168;
@@ -148,6 +149,7 @@
       --surface-3:#e6dacb;
       --surface-hover: rgba(30,20,15,0.04);
       --outline: rgba(30,20,15,0.10);
+      --grid-edge: rgba(30,20,15,0.10);
       --outline-strong: rgba(30,20,15,0.20);
       --ink:#231a15;
       --ink-dim:#5b4c42;
@@ -172,7 +174,7 @@
     color-scheme: dark;
     --surface-0:#14100f; --surface-1:#1c1615; --surface-2:#241c1a; --surface-3:#2c2320;
     --surface-hover: rgba(243,236,228,0.05);
-    --outline: rgba(243,236,228,0.10); --outline-strong: rgba(243,236,228,0.18);
+    --outline: rgba(243,236,228,0.10); --outline-strong: rgba(243,236,228,0.18); --grid-edge: rgba(243,236,228,0.20);
     --ink:#f3ece4; --ink-dim:#b7a99e; --ink-faint:#7d7168;
     --accent:#e14a2e; --accent-ink:#fff5f2; --accent-2:#4fb6ac; --accent-2-ink:#06201d;
     --good:#6fae7c; --good-bg: rgba(111,174,124,0.14);
@@ -188,7 +190,7 @@
     color-scheme: light;
     --surface-0:#f6f1ea; --surface-1:#ffffff; --surface-2:#efe6da; --surface-3:#e6dacb;
     --surface-hover: rgba(30,20,15,0.04);
-    --outline: rgba(30,20,15,0.10); --outline-strong: rgba(30,20,15,0.20);
+    --outline: rgba(30,20,15,0.10); --outline-strong: rgba(30,20,15,0.20); --grid-edge: rgba(30,20,15,0.10);
     --ink:#231a15; --ink-dim:#5b4c42; --ink-faint:#8a7b6f;
     --accent:#c8371e; --accent-ink:#fff5f2; --accent-2:#0d7d72; --accent-2-ink:#eafffb;
     --good:#2f7a41; --good-bg: rgba(47,122,65,0.12);
@@ -2271,6 +2273,237 @@
     align-self:flex-start; padding-left:.2rem;
     font-size:.7rem; font-style:italic; color:var(--ink-faint);
   }
+  /* ---------------- Week grid (docs/schedule-grid-plan.md) ----------------
+     Large tablets and desktop only. Everything visual is the schedule list's:
+     same surfaces, card edge, on-air accent and badge, so the two read as one
+     dialog seen two ways. Layered ABOVE the schedule (167/168 vs 163/165) and
+     below the info sheet (170/180); its scrim is light because the schedule's
+     already dims the page. */
+  .sched-grid-btn{
+    position:absolute; top:.9rem; right:calc(.9rem + 40px + .5rem); z-index:2;
+    height:40px; padding:0 .95rem 0 .8rem; border-radius:999px;
+    display:inline-flex; align-items:center; gap:.45rem; cursor:pointer;
+    border:1px solid var(--outline-strong);
+    background:var(--surface-2); color:var(--ink);
+    font-family:var(--font-display); font-weight:700; font-size:.84rem; letter-spacing:.03em;
+    transition:background .15s ease, color .15s ease, border-color .15s ease, transform .12s ease;
+  }
+  .sched-grid-btn[hidden]{ display:none; }
+  .sched-grid-btn svg{ width:17px; height:17px; flex:none; }
+  @media (hover:hover) and (pointer:fine){
+    .sched-grid-btn:hover{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
+  }
+  .sched-grid-btn:active{ transform:scale(.96); }
+  .sched-head:has(.sched-grid-btn:not([hidden])){ padding-right:10.5rem; }
+  /* JS (matchMedia) is the gate; this only guarantees a phone never sees it. */
+  @media (max-width:1023px){ .sched-grid-btn{ display:none !important; } }
+
+  .sched-grid-scrim{
+    position:fixed; inset:0; z-index:167;
+    background:color-mix(in srgb, #000 35%, transparent);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:var(--ov-scrim-tr-out);
+  }
+  .sched-grid-scrim.show{
+    opacity:1; visibility:visible; pointer-events:auto;
+    transition:var(--ov-scrim-tr-in);
+  }
+  .sched-grid{
+    position:fixed; z-index:168;
+    top:50%; left:50%;
+    width:min(1280px, 96vw);
+    height:min(90dvh, 980px);
+    transform:translate(-50%, -43%) scale(.95);
+    display:flex; flex-direction:column;
+    background:var(--surface-1); color:var(--ink);
+    border-radius:18px; overflow:hidden;
+    box-shadow:0 30px 70px -20px rgba(0,0,0,.7), var(--elev-2);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:var(--ov-panel-tr-out);
+  }
+  .sched-grid.show{
+    opacity:1; visibility:visible; pointer-events:auto;
+    transform:translate(-50%, -50%) scale(1);
+    transition:var(--ov-panel-tr-in);
+  }
+  .grid-body{
+    position:relative;   /* offsetParent for gridScrollToNow() */
+    flex:1 1 auto; overflow-y:auto;
+    overscroll-behavior:contain;
+  }
+  /* One row per 15 minutes (the published slots are all :00/:30, this leaves
+     room for a :15 without a special case). 22px a quarter makes a half-hour
+     show 44px: the least that holds a two-line title. Placement is set through
+     CSSOM by app.js — the CSP voids inline style="" markup. */
+  .grid-sheet{
+    --grid-q:22px;
+    display:grid;
+    grid-template-columns:4.4rem repeat(var(--grid-days, 7), minmax(0, 1fr));
+    grid-template-rows:auto repeat(96, var(--grid-q));
+    column-gap:6px;
+    padding:0 1rem 1rem 0;
+  }
+  .grid-corner, .grid-day{
+    grid-row:1; position:sticky; top:0; z-index:4;
+    background:var(--surface-1);
+    border-bottom:1px solid var(--outline);
+    margin-bottom:.35rem;
+  }
+  .grid-corner{ grid-column:1; }
+  .grid-day{
+    padding:.75rem .2rem .65rem; text-align:center;
+    font-family:var(--font-display); font-weight:700; font-size:.84rem;
+    letter-spacing:.03em; color:var(--ink-dim); white-space:nowrap;
+  }
+  .grid-day-name{
+    display:inline-block; padding:.3rem .8rem;
+    border:1px solid transparent; border-radius:999px;
+  }
+  .grid-day-today .grid-day-name{
+    background:var(--accent); border-color:var(--accent); color:var(--accent-ink);
+  }
+  .grid-lines{
+    grid-row:2 / -1; grid-column:2 / -1;
+    background:
+      repeating-linear-gradient(to bottom,
+        var(--outline) 0 1px, transparent 1px calc(var(--grid-q) * 4)),
+      repeating-linear-gradient(to bottom,
+        transparent 0 calc(var(--grid-q) * 2),
+        color-mix(in srgb, var(--outline) 45%, transparent) calc(var(--grid-q) * 2) calc(var(--grid-q) * 2 + 1px),
+        transparent calc(var(--grid-q) * 2 + 1px) calc(var(--grid-q) * 4));
+  }
+  .grid-hour{
+    grid-column:1; padding:.15rem .7rem 0 0; text-align:right;
+    font-family:var(--font-display); font-weight:700; font-size:.76rem;
+    font-variant-numeric:tabular-nums; color:var(--ink-dim); white-space:nowrap;
+  }
+  .grid-block{
+    --sched-handle: color-mix(in srgb, var(--accent) 30%, var(--outline-strong));
+    position:relative; z-index:1; min-width:0; min-height:0; overflow:hidden;
+    margin:2px 0;
+    display:flex; flex-direction:column; gap:.15rem;
+    padding:.3rem .5rem .3rem .55rem;
+    border:1px solid var(--grid-edge); border-left:3px solid var(--sched-handle);
+    border-radius:10px;
+    background:var(--surface-2);
+    container-type:inline-size;
+    /* a <button> (it opens the info card) dressed as the card it always was */
+    font:inherit; color:inherit; text-align:left; cursor:pointer;
+    transition:background .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  @media (hover:hover) and (pointer:fine){
+    .grid-block:hover{
+      background:var(--surface-3);
+      border-color:color-mix(in srgb, var(--ink) 34%, transparent);
+    }
+  }
+  .grid-block:focus-visible{ outline:2px solid var(--accent); outline-offset:1px; }
+  /* The block whose card is open: ringed, so the card visibly belongs to it. */
+  .grid-block.grid-block-open{
+    border-color:color-mix(in srgb, var(--ink) 55%, transparent);
+    box-shadow:0 0 0 1px color-mix(in srgb, var(--ink) 55%, transparent);
+  }
+  .grid-block-top{ display:flex; align-items:flex-start; gap:.45rem; min-width:0; }
+  .grid-thumb{
+    display:none; flex:none; width:28px; height:28px; border-radius:7px; overflow:hidden;
+    background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-3);
+    box-shadow:inset 0 0 0 1px var(--outline);
+  }
+  .grid-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .grid-thumb img.failed{ display:none; }
+  .grid-title{
+    min-width:0; font-weight:600; font-size:.8rem; line-height:1.22;
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
+    overflow-wrap:anywhere;
+  }
+  .grid-meta, .grid-host{
+    font-size:.7rem; line-height:1.25; color:var(--ink-dim);
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .grid-meta{ font-variant-numeric:tabular-nums; }
+  /* Half-hour blocks carry the title alone; the time axis beside them says when. */
+  .grid-block-short .grid-meta, .grid-block-short .grid-host{ display:none; }
+  .grid-block-short{ justify-content:center; }
+  @container (min-width:130px){
+    .grid-block:not(.grid-block-short) .grid-thumb{ display:block; }
+  }
+  .grid-block.grid-live{
+    background:color-mix(in srgb, var(--accent) 10%, var(--surface-2));
+    border-color:color-mix(in srgb, var(--accent) 45%, var(--outline-strong));
+  }
+  .grid-live-badge{ margin:auto 0 0; align-self:flex-start; padding:.22rem .5rem; }
+  .grid-block.grid-live:not(.grid-block-short) .grid-live-badge{ display:inline-flex; }
+  .grid-block.sched-live-playing .grid-live-badge{
+    background:var(--accent); border-color:var(--accent); color:var(--accent-ink);
+  }
+  .grid-block.sched-live-playing .sched-live-dot{ background:var(--accent-ink); box-shadow:none; animation:none; }
+  /* The current time, across today's column only. --grid-now is the fraction
+     of the day gone, set by app.js on paint and on every now-playing poll. */
+  .grid-now{
+    grid-row:2 / -1; position:relative; z-index:3; pointer-events:none;
+  }
+  .grid-now::before{
+    content:""; position:absolute; left:0; right:0;
+    top:calc(var(--grid-now, 0) * 100%); height:2px; margin-top:-1px;
+    background:var(--accent);
+  }
+  .grid-now::after{
+    content:""; position:absolute; left:-4px;
+    top:calc(var(--grid-now, 0) * 100%); width:9px; height:9px; margin-top:-4.5px;
+    border-radius:50%; background:var(--accent);
+  }
+  .grid-body .sched-empty, .grid-body .sched-stale{ padding-inline:1.3rem; }
+  /* The info card. Placed by app.js (gridPlacePop) inside the scrolling body,
+     so it travels with its block; above the blocks, now-line and sticky days. */
+  .grid-pop{
+    position:absolute; z-index:6; width:320px; max-width:calc(100% - 1rem);
+    padding:.9rem .95rem 1rem;
+    display:flex; flex-direction:column; gap:.55rem;
+    background:var(--surface-1); color:var(--ink);
+    border:1px solid var(--outline-strong); border-radius:14px;
+    box-shadow:0 18px 44px -12px rgba(0,0,0,.35), var(--elev-2);
+  }
+  .grid-pop[hidden]{ display:none; }
+  .grid-pop:focus{ outline:none; }
+  .grid-pop-head{ display:flex; align-items:flex-start; gap:.7rem; }
+  .grid-pop-thumb{
+    flex:none; width:56px; height:56px; border-radius:10px; overflow:hidden;
+    background:url("/assets/kpfk-artwork-placeholder.svg") center/cover no-repeat, var(--surface-2);
+    box-shadow:inset 0 0 0 1px var(--outline);
+  }
+  .grid-pop-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .grid-pop-thumb img.failed{ display:none; }
+  .grid-pop-titles{ flex:1 1 auto; min-width:0; padding-top:.1rem; }
+  .grid-pop-title{
+    margin:0; font-family:var(--font-display); font-weight:800;
+    font-size:1.05rem; line-height:1.2; letter-spacing:.01em; overflow-wrap:anywhere;
+  }
+  .grid-pop-when{
+    margin:.25rem 0 0; font-size:.78rem; color:var(--ink-dim);
+    font-variant-numeric:tabular-nums;
+  }
+  .grid-pop-close{
+    flex:none; width:32px; height:32px; margin:-.2rem -.2rem 0 0; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    border:1px solid var(--outline-strong); background:var(--surface-2); color:var(--ink);
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .grid-pop-close svg{ width:13px; height:13px; }
+  @media (hover:hover) and (pointer:fine){
+    .grid-pop-close:hover{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
+  }
+  .grid-pop-meta{ margin:0; font-size:.82rem; font-weight:600; color:var(--ink); }
+  .grid-pop-desc{
+    margin:0; font-size:.84rem; line-height:1.5; color:var(--ink-dim);
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:8; overflow:hidden;
+  }
+  .grid-pop-live{ display:inline-flex; align-self:flex-start; margin:0; }
+  .grid-pop-live.is-playing{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
+  .grid-pop-live.is-playing .sched-live-dot{ background:var(--accent-ink); box-shadow:none; animation:none; }
+  @media (prefers-reduced-motion:reduce){
+    .sched-grid-scrim, .sched-grid{ transition-duration:0s; transition-delay:0s; }
+  }
+
   /* Phones: the same tall bottom sheet as the info sheet / live player / donate,
      sharing --phone-sheet-gap so all of them sit at exactly the same height. */
   @media (max-width:560px){
@@ -3853,12 +4086,12 @@
      Known limit: keyboard focus is still trapped inside each popup, so Tab does
      not reach the bar while one is open (follow-up in DESIGN-SYSTEM.md). */
   body.has-player .player-bar{ z-index:310; }
-  body.has-player :is(.menu-scrim, .sheet-scrim, .live-scrim, .sched-scrim, .donate-scrim,
+  body.has-player :is(.menu-scrim, .sheet-scrim, .live-scrim, .sched-scrim, .sched-grid-scrim, .donate-scrim,
     .lp-info-scrim, .lp-alert-scrim, .live-choice-scrim){ bottom:var(--player-h, 0px); }
   body.has-player .lightbox{ bottom:var(--player-h, 0px); }
   body.has-player .menu-panel{ height:calc(100dvh - var(--player-h, 0px)); }
   @media (min-width:561px){
-    body.has-player :is(.sheet, .live-player, .lp-info, .lp-alert, .live-choice, .sched-modal, .donate-modal){
+    body.has-player :is(.sheet, .live-player, .lp-info, .lp-alert, .live-choice, .sched-modal, .sched-grid, .donate-modal){
       top:calc((100dvh - var(--player-h, 0px)) / 2);
     }
     body.has-player :is(.sheet, .live-player, .lp-info, .lp-alert){
@@ -3867,9 +4100,10 @@
     body.has-player :is(.sched-modal, .donate-modal){
       height:min(76dvh, 800px, calc(100dvh - var(--player-h, 0px) - 2rem));
     }
+    body.has-player .sched-grid{ height:min(90dvh, 980px, calc(100dvh - var(--player-h, 0px) - 2rem)); }
   }
   @media (max-width:560px){
-    body.has-player :is(.sheet, .live-player, .donate-modal, .sched-modal, .lp-info){ bottom:var(--player-h, 0px); }
+    body.has-player :is(.sheet, .live-player, .donate-modal, .sched-modal, .sched-grid, .lp-info){ bottom:var(--player-h, 0px); }
     body.has-player .sheet{
       max-height:calc(100dvh - var(--player-h, 0px) - max(var(--phone-sheet-gap), env(safe-area-inset-top,0px)));
     }
@@ -4076,11 +4310,11 @@
      below that the panel is a bottom sheet and a popup opens above it (closing the popup
      brings it straight back). The side menu is a right-hand drawer and keeps its place. */
   @media (min-width:700px){
-    body.along-open :is(.sheet-scrim, .live-scrim, .sched-scrim, .donate-scrim, .lp-info-scrim, .lp-alert-scrim, .live-choice-scrim){
+    body.along-open :is(.sheet-scrim, .live-scrim, .sched-scrim, .sched-grid-scrim, .donate-scrim, .lp-info-scrim, .lp-alert-scrim, .live-choice-scrim){
       right:min(var(--along-w, 420px), 92vw);
     }
     body.along-open .lightbox{ right:min(var(--along-w, 420px), 92vw); }
-    body.along-open :is(.sheet, .live-player, .sched-modal, .donate-modal, .lp-info, .lp-alert, .live-choice){
+    body.along-open :is(.sheet, .live-player, .sched-modal, .sched-grid, .donate-modal, .lp-info, .lp-alert, .live-choice){
       left:calc((100vw - min(var(--along-w, 420px), 92vw)) / 2);
       max-width:calc(100vw - min(var(--along-w, 420px), 92vw) - 2rem);
     }

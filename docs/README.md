@@ -47,6 +47,7 @@ names and examples in these are WBAI's; the mechanics are the same.
 | [touch-dev.md](touch-dev.md) | Touch, scroll locking, overlays (source of CLAUDE.md §3a) |
 | [accessibility.md](accessibility.md) | Front-end accessibility research |
 | [admin-page.md](admin-page.md) | The `/studio` view and usage counters. Its feed-harvest panels describe WBAI's XML sources |
+| [schedule-grid-plan.md](schedule-grid-plan.md) | **Current:** the schedule's week grid + info card (1024 px and up), 2026-09-29 |
 | [schedule-dev.md](schedule-dev.md) | Schedule **UI** rules (tabs, overlay, chooser, history). Its *derived* schedule is WBAI's; KPFK renders published slots (`paintPublishedSchedule`) |
 
 ## WBAI-era history — does not describe how this app gets its data

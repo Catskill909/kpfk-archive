@@ -7,6 +7,10 @@ that changed once it was in real hands.
 
 Started 2026-08-05. Built 2026-08-06.
 
+> **KPFK (2026-09-29):** the schedule also has a **week grid** on 1024 px and up —
+> a Grid button in this dialog's header, layered above it with its own history
+> entry `{sched:1, schedGrid:1}`. See [schedule-grid-plan.md](schedule-grid-plan.md).
+
 ---
 
 ## 0. The idea, in one paragraph

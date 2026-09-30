@@ -27,7 +27,9 @@ read the Pacifica JSON feeds through a per-station profile.
 - **Built-in player** — any archived episode, or the live 90.7 FM stream, right in
   the app; resumes long shows where you stopped, without an account.
 - **Weekly schedule** — KPFK's published schedule as a today-first, seven-day tabbed
-  view with show artwork, opening scrolled to what's on air now.
+  view with show artwork, opening scrolled to what's on air now. On tablets and
+  desktops a **Grid** view shows the whole week at once, each show as tall as its
+  airtime; click one for its details.
 - **On-air now and up next** — artwork, host, air times, and the song when the
   station's track recognition identifies one.
 - **Show details and past episodes**, list or gallery view, shareable links with

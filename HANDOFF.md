@@ -1,6 +1,6 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-29, end of day (archive rules, /discover retired, Import / Export, Station & appearance, Now Playing on phones, **Show view**).  **This folder is the active KPFK podcast-template project.**
+**Updated:** 2026-09-29, late evening (archive rules, /discover retired, Import / Export, Station & appearance, Now Playing on phones, Show view, **schedule week grid**).  **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
@@ -13,6 +13,11 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
    `73039ae5-6589-4ec2-9df5-354de84c0989`, `freshVolume:false` (survived an accidental no-cache
    redeploy — harmless, just a slower rebuild). Player settled (floating card — do not re-raise).
    podcasts.kpfk.org and podcast.kpfk.org are the same app.
+1a. **Schedule week grid — pushed 2026-09-29 late evening; live only after Paul's Coolify redeploy.**
+   Paul is testing it on tablets, phones and live desktop. Check first: after the redeploy, `/healthz`
+   `version` changed and `storage.instanceId` is still `73039ae5-…`. What to expect on devices: a
+   **Grid** button in the schedule header from 1024 px wide (iPad landscape, 12.9" iPad Pro portrait,
+   desktop) and **never** on phones or smaller iPads in portrait. Ask Paul what he found before changing it.
 2. **Ace / QIR:** email sent 2026-09-28. As of 2026-09-29 the 7 show keys (All Of The Above, Nightscapes,
    The Aware Show, Reggae Central, CodePINK, Making Contact, CinemaScore) and World Massive Sep 26 are
    still not processed in QIR — **rechecked 2026-09-29 evening: unchanged** (36 recordings; they appear in
@@ -40,6 +45,27 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
    announce every push. **Test Chrome always `--mute-audio`** (tests play real episodes — they were
    audible on Paul's Mac on 2026-09-29). Browser checks run on a scratch server (port 8091, copied
    data dir, stats removed), never on 8081. Root causes, not workarounds ("no duct tape").
+
+## 2026-09-29 (late evening) — schedule week grid + show info card
+
+Plan and record: [docs/schedule-grid-plan.md](docs/schedule-grid-plan.md) (Paul's decisions at the top).
+Pushed; live after redeploy. `npm test` 190/190; browser `test/schedule-grid/run.sh` 47/47, shown to fail
+on the pre-grid build and with the card's placement broken.
+
+- **Grid** button in the schedule header (1024 px and up only; JS `matchMedia` gate, and the grid closes
+  back to the list if the window narrows). Seven days across (today first), 15-minute rows, each show
+  as tall as its airtime, now-line in today's column, opens scrolled to now. Our tokens, dark + light;
+  dark-mode block borders use `--grid-edge` (20 %) because `--outline` was barely visible.
+- Layered **above** the schedule (z 167/168) with its own history entry `{sched:1, schedGrid:1}`:
+  ✕, Esc, scrim, Back all land on the schedule, same day tab. In the player-frame and
+  beside-the-transcript rules, so the player bar stays usable.
+- **Info card:** click/tap a show → card beside it (photo, day + time range, category · host, short
+  description, Live badge). Not hover — iPads have none. Esc closes the card, then the grid.
+  No links yet; a "Go to show" button would go on this card.
+- **Process slip, fixed:** the first grid browser runs used Paul's app on 8081, against the rule
+  above; their page views may be in his *local* `data/stats/2026-09.json` (not prod). The runner now
+  starts its own scratch server (8091, data copy without `stats/`) and deletes it after. Also: port
+  8082 is the Discovery plugin's own server (`kpfk-discovery-plugin`) — don't use it for a second copy.
 
 ## 2026-09-29 (afternoon) — studio Station & appearance, Now Playing on phones, the Show view
 

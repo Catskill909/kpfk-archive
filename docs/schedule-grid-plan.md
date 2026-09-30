@@ -1,6 +1,8 @@
 # Schedule grid — plan (2026-09-29)
 
-A week-at-a-glance grid opened from the Schedule modal. Status: **plan, not built.**
+A week-at-a-glance grid opened from the Schedule modal. Status: **built 2026-09-29, Paul approved ("so cool"), pushed** — live after a Coolify redeploy.
+Browser test: `test/schedule-grid/run.sh` — 47 checks; starts its own scratch server on 8091
+(copy of `data/` without `stats/`); `APP=<url>` targets another server instead.
 
 ## Paul's decisions
 
@@ -13,7 +15,14 @@ A week-at-a-glance grid opened from the Schedule modal. Status: **plan, not buil
   button does not exist below the cutoff; the day-tab list stays the phone view.
 - **Closing the grid returns to the Schedule modal** it was opened from, on the
   same day tab.
-- **No links for now.** Blocks are plain boxes, not buttons.
+- **No links for now.** A block opens an **info card** beside it (Paul, 2026-09-29):
+  photo, title, day + time range, category · host, the published short
+  description, Live badge when on air. Click/tap, not hover — iPads have no
+  hover; a mouse gets a hover highlight as the "clickable" signal. Closes on ✕,
+  Esc (card first, grid on the next press), a click on empty grid, or another
+  block (swaps). A "Go to show" button goes on this card when links arrive.
+- **Dark mode block borders** use `--grid-edge` (20%), brighter than `--outline`
+  (10%), which was barely visible (Paul, 2026-09-29). Light mode unchanged.
 
 ## Cutoff
 
@@ -78,5 +87,5 @@ grid is open, the grid closes back to the schedule.
 ## Order of work
 
 1. This plan — done.
-2. Clickable mockup on fixture data, dark + light (~30 min).
-3. Build + tests (~1–2 hr).
+2. Mockup — skipped at Paul's call; built straight and reviewed in the running app.
+3. Build + tests — done: 30/30 in the browser test (and shown failing on the pre-grid code), offline suite 190/190.

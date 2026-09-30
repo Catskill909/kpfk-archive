@@ -428,6 +428,13 @@
     <header class="sched-head">
       <h2 class="sched-title">Schedule</h2>
       <p class="sched-note">All times Pacific · published by KPFK</p>
+      <button class="sched-grid-btn" id="schedGridBtn" type="button" aria-haspopup="dialog"
+        aria-controls="schedGrid" aria-expanded="false" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="3.5" y="4.5" width="17" height="15" rx="2" /><path d="M3.5 9.5h17M9.5 9.5v10M14.5 9.5v10" />
+        </svg>
+        <span>Grid</span>
+      </button>
       <button class="sched-close" id="schedClose" type="button" aria-label="Close schedule">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
           <path d="M6 6l12 12M18 6L6 18" />
@@ -436,6 +443,28 @@
     </header>
     <div class="sched-tabs" id="schedTabs" role="tablist" aria-label="Day of week"></div>
     <div class="sched-body" id="schedBody" tabindex="0"></div>
+  </div>
+
+  <!-- Week grid (docs/schedule-grid-plan.md). Large tablets and desktop only:
+     the Grid button in the schedule's header exists from 1024px, app.js gates it
+     with matchMedia and closes the grid if the window narrows past that. Stacks
+     ABOVE the schedule (z 167/168 vs 163/165) and BELOW the info sheet, with its
+     own history entry, so closing it — ✕, Esc, scrim, Back — lands on the
+     schedule it was opened from. A block opens an info card beside it —
+     information only, no links yet. -->
+  <div class="sched-grid-scrim" id="gridScrim"></div>
+  <div class="sched-grid" id="schedGrid" role="dialog" aria-modal="true" aria-label="Weekly schedule grid"
+    aria-hidden="true">
+    <header class="sched-head">
+      <h2 class="sched-title">Schedule</h2>
+      <p class="sched-note">All times Pacific · published by KPFK</p>
+      <button class="sched-close" id="gridClose" type="button" aria-label="Close grid, back to the schedule">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </header>
+    <div class="grid-body" id="gridBody" tabindex="0"></div>
   </div>
 
   <!-- On-air chooser. The one row in the schedule that is broadcasting right now

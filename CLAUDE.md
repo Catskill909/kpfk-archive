@@ -121,6 +121,10 @@ live only after a Coolify redeploy and `version` in `/healthz` changes.
 - **Schedule** (`paintPublishedSchedule` in `app.js`) renders published slots with
   WBAI's schedule markup: today-first rolling seven days, no week picker, Live by
   slot epochs. It must never touch an `<audio>` element.
+  **Week grid** (`paintGrid`, [docs/schedule-grid-plan.md](docs/schedule-grid-plan.md)):
+  the Grid button in the schedule header, **1024 px and up only — never phones or
+  small tablets**; layered above the schedule with its own history entry, so every
+  way out lands back on it. A show opens an info card beside it (no links yet).
 - **Two `<audio>` elements share one player bar** via `barMode`
   (`'archive' | 'live'`). Keep the live side as close to the archive side as possible.
 - **`/studio`** is password-gated (`STUDIO_PASSWORD`; unset = routes don't exist).
@@ -144,6 +148,9 @@ live only after a Coolify redeploy and `version` in `/healthz` changes.
   `test/episode-rail`, `test/share`, `test/touch`, `test/motion`) are **inherited
   from WBAI and not yet adapted to KPFK**. Make their WBAI assumptions
   configurable; don't edit expected values until green.
+- **KPFK browser suites** (`test/homepage/*.cjs`, `test/schedule-grid/run.sh`) run on a
+  scratch server (port 8091, copy of `data/` without `stats/`), never on 8081 —
+  `test/schedule-grid/run.sh` starts and removes its own.
 
 ## 7. Working agreements
 

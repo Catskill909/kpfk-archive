@@ -137,6 +137,7 @@ against rule 2. Only one needed a change.
 | Live player | Desktop card narrowed 760 → 680 px (content needs ~650; ~150 px sat empty on the right). Changed in its one definition, not overridden. Phone: a full "now playing" screen with large art, which suits a live stream; unchanged |
 | Past episodes (in the show sheet) | Clear list, playing episode marked, Back link; unchanged |
 | Schedule | Day tabs and a list, live show marked; unchanged |
+| Schedule week grid (2026-09-29) | 1024 px and up only. Opens over the schedule, player bar stays visible and usable (it is in the player-frame rule); show info card beside the clicked show. See [schedule-grid-plan.md](schedule-grid-plan.md) |
 | Live "about this show" | Compact card sized to its text; unchanged |
 | Side menu | List that scrolls, ends above the player bar; unchanged |
 | Donate / privacy | Pacifica's own page in a frame, not ours to restyle; sits above the player bar |
