@@ -1,6 +1,6 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-29 (archive rules, /discover retired, Import / Export + master spreadsheet).  **This folder is the active KPFK podcast-template project.**
+**Updated:** 2026-09-30 (repo moved to `pacifica-foundation`; Discovery app stopped; Coolify email). Previously 2026-09-29 (archive rules, /discover retired, Import / Export + master spreadsheet).  **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
@@ -14,16 +14,18 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 2. **Ace / QIR:** email sent 2026-09-28. As of 2026-09-29 the 7 show keys (All Of The Above, Nightscapes,
    The Aware Show, Reggae Central, CodePINK, Making Contact, CinemaScore) and World Massive Sep 26 are
    still not processed in QIR. **Any reply?** Recheck with the live `/api/plugins/qir/catalog`.
-3. **Next:** step 8 = Paul **stops** the old Discovery app in Coolify (no redirect; the app and its
-   address kpfk-discovery.pacifica.audio are kept as a future staging app — own named volume, never
-   production's; see the Discovery repo's HANDOFF item 0). Then 5b: station template in the studio
+3. **Step 8 done (checked 2026-09-30):** the old Discovery app is **stopped** in Coolify — no
+   container running, kpfk-discovery.pacifica.audio returns `503`. The app, its volume and the
+   address are kept as a future staging app (own named volume, never production's; see the
+   Discovery repo's HANDOFF item 0). **Next:** 5b: station template in the studio
    (anyone with the studio login edits feeds, logo, colours, text; placeholders already in
    Discovery & settings → Station & appearance). A moved site needs its QIR key set in Coolify (env).
 4. **Auto mode outage (Anthropic, since 2026-09-28 ~06:30 UTC):** "server-side auto mode classifier gave
    no verdict" blocks commands in bursts, for everyone ([#97870](https://github.com/anthropics/claude-code/issues/97870)).
    Not this project. Paul chose to stay on auto; when it bursts, wait or switch to "Edit automatically".
    Allow lists do not help in auto mode during the outage. Claude may not edit its own permissions.
-5. **Parked:** desktop "Copy link" share button; Coolify SMTP and "Instance's Domain"; queued Ace items
+5. **Parked:** desktop "Copy link" share button; Coolify "Instance's Domain"
+   (Coolify email itself works since 2026-09-30, via Resend — server manual `docs/07-operations.md`); queued Ace items
    in the Discovery HANDOFF (hold). Known stale self-test: `test/studio/layout-tests.js` "with both
    defences removed…" fails on 2026-09-28 code too (real layout checks pass).
 6. **How Paul works:** short plain wrap-ups + "Paul — your action points"; copy-paste text on a
@@ -153,7 +155,7 @@ Just aired hides them (its W5).
 | | |
 | --- | --- |
 | Live | **https://podcast.kpfk.org** — Coolify app "KPFK Podcasts" on the Pacifica/Contabo server, Dockerfile build, container port 8080. Deployed 2026-09-19; `kpfk-archive.supersoul.top` was stopped the same day |
-| Repo | https://github.com/Catskill909/kpfk-archive · `main` · push to `origin` only (never `wbai-baseline`) |
+| Repo | https://github.com/pacifica-foundation/kpfk-archive · `main` · push to `origin` only (never `wbai-baseline`). **Moved from `Catskill909` on 2026-09-30**; the old URL redirects, Coolify's stored path and this Mac's `origin` were updated the same day. First deploy from the new location not yet done |
 | Deploy | Manual Coolify redeploy after push. **2026-09-24: `d3ca868` pushed and deployed by Paul** (build 16:03 UTC; page loads `archive-search.js`). This includes the 2026-09-23 core search and the embedded `/discover` prototype — its **"Discover shows" side-menu link is now public** (`plugins.discovery: true`); set it false and redeploy to hide it. |
 | Storage | Named volume `f6vn03cy47znqlbemewq8dd0-kpfk-archive-data` at `/app/data` for the podcast.kpfk.org app: `instanceId` `73039ae5-6589-4ec2-9df5-354de84c0989`, `persistedSince` 2026-09-19, `freshVolume:false` after the 2026-09-24 redeploy. (`e4a9aac9…` below belongs to the retired supersoul.top deployment.) |
 | Studio | `/studio`, password in Coolify env `STUDIO_PASSWORD` (runtime only — **not** on the Mac and not in the repo; read it from Coolify, never from a file) |
