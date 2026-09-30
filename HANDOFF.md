@@ -1,6 +1,6 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-09-29, late evening (archive rules, /discover retired, Import / Export, Station & appearance, Now Playing on phones, Show view, **schedule week grid**).  **This folder is the active KPFK podcast-template project.**
+**Updated:** 2026-09-29 (archive rules, /discover retired, Import / Export + master spreadsheet).  **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
@@ -8,34 +8,17 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 
 ## Remind Paul first (say these at the start of every session)
 
-1. **Live and checked (2026-09-29, late evening):** everything below is deployed — live HEAD `8a7a563`
-   (schedule week grid). `app.js` and `styles.css` served byte-identical to the repo; `/healthz`
-   `version` changed on the redeploy; `storage.instanceId` = `73039ae5-6589-4ec2-9df5-354de84c0989`,
-   `freshVolume:false` (volume intact). Player settled (floating card — do not re-raise).
-   podcasts.kpfk.org and podcast.kpfk.org are the same app.
-1a. **Schedule week grid is live and Paul likes it ("works great and looks great").** Checked by Paul on
-   desktop, phone and iPad. **Decided: upright iPads stay on the day list** — the Grid button shows from
-   1024 px only (iPad landscape, 13" iPads either way, desktop), never on phones or iPads held upright
-   ("good choice to leave it off portrait"). **Next: Paul has "edge polishing and some minor issues on
-   iPad" — ask him for the list first**, before changing anything. Details in the late-evening section
-   below and [docs/schedule-grid-plan.md](docs/schedule-grid-plan.md).
+1. **Live and checked (2026-09-29):** everything below is deployed; `storage.instanceId` =
+   `73039ae5-6589-4ec2-9df5-354de84c0989`, `freshVolume:false`. Player settled (floating card — do not
+   re-raise). podcasts.kpfk.org and podcast.kpfk.org are the same app.
 2. **Ace / QIR:** email sent 2026-09-28. As of 2026-09-29 the 7 show keys (All Of The Above, Nightscapes,
    The Aware Show, Reggae Central, CodePINK, Making Contact, CinemaScore) and World Massive Sep 26 are
-   still not processed in QIR — **rechecked 2026-09-29 evening: unchanged** (36 recordings; they appear in
-   `/api/plugins/qir/catalog` only as our `pending-…` placeholders, transcripts 404; a control episode
-   returns 200). **Any reply?** Recheck the same way: a real QIR record has a UUID `public_id`.
-3. **Show view is live and Paul likes it ("really nice") — letting it sink in, testing more.**
-   Ask Paul what he found on his phone before changing it. Remaining steps, in order, in
-   [docs/kpfk/show-view-plan.md](docs/kpfk/show-view-plan.md) §6: 4 dead-code sweep, 5 older
-   browser suites + popup audit, 6 Now Playing fit (375×667), 7 docs. Details in the section below.
-   **Listener site (front interface) first — Paul, 2026-09-29: "more important now".** Station template:
-   step 8 done (old Discovery app stopped; kept for staging, own volume if reused). **Its Coolify Auto
-   deploy is now "Manual deployments only"** (2026-09-29 late evening): it had been redeploying itself on
-   every push to `kpfk-discovery-plugin`, which is why it was back up. Keep it manual. 5b station
-   template: slice 1 built and parked — studio **Station & appearance** (cards, edit panels, draft
-   bar, Review & publish, Undo) edits name/frequency/city/logo/links/socials; **Data sources** card
-   shows feeds, stream, hosts read-only ("Not editable yet"). What's next for the template, in
-   order: `docs/kpfk/station-admin-template-plan.md` (Status at the top). Colour: built, removed.
+   still not processed in QIR. **Any reply?** Recheck with the live `/api/plugins/qir/catalog`.
+3. **Next:** step 8 = Paul **stops** the old Discovery app in Coolify (no redirect; the app and its
+   address kpfk-discovery.pacifica.audio are kept as a future staging app — own named volume, never
+   production's; see the Discovery repo's HANDOFF item 0). Then 5b: station template in the studio
+   (anyone with the studio login edits feeds, logo, colours, text; placeholders already in
+   Discovery & settings → Station & appearance). A moved site needs its QIR key set in Coolify (env).
 4. **Auto mode outage (Anthropic, since 2026-09-28 ~06:30 UTC):** "server-side auto mode classifier gave
    no verdict" blocks commands in bursts, for everyone ([#97870](https://github.com/anthropics/claude-code/issues/97870)).
    Not this project. Paul chose to stay on auto; when it bursts, wait or switch to "Edit automatically".
@@ -45,66 +28,7 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
    defences removed…" fails on 2026-09-28 code too (real layout checks pass).
 6. **How Paul works:** short plain wrap-ups + "Paul — your action points"; copy-paste text on a
    page with Copy buttons; ask before opening a browser or touching his app on port 8081;
-   announce every push. **Test Chrome always `--mute-audio`** (tests play real episodes — they were
-   audible on Paul's Mac on 2026-09-29). Browser checks run on a scratch server (port 8091, copied
-   data dir, stats removed), never on 8081. Root causes, not workarounds ("no duct tape").
-
-## 2026-09-29 (late evening) — schedule week grid + show info card
-
-Plan and record: [docs/schedule-grid-plan.md](docs/schedule-grid-plan.md) (Paul's decisions at the top).
-Pushed and live (Paul redeployed; checked on desktop, phone, iPad landscape). `npm test` 190/190; browser `test/schedule-grid/run.sh` 47/47, shown to fail
-on the pre-grid build and with the card's placement broken.
-
-- **Grid** button in the schedule header (1024 px and up only; JS `matchMedia` gate, and the grid closes
-  back to the list if the window narrows). Seven days across (today first), 15-minute rows, each show
-  as tall as its airtime, now-line in today's column, opens scrolled to now. Our tokens, dark + light;
-  dark-mode block borders use `--grid-edge` (20 %) because `--outline` was barely visible.
-- Layered **above** the schedule (z 167/168) with its own history entry `{sched:1, schedGrid:1}`:
-  ✕, Esc, scrim, Back all land on the schedule, same day tab. In the player-frame and
-  beside-the-transcript rules, so the player bar stays usable.
-- **Info card:** click/tap a show → card beside it (photo, day + time range, category · host, short
-  description, Live badge). Not hover — iPads have none. Esc closes the card, then the grid.
-  No links yet; a "Go to show" button would go on this card.
-- **Process slip, fixed:** the first grid browser runs used Paul's app on 8081, against the rule
-  above; their page views may be in his *local* `data/stats/2026-09.json` (not prod). The runner now
-  starts its own scratch server (8091, data copy without `stats/`) and deletes it after. Also: port
-  8082 is the Discovery plugin's own server (`kpfk-discovery-plugin`) — don't use it for a second copy.
-
-## 2026-09-29 (afternoon) — studio Station & appearance, Now Playing on phones, the Show view
-
-All pushed and live (Paul redeployed; phone-tested). `npm test` 190/190.
-
-| Commit | What |
-|---|---|
-| `e874b91`, `e7282f1`, `483c480`, `01ac695` | **Station & appearance** (template slice 1): summary cards, edit panels, publish bar, Undo; **Data sources** card read-only ("Not editable yet"). Suite `test/studio/` station. Colour built (`404816e`) then removed for now (`90b0681`) |
-| `aa3dbb1`, `4785872` | **Now Playing on phones** (`public/now-playing.js`, ≤ 699 px): tap the mini player → full player sheet; non-modal, ends at the bar's top edge (never covers it — Paul). On for all phones; the `?np=on` tester switch is gone. Test `test/homepage/now-playing.cjs` |
-| `2ed0014` | **Focus rings only for the keyboard** (`theme-boot.js` sets `data-input`); no green outline after a tap. Test `test/homepage/focus-rings.cjs`, shown to fail without the fix |
-| `0ba882f`, `6eaf8cd` | Plan: [docs/kpfk/show-view-plan.md](docs/kpfk/show-view-plan.md) — inventory of 10 entry points, audit, design, URLs/Back, build order; Paul's four decisions (§9). Clickable mockup approved (claude.ai artifact) |
-| `4e2ceeb` | **Show view** (plan steps 1–3): one panel = show header with **Play latest** + description + links + **the episodes right there** (20, then "Show 20 more"); tap an episode → **Episode view** in the same panel (back link to the show). Desktop two columns (show left, list/episode right, each scrolls); phone one column. `/show/<code>` → Show view, `/show/<code>/<ep>` → Episode view; Back/close walk out exactly as far as they came in. Tabs, "Selected broadcast" footer, "Past episodes" route and the minimize animation removed. Design notes in docs/DESIGN-SYSTEM.md. Test `test/homepage/show-view.cjs` (33 checks, phone + desktop) |
-
-**Bugs found while building the Show view (fixed before shipping):** the panel's view marker and
-the show column shared the class `sv-show`, so column styles hit the whole panel (now
-`view-show` / `view-episode`); `syncUrl()` rewrote the open panel's history entry as a bare
-`{sheetId}`, dropping view and depth, which would have broken close/Back after a filter change.
-
-**Show view — what's left (plan §6), in order:**
-1. Let it sink in; collect Paul's phone findings first.
-2. **Step 4, dead code:** unused CSS for `.sheet-foot`, `.sheet-routebar`, `.sheet-route-back`,
-   `.sheet-archive-*`, `.sheet-info-*`, `.sheet-episode-instead`, `.sheet.minimizing`, the old
-   `.sheet-episode` row layout and `#sheetScrollCue` (markup still in `index.html`, always hidden);
-   JS `runMinimize` for the sheet, `sheetScrollCueLabel`. Harmless today (the new block overrides).
-3. **Step 5:** run the inherited browser suites that touch the sheet (`test/episode-rail`,
-   `test/live-stream`, `test/motion`, `test/schedule`, `test/touch`, `test/ui/live-archive-tests.js`)
-   — first record which already failed before `4e2ceeb`, then update them; rerun the popup audit
-   (`tools/popup-audit/`). Not run yet.
-4. **Step 6, Now Playing fit:** art sized by remaining height, 60 px play button, everything above the
-   fold at 375×667.
-5. **Step 7:** docs (DESIGN-SYSTEM examples, LINKS if anything changes).
-
-To run the browser tests: scratch server `PORT=8091 DATA_DIR=<copy of data> node tools/start.js`,
-headless Chrome `--headless=new --mute-audio --remote-debugging-port=9241
---autoplay-policy=no-user-gesture-required`, then `APP_URL=http://localhost:8091 CDP_PORT=9241 node
-test/homepage/show-view.cjs` (also now-playing, focus-rings). Kill both and delete the copies after.
+   announce every push. Root causes, not workarounds ("no duct tape").
 
 ## 2026-09-29 — archive rules, /discover retired, Import / Export for moving the site
 
@@ -121,7 +45,6 @@ All pushed and live (Paul redeployed; each checked on podcasts.kpfk.org). `npm t
 | `dfa4132` | Printable report gains **Feature use** |
 | `192a62c` | Studio: **Discovery & settings no longer shows the stats**. Root cause: `.studio-main {display:grid}` beat `[hidden]`; one global `[hidden] {display:none !important}` replaces four one-off patches. Browser test in `test/studio/layout-tests.js` 1b (not yet run — needs Chrome). Listener stylesheets use 31 per-element `[hidden]` rules: same pattern, nothing broken, not swept |
 | `ea9f3cb`, `ea69217` | Profile `siteUrl` + `retiredHosts` (a retired host 301s to the same path on siteUrl). KPFK retires **no** host: the old Discovery address is kept for staging |
-| `e874b91`, `483c480`, `90b0681` | **Station & appearance** (5b slice 1): overrides on the data volume through the profile validator, logo upload, live without restart, in the backup; redesigned as cards + edit panels + publish bar (Paul); colour built then removed "for now"; phone header icon-only |
 | `077aee0` | **Master spreadsheet (.xlsx)**: every table, one tab each, plus Read me and Columns tabs (`lib/export/xlsx.js`, no dependency; opened with openpyxl on real data) |
 
 **Move test (Paul, 2026-09-29):** live full backup restored onto a fresh local server — every
