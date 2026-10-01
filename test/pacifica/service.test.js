@@ -132,7 +132,9 @@ function fixtureService(t, fail = () => false) {
     if (fail(name)) throw new Error(`offline: ${name}`);
     return json(JSON.parse(fs.readFileSync(path.join(dir, name), 'utf8')));
   };
-  return createService({ profile, dataDir, writeJsonAtomic: write, fetchImpl, now: () => 1789435100000 });
+  // These tests measure the schedule rule, counted straight from the fixture; withheld shows
+  // (KPFK: Aware, in the fixture schedule) have their own test below.
+  return createService({ profile: { ...profile, withheldShows: [] }, dataDir, writeJsonAtomic: write, fetchImpl, now: () => 1789435100000 });
 }
 test('archive() serves the scheduled programs plus upload shows; the catalog mirror keeps everything', async t => {
   const service = fixtureService(t);
@@ -264,6 +266,28 @@ test('music window: music past musicWindowDays is hidden and named; talk the fee
   const open = await ruleService(t, { ...profile, musicWindowDays: null }, clock).archive();
   assert.equal(open.filter.musicExpired.length, 0);
   assert.ok(oldMusic.every(r => open.shows.some(s => s.id === r.id)));
+});
+// Withheld shows (2026-10-01): KPFK has no on-demand rights to The Aware Show. Class: a show
+// that must never be served leaking through one path (episodes, directory, a re-filed recording).
+test('withheld shows: never served — no episode, no directory record; counted; catalog untouched', async t => {
+  const clock = 1789435100000;
+  const open = await ruleService(t, { ...profile, withheldShows: [] }, clock).archive();
+  const aware = open.shows.filter(r => r.upstreamAltId === 'aware');
+  assert.ok(aware.length > 0 && open.directory['kpfk.kpfk.aware'], 'positive control: Aware is served without the setting');
+  assert.deepEqual(profile.withheldShows, ['aware'], 'KPFK withholds The Aware Show');
+  const service = ruleService(t, profile, clock), view = await service.archive();
+  assert.equal(view.shows.filter(r => r.upstreamAltId === 'aware').length, 0, 'no Aware episode');
+  assert.equal(view.directory['kpfk.kpfk.aware'], undefined, 'no Aware show record');
+  assert.ok(!JSON.stringify({ shows: view.shows, directory: view.directory }).includes('aware.mp3'));
+  assert.deepEqual(view.filter.withheld, { shows: ['aware'], episodes: aware.length, keys: ['kpfk.kpfk.aware'] }, 'counted, and still known to be scheduled');
+  assert.equal(view.count, open.count - aware.length, 'only Aware is removed');
+  assert.ok((await service.catalog()).shows.some(r => r.upstreamAltId === 'aware'), 'catalog mirror is untouched');
+  // A recording re-filed onto a withheld show (corrections run first) is withheld too.
+  const refiled = open.filter.episodeCorrected.filter(x => x.show === 'alanwatts').map(x => x.id);
+  assert.ok(refiled.length > 0, 'fixture has re-filed Alan Watts hours');
+  const watts = await ruleService(t, { ...profile, withheldShows: ['alanwatts'] }, clock).archive();
+  assert.ok(refiled.every(id => !watts.shows.some(r => r.id === id)), 're-filed onto a withheld show: not served');
+  assert.ok(!watts.shows.some(r => r.upstreamAltId === 'alanwatts'));
 });
 test('episode corrections: a re-filed recording takes the real show\'s name, picture, host and category', async t => {
   const plain = await ruleService(t, profile, 1789435100000).catalog();

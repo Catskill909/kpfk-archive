@@ -39,6 +39,10 @@ function fixtureScheduledArchive() {
     Object.values(node).forEach(walk);
   };
   for (const f of fs.readdirSync(fixtureDir).filter(f => /^fe_schedule_kpfk_\d+\.json$/.test(f))) walk(JSON.parse(fs.readFileSync(path.join(fixtureDir, f), 'utf8')));
+  // Withheld shows (KPFK: Aware, scheduled in the fixture) are scheduled but never served.
+  const withheld = JSON.parse(fs.readFileSync(path.join(root, 'stations/kpfk.json'), 'utf8')).withheldShows || [];
+  assert.ok(withheld.every(a => altids.has(a)), 'positive control: the withheld show is in the fixture schedule');
+  withheld.forEach(a => altids.delete(a));
   const onAir = catalog.episodes.kpfk, uploads = catalog.episodes['2kpfk'];
   const uploadAltids = new Set(Object.keys(uploads).filter(a => Object.keys(uploads[a]).length));
   const count = eps => Object.keys(eps || {}).length;

@@ -78,11 +78,16 @@ function createDiscovery({ station, env = process.env, dataDir = null, fetchImpl
   // the log warns once per new oldest episode; /healthz carries it.
   const LAG_ALERT_HOURS = 6;
   let lastPending = { count: 0, skipped: 0, error: null, behindHours: 0 }, lagWarnedFor = '';
+  const withheld = new Set(station.withheldShows || []);
   async function withPending(qirCatalog) {
     // Recordings filed under the wrong show are corrected first (lib/qir/corrections.js), so
     // the music window, cards, show pages and artwork all see the real show. Music older than
     // the station's window is dropped before anything else reads the catalog.
-    const corrected = joinCorrectedParts(applyCorrections(qirCatalog.episodes, station.episodeCorrections, { warn: m => console.warn('[qir] ' + m) }));
+    // Withheld shows (station `withheldShows`: no on-demand rights) go after corrections, as in
+    // the archive. Pending items are filtered too: the listing they come from may be a server
+    // that has not applied the setting yet.
+    const corrected = joinCorrectedParts(applyCorrections(qirCatalog.episodes, station.episodeCorrections, { warn: m => console.warn('[qir] ' + m) }))
+      .filter(e => !withheld.has(e.show_key));
     const { kept, expired } = splitByMusicWindow(corrected, { now: now(), timeZone: station.timezone, days: station.musicWindowDays, musicShows: station.musicShows });
     const { aired, held } = splitByAirTime(kept, { now: now(), timeZone: station.timezone });
     const catalog = { ...qirCatalog, episodes: aired, heldUntilAir: held.length, musicExpired: expired.length };
@@ -92,7 +97,7 @@ function createDiscovery({ station, env = process.env, dataDir = null, fetchImpl
     try { data = await getArchive(); } catch (e) { console.warn('QIR pending fallback unavailable: ' + e.message); lastPending = { count: 0, skipped: 0, error: 'archive_unavailable' }; return { ...catalog, pending: lastPending }; }
     const unfiltered = pendingEpisodes(catalog.episodes, data, { now: now(), timeZone: station.timezone, primaryChannel: station.primaryChannel });
     const musicCut = splitByMusicWindow(unfiltered, { now: now(), timeZone: station.timezone, days: station.musicWindowDays, musicShows: station.musicShows });
-    const pending = musicCut.kept; catalog.musicExpired += musicCut.expired.length;
+    const pending = musicCut.kept.filter(e => !withheld.has(e.show_key)); catalog.musicExpired += musicCut.expired.length;
     const waiting = pending.filter(p => !p.skipped);
     const oldest = waiting.reduce((a, p) => Math.min(a, p.aired_at), Infinity);
     const behindHours = Number.isFinite(oldest) ? Math.round((now() / 1000 - oldest) / 360) / 10 : 0;
@@ -239,7 +244,12 @@ function createDiscovery({ station, env = process.env, dataDir = null, fetchImpl
         send(res, 200, { episodes, artwork: { byShow, byMp3 }, pending: c.pending, stale: c.stale }); return true;
       }
       const transcript = /^\/api\/plugins\/qir\/transcript\/([a-f0-9-]+)$/i.exec(route);
-      if (transcript) { send(res, 200, await qir.transcript(transcript[1])); return true; }
+      if (transcript) {
+        // A withheld show's text is refused by id too, not just left out of the listings.
+        const e = (await qir.catalog()).episodes.find(x => x.public_id === transcript[1]);
+        if (e && withheld.has(e.show_key)) { send(res, 404, { error: 'not_found' }); return true; }
+        send(res, 200, await qir.transcript(transcript[1])); return true;
+      }
       const cue = /^\/api\/cue\/(\d{1,10})$/.exec(route);
       if (cue) { send(res, 200, await getCue(cue[1])); return true; }
       send(res, 404, { error: 'not_found' }); return true;

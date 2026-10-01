@@ -2931,9 +2931,11 @@ const EXPORT_DATASETS = {
       // Only a schedule-based filter says which shows are IN the schedule; the
       // outage fallback and the pre-warm-up state do not, so the column is left
       // empty rather than guessed. Uploads are listed but never scheduled, so the
-      // scheduled set is the listener shows on the on-air channel.
+      // scheduled set is the listener shows on the on-air channel, plus scheduled shows
+      // withheld from listeners (station withheldShows: they air, they are not served).
+      const withheldKeys = (archive && archive.filter.withheld && archive.filter.withheld.keys) || [];
       const scheduleKeys = archive && archive.filter.basis === 'schedule'
-        ? new Set([...listenerKeys].filter(k => k.split('.')[1] === station.primaryChannel)) : null;
+        ? new Set([...listenerKeys, ...withheldKeys].filter(k => k.split('.')[1] === station.primaryChannel)) : null;
       return coverageExport.buildCoverage({
         station: STATION_ID, stationTimezone: STATION_TZ, directory: catalog.directory, rows: catalog.shows,
         listenerKeys, scheduleKeys, titleFor: exportShowTitle, now: Date.now(), generatedAt,

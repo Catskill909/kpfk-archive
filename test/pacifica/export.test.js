@@ -492,11 +492,14 @@ test('real HTTP: studio exports are gated, validated, titled, and agree with the
   const scheduled = new Set(catalog.shows.kpfk.filter(x => altids.has(x.altid)).map(x => `kpfk.kpfk.${x.altid}`));
   assert.ok([...scheduled].some(k => !archive.shows.some(r => r.sho === k)), 'the fixture has a scheduled program with no episodes');
   const byKey = new Map(covCsv.rows.map(r => [r.show_key, r]));
+  assert.ok(profile.withheldShows.some(a => scheduled.has(`kpfk.kpfk.${a}`)), 'positive control: a withheld show is scheduled in the fixture');
   for (const k of catalogKeys) {
     assert.equal(byKey.get(k).in_published_schedule, String(scheduled.has(k)), `${k} schedule`);
     // Listeners also get every upload show with episodes (2026-09-25); the schedule column stays schedule-only.
     const upload = k.split('.')[1] === '2kpfk' && archive.shows.some(r => r.sho === k);
-    assert.equal(byKey.get(k).shown_to_listeners, String(scheduled.has(k) || upload), `${k} listeners`);
+    // Withheld shows (KPFK: Aware) stay "in schedule" but are never shown (2026-10-01).
+    const held = (profile.withheldShows || []).includes(k.split('.').pop());
+    assert.equal(byKey.get(k).shown_to_listeners, String((scheduled.has(k) || upload) && !held), `${k} listeners`);
   }
   assert.deepEqual(covCsv.rows.filter(r => r.has_artwork === 'false').map(r => r.show_key).sort(), [...noImage].sort(),
     'shows with only the generic station picture have no artwork');

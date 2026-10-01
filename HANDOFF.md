@@ -62,6 +62,15 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
    transcripts, search, links) to the phone app is in `~/Desktop/kpfk-podcast/docs/WEB-FEATURES-PLAN.md`.
    Do that work in a session opened in the kpfk-podcast folder. Its step **W1** (a small
    `/api/plugins/qir/notes` route for apps) is done here, in kpfk-archive.
+8. **The Aware Show withheld (2026-10-01, not yet deployed):** KPFK has no on-demand rights to it.
+   New profile list `withheldShows: ["aware"]` in `stations/kpfk.json`: no card, episode, search
+   hit, QIR text or transcript in `/api/archive` or Discovery (so the Flutter app loses it too).
+   The live schedule still lists its slot, with nothing to play. `/healthz` →
+   `archiveFilter.withheld`. Live after a Coolify redeploy.
+   **Future dev — suppress from the studio:** today withholding a show is a profile edit +
+   redeploy. Build a studio panel to suppress a **show or a single episode** (rights, legal,
+   a bad recording) without a deploy: stored on the data volume, with a reason and date, listed
+   in the anomaly report, undoable. Same filter point (`scheduledView` + Discovery `withPending`).
 
 ## 2026-09-29 — archive rules, /discover retired, Import / Export for moving the site
 

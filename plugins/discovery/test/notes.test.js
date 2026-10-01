@@ -61,3 +61,18 @@ test('notes: follows the plugin switches — Discovery off is 404, no QIR key is
   assert.equal((await fetch(await serve(t,{...args,switchedOn:false})+'/api/plugins/qir/notes')).status,404);
   assert.notEqual((await fetch(await serve(t,{...args,env:{}})+'/api/plugins/qir/notes')).status,200);
 });
+
+// Withheld shows (station withheldShows; KPFK: The Aware Show, no on-demand rights). QIR
+// processes the recording anyway; Discovery must not serve it on any route, nor its text by id.
+test('withheld show: not in catalog, recent or notes; its transcript is refused by id',async t=>{
+  const aware=row('aware',3),dn=row('dn',10);
+  const qir=[qirEp(ID(21),'aware',aware.mp3),qirEp(ID(22),'dn',dn.mp3)];
+  const o=await serve(t,{rows:[aware,dn],qir});
+  const cat=await (await fetch(o+'/api/plugins/qir/catalog')).json();
+  assert.deepEqual(cat.episodes.map(e=>e.show_key),['dn'],'positive control: the other QIR episode is served');
+  const recent=await (await fetch(o+'/api/plugins/qir/recent?since=2026-09-01%2000:00:00')).json();
+  assert.ok(!recent.episodes.some(e=>e.show_key==='aware'));
+  const notes=await (await fetch(o+'/api/plugins/qir/notes')).json();
+  assert.ok(!JSON.stringify(notes).includes(ID(21)),'no Aware text in notes');
+  assert.equal((await fetch(o+'/api/plugins/qir/transcript/'+ID(21))).status,404);
+});

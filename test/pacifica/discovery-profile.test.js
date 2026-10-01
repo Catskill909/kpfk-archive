@@ -17,6 +17,14 @@ test('plugins: discovery (may have it) and qir are separate booleans; KPFK may h
 });
 
 // Duplicate records (2026-09-25): Confessor keeps old and new records for BradCast and Bike Talk.
+test('withheldShows is an explicit list of show keys, kept out of the main page config', () => {
+  const kpfk = loadProfile('stations/kpfk.json', { root, env: {} });
+  assert.deepEqual(kpfk.withheldShows, ['aware']);
+  assert.equal(Object.hasOwn(publicProfile(kpfk), 'withheldShows'), false);
+  for (const bad of ['aware', ['../x'], [''], [42]]) assert.throws(() => validateProfile({ ...raw(), withheldShows: bad }), /withheld/);
+  const { withheldShows, ...none } = raw();
+  assert.deepEqual(validateProfile(none).withheldShows, []);
+});
 test('hiddenShows is an explicit list of show keys, kept out of the main page config', () => {
   const kpfk = loadProfile('stations/kpfk.json', { root, env: {} });
   assert.deepEqual(kpfk.hiddenShows, ['friedman', 'biketalka']);

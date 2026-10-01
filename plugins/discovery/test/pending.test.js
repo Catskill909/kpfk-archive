@@ -136,10 +136,10 @@ test('catalog route: old music is not served and is counted as musicExpired',asy
 // Class: real shows QIR never processes stay listed (Reggae Central vanished 48 h after airing,
 // 2026-09-28), labelled "No transcript"; the music window still applies to them.
 test('catalog route: old station episodes QIR lacks stay listed as No transcript; old music follows the window',async t=>{
-  const done=row('gospel',4),talk=row('aware',24*10,{categoryLabel:'Health & Spirituality'}),music=row('reggaecent',24*20),recentMusic=row('allabove',24*2);
+  const done=row('gospel',4),talk=row('hartmann',24*10,{categoryLabel:'Public Affairs'}),music=row('reggaecent',24*20),recentMusic=row('allabove',24*2);
   const o=await serve(t,{qirEpisodes:[qirEp('dd4c4188-f5f7-4a19-abd2-c4ede0735911',done.mp3)],archiveRows:[done,talk,music,recentMusic]});
   const c=await(await fetch(o+'/api/plugins/qir/catalog')).json();
   const listed=Object.fromEntries(c.episodes.filter(e=>e.pending).map(e=>[e.show_key,e.skipped]));
-  assert.deepEqual(listed,{aware:true,allabove:true},'10-day talk kept, 2-day music kept, 20-day music dropped');
+  assert.deepEqual(listed,{hartmann:true,allabove:true},'10-day talk kept, 2-day music kept, 20-day music dropped');
   assert.ok(c.musicExpired>=1);
 });

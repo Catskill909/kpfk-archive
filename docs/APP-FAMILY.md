@@ -126,6 +126,7 @@ studio's **Feed anomalies** section.
 | Spanish shows | "Español" is its own category, **En Español** (was filed under Special Programming) | `stations/kpfk.json` (both web apps), Discovery QIR mapping | — |
 | Empty show records (one-off specials, fund drives, old duplicates) | Never listed (no episodes) | all | — |
 | Duplicate records with episodes | Explicit `hiddenShows` keys only, never by date | Discovery `stations/kpfk.json` | HANDOFF W1 |
+| No on-demand rights (KPFK: The Aware Show, 2026-10-01) | Explicit `withheldShows` keys: never served — no episode, card, search hit or QIR text. The app sees it gone from `/api/archive` and `qir/notes`; the live schedule still lists the slot | kpfk-archive `service.js`; Discovery `index.js` | `archiveFilter.withheld` |
 | Missing pictures in schedule/now playing | Catalog picture used | kpfk-archive `service.js` | — |
 | HTML entities/tags in text | Decoded (`public/text.js`, shared) | both web apps | unknown entity logged |
 | QIR behind | Archive episodes aired in last 48 h shown "Transcript pending"; **log warning at 6 h behind** | Discovery `lib/qir/pending.js`, `server.js` | `/healthz` `qirPending.behindHours` |
