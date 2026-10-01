@@ -7,7 +7,7 @@ same session** (like `public/text.js` and `archive-search.js`):
 - `kpfk-discovery-plugin/docs/APP-FAMILY.md`
 - `kpfk-podcast/docs/APP-FAMILY.md`
 
-Updated 2026-10-01 (Discovery runs inside the podcast site; mobile endpoints). Before: 2026-09-26.
+Updated 2026-10-01 (Discovery runs inside the podcast site; mobile endpoints; the Flutter app reads QIR notes). Before: 2026-09-26.
 
 ## The vision (Paul, 2026-09-26) — read this first
 
@@ -31,7 +31,7 @@ built from station data (feed rules, cue-file song lists) belong to the main app
 |---|---|---|---|---|
 | **KPFK podcast web app** | `kpfk-archive` | podcasts.kpfk.org (also podcast.kpfk.org) | Pacifica JSON feed (`archive.kpfk.org/fe_feed/…`) | The main app. Serves `/api/archive` to the other two |
 | **Discovery plugin** | `kpfk-archive/plugins/discovery/` (was `kpfk-discovery-plugin`, now staging, stopped) | inside podcasts.kpfk.org since 2026-09-28 | QIR API (Ace) + the host's archive listing | **The plugin**: QIR search, summaries, transcripts. Switched on per station in the studio |
-| **KPFK Podcasts mobile** | `kpfk-podcast` (Flutter) | iOS/Android, `podcast.pacifica.kpfk` | Podcast web app's `/api/archive` (Talk shows only); planned: Discovery's `/api/plugins/qir/*` | Mobile sister app. Will show Discovery's features where a station has it on, same switch |
+| **KPFK Podcasts mobile** | `kpfk-podcast` (Flutter) | iOS/Android, `podcast.pacifica.kpfk` | Podcast web app's `/api/archive` (Talk shows only); since 2026-10-01 `/api/plugins/qir/status` + `/notes` | Mobile sister app. Shows Discovery's headlines/summaries where a station has it on, same switch; transcripts planned |
 
 ```
 Confessor (Otis) ──► Pacifica JSON feed ──► kpfk-archive ──► /api/archive ──┬─► kpfk-podcast (mobile)
@@ -56,6 +56,14 @@ Plan: `kpfk-podcast/docs/WEB-FEATURES-PLAN.md`.
 
 Not for apps: `/api/plugins/qir/catalog` (~1.1 MB gzip, no-store, QIR's own shape). The
 Talk-only filter runs in the app **before** joining notes; nothing from QIR adds an episode.
+
+**How the Flutter app reads `status` (since 2026-10-01; a contract — rename a state and tell
+the app):** 404, `switched_off`, `disabled`, `not_configured` = **off**: the app drops its
+saved notes and looks as it did before QIR. `ready` = fetch `notes` with `If-None-Match`.
+Anything else (`unavailable`, `not_verified`, a new state, HTTP/network errors, a bad body) =
+**temporary**: the app keeps its last good notes. Measured 2026-10-01: `notes` is 362 KB gzip
+(1.0 MB raw) for 1,176 rows; a 304 is 0 bytes. The app applies the same rule as the web's
+`enrich`: headline/summary only where the feed has no topic/notes.
 
 **Rule: any change to how one app reads feed data affects the others.** A field the
 podcast web app adds, drops or reshapes in `/api/archive` reaches the mobile app and
