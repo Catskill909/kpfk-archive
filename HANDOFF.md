@@ -71,6 +71,24 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
    redeploy. Build a studio panel to suppress a **show or a single episode** (rights, legal,
    a bad recording) without a deploy: stored on the data volume, with a reason and date, listed
    in the anomaly report, undoable. Same filter point (`scheduledView` + Discovery `withPending`).
+   **Audit 2026-10-01 — where Aware comes from (deal with later):**
+   - Pacifica's JSON has **no field** that marks a show as not for the archive. Every show record
+     has the same 15 fields; every episode the same 11. The only per-show archive setting is
+     `expires`, the archive lifetime Confessor sets (music 14 days, most talk 60, some 80–90).
+     Aware has the ordinary 60.
+   - Paul understood Aware was turned off in Confessor. **Checked 2026-10-01 13:00 PT, not yet
+     visible:** catalog (updated 13:00 PT) still has the show record and 16 episodes, newest
+     Sep 30 13:00 (`kpfk_260930_130000aware.mp3`, public on archive.kpfk.org); the published
+     schedule still has Aware Wed + Thu 13:00 PT through Oct 15. Recheck after Oct 1 / Oct 7.
+   - **QIR** reads Pacifica itself (our app only GETs from QIR) and has processed **all 16** Aware
+     episodes, Sep 30 included. Our `withheldShows` cannot save QIR's compute.
+   - Flutter app reads our `/api/archive` + `qir/notes` (checked `kpfk_repository.dart`), so our
+     block covers it.
+   - **Best place, in order:** (1) Confessor stops recording/publishing Aware — ideally a per-show
+     "don't archive" setting beside `expires`, useful to every Pacifica station; that stops the mp3s,
+     the feed, QIR and every app at once. (2) QIR skips `aware` (and drops its 16 transcripts) until
+     then. (3) Our `withheldShows` stays as the station's own override; harmless once upstream drops it.
+   - Note to Ace drafted 2026-10-01 for Paul to send: what we did; Aware still in the feed and in QIR.
 
 ## 2026-09-29 — archive rules, /discover retired, Import / Export for moving the site
 
