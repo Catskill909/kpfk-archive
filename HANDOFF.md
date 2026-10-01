@@ -18,8 +18,9 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
    Lawyers Guild 15:00). Democracy Now 16:00, Background Briefing 17:00, Evening News 18:00 are in
    QIR with no headline/summary (`updated_at` empty); Pacifica mp3s are full and on time; our
    plugin reported `pending` 3, `behindHours` 3.2. Nothing wrong on our side. **Paul's call: no
-   email yet** (Ace is busy; not in release). Recheck on 2026-10-01 — if still stuck, Paul sends
-   Ace a short note.
+   email yet** (Ace is busy; not in release). **Rechecked 2026-10-01: caught up** — `pending` 0,
+   `behindHours` 0; those three shows and the overnight hours have headlines. No note to Ace needed.
+   The 7 show keys / World Massive item above was not rechecked.
 3. **Step 8 done (checked 2026-09-30):** the old Discovery app is **stopped** in Coolify — no
    container running, kpfk-discovery.pacifica.audio returns `503`. The app, its volume and the
    address are kept as a future staging app (own named volume, never production's; see the
@@ -37,6 +38,10 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 6. **How Paul works:** short plain wrap-ups + "Paul — your action points"; copy-paste text on a
    page with Copy buttons; ask before opening a browser or touching his app on port 8081;
    announce every push. Root causes, not workarounds ("no duct tape").
+7. **Flutter app (2026-10-01):** audit + phased plan for bringing this app's features (QIR notes,
+   transcripts, search, links) to the phone app is in `~/Desktop/kpfk-podcast/docs/WEB-FEATURES-PLAN.md`.
+   Do that work in a session opened in the kpfk-podcast folder. Its step **W1** (a small
+   `/api/plugins/qir/notes` route for apps) is done here, in kpfk-archive.
 
 ## 2026-09-29 — archive rules, /discover retired, Import / Export for moving the site
 

@@ -12,8 +12,9 @@
  * are gone. The admin page is gone too; its switch moves to the studio (step 5).
  *
  * Routes: /discover (redirects to the main page; old page retired 2026-09-29), /discover/<file>.js|css, /discover/station.js,
- * /api/plugins/qir/{status,catalog,recent,transcript/<id>}, /api/cue/<id>.
+ * /api/plugins/qir/{status,catalog,recent,notes,transcript/<id>}, /api/cue/<id>.
  */
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const { publicProfile } = require('../../lib/station-config');
@@ -149,6 +150,34 @@ function createDiscovery({ station, env = process.env, dataDir = null, fetchImpl
     return { byShow, byMp3 };
   }
 
+  // Notes for apps (2026-10-01, the Flutter app's plan step W1): QIR text for the archive's own
+  // episodes only, keyed by archive episode id and joined by mp3 URL as the main page joins them
+  // (public/main.js enrich). The catalog is ~1.1 MB gzip and no-store; this is the slice a phone
+  // needs, with an ETag so a phone that already has it gets a 304.
+  // Each entry: {qir, headline, summary, host, guest} once QIR has processed the recording;
+  // {pending: true, skipped} while it has not (skipped: QIR moved past it, "No transcript").
+  let notesMemo = {};
+  async function archiveNotes() {
+    const catalog = await servedCatalog();
+    const data = await getArchive();
+    if (notesMemo.catalog === catalog && notesMemo.revision === data.revision) return notesMemo.value;
+    const done = new Map(), waiting = new Map();
+    for (const e of catalog.episodes) {
+      if (!e || !e.mp3_url) continue;
+      if (e.pending) waiting.set(e.mp3_url, e); else if (!done.has(e.mp3_url)) done.set(e.mp3_url, e);
+    }
+    const notes = {};
+    for (const row of data.shows) {
+      const q = done.get(row.mp3), w = waiting.get(row.mp3);
+      if (q) notes[row.id] = { qir: q.public_id, headline: q.headline || '', summary: q.summary || '', host: q.host || '', guest: q.guest || '' };
+      else if (w) notes[row.id] = { pending: true, skipped: !!w.skipped };
+    }
+    const body = JSON.stringify({ provider: 'qir', station: station.id, stale: !!catalog.stale, pending: catalog.pending, notes });
+    const value = { body, etag: '"' + crypto.createHash('sha256').update(body).digest('hex').slice(0, 32) + '"' };
+    notesMemo = { catalog, revision: data.revision, value };
+    return value;
+  }
+
   // Cue files (<feeds origin>/cue/<id>.vti) are WebVTT song playlists the Pacifica feed links
   // from every episode. Numeric id only, fixed origin, bounded, WEBVTT required, no redirects;
   // the upstream sends no content type, so the body itself is checked.
@@ -193,6 +222,11 @@ function createDiscovery({ station, env = process.env, dataDir = null, fetchImpl
       if (route === '/api/plugins/qir/status') { send(res, 200, qirStatus()); return true; }
       if (route.startsWith('/api/plugins/qir/') && !qirOn()) { send(res, 404, { error: 'plugin_disabled' }); return true; }
       if (route === '/api/plugins/qir/catalog') { send(res, 200, await servedCatalog()); return true; }
+      if (route === '/api/plugins/qir/notes') {
+        const n = await archiveNotes(), cache = { ETag: n.etag, 'Cache-Control': 'public, max-age=300' };
+        if (req.headers['if-none-match'] === n.etag) { send(res, 304, '', 'application/json; charset=utf-8', cache); return true; }
+        send(res, 200, Buffer.from(n.body), 'application/json; charset=utf-8', cache); return true;
+      }
       // Live refresh (2026-09-27): open pages ask every 2 min for episodes aired at or after
       // `since` (station wall clock), a few KB instead of the ~1 MB catalog.
       if (route === '/api/plugins/qir/recent') {

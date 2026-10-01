@@ -7,12 +7,14 @@ same session** (like `public/text.js` and `archive-search.js`):
 - `kpfk-discovery-plugin/docs/APP-FAMILY.md`
 - `kpfk-podcast/docs/APP-FAMILY.md`
 
-Updated 2026-09-26.
+Updated 2026-10-01 (Discovery runs inside the podcast site; mobile endpoints). Before: 2026-09-26.
 
 ## The vision (Paul, 2026-09-26) — read this first
 
 - **QIR** is Ace's service. It makes the transcripts and summaries.
-- **Discovery is the plugin** (`kpfk-discovery-plugin`). It is the only thing that talks to QIR.
+- **Discovery is the plugin.** Since 2026-09-28 it runs inside the podcast site
+  (`kpfk-archive/plugins/discovery/`); the `kpfk-discovery-plugin` repo and its app are kept as
+  staging (stopped). It is the only thing that talks to QIR.
 - **The podcast site (`kpfk-archive`) and the Flutter app (`kpfk-podcast`)** are the main apps.
   They work on the Pacifica feed alone, for every station.
 - **Where a station has Discovery switched on**, the podcast site and the Flutter app show
@@ -28,14 +30,32 @@ built from station data (feed rules, cue-file song lists) belong to the main app
 | App | Repo | Live | Reads | Role |
 |---|---|---|---|---|
 | **KPFK podcast web app** | `kpfk-archive` | podcasts.kpfk.org (also podcast.kpfk.org) | Pacifica JSON feed (`archive.kpfk.org/fe_feed/…`) | The main app. Serves `/api/archive` to the other two |
-| **Discovery plugin** | `kpfk-discovery-plugin` | kpfk-discovery.pacifica.audio (beta) | QIR API (Ace) + podcast web app's `/api/archive` + Pacifica feed (show images) | **The plugin**: QIR search, summaries, transcripts. Shown in the podcast site where a station has it on |
-| **KPFK Podcasts mobile** | `kpfk-podcast` (Flutter) | iOS/Android, `podcast.pacifica.kpfk` | Podcast web app's `/api/archive` (Talk shows only) | Mobile sister app. Will show Discovery's features where a station has it on, same switch |
+| **Discovery plugin** | `kpfk-archive/plugins/discovery/` (was `kpfk-discovery-plugin`, now staging, stopped) | inside podcasts.kpfk.org since 2026-09-28 | QIR API (Ace) + the host's archive listing | **The plugin**: QIR search, summaries, transcripts. Switched on per station in the studio |
+| **KPFK Podcasts mobile** | `kpfk-podcast` (Flutter) | iOS/Android, `podcast.pacifica.kpfk` | Podcast web app's `/api/archive` (Talk shows only); planned: Discovery's `/api/plugins/qir/*` | Mobile sister app. Will show Discovery's features where a station has it on, same switch |
 
 ```
 Confessor (Otis) ──► Pacifica JSON feed ──► kpfk-archive ──► /api/archive ──┬─► kpfk-podcast (mobile)
                           │                                                 └─► Discovery (archive mode)
-                          └──► QIR (Ace: transcripts, summaries) ──► Discovery (QIR mode, default)
+                          └──► QIR (Ace: transcripts, summaries) ──► Discovery (inside kpfk-archive)
+                                                                              └─► /api/plugins/qir/* ─► web page, kpfk-podcast (planned)
 ```
+
+## What the mobile app may read from Discovery (2026-10-01)
+
+All on the podcast site's own host; **the app never holds a QIR key**. Every route is a 404
+when Discovery is switched off for the station; the app then behaves as it does without it.
+Plan: `kpfk-podcast/docs/WEB-FEATURES-PLAN.md`.
+
+| Route | What | Size / caching |
+|---|---|---|
+| `/api/plugins/qir/status` | `state` (`ready`, `switched_off`, `not_configured`, …): the app's on/off signal | tiny, no-store |
+| `/api/plugins/qir/notes` | QIR text for the archive's own episodes, keyed by `/api/archive` episode `id`, joined by exact mp3: `{qir, headline, summary, host, guest}` or `{pending, skipped}` | ETag (304), `max-age=300` |
+| `/api/plugins/qir/transcript/<qir>` | WebVTT + plain text for one episode (`qir` from notes); 404 = no transcript | ~120 KB, no-store |
+| `/api/plugins/qir/recent?since=…` | Episodes aired since a station-clock time (what the web polls every 2 min) | few KB |
+| `/api/cue/<id>` | Cue-file song list (WebVTT) for an episode's `vtiUrl` | small |
+
+Not for apps: `/api/plugins/qir/catalog` (~1.1 MB gzip, no-store, QIR's own shape). The
+Talk-only filter runs in the app **before** joining notes; nothing from QIR adds an episode.
 
 **Rule: any change to how one app reads feed data affects the others.** A field the
 podcast web app adds, drops or reshapes in `/api/archive` reaches the mobile app and
