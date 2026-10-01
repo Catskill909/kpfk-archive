@@ -14,6 +14,12 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 2. **Ace / QIR:** email sent 2026-09-28. As of 2026-09-29 the 7 show keys (All Of The Above, Nightscapes,
    The Aware Show, Reggae Central, CodePINK, Making Contact, CinemaScore) and World Massive Sep 26 are
    still not processed in QIR. **Any reply?** Recheck with the live `/api/plugins/qir/catalog`.
+   **New 2026-09-30 (after Ace's QIR changes):** QIR stopped processing at ~16:05 PT (last done:
+   Lawyers Guild 15:00). Democracy Now 16:00, Background Briefing 17:00, Evening News 18:00 are in
+   QIR with no headline/summary (`updated_at` empty); Pacifica mp3s are full and on time; our
+   plugin reported `pending` 3, `behindHours` 3.2. Nothing wrong on our side. **Paul's call: no
+   email yet** (Ace is busy; not in release). Recheck on 2026-10-01 — if still stuck, Paul sends
+   Ace a short note.
 3. **Step 8 done (checked 2026-09-30):** the old Discovery app is **stopped** in Coolify — no
    container running, kpfk-discovery.pacifica.audio returns `503`. The app, its volume and the
    address are kept as a future staging app (own named volume, never production's; see the
