@@ -111,7 +111,9 @@ live only after a Coolify redeploy and `version` in `/healthz` changes.
     is what listeners see: **on-air programs in the published schedule** (Paul's
     policy, 2026-09-15) **plus every upload show with episodes** (`2kpfk`: podcasts
     and online editions such as Bike Talk Podcast and BradCast w/ Brad Friedman,
-    added 2026-09-25). Unscheduled on-air programs are hidden. A schedule outage
+    added 2026-09-25). Unscheduled on-air programs are hidden, and so is any show in
+    the profile's `withheldShows` (no on-demand rights; KPFK: The Aware Show, 2026-10-01),
+    in the archive and in Discovery alike. A schedule outage
     falls back to the whole on-air channel (plus uploads) and `/healthz`
     `archiveFilter.basis` says `primary-channel`.
   - Schedule and now-playing `photoUrl` from Pacifica is a bare `/pix` folder;

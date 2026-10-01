@@ -1,6 +1,6 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-10-01 (Flutter app caught up: remind item 0). Previously 2026-09-30 (repo moved to `pacifica-foundation`; Discovery app stopped; Coolify email). Previously 2026-09-29 (archive rules, /discover retired, Import / Export + master spreadsheet).  **This folder is the active KPFK podcast-template project.**
+**Updated:** 2026-10-01 (The Aware Show withheld, live: remind item 8; Flutter app caught up: item 0). Previously 2026-09-30 (repo moved to `pacifica-foundation`; Discovery app stopped; Coolify email). Previously 2026-09-29 (archive rules, /discover retired, Import / Export + master spreadsheet).  **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
@@ -19,11 +19,11 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
       shows QIR's headline. Change `enrich` in `plugins/discovery/public/main.js` — exact change in
       the app's WEB-FEATURES-PLAN "Decisions" #0 — and port the app's test into
       `plugins/discovery/test/main-enrich.test.js`. Until then the two apps' titles differ for those.
-   b. **Commit `docs/APP-FAMILY.md`** — already updated here (uncommitted) and identical in all three
-      repos: the app reads `qir/status` + `qir/notes`, and the **status-state contract**: 404 /
+   b. **`docs/APP-FAMILY.md`** — committed here (`dcea4de`, 2026-10-01, with the new withheld-show
+      row); the identical copies in `kpfk-podcast` and `kpfk-discovery-plugin` are **still
+      uncommitted** — commit them in a session in those folders. Content: the app reads `qir/status` + `qir/notes`, and the **status-state contract**: 404 /
       `switched_off` / `disabled` / `not_configured` = off (app drops notes); `ready` = fetch;
       anything else = temporary (app keeps notes). **Renaming a state breaks the app** — tell it.
-      Same uncommitted copy sits in `kpfk-discovery-plugin`.
    c. `/api/plugins/qir/notes` is 362 KB gzip / 1.0 MB raw (1,176 rows); phones fetch it with
       `If-None-Match` and get a 304 when unchanged. Keep the ETag stable (it is a hash of the body).
    Styling fine-tuning of the app is its own later session, after features (Paul, 2026-10-01).
@@ -40,7 +40,8 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
    plugin reported `pending` 3, `behindHours` 3.2. Nothing wrong on our side. **Paul's call: no
    email yet** (Ace is busy; not in release). **Rechecked 2026-10-01: caught up** — `pending` 0,
    `behindHours` 0; those three shows and the overnight hours have headlines. No note to Ace needed.
-   The 7 show keys / World Massive item above was not rechecked.
+   The 7 show keys / World Massive item above was not rechecked, except **The Aware Show: QIR has
+   processed all 16 episodes (checked 2026-10-01)** — now withheld by us, see item 8.
 3. **Step 8 done (checked 2026-09-30):** the old Discovery app is **stopped** in Coolify — no
    container running, kpfk-discovery.pacifica.audio returns `503`. The app, its volume and the
    address are kept as a future staging app (own named volume, never production's; see the
@@ -88,7 +89,17 @@ Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
      "don't archive" setting beside `expires`, useful to every Pacifica station; that stops the mp3s,
      the feed, QIR and every app at once. (2) QIR skips `aware` (and drops its 16 transcripts) until
      then. (3) Our `withheldShows` stays as the station's own override; harmless once upstream drops it.
-   - Note to Ace drafted 2026-10-01 for Paul to send: what we did; Aware still in the feed and in QIR.
+   - **Note to Ace sent 2026-10-01 (Paul):** Aware is off the podcast site; still in Pacifica's feed
+     and schedule, and processed by QIR — QIR could skip show key `aware`. No reply yet.
+   - **Next week:** recheck whether Aware has left the feed and schedule, and whether QIR has
+     stopped processing it. Our live `/api/plugins/qir/catalog` hides Aware now, so it cannot
+     answer that; Pacifica's feed (`archive.kpfk.org/fe_feed/fe_catalog_kpfk.json`) answers the
+     first, Ace the second.
+   - Code: `lib/station-config.js` (validation), `lib/pacifica/service.js` `scheduledView`,
+     `plugins/discovery/index.js` (`withPending`, transcript route), `server.js` coverage export.
+     Tests: `service.test.js` "withheld shows", `discovery-profile.test.js`, Discovery `notes.test.js`.
+     Every listener route reads the filtered archive (`episodeRecords()` ← `peekArchive()`); only
+     studio exports read the unfiltered catalog (audited 2026-10-01).
 
 ## 2026-09-29 — archive rules, /discover retired, Import / Export for moving the site
 
@@ -213,12 +224,12 @@ Just aired hides them (its W5).
 | | |
 | --- | --- |
 | Live | **https://podcast.kpfk.org** — Coolify app "KPFK Podcasts" on the Pacifica/Contabo server, Dockerfile build, container port 8080. Deployed 2026-09-19; `kpfk-archive.supersoul.top` was stopped the same day |
-| Repo | https://github.com/pacifica-foundation/kpfk-archive · `main` · push to `origin` only (never `wbai-baseline`). **Moved from `Catskill909` on 2026-09-30**; the old URL redirects, Coolify's stored path and this Mac's `origin` were updated the same day. First deploy from the new location not yet done |
-| Deploy | Manual Coolify redeploy after push. **2026-09-24: `d3ca868` pushed and deployed by Paul** (build 16:03 UTC; page loads `archive-search.js`). This includes the 2026-09-23 core search and the embedded `/discover` prototype — its **"Discover shows" side-menu link is now public** (`plugins.discovery: true`); set it false and redeploy to hide it. |
+| Repo | https://github.com/pacifica-foundation/kpfk-archive · `main` · push to `origin` only (never `wbai-baseline`). **Moved from `Catskill909` on 2026-09-30**; the old URL redirects, Coolify's stored path and this Mac's `origin` were updated the same day. First deploy from the new location done 2026-10-01 (`32130a1`, storage id unchanged) |
+| Deploy | Manual Coolify redeploy after push. **Last: 2026-10-01, `32130a1`** (Aware withheld), checked live by Claude the same day: new `version`, `instanceId` unchanged, `freshVolume:false`. |
 | Storage | Named volume `f6vn03cy47znqlbemewq8dd0-kpfk-archive-data` at `/app/data` for the podcast.kpfk.org app: `instanceId` `73039ae5-6589-4ec2-9df5-354de84c0989`, `persistedSince` 2026-09-19, `freshVolume:false` after the 2026-09-24 redeploy. (`e4a9aac9…` below belongs to the retired supersoul.top deployment.) |
 | Studio | `/studio`, password in Coolify env `STUDIO_PASSWORD` (runtime only — **not** on the Mac and not in the repo; read it from Coolify, never from a file) |
 | Local | `npm start` → http://localhost:8081, `./data` |
-| Tests | `npm test` passed 2026-09-24 before the push: inherited suites + 51 Pacifica tests (incl. QIR per-record validation). The standalone plugin has its own tests/CI. |
+| Tests | `npm test` 196/196 on 2026-10-01 (inherited offline suites + Pacifica + Discovery plugin suites). |
 
 **Artwork caching (2026-09-24).** `/api/artwork/<id>` used to fetch from Pacifica on every
 request (~0.45 s per image, the same on repeats). Images are now kept in memory
@@ -384,10 +395,11 @@ URLs in historical audit entries below describe past deployments.
 KPFK's on-demand archive, read entirely from Pacifica's public JSON feeds
 (`archive.kpfk.org/fe_feed/…`), with WBAI's player, sheet, schedule and studio.
 
-- **Archive:** every episode of every program in the **published schedule**
-  (~1,000 episodes / ~99 programs). Archive-only uploads (`2kpfk`) and programs no
-  longer scheduled are hidden, by Paul's decision. `/healthz` `archiveFilter` shows
-  the basis and hidden count.
+- **Archive:** every episode of every program in the **published schedule**, plus every
+  upload (`2kpfk`) show with episodes (since 2026-09-25) — ~1,160 episodes. Programs no
+  longer scheduled are hidden, by Paul's decision; so are music episodes past 14 days and
+  shows in `withheldShows` (The Aware Show, 2026-10-01). `/healthz` `archiveFilter` shows
+  the basis and every rule's count.
 - **Schedule:** WBAI's look — today-first seven days, artwork cards,
   "Category · Host", Live badge by real slot times, no week picker.
 - **Artwork:** from the catalog `photoUrl` only. Shows with no catalog image get the
