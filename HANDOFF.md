@@ -1,32 +1,22 @@
 # HANDOFF — KPFK Archive
 
-**Updated:** 2026-10-01 (The Aware Show withheld, live: remind item 8; Flutter app caught up: item 0). Previously 2026-09-30 (repo moved to `pacifica-foundation`; Discovery app stopped; Coolify email). Previously 2026-09-29 (archive rules, /discover retired, Import / Export + master spreadsheet).  **This folder is the active KPFK podcast-template project.**
+**Updated:** 2026-10-01 (The Aware Show withheld, live: remind item 8; Flutter app caught up: see "Open work from the Flutter app"). Previously 2026-09-30 (repo moved to `pacifica-foundation`; Discovery app stopped; Coolify email). Previously 2026-09-29 (archive rules, /discover retired, Import / Export + master spreadsheet).  **This folder is the active KPFK podcast-template project.**
 WBAI (`/Users/paulhenshaw/Desktop/wbai-archive`) is maintenance-only from here on.
 
 Read this, then [CLAUDE.md](CLAUDE.md) (working rules), then
 [docs/README.md](docs/README.md) (which docs are current vs inherited from WBAI).
 
-## Remind Paul first (say these at the start of every session)
+## Open work from the Flutter app (2026-10-01) — not a reminder; pick up when working here
 
-0. **NEW 2026-10-01 — the Flutter app (kpfk-podcast) moved ahead; three web to-dos for this repo.**
-   The app now has the web's search (identical ranking, verified on live data), the sort menu, QIR
-   headlines/summaries via `/api/plugins/qir/notes`, the web's palette (all 480 hard-coded colours
-   → `styles.css` tokens) and the web's light/dark switch. Pushed to
-   `pacifica-foundation/kpfk-podcast-flutter`. Plan: `kpfk-podcast/docs/WEB-FEATURES-PLAN.md`.
-   **To do here:**
-   a. **QIR headline for paragraph topics** (Paul decided yes; the app already does it): 53 Talk
-      episodes have a pasted paragraph as topic and show "Show — date" on the web, while the app
-      shows QIR's headline. Change `enrich` in `plugins/discovery/public/main.js` — exact change in
-      the app's WEB-FEATURES-PLAN "Decisions" #0 — and port the app's test into
-      `plugins/discovery/test/main-enrich.test.js`. Until then the two apps' titles differ for those.
-   b. **`docs/APP-FAMILY.md`** — committed here (`dcea4de`, 2026-10-01, with the new withheld-show
-      row); the identical copies in `kpfk-podcast` and `kpfk-discovery-plugin` are **still
-      uncommitted** — commit them in a session in those folders. Content: the app reads `qir/status` + `qir/notes`, and the **status-state contract**: 404 /
-      `switched_off` / `disabled` / `not_configured` = off (app drops notes); `ready` = fetch;
-      anything else = temporary (app keeps notes). **Renaming a state breaks the app** — tell it.
-   c. `/api/plugins/qir/notes` is 362 KB gzip / 1.0 MB raw (1,176 rows); phones fetch it with
-      `If-None-Match` and get a 304 when unchanged. Keep the ETag stable (it is a hash of the body).
-   Styling fine-tuning of the app is its own later session, after features (Paul, 2026-10-01).
+- **QIR headline for paragraph topics** (Paul decided yes; the app does it): 53 Talk episodes have a
+  pasted paragraph as topic and show "Show — date" here, while the app shows QIR's headline. Change
+  `enrich` in `plugins/discovery/public/main.js` — exact change in `kpfk-podcast/docs/WEB-FEATURES-PLAN.md`
+  "Decisions" #0 — and port the app's test into `plugins/discovery/test/main-enrich.test.js`.
+- **Contracts the app relies on** (APP-FAMILY.md): QIR `status` states (404 / `switched_off` /
+  `disabled` / `not_configured` = off; `ready` = fetch; anything else = temporary — renaming one breaks
+  the app); `notes` ETag stable (hash of the body); transcript 404 = "none yet" vs 5xx = "try again".
+
+## Remind Paul first (say these at the start of every session)
 
 1. **Live and checked (2026-09-29):** everything below is deployed; `storage.instanceId` =
    `73039ae5-6589-4ec2-9df5-354de84c0989`, `freshVolume:false`. Player settled (floating card — do not

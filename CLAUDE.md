@@ -4,10 +4,6 @@ This repo is **the** active project (since 2026-09-15). It began as a copy of
 `wbai-archive`; WBAI is now maintenance-only in its own folder. Read
 [HANDOFF.md](HANDOFF.md) for current state before starting work.
 
-**First reply of every session: tell Paul HANDOFF's "Remind Paul first" items** (at least the
-ones marked NEW or naming a to-do), before starting the task he asked for. On 2026-10-01 a
-session read item 0 (three web to-dos from the Flutter app) and never said it.
-
 **Three apps share this feed — read [docs/APP-FAMILY.md](docs/APP-FAMILY.md).** This app
 serves `/api/archive` to the Flutter app (`~/Desktop/kpfk-podcast`) and to the Discovery
 plugin (`~/Desktop/kpfk-discovery-plugin`). A change to feed parsing or to `/api/archive`

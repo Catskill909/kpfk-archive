@@ -7,7 +7,7 @@ same session** (like `public/text.js` and `archive-search.js`):
 - `kpfk-discovery-plugin/docs/APP-FAMILY.md`
 - `kpfk-podcast/docs/APP-FAMILY.md`
 
-Updated 2026-10-01 (Discovery runs inside the podcast site; mobile endpoints; the Flutter app reads QIR notes). Before: 2026-09-26.
+Updated 2026-10-01 (Discovery runs inside the podcast site; mobile endpoints; the Flutter app reads QIR notes and transcripts; The Aware Show withheld). Before: 2026-09-26.
 
 ## The vision (Paul, 2026-09-26) — read this first
 
@@ -31,7 +31,7 @@ built from station data (feed rules, cue-file song lists) belong to the main app
 |---|---|---|---|---|
 | **KPFK podcast web app** | `kpfk-archive` | podcasts.kpfk.org (also podcast.kpfk.org) | Pacifica JSON feed (`archive.kpfk.org/fe_feed/…`) | The main app. Serves `/api/archive` to the other two |
 | **Discovery plugin** | `kpfk-archive/plugins/discovery/` (was `kpfk-discovery-plugin`, now staging, stopped) | inside podcasts.kpfk.org since 2026-09-28 | QIR API (Ace) + the host's archive listing | **The plugin**: QIR search, summaries, transcripts. Switched on per station in the studio |
-| **KPFK Podcasts mobile** | `kpfk-podcast` (Flutter) | iOS/Android, `podcast.pacifica.kpfk` | Podcast web app's `/api/archive` (Talk shows only); since 2026-10-01 `/api/plugins/qir/status` + `/notes` | Mobile sister app. Shows Discovery's headlines/summaries where a station has it on, same switch; transcripts planned |
+| **KPFK Podcasts mobile** | `kpfk-podcast` (Flutter) | iOS/Android, `podcast.pacifica.kpfk` | Podcast web app's `/api/archive` (Talk shows only); since 2026-10-01 `/api/plugins/qir/status`, `/notes`, `/transcript/<qir>` | Mobile sister app. Shows Discovery's headlines/summaries and Listen-along transcripts where a station has it on, same switch; saves a transcript with each download (offline) |
 
 ```
 Confessor (Otis) ──► Pacifica JSON feed ──► kpfk-archive ──► /api/archive ──┬─► kpfk-podcast (mobile)
@@ -50,7 +50,7 @@ Plan: `kpfk-podcast/docs/WEB-FEATURES-PLAN.md`.
 |---|---|---|
 | `/api/plugins/qir/status` | `state` (`ready`, `switched_off`, `not_configured`, …): the app's on/off signal | tiny, no-store |
 | `/api/plugins/qir/notes` | QIR text for the archive's own episodes, keyed by `/api/archive` episode `id`, joined by exact mp3: `{qir, headline, summary, host, guest}` or `{pending, skipped}` | ETag (304), `max-age=300` |
-| `/api/plugins/qir/transcript/<qir>` | WebVTT + plain text for one episode (`qir` from notes); 404 = no transcript | ~120 KB, no-store |
+| `/api/plugins/qir/transcript/<qir>` | WebVTT + plain text for one episode (`qir` from notes); 404 = no transcript (the app says "none yet"; 5xx/offline = "try again"). The app parses `vtt` with a port of `qir-transcript.js` and keeps the body with a download | ~120 KB, no-store |
 | `/api/plugins/qir/recent?since=…` | Episodes aired since a station-clock time (what the web polls every 2 min) | few KB |
 | `/api/cue/<id>` | Cue-file song list (WebVTT) for an episode's `vtiUrl` | small |
 
